@@ -31,7 +31,6 @@ CREATE TABLE answers (
 );
 
 
-
 CREATE TABLE user_answers (
     id SERIAL PRIMARY KEY,
 
@@ -93,3 +92,5 @@ CREATE TABLE quiz_sessions (
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
+
+-- # test git

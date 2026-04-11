@@ -10,6 +10,7 @@ interface Question {
     content?: string;
     explanation?: string;
     status?: string;
+    answers?: any[]|undefined;
     createdAt?: string;
     [key: string]: unknown;
 }
@@ -49,6 +50,7 @@ export function QuestionPage() {
                                         <th className="pb-2 pr-4 font-medium">Title</th>
                                         <th className="pb-2 pr-4 font-medium">Content</th>
                                         <th className="pb-2 pr-4 font-medium">Status</th>
+                                        <th className="pb-2 pr-4 font-medium">Answer</th>
                                         <th className="pb-2 pr-4 font-medium">Created At</th>
                                         <th className="pb-2 font-medium text-right">Action</th>
                                     </tr>
@@ -80,6 +82,9 @@ export function QuestionPage() {
                                                         }`}>
                                                         {q.status ?? 'N/A'}
                                                     </span>
+                                                </td>
+                                                <td className="py-2 pr-4 text-gray-500 max-w-[260px] truncate">
+                                                    {JSON.stringify(q.answers?.length)}
                                                 </td>
                                                 <td className="py-2 pr-4 text-gray-400 text-[12px]">
                                                     {q.createdAt

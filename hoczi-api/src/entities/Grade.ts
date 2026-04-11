@@ -2,30 +2,24 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  CreateDateColumn,
-  ManyToOne,
-  JoinColumn,
+  OneToMany,
 } from "typeorm";
 import { Question } from "./Question";
 
-@Entity("answers")
-export class Answer {
+@Entity("grades")
+export class Grade {
   @PrimaryGeneratedColumn("increment")
   id!: number;
 
-  @Column({ type: "bigint" })
-  question_id!: number;
+  @Column({ type: "varchar", length: 50 })
+  name!: string;
 
-  @Column({ type: "text" })
-  content!: string;
+  @Column({ type: "varchar", length: 50, unique: true })
+  code!: string;
 
-  @Column({ type: "boolean", default: false })
-  is_correct!: boolean;
+  @Column({ type: "int" })
+  sort_order!: number;
 
-  @ManyToOne(() => Question, (question) => question.answers)
-  @JoinColumn({ name: "question_id" })
-  question!: Question;
-
-  @CreateDateColumn({ type: "timestamptz" })
-  created_at!: Date;
+  @OneToMany(() => Question, (question) => question.grade)
+  questions!: Question[];
 }

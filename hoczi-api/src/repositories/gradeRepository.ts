@@ -16,13 +16,6 @@ class GradeRepository {
         return this.repo.findOne({ where: { id } });
     }
 
-    async findByQuestionId(quizId: number) {
-        return this.repo.find({
-            where: { id: quizId },
-            order: { id: 'ASC' },
-            relations: ['question'],
-        });
-    }
 
 }
 

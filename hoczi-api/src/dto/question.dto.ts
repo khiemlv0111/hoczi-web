@@ -22,8 +22,20 @@ export class CreateQuestionRequest {
   @IsNotEmpty()
   content!: string;
 
-  @IsEnum(['single', 'multiple', 'true_false'])
-  type!: 'single' | 'multiple' | 'true_false';
+  @IsOptional()
+  type!: string;
+
+  @IsOptional()
+  categoryId!: number;
+
+  @IsOptional()
+  topicId!: number;
+
+  @IsOptional()
+  difficulty!: string;
+
+  @IsOptional()
+  code!: string;
 
 
   @IsString()

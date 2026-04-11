@@ -1,4 +1,5 @@
 import { AppDataSource } from '../data-source';
+import { CreateQuestionRequest } from '../dto/question.dto';
 import { Question } from '../entities/Question';
 import { FindOptionsWhere, ILike } from 'typeorm';
 
@@ -26,8 +27,15 @@ class QuestionRepository {
         });
     }
 
-    async create(data: Partial<Question>) {
-        const question = this.repo.create(data);
+    async create(data: CreateQuestionRequest) {
+        const question = this.repo.create({
+            content: data.content,
+            type: data.type,
+            difficulty: data.difficulty,
+            category_id: data.categoryId,
+            topic_id: data.topicId,
+            explanation: data.explanation,
+        });
         return this.repo.save(question);
     }
 

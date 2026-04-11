@@ -39,10 +39,10 @@ const stats = [
 ];
 
 const navMain = [
-    { label: "Dashboard", icon: LayoutDashboard, active: true },
-    { label: "Blog Posts", icon: FileText },
-    { label: "Quizzes", icon: Clock },
-    { label: "Students", icon: Users },
+    {path: '/admin', label: "Dashboard", icon: LayoutDashboard, active: true },
+    {path: '/', label: "Blog Posts", icon: FileText },
+    {path: '/', label: "Quizzes", icon: Clock },
+    {path: '/admin/questions', label: "Students", icon: Users },
 ];
 
 const navSettings = [
@@ -58,10 +58,12 @@ export default function AdminLayout({
 }>) {
     const router = useRouter();
     const handleNavigate = (item: any) => {
-        const { label, icon: Icon, active } = item;
+        const {path, label, icon: Icon, active } = item;
         console.log(label);
         if (label == 'Quizzes') {
             router.push(`/admin/quizzes`)
+        } else {
+            router.push(`${path}`)
         }
 
 
@@ -81,10 +83,10 @@ export default function AdminLayout({
                 {/* Main nav */}
                 <div className="px-2 mb-2">
                     <p className="text-[11px] text-gray-400 uppercase tracking-wider px-2 mb-1">Main</p>
-                    {navMain.map(({ label, icon: Icon, active }) => (
+                    {navMain.map(({path, label, icon: Icon, active }) => (
                         <button
                             key={label}
-                            onClick={() => handleNavigate({ label, icon: Icon, active })}
+                            onClick={() => handleNavigate({path, label, icon: Icon, active })}
                             className={`w-full flex items-center gap-2 px-3 py-2 rounded-md text-[13px] transition-colors ${active
                                     ? "bg-blue-50 text-blue-700"
                                     : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"

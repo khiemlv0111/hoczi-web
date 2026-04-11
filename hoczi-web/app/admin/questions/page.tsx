@@ -1,7 +1,9 @@
-export default function QuestionsPage(){
+import { QuestionPage } from "./QuestionPage";
+
+export default function Page(){
     return (
         <div>
-            <h1>QuestionsPage page</h1>
+            <QuestionPage />
         </div>
     )
 }

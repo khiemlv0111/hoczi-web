@@ -1,6 +1,6 @@
 import { questionRepository } from "../repositories/questionRepository";
 import { answerRepository } from "../repositories/answerRepository";
-import { CreateAnswerRequest, CreateQuestionRequest } from "../dto/question.dto";
+import { CreateAnswerRequest, CreateQuestionRequest, QuestionFilterDto } from "../dto/question.dto";
 
 export class QuestionService {
 
@@ -10,8 +10,8 @@ export class QuestionService {
         return questionRepository.findByQuestionId(quizId);
     }
 
-    async getAllQuestions() {
-        const questions = await questionRepository.findAll(this.QUIZ_QUESTION_LIMIT);
+    async getAllQuestions(filter?: QuestionFilterDto) {
+        const questions = await questionRepository.findAll(filter, this.QUIZ_QUESTION_LIMIT);
         return questions;
 
     }

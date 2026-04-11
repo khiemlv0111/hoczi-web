@@ -1,5 +1,5 @@
 import { AppDataSource } from '../data-source';
-import { CreateQuestionRequest } from '../dto/question.dto';
+import { CreateQuestionRequest, QuestionFilterDto } from '../dto/question.dto';
 import { Question } from '../entities/Question';
 import { FindOptionsWhere, ILike } from 'typeorm';
 
@@ -8,8 +8,12 @@ class QuestionRepository {
         return AppDataSource.getRepository(Question);
     }
 
-    async findAll(limit?: number) {
+    async findAll(filter?: QuestionFilterDto, limit?: number) {
         return this.repo.find({
+            where: {
+                ...(filter?.categoryId && { category_id: filter.categoryId }),
+                ...(filter?.topicId && { topic_id: filter.topicId }),
+            },
             relations: ['answers'],
             take: limit,
         });

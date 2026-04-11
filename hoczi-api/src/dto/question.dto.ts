@@ -58,3 +58,10 @@ export class CreateAnswerRequest {
     isCorrect!: boolean;
 
 }
+
+
+export interface QuestionFilterDto {
+  gradeId?: number;
+  categoryId?: number;
+  topicId?: number;
+}

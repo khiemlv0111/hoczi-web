@@ -28,6 +28,9 @@ export class CreateQuestionRequest {
     categoryId!: number;
 
     @IsOptional()
+    gradeId?: number;
+
+    @IsOptional()
     topicId!: number;
 
     @IsOptional()

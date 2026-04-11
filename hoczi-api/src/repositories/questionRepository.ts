@@ -31,6 +31,7 @@ class QuestionRepository {
         const question = this.repo.create({
             content: data.content,
             type: data.type,
+            grade_id: data.gradeId,
             difficulty: data.difficulty,
             category_id: data.categoryId,
             topic_id: data.topicId,

@@ -1,14 +1,10 @@
-import { DataSource } from "typeorm";
-import { User } from "../entities/User";
 import { questionRepository } from "../repositories/questionRepository";
-import { CreateQuestionRequest } from "../dto/question.dto";
+import { answerRepository } from "../repositories/answerRepository";
+import { CreateAnswerRequest, CreateQuestionRequest } from "../dto/question.dto";
 
 export class QuestionService {
-    // private questionRepository = this.dataSource.getRepository(User);
 
-    // constructor(private dataSource: DataSource) { }
     private readonly QUIZ_QUESTION_LIMIT = 15;
-
 
     async getByQuuestionId(quizId: number) {
         return questionRepository.findByQuestionId(quizId);
@@ -23,6 +19,10 @@ export class QuestionService {
 
     async createQuestion(dto: CreateQuestionRequest) {
         return questionRepository.create(dto);
+    }
+
+    async createAnswer(dto: CreateAnswerRequest) {
+        return answerRepository.create(dto);
     }
 
 }

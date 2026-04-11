@@ -18,27 +18,40 @@ export class CreateUserRequest {
 
 export class CreateQuestionRequest {
 
+    @IsNotEmpty()
+    content!: string;
 
-  @IsNotEmpty()
-  content!: string;
+    @IsOptional()
+    type!: string;
 
-  @IsOptional()
-  type!: string;
+    @IsOptional()
+    categoryId!: number;
 
-  @IsOptional()
-  categoryId!: number;
+    @IsOptional()
+    topicId!: number;
 
-  @IsOptional()
-  topicId!: number;
+    @IsOptional()
+    difficulty!: string;
 
-  @IsOptional()
-  difficulty!: string;
-
-  @IsOptional()
-  code!: string;
+    @IsOptional()
+    code!: string;
 
 
-  @IsString()
-  @IsOptional()
-  explanation?: string;
+    @IsString()
+    @IsOptional()
+    explanation?: string;
+}
+
+
+export class CreateAnswerRequest {
+
+    @IsNotEmpty()
+    content!: string;
+
+    @IsNotEmpty()
+    questionId!: number;
+
+    @IsNotEmpty()
+    isCorrect!: boolean;
+
 }

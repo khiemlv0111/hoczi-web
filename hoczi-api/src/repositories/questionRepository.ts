@@ -13,6 +13,7 @@ class QuestionRepository {
             where: {
                 ...(filter?.categoryId && { category_id: filter.categoryId }),
                 ...(filter?.topicId && { topic_id: filter.topicId }),
+                ...(filter?.gradeId && { grade_id: filter.gradeId }),
             },
             relations: ['answers'],
             take: limit,

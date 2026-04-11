@@ -13,6 +13,18 @@ export class QuestionController {
     async getQuestionList(req: Request, res: Response) {
         const { gradeId, categoryId, topicId } = req.query;
 
+        const questions = await questionService.getQuestionList({
+            gradeId: gradeId ? Number(gradeId) : undefined,
+            categoryId: categoryId ? Number(categoryId) : undefined,
+            topicId: topicId ? Number(topicId) : undefined,
+        });
+        return res.json({ success: true, data: questions });
+
+    }
+
+    async getAllQuestion(req: Request, res: Response) {
+        const { gradeId, categoryId, topicId } = req.query;
+
         const questions = await questionService.getAllQuestions({
             gradeId: gradeId ? Number(gradeId) : undefined,
             categoryId: categoryId ? Number(categoryId) : undefined,

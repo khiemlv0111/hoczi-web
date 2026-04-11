@@ -9,6 +9,7 @@ class QuestionRepository {
     }
 
     async findAll(filter?: QuestionFilterDto, limit?: number) {
+        let limit_count = limit ? limit : 99999;
         return this.repo.find({
             where: {
                 ...(filter?.categoryId && { category_id: filter.categoryId }),
@@ -16,7 +17,7 @@ class QuestionRepository {
                 ...(filter?.gradeId && { grade_id: filter.gradeId }),
             },
             relations: ['answers'],
-            take: limit,
+            take: limit_count,
         });
     }
 

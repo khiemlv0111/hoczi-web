@@ -11,6 +11,12 @@ export class QuestionService {
     }
 
     async getAllQuestions(filter?: QuestionFilterDto) {
+        const questions = await questionRepository.findAll(filter);
+        return questions;
+
+    }
+
+    async getQuestionList(filter?: QuestionFilterDto) {
         const questions = await questionRepository.findAll(filter, this.QUIZ_QUESTION_LIMIT);
         return questions;
 

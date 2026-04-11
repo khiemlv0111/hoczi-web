@@ -11,6 +11,9 @@ const questionRoutes = Router();
 questionRoutes.get('/question-list', new QuestionController().getQuestionList);
 questionRoutes.get('/all-questions', new QuestionController().getAllQuestion);
 
+questionRoutes.get('/question-detail/:id', new QuestionController().getQuestionDetail);
+
+
 questionRoutes.post('/create-question', new QuestionController().createQuestion);
 questionRoutes.post('/create-answer', new QuestionController().createAnswer);
 

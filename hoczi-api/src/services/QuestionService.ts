@@ -6,7 +6,7 @@ export class QuestionService {
 
     private readonly QUIZ_QUESTION_LIMIT = 15;
 
-    async getByQuuestionId(quizId: number) {
+    async getQuestionById(quizId: number) {
         return questionRepository.findByQuestionId(quizId);
     }
 
@@ -19,6 +19,12 @@ export class QuestionService {
     async getQuestionList(filter?: QuestionFilterDto) {
         const questions = await questionRepository.findAll(filter, this.QUIZ_QUESTION_LIMIT);
         return questions;
+
+    }
+
+    async getQuestionDetail(id: number) {
+        const question = await questionRepository.findByQuestionId(id);
+        return question;
 
     }
 

@@ -22,6 +22,15 @@ export class QuestionController {
 
     }
 
+    async getQuestionDetail(req: Request, res: Response) {
+
+        const id = Number(req.params.id);
+
+        const question = await questionService.getQuestionById(id);
+        return res.json({ success: true, data: question });
+
+    }
+
     async getAllQuestion(req: Request, res: Response) {
         const { gradeId, categoryId, topicId } = req.query;
 

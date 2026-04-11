@@ -25,10 +25,9 @@ class QuestionRepository {
         return this.repo.findOne({ where: { id } });
     }
 
-    async findByQuestionId(quizId: number) {
-        return this.repo.find({
-            where: { id: quizId },
-            order: { id: 'ASC' },
+    async findByQuestionId(questionId: number) {
+        return this.repo.findOne({
+            where: { id: questionId },
             relations: ['answers'],
         });
     }

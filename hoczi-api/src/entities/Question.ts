@@ -4,7 +4,9 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from "typeorm";
+import { Answer } from "./Answer";
 
 @Entity("questions")
 export class Question {
@@ -36,6 +38,9 @@ export class Question {
     input?: string;
     output?: string;
   };
+
+  @OneToMany(() => Answer, (answer) => answer.question)
+  answers!: Answer[];
 
   @Column({ type: "bigint", nullable: true })
   created_by?: number;

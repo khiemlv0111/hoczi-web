@@ -9,6 +9,7 @@ class QuestionRepository {
 
     async findAll(limit?: number) {
         return this.repo.find({
+            relations: ['answers'],
             take: limit,
         });
     }

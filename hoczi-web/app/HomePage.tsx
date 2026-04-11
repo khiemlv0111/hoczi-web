@@ -71,7 +71,7 @@ export default function HomePage() {
         </p>
 
         {/* Start button */}
-        <Link href={`/do-exercise?name=${name}`} className="w-80 max-w-full py-4 bg-white rounded-xl text-gray-900 font-medium text-lg hover:bg-gray-100 active:scale-95 transition-all duration-150">
+        <Link href={`/quizzes?name=${name}`} className="w-80 max-w-full py-4 bg-white rounded-xl text-gray-900 font-medium text-lg hover:bg-gray-100 active:scale-95 transition-all duration-150">
           Start
         </Link>
       </div>

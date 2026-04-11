@@ -5,8 +5,11 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     OneToMany,
+    ManyToOne,
+    JoinColumn,
 } from "typeorm";
 import { Answer } from "./Answer";
+import { Grade } from "./Grade";
 
 @Entity("questions")
 export class Question {
@@ -53,6 +56,12 @@ export class Question {
 
     @CreateDateColumn({ type: "timestamptz" })
     created_at!: Date;
+
+    @ManyToOne(() => Grade, (grade) => grade.questions, {
+        onDelete: "SET NULL",
+    })
+    @JoinColumn({ name: "grade_id" })
+    grade?: Grade;
 
     @UpdateDateColumn({ type: "timestamptz" })
     updated_at!: Date;

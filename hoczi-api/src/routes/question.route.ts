@@ -17,6 +17,11 @@ questionRoutes.get('/question-detail/:id', new QuestionController().getQuestionD
 questionRoutes.post('/create-question', new QuestionController().createQuestion);
 questionRoutes.post('/create-answer', new QuestionController().createAnswer);
 
+questionRoutes.get('/category-list', new QuestionController().getCategoryList);
+questionRoutes.get('/topic-list', new QuestionController().getTopicList);
+questionRoutes.get('/grade-list', new QuestionController().getGradeList);
+
+
 
 
 

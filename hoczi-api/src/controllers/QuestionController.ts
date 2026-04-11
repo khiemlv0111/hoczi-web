@@ -22,6 +22,26 @@ export class QuestionController {
 
     }
 
+    async getGradeList(req: Request, res: Response) {
+        const grades = await questionService.getGradeList();
+        return res.json({ success: true, data: grades });
+
+    }
+
+    async getCategoryList(req: Request, res: Response) {
+
+        const result = await questionService.getCategoryList();
+        return res.json({ success: true, data: result });
+
+    }
+
+    async getTopicList(req: Request, res: Response) {
+
+        const result = await questionService.getTopicList();
+        return res.json({ success: true, data: result });
+
+    }
+
     async getQuestionDetail(req: Request, res: Response) {
 
         const id = Number(req.params.id);

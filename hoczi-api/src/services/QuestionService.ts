@@ -1,4 +1,7 @@
 import { questionRepository } from "../repositories/questionRepository";
+import { categoryRepository } from "../repositories/categoryRepository";
+import { gradeRepository } from "../repositories/gradeRepository";
+import { topicRepository } from "../repositories/topicRepository";
 import { answerRepository } from "../repositories/answerRepository";
 import { CreateAnswerRequest, CreateQuestionRequest, QuestionFilterDto } from "../dto/question.dto";
 
@@ -19,6 +22,24 @@ export class QuestionService {
     async getQuestionList(filter?: QuestionFilterDto) {
         const questions = await questionRepository.findAll(filter, this.QUIZ_QUESTION_LIMIT);
         return questions;
+
+    }
+
+     async getCategoryList(filter?: QuestionFilterDto) {
+        const result = await categoryRepository.findAll();
+        return result;
+
+    }
+
+     async getGradeList(filter?: QuestionFilterDto) {
+        const result = await gradeRepository.findAll();
+        return result;
+
+    }
+
+     async getTopicList(filter?: QuestionFilterDto) {
+        const result = await topicRepository.findAll();
+        return result;
 
     }
 

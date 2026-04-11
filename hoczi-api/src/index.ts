@@ -25,7 +25,7 @@ AppDataSource.initialize().then(() => {
 	app.use(express.json());
 	const whitelist = ['http://localhost:3004', 
 		'http://localhost:3000','http://localhost:3003',
-		'https://dev.tefihub.com', 'https://dev-portal.tefibit.com', 'https://portal.tefibit.com', 'https://dev.tefibit.com', 'https://tefihub.com'];
+		'https://api.hoczi.com', 'https://dev-portal.tefibit.com', 'https://portal.tefibit.com', 'https://dev.tefibit.com', 'https://tefihub.com'];
 	app.use(cors({
 		origin: (origin, callback) => {
 			if (!origin || whitelist.includes(origin)) {

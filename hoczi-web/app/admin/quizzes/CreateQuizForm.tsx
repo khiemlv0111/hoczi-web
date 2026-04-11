@@ -30,7 +30,7 @@ const CATEGORIES: Record<string, string[]> = {
     Arts: ["Music", "Painting", "Cinema", "Theater", "Photography"],
 };
 
-export default function QuizzesPage({ onClose, onBack, onDone }: CreateQuizFormProps) {
+export function CreateQuizForm({ onClose, onBack, onDone }: CreateQuizFormProps) {
     const [explanation, setExplanation] = useState("");
     const [code, setCode] = useState("");
     const [category, setCategory] = useState("");

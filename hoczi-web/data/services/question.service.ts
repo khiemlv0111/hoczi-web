@@ -42,8 +42,8 @@ export class QuestionService {
     }
 
 
-    static async getTopicList() {
-        const response = await getRequest('/api/questions/topic-list', false);
+    static async getTopicList(categoryId?: number) {
+        const response = await getRequest(`/api/questions/topic-list/${categoryId}`, false);
         return response.data
     }
 

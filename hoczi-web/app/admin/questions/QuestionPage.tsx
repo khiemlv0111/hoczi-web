@@ -53,6 +53,9 @@ export function QuestionPage() {
     const [isCorrect, setIsCorrect] = useState(false);
     const [answerSubmitting, setAnswerSubmitting] = useState(false);
 
+    const [categoryId, setCategoryId] = useState<number | undefined>(undefined);
+
+
 
     function fetchQuestions() {
         setLoading(true);
@@ -335,7 +338,13 @@ export function QuestionPage() {
                                     <label className="block text-[12px] font-medium text-gray-700 mb-1">Category</label>
                                     <select
                                         value={form.categoryId}
-                                        onChange={(e) => setForm({ ...form, categoryId: e.target.value })}
+                                        onChange={(e) => {
+                                            setForm({ ...form, categoryId: e.target.value });
+                                            QuestionService.getTopicList(Number(e.target.value)).then((res) => {
+                                                setTopics(res);
+                                                
+                                            })
+                                        }}
                                         className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                                     >
                                         <option value="">— optional —</option>

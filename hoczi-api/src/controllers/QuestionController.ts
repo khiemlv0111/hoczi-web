@@ -116,6 +116,9 @@ export class QuestionController {
             return res.status(400).json({ success: false, message: errors })
         }
 
+        console.log('PAYLOSDDDDD', input);
+        
+
         const response = await questionService.submitQuizSession(Number(id), input);
         return res.json(response);
     }

@@ -21,9 +21,9 @@ class UserAnswerRepository {
         return this.repo.save(payload);
     }
 
- 
 
-    
+
+
 
     async createMany(payload: {
         session_id: number;
@@ -31,8 +31,12 @@ class UserAnswerRepository {
         answer_id: number;
         is_correct: boolean;
     }[]) {
-        const userAnswers = this.repo.create(payload);
-        return await this.repo.save(userAnswers);
+        return await this.repo
+            .createQueryBuilder()
+            .insert()
+            .into(UserAnswer)
+            .values(payload)
+            .execute();
     }
 
 

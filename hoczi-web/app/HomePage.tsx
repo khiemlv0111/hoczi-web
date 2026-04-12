@@ -1,9 +1,23 @@
 'use client'
+import { QuestionService } from "@/data/services/question.service";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useAppData } from "./context/AppContext";
 
 export default function HomePage() {
-  const [name, setName] = useState('')
+  const {handleStartQuiz} = useAppData();
+  const router = useRouter();
+
+
+  const startQuiz = () => {
+    handleStartQuiz().then((res) => {
+      router.push(`/quizzes`)
+    })
+
+  }
+
+
 
   return (
     <main className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -47,16 +61,8 @@ export default function HomePage() {
         >
           <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-3xl" />
           <span className="relative text-white font-bold text-3xl tracking-tight font-serif">
-            Vics<sup className="text-lg font-normal"></sup>
+            HZ<sup className="text-lg font-normal"></sup>
           </span>
-        </div>
-        <div className="relative">
-          <input
-            onChange={(e) => setName(e.target.value)}
-            type="text"
-            placeholder="Enter your name"
-            className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/40 focus:outline-none focus:border-white/50 focus:bg-white/15 transition-all duration-200"
-          />
         </div>
 
         {/* Title */}
@@ -66,17 +72,16 @@ export default function HomePage() {
 
         {/* Subtitle */}
         <p className="text-white/70 text-base leading-relaxed max-w-sm mb-11">
-          From basic to advanced: test how well you know JavaScript, refresh
-          your knowledge a bit, or prepare for your coding interview.
+          From basic to advanced: Learn with Hoczi.com
         </p>
 
         {/* Start button */}
-        <Link href={`#`} className="w-80 max-w-full py-4 bg-white rounded-xl text-gray-900 font-medium text-lg hover:bg-gray-100 active:scale-95 transition-all duration-150">
+        <Link href={`/auth/signin`} className="w-80 max-w-full py-4 bg-white rounded-xl text-gray-900 font-medium text-lg hover:bg-gray-100 active:scale-95 transition-all duration-150">
           Login to start
         </Link>
-        <Link href={`/quizzes?name=${name}`} className="w-80 max-w-full mt-2 py-4 bg-white rounded-xl text-gray-900 font-medium text-lg hover:bg-gray-100 active:scale-95 transition-all duration-150">
+        <button onClick={() => startQuiz()} className="w-80 max-w-full mt-2 py-4 bg-white rounded-xl text-gray-900 font-medium text-lg hover:bg-gray-100 active:scale-95 transition-all duration-150">
           Start as Anonymous
-        </Link>
+        </button>
       </div>
     </main>
   );

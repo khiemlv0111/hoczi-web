@@ -5,7 +5,8 @@ import { QuestionService } from "@/data/services/question.service";
 import { UserService } from "@/data/services/user.service";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useState, ReactNode } from "react"
-
+// import { cookies } from "next/headers";
+import Cookies from "js-cookie";
 type User = {
     id: number,
     email: string,
@@ -31,11 +32,11 @@ type AppContextType = {
     data: any,
     user: User | undefined,
     quiz: Quiz | undefined,
-    
+
     login: (loginData: LoginPayload) => void;
     // handleStartQuiz: () => Promise;
 
-     handleStartQuiz: () => Promise<any>;
+    handleStartQuiz: () => Promise<any>;
 
     getUserProfile: () => void;
 }
@@ -44,36 +45,41 @@ const AppContext = createContext<AppContextType | null>(null)
 
 export function AppProvider({ children }: { children: ReactNode }) {
 
-        const [data, setData] = useState<any>({name: "Toan Le", email: "toan@Gmail.com"});
-        const [user, setUser] = useState<User|undefined>(undefined);
-        const [quiz, setQuiz] = useState<Quiz|undefined>(undefined);
-        const router = useRouter();
+    const [data, setData] = useState<any>({ name: "Toan Le", email: "toan@Gmail.com" });
+    const [user, setUser] = useState<User | undefined>(undefined);
+    const [quiz, setQuiz] = useState<Quiz | undefined>(undefined);
+    const router = useRouter();
 
-        const login = ({email, password}: LoginPayload) => {
-            UserService.login({email, password}).then((res) => {
+    const login = ({ email, password }: LoginPayload) => {
+        UserService.login({ email, password }).then((res) => {
+            if (res.access_token) {
                 setUser(res.user);
                 localStorage.setItem(APP_ACCESS_TOKEN_KEY, res.access_token);
-                router.push(`/`)
-            })
+                Cookies.set(APP_ACCESS_TOKEN_KEY, res.access_token, {
+                    expires: 7,
+                    path: "/",
+                });
+                router.push("/");
+            }
+        })
+    }
 
-        }
+    const getUserProfile = () => {
+        UserService.getUserInfo().then((res) => {
+            setUser(res.user);
 
-        const getUserProfile = () => {
-            UserService.getUserInfo().then((res) =>{
-                setUser(res.user);
-                
-            })
-        }
+        })
+    }
 
-        const handleStartQuiz = async () => {
-           const quizSession = await  QuestionService.startQuiz();
+    const handleStartQuiz = async () => {
+        const quizSession = await QuestionService.startQuiz();
 
-            setQuiz(quizSession.data);
+        setQuiz(quizSession.data);
 
-            return quizSession.data
+        return quizSession.data
 
-        }
-    
+    }
+
 
 
     return (

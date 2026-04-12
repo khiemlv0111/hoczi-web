@@ -37,7 +37,7 @@ export class UserService {
     static async register(payload: {name: string, email: string, password: string }) {
         // const user = localStorage.getItem('')
         const response = await postRequest('/api/auth/register', payload);
-        return response.data.user
+        return response
     }
 
     static async login(payload: { email: string, password: string }) {

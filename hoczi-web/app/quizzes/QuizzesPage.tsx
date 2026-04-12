@@ -139,6 +139,7 @@ function ScorePage({
   const { user, quiz } = useAppData();
 
   console.log('NEW QUIXXXXXX', quiz);
+  const router = useRouter();
 
 
 
@@ -169,10 +170,9 @@ function ScorePage({
       quizzes: result
     }
 
-    console.log('submitPayload', submitPayload);
-
     QuestionService.submitQuiz(submitPayload).then((res) => {
       console.log('RESS SUBMIT', res);
+      router.push(`/quizzes/results`)
     }).catch((err) => { console.log(err) });
   }
 

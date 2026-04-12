@@ -9,6 +9,8 @@ class AnswerRepository {
         return AppDataSource.getRepository(Answer);
     }
 
+    
+
     async findAll(limit?: number) {
         return this.repo.find({
             relations: ['question'],

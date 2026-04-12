@@ -51,6 +51,16 @@ export class QuestionController {
 
     }
 
+    async deleteQuestion(req: Request, res: Response) {
+
+        const id = Number(req.params.id);
+
+        const question = await questionService.deleteQuestion(id);
+        return res.json({ success: true, data: question });
+
+    }
+
+
     async getAllQuestion(req: Request, res: Response) {
         const { gradeId, categoryId, topicId } = req.query;
 

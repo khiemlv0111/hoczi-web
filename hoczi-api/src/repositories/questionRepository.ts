@@ -32,6 +32,10 @@ class QuestionRepository {
         });
     }
 
+    async deleteQuestion(questionId: number) {
+        return this.repo.delete({ id: questionId });
+    }
+
     async create(data: CreateQuestionRequest) {
         const question = this.repo.create({
             content: data.content,

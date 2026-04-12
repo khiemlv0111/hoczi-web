@@ -13,6 +13,10 @@ export class QuestionService {
         return questionRepository.findByQuestionId(quizId);
     }
 
+    async deleteQuestion(questionId: number) {
+        return questionRepository.deleteQuestion(questionId);
+    }
+
     async getAllQuestions(filter?: QuestionFilterDto) {
         const questions = await questionRepository.findAll(filter);
         return questions;

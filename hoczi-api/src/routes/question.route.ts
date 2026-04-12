@@ -21,6 +21,9 @@ questionRoutes.get('/category-list', new QuestionController().getCategoryList);
 questionRoutes.get('/topic-list', new QuestionController().getTopicList);
 questionRoutes.get('/grade-list', new QuestionController().getGradeList);
 
+questionRoutes.delete('/delete-question/:id', new QuestionController().deleteQuestion);
+
+
 
 
 

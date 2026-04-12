@@ -26,8 +26,9 @@ export class UserRegisterRequest {
 // }
 
 export class QuizSessionDto {
+    @IsOptional()
     @IsString()
-    chosen!: string;
+    chosen?: string | null;
 
     @IsString()
     correct_answer!: string;
@@ -41,8 +42,6 @@ export class QuizSessionDto {
     @IsNumber()
     answer_id!: number;
 
-    @IsString()
-    question!: string;
 }
 
 export class SubmitQuizSessionRequest {
@@ -64,14 +63,6 @@ export class SubmitQuizSessionRequest {
     @ValidateNested({ each: true })
     @Type(() => QuizSessionDto)   // ← cái này quan trọng nhất, không có là lỗi
     quizzes?: QuizSessionDto[];
-
-
-    // score!: number;
-    // quiz_session_id!: number;
-    // total_questions!: number;
-    // correct_answers!: number;
-    // quizzes?: QuizSessionDto[];
-
 
 }
 

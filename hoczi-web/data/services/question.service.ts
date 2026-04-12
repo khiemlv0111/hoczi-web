@@ -1,5 +1,5 @@
 
-import { getAccessToken, getRequest, getRequestPublic, postRequest } from "../http";
+import { deleteRequest, getAccessToken, getRequest, getRequestPublic, postRequest } from "../http";
 
 // import { getAccessToken, getRequest, getRequestPublic, postRequest } from "../http";
 
@@ -32,6 +32,29 @@ export class QuestionService {
 
     static async getQuestionDetail(id: number) {
         const response = await getRequest(`/api/questions/question-detail/${id}`, false);
+        return response
+    }
+
+
+    static async getCategoryList() {
+        const response = await getRequest('/api/questions/category-list', false);
+        return response.data
+    }
+
+
+    static async getTopicList() {
+        const response = await getRequest('/api/questions/topic-list', false);
+        return response.data
+    }
+
+
+    static async getGradeList() {
+        const response = await getRequest('/api/questions/grade-list', false);
+        return response.data
+    }
+
+    static async deleteQuestion(questionId: number) {
+        const response = await deleteRequest(`/api/questions/delete-question/${questionId}`, false);
         return response
     }
 }

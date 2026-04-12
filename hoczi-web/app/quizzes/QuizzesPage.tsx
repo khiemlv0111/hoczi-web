@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
-import { questions } from "./data";
+import { useEffect, useState } from "react";
+// import { questions } from "./data";
 import { useSearchParams } from 'next/navigation'
+import { QuestionService } from "@/data/services/question.service";
 
 
 function tokenize(line: string): { type: string; value: string }[] {
@@ -53,7 +54,8 @@ const tokenColors: Record<string, string> = {
   plain: "#cdd3de",
 };
 
-function CodeBlock({ code }: { code: string }) {
+function CodeBlock({ code }: { code?: string | null }) {
+  if (!code) return null;
   return (
     <pre
       className="p-6 text-sm leading-relaxed font-mono overflow-x-auto rounded-t-xl"
@@ -120,9 +122,11 @@ const Background = () => (
 );
 
 function ScorePage({
+  questions,
   answers,
   onRestart,
 }: {
+  questions: any[];
   answers: Record<number, string>;
   onRestart: () => void;
 }) {
@@ -197,10 +201,41 @@ function ScorePage({
   );
 }
 
+const OPTION_LABELS = ['A', 'B', 'C', 'D', 'E'];
+
+function normalizeQuestions(raw: any[]): any[] {
+  return raw.map((q: any, idx: number) => {
+    const options = (q.answers ?? []).map((a: any, i: number) => ({
+      label: OPTION_LABELS[i] ?? String(i + 1),
+      text: a.content,
+    }));
+    const correctIdx = (q.answers ?? []).findIndex((a: any) => a.is_correct);
+    const answer = correctIdx >= 0 ? (OPTION_LABELS[correctIdx] ?? String(correctIdx + 1)) : '';
+    return {
+      ...q,
+      id: idx + 1,
+      question: q.content,
+      options,
+      answer,
+    };
+  });
+}
+
 export function QuizPage() {
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [finished, setFinished] = useState(false);
+  const [questions, setQuestions] = useState<any[]>([]);
+
+  useEffect(() => {
+    QuestionService.getQuestionList().then((res) => {
+      setQuestions(normalizeQuestions(res.data ?? []));
+    });
+  }, []);
+
+  if (questions.length === 0) {
+    return <div>Loading...</div>;
+  }
 
   const q = questions[current];
   const total = questions.length;
@@ -248,7 +283,7 @@ export function QuizPage() {
   };
 
   if (finished) {
-    return <ScorePage answers={answers} onRestart={handleRestart} />;
+    return <ScorePage questions={questions} answers={answers} onRestart={handleRestart} />;
   }
 
   return (
@@ -264,11 +299,11 @@ export function QuizPage() {
         </h2>
 
         {/* Code block */}
-        <CodeBlock code={q.code} />
+        <CodeBlock code={q.code?.code} />
 
         {/* Answer options */}
         <div className="bg-white overflow-hidden">
-          {q.options.map((opt) => (
+          {q.options.map((opt: any) => (
             <button
               key={opt.label}
               onClick={() => handleSelect(opt.label)}

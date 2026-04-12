@@ -14,6 +14,7 @@ import {
     TrendingUp,
     TrendingDown,
     User,
+    Star
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -40,8 +41,9 @@ const stats = [
 
 const navMain = [
     {path: '/admin', label: "Dashboard", icon: LayoutDashboard, active: true },
-    {path: '/', label: "Blog Posts", icon: FileText },
+    {path: '/admin', label: "Blog Posts", icon: FileText },
     {path: '/', label: "Quizzes", icon: Clock },
+    {path: '/admin/questions', label: "Questions", icon: Star },
     {path: '/admin/questions', label: "Students", icon: Users },
 ];
 

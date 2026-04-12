@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
+import { AppProvider } from "./context/AppContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,16 +30,18 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body suppressHydrationWarning className="min-h-full flex flex-col">
-        <nav className="fixed top-0 left-0 w-full z-50 border-b border-white/10">
-          <ul className="flex items-center gap-6 px-6 py-4 max-w-2xl mx-auto">
-            <li>
-              <Link href="/" className="text-white font-medium text-sm hover:opacity-75 transition-opacity">
-                Home
-              </Link>
-            </li>
-          </ul>
-        </nav>
-        {children}
+        <AppProvider>
+          <nav className="fixed top-0 left-0 w-full z-50 border-b border-white/10">
+            <ul className="flex items-center gap-6 px-6 py-4 max-w-2xl mx-auto">
+              <li>
+                <Link href="/" className="text-white font-medium text-sm hover:opacity-75 transition-opacity">
+                  Home
+                </Link>
+              </li>
+            </ul>
+          </nav>
+          {children}
+        </AppProvider>
       </body>
     </html>
   );

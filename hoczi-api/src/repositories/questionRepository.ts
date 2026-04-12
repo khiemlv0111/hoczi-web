@@ -10,15 +10,15 @@ class QuestionRepository {
 
     async findAll(filter?: QuestionFilterDto, limit?: number) {
         let limit_count = limit ? limit : 99999;
-        return this.repo.find({
-            where: {
-                ...(filter?.categoryId && { category_id: filter.categoryId }),
-                ...(filter?.topicId && { topic_id: filter.topicId }),
-                ...(filter?.gradeId && { grade_id: filter.gradeId }),
-            },
-            relations: ['answers'],
-            take: limit_count,
-        });
+        return this.repo
+            .createQueryBuilder('question')
+            .leftJoinAndSelect('question.answers', 'answers')
+            .where(filter?.categoryId ? 'question.category_id = :categoryId' : '1=1', { categoryId: filter?.categoryId })
+            .andWhere(filter?.topicId ? 'question.topic_id = :topicId' : '1=1', { topicId: filter?.topicId })
+            .andWhere(filter?.gradeId ? 'question.grade_id = :gradeId' : '1=1', { gradeId: filter?.gradeId })
+            .orderBy('RANDOM()') // 👈 random
+            .take(limit_count)
+            .getMany();
     }
 
     async findById(id: number) {

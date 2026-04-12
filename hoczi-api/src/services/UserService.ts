@@ -73,4 +73,13 @@ export class UserService {
             user: newUser
         }
     }
+
+    async userProfile(id: number) {
+        const user = await userRepository.userProfile(id);
+        return {
+            message: "get user success",
+            success: true,
+            user: user
+        }
+    }
 }

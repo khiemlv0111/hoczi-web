@@ -30,6 +30,13 @@ class UserRepository {
         return this.repo.save(question);
     }
 
+    async userProfile(id: number) {
+        return this.repo.findOne({ 
+            where: { id },
+            // relations: ['']
+        });
+    }
+
 
 }
 

@@ -44,6 +44,15 @@ export class AuthController {
         return res.json(response);;
     }
 
+     async userProfile(req: Request, res: Response) {
+        const { id } = req.user;
+
+
+
+        const response = await userService.userProfile(Number(id));
+        return res.json(response);
+    }
+
 
 
 

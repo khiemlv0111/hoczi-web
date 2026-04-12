@@ -8,7 +8,7 @@ const userRoutes = Router();
 
 
 
-userRoutes.post('/user-profile', new AuthController().userProfile);
+userRoutes.get('/user-profile', new AuthController().userProfile);
 // userRoutes.post('/login', new AuthController().login);
 
 // authRoutes.post('/login', controller.login);

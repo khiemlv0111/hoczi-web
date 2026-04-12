@@ -33,7 +33,18 @@ class QuestionRepository {
     }
 
     async deleteQuestion(questionId: number) {
-        return this.repo.delete({ id: questionId });
+
+        const question = await this.repo.findOne({
+            where: { id: questionId },
+            relations: ['answers'],
+        });
+
+        if (!question) return null;
+
+        return this.repo.remove(question);
+
+
+        // return this.repo.delete({ id: questionId });
     }
 
     async create(data: CreateQuestionRequest) {

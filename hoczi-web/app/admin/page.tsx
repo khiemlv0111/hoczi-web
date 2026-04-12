@@ -41,16 +41,16 @@ const stats = [
 
 
 export default function Dashboard() {
-    const router = useRouter();
-    const handleNavigate = (item: any) => {
-        const {label, icon: Icon, active} = item;
-        console.log(label);
-        if(label == 'Quizzes' ) {
-router.push(`/admin/quizzes`)
-        }
-        
-        
+  const router = useRouter();
+  const handleNavigate = (item: any) => {
+    const { label, icon: Icon, active } = item;
+    console.log(label);
+    if (label == 'Quizzes') {
+      router.push(`/admin/quizzes`)
     }
+
+
+  }
   return (
     <div className="flex min-h-screen bg-gray-100 font-sans text-sm">
 
@@ -93,11 +93,10 @@ router.push(`/admin/quizzes`)
                       <p className="text-[11px] text-gray-400">{date}</p>
                     </div>
                     <span
-                      className={`text-[11px] px-2 py-0.5 rounded-full ${
-                        status === "published"
+                      className={`text-[11px] px-2 py-0.5 rounded-full ${status === "published"
                           ? "bg-green-50 text-green-700"
                           : "bg-gray-100 text-gray-500"
-                      }`}
+                        }`}
                     >
                       {status}
                     </span>

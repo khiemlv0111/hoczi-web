@@ -12,6 +12,7 @@ type User = {
     email: string,
     username: string,
     name: string,
+    role?: string,
 }
 export type LoginPayload = {
     email: string,
@@ -59,7 +60,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
                     expires: 7,
                     path: "/",
                 });
-                router.push("/");
+                // console.log(res.user);
+                if(res.user?.role == 'admin'){
+                    router.push("/admin");
+
+                } else {
+                    router.push("/");
+                }
+
             }
         })
     }

@@ -17,6 +17,8 @@ import {
     Star
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useAppData } from "../context/AppContext";
+import { useEffect } from "react";
 
 const posts = [
     { title: "Introduction to JavaScript", date: "Apr 10, 2026", status: "published" },
@@ -59,6 +61,16 @@ export default function AdminLayout({
     children: React.ReactNode;
 }>) {
     const router = useRouter();
+    const {user} = useAppData();
+    useEffect(() => {
+        if(user){
+            if(user.role != 'admin'){
+                router.push(`/`)
+            }
+
+        }
+
+    },[user])
     const handleNavigate = (item: any) => {
         const {path, label, icon: Icon, active } = item;
         console.log(label);

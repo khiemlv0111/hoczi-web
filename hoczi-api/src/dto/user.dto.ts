@@ -30,9 +30,6 @@ export class QuizSessionDto {
     @IsString()
     chosen?: string | null;
 
-    @IsString()
-    correct_answer!: string;
-
     @IsBoolean()
     is_correct!: boolean;
 

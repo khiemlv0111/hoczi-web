@@ -74,7 +74,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
     const getUserProfile = () => {
         UserService.getUserInfo().then((res) => {
-            setUser(res.user);
+            console.log('RESSSssss', res);
+            
+            setUser(res?.user);
 
         })
     }

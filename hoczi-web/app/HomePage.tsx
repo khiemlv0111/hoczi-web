@@ -115,7 +115,7 @@ export default function HomePage() {
                 Login to start
               </Link>
 
-              <button onClick={() => startQuiz()} className="w-80 max-w-full mt-2 py-4 bg-white rounded-xl text-gray-900 font-medium text-lg hover:bg-gray-100 active:scale-95 transition-all duration-150">
+              <button onClick={() => startQuiz()} className="w-80 max-w-full mt-2 py-4 bg-blue-400 text-white cursor-pointer rounded-xl text-gray-900 font-medium text-lg hover:bg-blue-300 active:scale-95 transition-all duration-150">
                 Start as Anonymous
               </button>
 

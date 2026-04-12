@@ -9,7 +9,7 @@ const authRoutes = Router();
 
 
 authRoutes.post('/register', new AuthController().register);
-authRoutes.post('/login', new AuthController().register);
+authRoutes.post('/login', new AuthController().login);
 
 // authRoutes.post('/login', controller.login);
 // authRoutes.post('/register', controller.register);

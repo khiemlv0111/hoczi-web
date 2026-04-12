@@ -5,6 +5,8 @@ import Link from "next/link";
 import { AppProvider } from "./context/AppContext";
 import { cookies } from "next/headers";
 import { APP_ACCESS_TOKEN_KEY } from "@/data/http";
+import { UserService } from "@/data/services/user.service";
+import { Navbar } from "./components/Navbar";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -26,9 +28,14 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const cookieStore = await cookies();
-  const token = cookieStore.get(APP_ACCESS_TOKEN_KEY)?.value ?? null;
+  const token = cookieStore.get(APP_ACCESS_TOKEN_KEY)?.value ?? '';
 
-  console.log('TOKEN===', token);
+  // console.log('TOKEN===', token);
+
+  // UserService.getServerUserInfo(token).then((res) => {
+  //   console.log('RESS', res);
+    
+  // })
   
 
   return (
@@ -38,15 +45,8 @@ export default async function RootLayout({
     >
       <body suppressHydrationWarning className="min-h-full flex flex-col">
         <AppProvider>
-          <nav className="fixed top-0 left-0 w-full z-50 border-b border-white/10">
-            <ul className="flex items-center gap-6 px-6 py-4 max-w-2xl mx-auto">
-              <li>
-                <Link href="/" className="text-white font-medium text-sm hover:opacity-75 transition-opacity">
-                  Home
-                </Link>
-              </li>
-            </ul>
-          </nav>
+          <Navbar />
+          
           {children}
         </AppProvider>
       </body>

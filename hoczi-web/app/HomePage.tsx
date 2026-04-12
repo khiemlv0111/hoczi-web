@@ -2,18 +2,42 @@
 import { QuestionService } from "@/data/services/question.service";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppData } from "./context/AppContext";
+import Cookies from "js-cookie";
+import { APP_ACCESS_TOKEN_KEY } from "@/data/http";
+import { UserService } from "@/data/services/user.service";
+
 
 export default function HomePage() {
-  const {handleStartQuiz} = useAppData();
+  const { handleStartQuiz, getUserProfile, user } = useAppData();
   const router = useRouter();
+
+  useEffect(() => {
+    const token = Cookies.get(APP_ACCESS_TOKEN_KEY);
+    // console.log('USSSER', user);
+    // console.log('USSSER token', token);
+    if (token) {
+      getUserProfile();
+
+    }
+
+
+
+  }, [])
 
 
   const startQuiz = () => {
-    handleStartQuiz().then((res) => {
+    if (!user) {
       router.push(`/quizzes`)
-    })
+
+    } else {
+      handleStartQuiz().then((res) => {
+        router.push(`/quizzes`)
+      })
+
+    }
+
 
   }
 
@@ -75,13 +99,32 @@ export default function HomePage() {
           From basic to advanced: Learn with Hoczi.com
         </p>
 
-        {/* Start button */}
-        <Link href={`/auth/signin`} className="w-80 max-w-full py-4 bg-white rounded-xl text-gray-900 font-medium text-lg hover:bg-gray-100 active:scale-95 transition-all duration-150">
-          Login to start
-        </Link>
-        <button onClick={() => startQuiz()} className="w-80 max-w-full mt-2 py-4 bg-white rounded-xl text-gray-900 font-medium text-lg hover:bg-gray-100 active:scale-95 transition-all duration-150">
-          Start as Anonymous
-        </button>
+        {
+          user ? (
+            <>
+              <button onClick={() => startQuiz()} className="w-80 max-w-full mt-2 py-4 bg-white rounded-xl text-gray-900 font-medium text-lg hover:bg-gray-100 active:scale-95 transition-all duration-150">
+                Do a quiz
+              </button>
+              <Link href={`/quizzes/results`} className="w-80 max-w-full py-4 bg-blue-400 text-white mt-2 rounded-xl text-gray-900 font-medium text-lg hover:bg-blue-300 active:scale-95 transition-all duration-150">
+                Go to results
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link href={`/auth/signin`} className="w-80 max-w-full py-4 bg-white rounded-xl text-gray-900 font-medium text-lg hover:bg-gray-100 active:scale-95 transition-all duration-150">
+                Login to start
+              </Link>
+
+              <button onClick={() => startQuiz()} className="w-80 max-w-full mt-2 py-4 bg-white rounded-xl text-gray-900 font-medium text-lg hover:bg-gray-100 active:scale-95 transition-all duration-150">
+                Start as Anonymous
+              </button>
+
+            </>
+          )
+        }
+
+
+
       </div>
     </main>
   );

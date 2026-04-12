@@ -67,4 +67,9 @@ export class QuestionService {
         const response = await postRequest('/api/users/submit-quiz-session', payload, true);
         return response
     }
+
+    static async getQuizSessions() {
+        const response = await getRequest('/api/users/my-quiz-sessions', true);
+        return response.data
+    }
 }

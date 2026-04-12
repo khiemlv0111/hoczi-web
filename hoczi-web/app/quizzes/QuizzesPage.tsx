@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from 'next/navigation'
 import { QuestionService } from "@/data/services/question.service";
 import { useAppData } from "../context/AppContext";
+import { FullScreenLoading } from "../components/FullScreenLoading";
 
 
 function tokenize(line: string): { type: string; value: string }[] {
@@ -287,7 +288,7 @@ export function QuizPage() {
 
   useEffect(() => {
 
-    getUserProfile();
+    // getUserProfile();
 
     console.log('Quizzzzz', quiz);
 
@@ -295,10 +296,14 @@ export function QuizPage() {
   }, []);
 
   useEffect(() => {
+    if (user) {
+      if (!quiz) {
+        // router.push(`/`);
+      }
 
-    if (!quiz) {
-      router.push(`/`);
     }
+
+
 
 
   }, []);
@@ -310,7 +315,7 @@ export function QuizPage() {
   }, []);
 
   if (questions.length === 0) {
-    return <div>Loading...</div>;
+    return <FullScreenLoading />;
   }
 
   const q = questions[current];

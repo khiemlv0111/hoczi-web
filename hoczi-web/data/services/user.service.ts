@@ -1,6 +1,6 @@
 // import { getRequest } from '@/data/http'
 
-import { getAccessToken, getRequest, getRequestPublic, postRequest } from "../http";
+import { getAccessToken, getRequest, getRequestPublic, getServerRequest, postRequest } from "../http";
 
 // import { getAccessToken, getRequest, getRequestPublic, postRequest } from "../http";
 
@@ -14,6 +14,19 @@ export class UserService {
             return null
         }
         const response = await getRequest('/api/users/user-profile', true);
+
+
+        return response
+    }
+
+
+    static async getServerUserInfo(token: string) {
+
+        //  const response = await getServerRequest('/api/users/user-profile', true);
+
+        // const response = await getRequest('/api/users/user-profile', true);
+
+         const response = await getServerRequest('/api/users/user-profile',token, true);
 
 
         return response

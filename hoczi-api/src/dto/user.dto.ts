@@ -1,45 +1,32 @@
 import { IsBoolean, IsEmail, IsNotEmpty, IsString, Min } from "class-validator";
 
-export class CreateUserRequest {
+export class UserRegisterRequest {
 
-    @IsString()
-    fullName?: string;
+    name?: string;
 
     @IsString()
     @IsNotEmpty()
-    username!: string;
+    password!: string;
 
     @IsString()
     @IsNotEmpty()
     @IsEmail()
-    // @Min(2)
     email!: string;
 }
 
-export class SubmitKycLevel1Request {
-
-    fullName?: string;
-
-    isApproved?: boolean;
-
-
-    @IsString()
-    @IsNotEmpty()
-    phone!: string;
-
-}
 
 
 
 export class UserLoginRequest {
 
 
+    @IsString()
     @IsNotEmpty()
-    userId!: string;
+    email!: string;
 
     @IsString()
     @IsNotEmpty()
-    verifyToken!: string;
+    password!: string;
 }
 
 
@@ -138,7 +125,7 @@ export class UpdateUserProfileRequest {
     @IsNotEmpty()
     avatarUrl!: string;
 
-     @IsString()
+    @IsString()
     @IsNotEmpty()
     coverUrl!: string;
 

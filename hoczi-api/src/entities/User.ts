@@ -6,8 +6,8 @@ export class User {
 	@PrimaryGeneratedColumn()
 	id!: number
 
-	@Column({ type: 'varchar', name: 'full_name', nullable: true })
-	fullName?: string
+	@Column({ type: 'varchar', name: 'name', nullable: true })
+	name?: string
 
 	@Column({ type: 'varchar', unique: true })
 	username!: string
@@ -15,18 +15,9 @@ export class User {
 	@Column({ type: 'varchar', unique: true })
 	email!: string
 
-	@Column({ type: 'varchar', name: 'avatar_url', nullable: true })
-	avatarUrl!: string
-
 	@Exclude()
 	@Column({ type: 'varchar' })
 	password!: string
-
-	@Column({ type: 'boolean', name: 'is_active', default: true, nullable: true })
-	isActive!: boolean
-
-	@Column({ type: 'varchar', nullable: true })
-	status!: string
 
 	@CreateDateColumn()
 	created_at!: Date;

@@ -5,7 +5,6 @@ import jwt from 'jsonwebtoken'
 export type JwtPayload = {
 	id: number,
 	email: string,
-	status: string,
 }
 
 export const authMiddleware = async (
@@ -27,7 +26,6 @@ export const authMiddleware = async (
 	const saveUser = {
 		id: userData.id,
 		email: userData.email,
-		status: userData.status
 	}
 
 	req.user = saveUser;

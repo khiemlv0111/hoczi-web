@@ -4,6 +4,12 @@ import { userRepository } from "../repositories/userRepository";
 import { generateRandomCode } from "../utils";
 import bcrypt from 'bcrypt'
 import { createAccessToken, createRefreshToken } from "../utils/create_token";
+import { quizSessionRepository } from "../repositories/quizSessionRepository";
+import { SubmitQuizSessionRequest } from "../dto/user.dto";
+
+import { userAnswerRepository } from "../repositories/userAnswerRepository";
+
+
 
 
 export class UserService {
@@ -82,4 +88,51 @@ export class UserService {
             user: user
         }
     }
+
+    async startQuiz(userId: number) {
+        const newQuiz = await quizSessionRepository.startQuiz(userId);
+        return {
+            message: "start quiz success",
+            success: true,
+            user: newQuiz
+        }
+
+    }
+
+
+    // async submitQuizSession(userId: number, payload: SubmitQuizSessionRequest) {
+    //     // const { score, total_questions, correct_answers, quizzes } = payload;
+    //     // create quiz_sessions
+
+    //     const quizSession = await quizSessionRepository.createOne(userId, payload);
+
+    //     //create user_answers
+    //     const quizzes = payload.quizzes;
+
+    //     if (!quizzes) {
+    //         throw new BadRequestError('Quizz not found')
+    //     }
+
+
+    //     // 2) tạo danh sách user_answers
+    //     const userAnswersPayload = quizzes.map((item) => ({
+    //         session_id: quizSession.id,
+    //         question_id: item.question_id,
+    //         answer_id: item.answer_id,
+    //         is_correct: item.is_correct,
+    //     }));
+
+    //     // 3) insert user_answers
+    //     if (userAnswersPayload.length > 0) {
+    //         await userAnswerRepository.createMany(userAnswersPayload);
+    //     }
+
+
+
+    // }
 }
+
+// score!: number;
+//     total_questions!: number;
+//     correct_answers!: number;
+//     quizzes?: QuizSession[];

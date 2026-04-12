@@ -15,6 +15,27 @@ export class UserRegisterRequest {
 }
 
 
+type QuizSession = {
+    chosen: string,
+    correct_answer: string,
+    is_correct: boolean,
+    question_id: number,
+    answer_id: number,
+    question: string,
+}
+export class SubmitQuizSessionRequest {
+    score!: number;
+    quiz_session_id!: number;
+    total_questions!: number;
+    correct_answers!: number;
+    quizzes?: QuizSession[];
+
+
+}
+
+
+
+
 
 
 export class UserLoginRequest {

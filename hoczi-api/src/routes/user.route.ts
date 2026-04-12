@@ -9,6 +9,10 @@ const userRoutes = Router();
 
 
 userRoutes.get('/user-profile', new AuthController().userProfile);
+
+userRoutes.post('/start-quiz', new AuthController().startQuiz);
+// userRoutes.post('/submit-quiz-sessions', new AuthController().submitQuizSession);
+
 // userRoutes.post('/login', new AuthController().login);
 
 // authRoutes.post('/login', controller.login);

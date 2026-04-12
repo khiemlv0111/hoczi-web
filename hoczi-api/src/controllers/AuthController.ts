@@ -11,7 +11,7 @@ import { ILike } from 'typeorm';
 import { JwtPayload } from '../middlewares/authMiddleware';
 // import { createAccessToken, createRefreshToken } from '../utils/create_token';
 import { RequestValidator } from '../helpers/requestValidator';
-import { UserLoginRequest, UserRegisterRequest } from '../dto/user.dto';
+import { SubmitQuizSessionRequest, UserLoginRequest, UserRegisterRequest } from '../dto/user.dto';
 import { generateRandomCode } from '../utils';
 import { createAccessToken, createRefreshToken } from '../utils/create_token';
 import { CreateQuestionRequest } from '../dto/question.dto';
@@ -50,6 +50,27 @@ export class AuthController {
 
 
         const response = await userService.userProfile(Number(id));
+        return res.json(response);
+    }
+
+
+    // async submitQuizSession(req: Request, res: Response) {
+    //     const { id } = req.user;
+
+    //     const { errors, input } = await RequestValidator(SubmitQuizSessionRequest, req.body);
+    //     if (errors) {
+    //         return res.status(400).json({ success: false, message: errors })
+    //     }
+
+    //     const response = await userService.submitQuizSession(Number(id), input);
+    //     return res.json(response);
+    // }
+
+    async startQuiz(req: Request, res: Response) {
+        const { id } = req.user;
+
+
+        const response = await userService.startQuiz(Number(id));
         return res.json(response);
     }
 

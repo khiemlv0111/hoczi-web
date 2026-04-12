@@ -24,6 +24,7 @@ class UserRepository {
             name: data.name,
             email: data.email,
             username: data.name,
+            role: data.role || 'user',
             password: data.hashPassword
         });
         return this.repo.save(question);

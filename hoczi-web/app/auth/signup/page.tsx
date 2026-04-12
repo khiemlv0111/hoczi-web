@@ -1,11 +1,13 @@
 // import { SigninPage } from "./SigninPage";
 
-import { SignupPage } from "./SignupPage";
+import { SignupForm } from "./SignupPage";
+
+// import { SignupPage } from "./SignupPage";
 
 export default function Page(){
     return (
         <>
-        <SignupPage />
+        <SignupForm />
         </>
     )
 }

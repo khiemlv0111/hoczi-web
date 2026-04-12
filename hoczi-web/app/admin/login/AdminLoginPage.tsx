@@ -2,27 +2,21 @@
 
 import { useState } from "react";
 import { Mail, Lock, CheckCircle2 } from "lucide-react";
-import Link from "next/link";
-import { UserService } from "@/data/services/user.service";
-import { useRouter } from "next/navigation";
-import { useAppData } from "@/app/context/AppContext";
-import { APP_ACCESS_TOKEN_KEY } from "@/data/http";
 
-export function SigninForm() {
+export function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const pwValid = password.length >= 6;
-//   const router = useRouter();
-  const { login} = useAppData()
 
   const handleLogin = async () => {
     if (!email || !password) return;
     setLoading(true);
-
-    login({email, password});
-
+    // TODO: replace with real API call
+    await new Promise((r) => setTimeout(r, 1000));
+    setLoading(false);
+    alert("Đăng nhập với: " + email);
   };
 
   return (
@@ -85,25 +79,23 @@ export function SigninForm() {
           </div>
         </div>
 
-    
-
         {/* Button */}
         <button
           onClick={handleLogin}
           disabled={!email || !password || loading}
           className="w-full py-3 bg-indigo-500 hover:bg-indigo-600 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium text-sm rounded-lg transition-all duration-150 mb-4"
         >
-          {loading ? "Đang đăng nhập..." : "Register"}
+          {loading ? "Đang đăng nhập..." : "Login"}
         </button>
 
         {/* Forgot */}
         <p className="text-center">
-          <Link
-            href="/auth/signin"
-            className="text-sm hover:text-indigo-500 transition-colors"
+          <a
+            href="#"
+            className="text-sm text-gray-400 hover:text-indigo-500 transition-colors"
           >
-            Go to login
-          </Link>
+            Forgot password?
+          </a>
         </p>
 
       </div>

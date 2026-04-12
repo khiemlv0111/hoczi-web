@@ -57,4 +57,14 @@ export class QuestionService {
         const response = await deleteRequest(`/api/questions/delete-question/${questionId}`, false);
         return response
     }
+
+    static async startQuiz(payload?: any) {
+        const response = await postRequest('/api/users/start-quiz', payload, true);
+        return response
+    }
+
+    static async submitQuiz(payload?: any) {
+        const response = await postRequest('/api/users/submit-quiz-session', payload, true);
+        return response
+    }
 }

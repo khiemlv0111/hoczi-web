@@ -1,9 +1,10 @@
-import { SigninForm } from "./SigninPage";
+import { LoginForm } from "./AdminLoginPage";
 
 export default function Page(){
     return (
         <>
-        <SigninForm />
+            <LoginForm />
         </>
     )
+
 }

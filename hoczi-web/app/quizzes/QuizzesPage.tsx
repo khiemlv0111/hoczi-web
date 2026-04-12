@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 // import { questions } from "./data";
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { QuestionService } from "@/data/services/question.service";
+import { useAppData } from "../context/AppContext";
 
 
 function tokenize(line: string): { type: string; value: string }[] {
@@ -135,8 +136,45 @@ function ScorePage({
   const pct = Math.round((score / total) * 100);
 
 
-    const searchParams = useSearchParams()
-  const name = searchParams.get('name')
+  const { user, quiz } = useAppData();
+
+  console.log('NEW QUIXXXXXX', quiz);
+
+
+
+  const searchParams = useSearchParams();
+
+  const handleSubmitResult = () => {
+    if (!quiz?.id) {
+      console.error('No quiz session found');
+      return;
+    }
+
+    const result = questions.map((q, i) => {
+      const chosenLabel = answers[i] ?? null;
+      const chosenOption = chosenLabel ? q.options.find((opt: any) => opt.label === chosenLabel) : null;
+      return {
+        question_id: q.originalId,
+        chosen: chosenLabel,
+        answer_id: chosenOption?.id ?? null,
+        is_correct: chosenLabel === q.answer,
+      };
+    });
+
+    const submitPayload = {
+      score: pct,
+      total_questions: total,
+      correct_answers: score,
+      quiz_session_id: quiz.id,
+      quizzes: result
+    }
+
+    console.log('submitPayload', submitPayload);
+
+    QuestionService.submitQuiz(submitPayload).then((res) => {
+      console.log('RESS SUBMIT', res);
+    }).catch((err) => { console.log(err) });
+  }
 
 
   let message = "Keep practicing!";
@@ -153,7 +191,7 @@ function ScorePage({
           <p className="text-white font-bold" style={{ fontSize: "5rem", lineHeight: 1 }}>
             {score}<span className="text-white/40 text-4xl font-normal">/{total}</span>
           </p>
-          <p className="text-white/80 text-xl mt-3">{`Hi ${name}`} - {message}</p>
+          <p className="text-white/80 text-xl mt-3">{`Hi ${user?.name}`} - {message}</p>
         </div>
 
         <div className="w-full bg-white rounded-xl overflow-hidden mb-8">
@@ -189,13 +227,29 @@ function ScorePage({
             );
           })}
         </div>
+        <div className="block gap-3 lg:flex">
 
-        <button
-          onClick={onRestart}
-          className="w-64 py-4 bg-white rounded-xl text-gray-900 font-medium text-lg hover:bg-gray-100 active:scale-95 transition-all"
-        >
-          Try again
-        </button>
+          <button
+            onClick={onRestart}
+            className="w-64 py-4 bg-white rounded-xl text-gray-900 font-medium text-lg hover:bg-gray-100 active:scale-95 transition-all"
+          >
+            Try again
+          </button>
+
+          {
+            user && <button
+              onClick={handleSubmitResult}
+              className="w-64 py-4 bg-blue-600 rounded-xl text-white font-medium text-lg hover:bg-blue-500 active:scale-95 transition-all"
+            >
+              Submit result
+            </button>
+          }
+
+        </div>
+
+
+
+
       </div>
     </main>
   );
@@ -208,12 +262,14 @@ function normalizeQuestions(raw: any[]): any[] {
     const options = (q.answers ?? []).map((a: any, i: number) => ({
       label: OPTION_LABELS[i] ?? String(i + 1),
       text: a.content,
+      id: a.id,
     }));
     const correctIdx = (q.answers ?? []).findIndex((a: any) => a.is_correct);
     const answer = correctIdx >= 0 ? (OPTION_LABELS[correctIdx] ?? String(correctIdx + 1)) : '';
     return {
       ...q,
       id: idx + 1,
+      originalId: q.id,
       question: q.content,
       options,
       answer,
@@ -226,6 +282,26 @@ export function QuizPage() {
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [finished, setFinished] = useState(false);
   const [questions, setQuestions] = useState<any[]>([]);
+  const { getUserProfile, user, quiz } = useAppData();
+  const router = useRouter();
+
+  useEffect(() => {
+
+    getUserProfile();
+
+    console.log('Quizzzzz', quiz);
+
+
+  }, []);
+
+  useEffect(() => {
+
+    if (!quiz) {
+      router.push(`/`);
+    }
+
+
+  }, []);
 
   useEffect(() => {
     QuestionService.getQuestionList().then((res) => {
@@ -292,6 +368,9 @@ export function QuizPage() {
 
       {/* Content */}
       <div className="relative z-10 flex-1 flex flex-col justify-center px-6 py-12 max-w-2xl mx-auto w-full">
+        {/* <div>
+          {user?.name}
+        </div> */}
 
         {/* Question title */}
         <h2 className="text-white text-2xl font-semibold mb-5">

@@ -6,7 +6,7 @@ import axios from 'axios';
 import { DOMAIN } from '../config';
 import { getCookieUniversal } from '../lib/cookie';
 
-export const APP_ACCESS_TOKEN_KEY = "app_access_token";
+export const APP_ACCESS_TOKEN_KEY = "access_token";
 
 // Dùng cho SSR — không cần token
 export async function getRequestPublic(url: string) {
@@ -17,7 +17,7 @@ export async function getRequestPublic(url: string) {
 }
 
 export const getAccessToken = () => {
-   return getCookieUniversal(APP_ACCESS_TOKEN_KEY);
+   return localStorage.getItem(APP_ACCESS_TOKEN_KEY);
 }
 
 export const getServerRequest = async (url: string, accessToken: string, isPrivate: boolean) => {

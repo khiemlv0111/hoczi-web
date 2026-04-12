@@ -94,7 +94,7 @@ export class UserService {
         return {
             message: "start quiz success",
             success: true,
-            user: newQuiz
+            data: newQuiz
         }
 
     }

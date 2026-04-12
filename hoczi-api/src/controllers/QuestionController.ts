@@ -36,8 +36,9 @@ export class QuestionController {
     }
 
     async getTopicList(req: Request, res: Response) {
+        const categoryId = Number(req.params.categoryId);
 
-        const result = await questionService.getTopicList();
+        const result = await questionService.getTopicList(categoryId);
         return res.json({ success: true, data: result });
 
     }

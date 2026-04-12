@@ -10,10 +10,16 @@ class TopicRepository {
         return AppDataSource.getRepository(Topic);
     }
 
-    
 
-    async findAll(limit?: number) {
-        return this.repo.find();
+
+    async findAll(categoryId?: number) {
+        if (categoryId) {
+            return this.repo.find({ where: { category_id: categoryId } });
+        } else {
+            return this.repo.find();
+
+        }
+
     }
 
     async findById(id: number) {

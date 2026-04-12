@@ -41,8 +41,8 @@ export class QuestionService {
 
     }
 
-     async getTopicList(filter?: QuestionFilterDto) {
-        const result = await topicRepository.findAll();
+     async getTopicList(categoryId?: number) {
+        const result = await topicRepository.findAll(categoryId);
         return result;
 
     }

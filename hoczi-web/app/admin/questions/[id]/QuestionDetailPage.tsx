@@ -13,7 +13,7 @@ export function QuestionDetailPage({ id }: any) {
     const fetchQuestion = () => {
         QuestionService.getQuestionDetail(id).then((res) => {
             setQuestion(res.data);
-        }).catch(() => {});
+        }).catch(() => { });
     };
 
     useEffect(() => {
@@ -56,15 +56,17 @@ export function QuestionDetailPage({ id }: any) {
             <div>
                 <div className="grid grid-cols-1 gap-4">
                     <div className="bg-white border border-gray-200 rounded-xl p-4">
-                        <div className="flex items-center justify-between mb-4">
-                            <span className="text-[13px] font-medium text-gray-900">Question Detail</span>
-                            <span className="text-[11px] px-2 py-0.5 rounded-full bg-blue-50 text-blue-700">
-                                {question.content}
-                            </span>
+                        <div className="items-center justify-between mb-4">
+
+                            <div>
+                                {question.code?.code}
+                            </div>
+
                         </div>
 
                         <div className="mb-4">
                             <div>
+                                <p>Question: </p>
                                 <p className="text-lg font-semibold">{question.content}</p>
                             </div>
 

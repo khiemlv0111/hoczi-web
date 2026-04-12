@@ -71,8 +71,11 @@ export default function HomePage() {
         </p>
 
         {/* Start button */}
-        <Link href={`/quizzes?name=${name}`} className="w-80 max-w-full py-4 bg-white rounded-xl text-gray-900 font-medium text-lg hover:bg-gray-100 active:scale-95 transition-all duration-150">
-          Start
+        <Link href={`#`} className="w-80 max-w-full py-4 bg-white rounded-xl text-gray-900 font-medium text-lg hover:bg-gray-100 active:scale-95 transition-all duration-150">
+          Login to start
+        </Link>
+        <Link href={`/quizzes?name=${name}`} className="w-80 max-w-full mt-2 py-4 bg-white rounded-xl text-gray-900 font-medium text-lg hover:bg-gray-100 active:scale-95 transition-all duration-150">
+          Start as Anonymous
         </Link>
       </div>
     </main>

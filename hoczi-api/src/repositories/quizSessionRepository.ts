@@ -19,11 +19,13 @@ class QuizSessionRepository {
     }
 
     async startQuiz(userId: number) {
-        return this.repo.create({
+        const quizSession = this.repo.create({
             user_id: userId,
             status: "in_progress",
             start_time: new Date(),
         });
+
+        return await this.repo.save(quizSession);
     }
 
     async createOne(userId: number, payload: {

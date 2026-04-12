@@ -1,4 +1,5 @@
-import { IsBoolean, IsEmail, IsNotEmpty, IsString, Min } from "class-validator";
+import { Type } from "class-transformer";
+import { IsArray, IsBoolean, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, Min, ValidateNested } from "class-validator";
 
 export class UserRegisterRequest {
 
@@ -15,20 +16,61 @@ export class UserRegisterRequest {
 }
 
 
-type QuizSession = {
-    chosen: string,
-    correct_answer: string,
-    is_correct: boolean,
-    question_id: number,
-    answer_id: number,
-    question: string,
+// type QuizSession = {
+//     chosen: string,
+//     correct_answer: string,
+//     is_correct: boolean,
+//     question_id: number,
+//     answer_id: number,
+//     question: string,
+// }
+
+export class QuizSessionDto {
+    @IsString()
+    chosen!: string;
+
+    @IsString()
+    correct_answer!: string;
+
+    @IsBoolean()
+    is_correct!: boolean;
+
+    @IsNumber()
+    question_id!: number;
+
+    @IsNumber()
+    answer_id!: number;
+
+    @IsString()
+    question!: string;
 }
+
 export class SubmitQuizSessionRequest {
+
+    @IsNumber()
     score!: number;
+
+    @IsNumber()
     quiz_session_id!: number;
+
+    @IsNumber()
     total_questions!: number;
+
+    @IsNumber()
     correct_answers!: number;
-    quizzes?: QuizSession[];
+
+    @IsOptional()
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => QuizSessionDto)   // ← cái này quan trọng nhất, không có là lỗi
+    quizzes?: QuizSessionDto[];
+
+
+    // score!: number;
+    // quiz_session_id!: number;
+    // total_questions!: number;
+    // correct_answers!: number;
+    // quizzes?: QuizSessionDto[];
 
 
 }

@@ -113,23 +113,31 @@ export class QuestionController {
 
         const { errors, input } = await RequestValidator(SubmitQuizSessionRequest, req.body);
         console.log('INPUTTTTT', input);
-        
+
         if (errors) {
             return res.status(400).json({ success: false, message: errors })
         }
 
         console.log('PAYLOSDDDDD', input);
-        
+
 
         const response = await questionService.submitQuizSession(Number(id), input);
         return res.json(response);
     }
 
-     async myQuizSessions(req: Request, res: Response) {
+    async myQuizSessions(req: Request, res: Response) {
         const { id } = req.user;
 
 
         const response = await questionService.myQuizSessions(Number(id));
+        return res.json(response);
+    }
+
+    async getQuizSessionDetail(req: Request, res: Response) {
+        const id = Number(req.params.id);
+
+
+        const response = await questionService.getQuizSessionDetail(id);
         return res.json(response);
     }
 

@@ -121,7 +121,7 @@ export class QuestionService {
 
         console.log('userAnswersPayload', userAnswersPayload);
         console.log('quizSession', quizSession);
-        
+
 
         if (userAnswersPayload.length > 0) {
             await userAnswerRepository.createMany(userAnswersPayload);
@@ -138,6 +138,19 @@ export class QuestionService {
             message: "get quiz success",
             success: true,
             data: quizSessions
+        }
+
+    }
+
+
+    async getQuizSessionDetail(id: number) {
+        const quizSession = await quizSessionRepository.getDetail(id);
+        // const answers = quizSession?.user_answers;
+
+        return {
+            message: "get quiz success",
+            success: true,
+            data: quizSession
         }
 
     }

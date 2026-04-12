@@ -17,10 +17,16 @@ class QuizSessionRepository {
     async findById(id: number) {
         return this.repo.findOne({ where: { id } });
     }
+    async getDetail(id: number) {
+        return this.repo.findOne({
+            where: { id },
+            relations: ['user_answers']
+        });
+    }
 
     async findByUserId(userId: number) {
         return this.repo.find({
-            where: { user_id:  userId},
+            where: { user_id: userId },
             relations: ['user_answers']
         });
     }
@@ -39,7 +45,7 @@ class QuizSessionRepository {
         return this.repo.save(payload);
     }
 
-    
+
 
     async createOnes(userId: number, data: SubmitQuizSessionRequest) {
         const quizSession = this.repo.create({

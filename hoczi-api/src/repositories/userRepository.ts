@@ -19,14 +19,6 @@ class UserRepository {
         return this.repo.findOne({ where: { username } });
     }
 
-    // async login({email, password}) {
-    //     const paylaod = this.repo.create({
-    //         name: data.name,
-    //         username: data.name,
-    //     });
-    //     return this.repo.findOne({});
-    // }
-
     async createOne(data: any) {
         const question = this.repo.create({
             name: data.name,

@@ -9,7 +9,7 @@ export class User {
 	@Column({ type: 'varchar', name: 'name', nullable: true })
 	name?: string
 
-	@Column({ type: 'varchar', name: 'role', nullable: true })
+	@Column({ type: 'text', name: 'role', nullable: true })
 	role?: string
 
 

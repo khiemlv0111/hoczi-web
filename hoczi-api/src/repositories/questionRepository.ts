@@ -50,6 +50,9 @@ class QuestionRepository {
     async create(data: CreateQuestionRequest) {
         const question = this.repo.create({
             content: data.content,
+            code: {
+                code: data.code
+            },
             type: data.type,
             grade_id: data.gradeId,
             difficulty: data.difficulty,

@@ -44,7 +44,7 @@ export class AuthController {
         return res.json(response);;
     }
 
-     async userProfile(req: Request, res: Response) {
+    async userProfile(req: Request, res: Response) {
         const { id } = req.user;
 
 
@@ -54,25 +54,9 @@ export class AuthController {
     }
 
 
-    // async submitQuizSession(req: Request, res: Response) {
-    //     const { id } = req.user;
-
-    //     const { errors, input } = await RequestValidator(SubmitQuizSessionRequest, req.body);
-    //     if (errors) {
-    //         return res.status(400).json({ success: false, message: errors })
-    //     }
-
-    //     const response = await userService.submitQuizSession(Number(id), input);
-    //     return res.json(response);
-    // }
-
-    async startQuiz(req: Request, res: Response) {
-        const { id } = req.user;
 
 
-        const response = await userService.startQuiz(Number(id));
-        return res.json(response);
-    }
+
 
 
 

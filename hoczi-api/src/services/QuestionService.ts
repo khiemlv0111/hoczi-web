@@ -5,6 +5,13 @@ import { topicRepository } from "../repositories/topicRepository";
 import { answerRepository } from "../repositories/answerRepository";
 import { CreateAnswerRequest, CreateQuestionRequest, QuestionFilterDto } from "../dto/question.dto";
 
+import { quizSessionRepository } from "../repositories/quizSessionRepository";
+import { SubmitQuizSessionRequest } from "../dto/user.dto";
+import { BadRequestError } from "../helpers/api-erros";
+import { userAnswerRepository } from "../repositories/userAnswerRepository";
+
+
+
 export class QuestionService {
 
     private readonly QUIZ_QUESTION_LIMIT = 15;
@@ -29,19 +36,19 @@ export class QuestionService {
 
     }
 
-     async getCategoryList(filter?: QuestionFilterDto) {
+    async getCategoryList(filter?: QuestionFilterDto) {
         const result = await categoryRepository.findAll();
         return result;
 
     }
 
-     async getGradeList(filter?: QuestionFilterDto) {
+    async getGradeList(filter?: QuestionFilterDto) {
         const result = await gradeRepository.findAll();
         return result;
 
     }
 
-     async getTopicList(categoryId?: number) {
+    async getTopicList(categoryId?: number) {
         const result = await topicRepository.findAll(categoryId);
         return result;
 
@@ -60,6 +67,65 @@ export class QuestionService {
 
     async createAnswer(dto: CreateAnswerRequest) {
         return answerRepository.create(dto);
+    }
+
+    async startQuiz(userId: number) {
+        const newQuiz = await quizSessionRepository.startQuiz(userId);
+        return {
+            message: "start quiz success",
+            success: true,
+            data: newQuiz
+        }
+
+    }
+
+
+    async submitQuizSession(userId: number, payload: SubmitQuizSessionRequest) {
+
+        const quizSession = await quizSessionRepository.findById(payload.quiz_session_id);
+
+        if (!quizSession) {
+            throw new BadRequestError("Quiz session not found");
+        }
+
+        if (quizSession.user_id !== userId) {
+            throw new BadRequestError("You cannot submit this quiz session");
+        }
+
+        if (quizSession.status === "completed") {
+            throw new BadRequestError("Quiz session already submitted");
+        }
+
+        const quizzes = payload.quizzes;
+
+        if (!quizzes || quizzes.length === 0) {
+            throw new BadRequestError("Quizzes not found");
+        }
+
+        // update session
+        quizSession.score = payload.score;
+        quizSession.correct_answers = payload.correct_answers;
+        quizSession.total_questions = payload.total_questions;
+        quizSession.status = "completed";
+        quizSession.end_time = new Date();
+
+        await quizSessionRepository.saveOne(quizSession);
+
+        // create user_answers
+        const userAnswersPayload = quizzes.map((item) => ({
+            session_id: quizSession.id,
+            question_id: item.question_id,
+            answer_id: item.answer_id,
+            is_correct: item.is_correct,
+        }));
+
+        if (userAnswersPayload.length > 0) {
+            await userAnswerRepository.createMany(userAnswersPayload);
+        }
+
+        return quizSession;
+
+
     }
 
 }

@@ -17,15 +17,11 @@ class UserAnswerRepository {
         return this.repo.findOne({ where: { id } });
     }
 
-    // async createOne(userId: number, data: SubmitQuizSessionRequest) {
-    //     const quizSession = this.repo.create({
-    //         user_id: userId,
-    //         score: data.score,
-    //         total_questions: data.total_questions,
-    //         correct_answers: data.correct_answers,
-    //     });
-    //     return this.repo.save(quizSession);
-    // }
+    async updateOne(payload: any) {
+        return this.repo.save(payload);
+    }
+
+ 
 
     
 

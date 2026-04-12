@@ -1,6 +1,7 @@
 import { Router } from 'express'
 // import { UserController } from '../controllers/UserController';
 import { AuthController } from '../controllers/AuthController';
+import { QuestionController } from '../controllers/QuestionController';
 // import { upload } from '../helpers/aws_s3';
 
 
@@ -10,13 +11,9 @@ const userRoutes = Router();
 
 userRoutes.get('/user-profile', new AuthController().userProfile);
 
-userRoutes.post('/start-quiz', new AuthController().startQuiz);
-// userRoutes.post('/submit-quiz-sessions', new AuthController().submitQuizSession);
+userRoutes.post('/start-quiz', new QuestionController().startQuiz);
 
-// userRoutes.post('/login', new AuthController().login);
-
-// authRoutes.post('/login', controller.login);
-// authRoutes.post('/register', controller.register);
+userRoutes.post('/submit-quiz-session', new QuestionController().submitQuizSession);
 
 
 export default userRoutes;

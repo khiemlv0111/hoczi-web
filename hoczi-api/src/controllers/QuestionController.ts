@@ -4,6 +4,7 @@ import { RequestValidator } from '../helpers/requestValidator';
 import { QuestionService } from '../services/QuestionService';
 import { CreateAnswerRequest, CreateQuestionRequest } from '../dto/question.dto';
 import { AppDataSource } from '../data-source';
+import { SubmitQuizSessionRequest } from '../dto/user.dto';
 
 const questionService = new QuestionService();
 // const questionService = new QuestionService();
@@ -97,5 +98,30 @@ export class QuestionController {
         return res.json({ success: true, data: question });
 
     }
+
+    async startQuiz(req: Request, res: Response) {
+        const { id } = req.user;
+
+
+        const response = await questionService.startQuiz(Number(id));
+        return res.json(response);
+    }
+
+
+    async submitQuizSession(req: Request, res: Response) {
+        const { id } = req.user;
+
+        const { errors, input } = await RequestValidator(SubmitQuizSessionRequest, req.body);
+        if (errors) {
+            return res.status(400).json({ success: false, message: errors })
+        }
+
+        const response = await questionService.submitQuizSession(Number(id), input);
+        return res.json(response);
+    }
+
+
+
+
 
 }

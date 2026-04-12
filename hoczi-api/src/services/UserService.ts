@@ -89,47 +89,6 @@ export class UserService {
         }
     }
 
-    async startQuiz(userId: number) {
-        const newQuiz = await quizSessionRepository.startQuiz(userId);
-        return {
-            message: "start quiz success",
-            success: true,
-            data: newQuiz
-        }
-
-    }
-
-
-    // async submitQuizSession(userId: number, payload: SubmitQuizSessionRequest) {
-    //     // const { score, total_questions, correct_answers, quizzes } = payload;
-    //     // create quiz_sessions
-
-    //     const quizSession = await quizSessionRepository.createOne(userId, payload);
-
-    //     //create user_answers
-    //     const quizzes = payload.quizzes;
-
-    //     if (!quizzes) {
-    //         throw new BadRequestError('Quizz not found')
-    //     }
-
-
-    //     // 2) tạo danh sách user_answers
-    //     const userAnswersPayload = quizzes.map((item) => ({
-    //         session_id: quizSession.id,
-    //         question_id: item.question_id,
-    //         answer_id: item.answer_id,
-    //         is_correct: item.is_correct,
-    //     }));
-
-    //     // 3) insert user_answers
-    //     if (userAnswersPayload.length > 0) {
-    //         await userAnswerRepository.createMany(userAnswersPayload);
-    //     }
-
-
-
-    // }
 }
 
 // score!: number;

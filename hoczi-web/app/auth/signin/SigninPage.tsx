@@ -80,7 +80,7 @@ export function SigninForm() {
                             className="w-full pl-9 pr-10 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder:text-gray-300 focus:outline-none focus:border-indigo-500 transition-colors"
                         />
                         {pwValid && (
-                            <button className="cursor-pointer" onClick={() => {
+                            <button type="button" className="cursor-pointer" onClick={() => {
                                 setIsSecured((v) => !v)
 
                             }}>

@@ -32,7 +32,7 @@ interface Grade {
 
 }
 
-const EMPTY_FORM = { content: '', explanation: '', code: '', status: 'active', type: 'mcq', gradeId: '', categoryId: '', topicId: '' };
+const EMPTY_FORM = { content: '', explanation: '', code: '', status: 'active', type: 'mcq', difficulty: 'easy', gradeId: '', categoryId: '', topicId: '' };
 
 export function QuestionPage() {
     const [questions, setQuestions] = useState<Question[]>([]);
@@ -253,7 +253,7 @@ export function QuestionPage() {
 
             {modalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={closeModal}>
-                    <div className="bg-white rounded-xl shadow-lg w-full max-w-md p-6" onClick={(e) => e.stopPropagation()}>
+                    <div className="bg-white rounded-xl shadow-lg w-full max-w-xl p-6" onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center justify-between mb-4">
                             <h2 className="text-sm font-semibold text-gray-900">Add Question</h2>
                             <button onClick={closeModal} className="text-gray-400 hover:text-gray-600 text-lg leading-none">&times;</button>
@@ -294,7 +294,7 @@ export function QuestionPage() {
                                 />
                             </div>
 
-                            <div className="grid grid-cols-2 gap-3">
+                            <div className="grid grid-cols-3 gap-3">
                                 <div>
                                     <label className="block text-[12px] font-medium text-gray-700 mb-1">Status</label>
                                     <select
@@ -316,6 +316,18 @@ export function QuestionPage() {
                                         <option value="mcq">MCQ</option>
                                         <option value="true_false">True / False</option>
                                         <option value="code">Code</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="block text-[12px] font-medium text-gray-700 mb-1">Difficulty</label>
+                                    <select
+                                        value={form.difficulty}
+                                        onChange={(e) => setForm({ ...form, difficulty: e.target.value })}
+                                        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    >
+                                        <option value="easy">Easy</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="hard">Hard</option>
                                     </select>
                                 </div>
                             </div>

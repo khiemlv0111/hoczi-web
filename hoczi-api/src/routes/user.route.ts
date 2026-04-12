@@ -15,5 +15,8 @@ userRoutes.post('/start-quiz', new QuestionController().startQuiz);
 
 userRoutes.post('/submit-quiz-session', new QuestionController().submitQuizSession);
 
+userRoutes.get('/my-quiz-sessions', new QuestionController().myQuizSessions);
+
+
 
 export default userRoutes;

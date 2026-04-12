@@ -10,14 +10,26 @@ class QuestionRepository {
 
     async findAll(filter?: QuestionFilterDto, limit?: number) {
         let limit_count = limit ? limit : 99999;
-        return this.repo
+        // Lấy random IDs trước
+        const subQuery = await this.repo
             .createQueryBuilder('question')
-            .leftJoinAndSelect('question.answers', 'answers')
+            .select('question.id')
             .where(filter?.categoryId ? 'question.category_id = :categoryId' : '1=1', { categoryId: filter?.categoryId })
             .andWhere(filter?.topicId ? 'question.topic_id = :topicId' : '1=1', { topicId: filter?.topicId })
             .andWhere(filter?.gradeId ? 'question.grade_id = :gradeId' : '1=1', { gradeId: filter?.gradeId })
-            .orderBy('RANDOM()') // 👈 random
+            .orderBy('RANDOM()')
             .take(limit_count)
+            .getMany();
+
+        const ids = subQuery.map(q => q.id);
+
+        if (ids.length === 0) return [];
+
+        // Sau đó lấy đầy đủ data + answers theo IDs đó
+        return this.repo
+            .createQueryBuilder('question')
+            .leftJoinAndSelect('question.answers', 'answers')
+            .where('question.id IN (:...ids)', { ids })
             .getMany();
     }
 

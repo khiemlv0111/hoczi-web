@@ -73,7 +73,7 @@ export default function AdminLayout({
     return (
         <div className="flex min-h-screen bg-gray-100 font-sans text-sm">
             {/* Sidebar */}
-            <aside className="w-56 min-w-[220px] bg-white border-r border-gray-200 flex flex-col py-4">
+            <aside className="w-56 min-w-[220px] bg-white border-r border-gray-200 flex flex-col py-2">
                 {/* Logo */}
                 <div className="flex items-center gap-2 px-4 pb-4 border-b border-gray-200 mb-3">
                     <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-xs font-medium">

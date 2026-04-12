@@ -112,6 +112,8 @@ export class QuestionController {
         const { id } = req.user;
 
         const { errors, input } = await RequestValidator(SubmitQuizSessionRequest, req.body);
+        console.log('INPUTTTTT', input);
+        
         if (errors) {
             return res.status(400).json({ success: false, message: errors })
         }

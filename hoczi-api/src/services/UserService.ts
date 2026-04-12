@@ -1,13 +1,46 @@
 import { BadRequestError } from "../helpers/api-erros";
+import { JwtPayload } from "../middlewares/authMiddleware";
 import { userRepository } from "../repositories/userRepository";
 import { generateRandomCode } from "../utils";
 import bcrypt from 'bcrypt'
+import { createAccessToken, createRefreshToken } from "../utils/create_token";
 
 
 export class UserService {
-    // async login(loginPayload: any) {
-    //     return userRepository.login(loginPayload);
-    // }
+    async login(loginPayload: any) {
+        const { email, password } = loginPayload;
+        const userLogin = await userRepository.findByEmail(email);
+
+        if (!userLogin) {
+            throw new BadRequestError('User not found!!')
+        }
+
+        const verifyPass = await bcrypt.compare(password, userLogin.password);
+
+        if (!verifyPass) {
+            throw new BadRequestError('E-mail Or Password Incorrect')
+        }
+
+        const jwtPayload: JwtPayload = {
+            id: userLogin.id,
+            email: userLogin.email,
+        }
+
+        const access_token = createAccessToken(jwtPayload);
+
+        const refreshToken = createRefreshToken(jwtPayload);
+
+        const { password: _, ...user } = userLogin
+
+        return {
+            success: true,
+            message: "login success",
+            user: user,
+            access_token,
+            refresh_token: refreshToken,
+
+        }
+    }
 
     async register(loginPayload: any) {
         const { name, email, password } = loginPayload;

@@ -14,6 +14,7 @@ import {
   Trophy,
   ChevronRight,
 } from "lucide-react";
+import { useAppData } from "@/app/context/AppContext";
 
 type SessionStatus = "completed" | "in_progress" | "failed";
 type Priority = "high" | "medium" | "low";
@@ -76,6 +77,9 @@ function ProgressBar({ value }: { value: number }) {
 export default function QuizSessionTable() {
   const [selected, setSelected] = useState<number | null>(null);
   const [filterStatus, setFilterStatus] = useState<SessionStatus | "all">("all");
+  const { quizSessions } = useAppData();
+  console.log("SESSSSON", quizSessions);
+  
 
   const filtered = filterStatus === "all"
     ? mockSessions
@@ -133,7 +137,7 @@ export default function QuizSessionTable() {
               </tr>
             </thead>
             <tbody>
-              {filtered.map((session) => (
+              {quizSessions && quizSessions?.map((session) => (
                 <tr
                   key={session.id}
                   onClick={() => setSelected(selected === session.id ? null : session.id)}
@@ -144,10 +148,13 @@ export default function QuizSessionTable() {
                   }`}
                 >
                   <td className="px-6 py-3 text-gray-400 text-xs">{session.id}</td>
-                  <td className="px-4 py-3 font-medium text-gray-800">{session.quiz_name}</td>
+                  <td className="px-4 py-3 font-medium text-gray-800">{session.quiz?.title}</td>
                   <td className="px-4 py-3">
-                    <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${statusConfig[session.status].className}`}>
+                    {/* <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${statusConfig[session.status].className}`}>
                       {statusConfig[session.status].label}
+                    </span> */}
+                    <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${session.status}`}>
+                      {/* {statusConfig[session.status].label} */}{session.status}
                     </span>
                   </td>
                   <td className="px-4 py-3">
@@ -160,7 +167,7 @@ export default function QuizSessionTable() {
                     {session.correct_answers}/{session.total_questions}
                   </td>
                   <td className="px-4 py-3 text-gray-500 text-xs">
-                    {session.duration ?? "—"}
+                    {session.quiz?.duration_minutes ?? "—"}
                   </td>
                   <td className="px-4 py-3 text-gray-500 text-xs">{session.start_time}</td>
                   <td className="px-4 py-3">

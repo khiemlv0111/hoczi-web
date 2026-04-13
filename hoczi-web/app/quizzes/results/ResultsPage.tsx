@@ -4,15 +4,15 @@ import { QuestionService } from "@/data/services/question.service"
 import { UserService } from "@/data/services/user.service"
 import { useEffect } from "react"
 import QuizSessionTable from "./QuizSessionTable"
+import { useAppData } from "@/app/context/AppContext"
 
 export function ResultPage(){
+    const { handleGetQuizSessions } = useAppData();
     useEffect(() => {
-        QuestionService.getQuizSessions().then((res) => {
-            console.log("RESPONSE", res);
-            
-        })
-
+        handleGetQuizSessions();
     },[])
+
+
     return (
         <div>
             <QuizSessionTable />

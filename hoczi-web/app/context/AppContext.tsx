@@ -50,6 +50,7 @@ type AppContextType = {
     user: User | undefined,
     quiz: Quiz | undefined,
     quizSession: QuizSession | undefined,
+    quizSessions: any[] | undefined,
 
     login: (loginData: LoginPayload) => void;
     // handleStartQuiz: () => Promise;
@@ -57,6 +58,7 @@ type AppContextType = {
     handleStartQuiz: (data?: any) => Promise<any>;
 
     getUserProfile: () => void;
+    handleGetQuizSessions: () => void;
 }
 
 const AppContext = createContext<AppContextType | null>(null)
@@ -67,6 +69,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | undefined>(undefined);
     const [quiz, setQuiz] = useState<Quiz | undefined>(undefined);
     const [quizSession, setQuizSession] = useState<QuizSession | undefined>(undefined);
+    const [quizSessions, setQuizSessions] = useState<any[] | undefined>(undefined);
     const router = useRouter();
 
     const login = ({ email, password }: LoginPayload) => {
@@ -99,6 +102,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
         })
     }
 
+    const handleGetQuizSessions = () => {
+        QuestionService.getQuizSessions().then((res) => {
+            console.log("RESPONSE=====quizzesssion", res);
+            setQuizSessions(res);
+        })
+    }
+
     const handleStartQuiz = async (data?: any) => {
         const payload = {
             title: 'Do free quiz',
@@ -124,7 +134,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
 
     return (
-        <AppContext.Provider value={{ data, user, quizSession, handleStartQuiz, quiz, login, getUserProfile }}>
+        <AppContext.Provider value={{ 
+            data, user, quizSession, quizSessions, quiz,
+            handleStartQuiz, handleGetQuizSessions, login, getUserProfile }}>
             {children}
         </AppContext.Provider>
     )

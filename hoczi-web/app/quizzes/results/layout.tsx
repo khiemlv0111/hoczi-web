@@ -16,6 +16,7 @@ import {
     User,
     Star
 } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const navMain = [
@@ -56,7 +57,10 @@ export default function ResultLayout({
                 {/* Logo */}
                 <div className="flex items-center gap-2 px-4 pb-4 border-b border-gray-200 mb-3">
                     <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-xs font-medium">
-                        Te
+                        <Link href={`/`}>
+                         Te
+                        </Link>
+                       
                     </div>
                     <span className="font-medium text-gray-900">hoczi</span>
                 </div>

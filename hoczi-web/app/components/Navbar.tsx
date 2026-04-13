@@ -20,7 +20,10 @@ export const Navbar = () => {
                         </Link>
                     </li>
                     {
-                        user && <li>
+                        user && <li className="flex gap-4">
+                            <Link href="/quizzes/results" className="text-blue-500 text-white font-medium text-sm hover:opacity-75 transition-opacity">
+                                Quiz Results
+                            </Link>
                             <button onClick={handleLogout} className="text-white cursor-pointer font-medium text-sm hover:opacity-75 transition-opacity">
                                 Logout
                             </button>

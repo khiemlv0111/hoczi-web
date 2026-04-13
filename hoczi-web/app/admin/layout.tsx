@@ -19,6 +19,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useAppData } from "../context/AppContext";
 import { useEffect } from "react";
+import Link from "next/link";
 
 const posts = [
     { title: "Introduction to JavaScript", date: "Apr 10, 2026", status: "published" },
@@ -42,11 +43,11 @@ const stats = [
 ];
 
 const navMain = [
-    {path: '/admin', label: "Dashboard", icon: LayoutDashboard, active: true },
-    {path: '/admin', label: "Blog Posts", icon: FileText },
-    {path: '/', label: "Quizzes", icon: Clock },
-    {path: '/admin/questions', label: "Questions", icon: Star },
-    {path: '/admin/questions', label: "Students", icon: Users },
+    { path: '/admin', label: "Dashboard", icon: LayoutDashboard, active: true },
+    { path: '/admin', label: "Blog Posts", icon: FileText },
+    { path: '/', label: "Quizzes", icon: Clock },
+    { path: '/admin/questions', label: "Questions", icon: Star },
+    { path: '/admin/questions', label: "Students", icon: Users },
 ];
 
 const navSettings = [
@@ -61,18 +62,18 @@ export default function AdminLayout({
     children: React.ReactNode;
 }>) {
     const router = useRouter();
-    const {user} = useAppData();
+    const { user } = useAppData();
     useEffect(() => {
-        if(user){
-            if(user.role != 'admin'){
+        if (user) {
+            if (user.role != 'admin') {
                 router.push(`/`)
             }
 
         }
 
-    },[user])
+    }, [user])
     const handleNavigate = (item: any) => {
-        const {path, label, icon: Icon, active } = item;
+        const { path, label, icon: Icon, active } = item;
         console.log(label);
         if (label == 'Quizzes') {
             router.push(`/admin/quizzes`)
@@ -89,7 +90,10 @@ export default function AdminLayout({
                 {/* Logo */}
                 <div className="flex items-center gap-2 px-4 pb-4 border-b border-gray-200 mb-3">
                     <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-xs font-medium">
-                        Te
+                        <Link href={`/`}>
+                            Te
+                        </Link>
+
                     </div>
                     <span className="font-medium text-gray-900">hoczi</span>
                 </div>
@@ -97,13 +101,13 @@ export default function AdminLayout({
                 {/* Main nav */}
                 <div className="px-2 mb-2">
                     <p className="text-[11px] text-gray-400 uppercase tracking-wider px-2 mb-1">Main</p>
-                    {navMain.map(({path, label, icon: Icon, active }) => (
+                    {navMain.map(({ path, label, icon: Icon, active }) => (
                         <button
                             key={label}
-                            onClick={() => handleNavigate({path, label, icon: Icon, active })}
+                            onClick={() => handleNavigate({ path, label, icon: Icon, active })}
                             className={`w-full flex items-center gap-2 px-3 py-2 rounded-md text-[13px] transition-colors ${active
-                                    ? "bg-blue-50 text-blue-700"
-                                    : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+                                ? "bg-blue-50 text-blue-700"
+                                : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
                                 }`}
                         >
                             <Icon size={15} />

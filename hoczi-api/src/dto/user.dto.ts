@@ -48,15 +48,19 @@ export class CreateQuizRequest {
     title!: string;
 
     @IsString()
+    @IsOptional()
     description?: string;
 
     @IsNumber()
+    @IsOptional()
     category_id?: number;
 
     @IsNumber()
+    @IsOptional()
     topic_id?: number;
 
     @IsNumber()
+    @IsOptional()
     grade_id?: number;
 
 }

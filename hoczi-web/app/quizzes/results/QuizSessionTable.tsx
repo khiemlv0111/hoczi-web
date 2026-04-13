@@ -11,6 +11,7 @@ import {
   Trophy,
 } from "lucide-react";
 import { useAppData } from "@/app/context/AppContext";
+import { useRouter } from "next/navigation";
 
 interface QuizSession {
   id: number;
@@ -71,6 +72,7 @@ export default function QuizSessionTable() {
   const [selected, setSelected] = useState<number | null>(null);
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const { quizSessions } = useAppData();
+  const router = useRouter()
 
   const sessions: QuizSession[] = quizSessions ?? [];
 
@@ -80,6 +82,12 @@ export default function QuizSessionTable() {
       : sessions.filter((s) => s.status === filterStatus);
 
   const detail = selected !== null ? filtered.find((s) => s.id === selected) ?? null : null;
+
+  const handleRetry = () => {
+    console.log('CLICK detail', detail);
+    
+    // router.push(`/`)
+  }
 
   return (
     <div className="flex h-screen bg-gray-50 font-sans overflow-hidden">
@@ -275,7 +283,7 @@ export default function QuizSessionTable() {
             <button className="flex-1 flex items-center justify-center gap-1.5 py-2 text-sm text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
               <Eye size={14} /> Review
             </button>
-            <button className="flex-1 flex items-center justify-center gap-1.5 py-2 text-sm text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors">
+            <button onClick={handleRetry} className="flex-1 flex items-center justify-center gap-1.5 py-2 text-sm text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors">
               <RotateCcw size={14} /> Retry
             </button>
           </div>

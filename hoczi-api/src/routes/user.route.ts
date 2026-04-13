@@ -23,4 +23,10 @@ userRoutes.get('/get-quiz-session-detail/:id', new QuestionController().getQuizS
 
 
 
+
+userRoutes.post('/start-retry/:id', new QuestionController().startRetry);
+
+
+
+
 export default userRoutes;

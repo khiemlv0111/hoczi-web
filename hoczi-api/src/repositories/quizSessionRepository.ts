@@ -31,6 +31,13 @@ class QuizSessionRepository {
         });
     }
 
+    async findByQuizId(quizId: number) {
+        return this.repo.find({
+            where: { quiz_id: quizId },
+            relations: ['quiz', 'user_answers']
+        });
+    }
+
     async startQuiz(userId: number, quizId: number) {
         const quizSession = this.repo.create({
             quiz_id: quizId,

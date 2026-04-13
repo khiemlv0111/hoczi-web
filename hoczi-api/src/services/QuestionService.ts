@@ -94,6 +94,34 @@ export class QuestionService {
     }
 
 
+    async startRetry(userId: number, quizId: number) {
+        const quiz = await quizRepository.findById(quizId);
+        const quizSessions = await quizSessionRepository.findByQuizId(quizId);
+        if (!quiz) {
+            throw new BadRequestError("Quiz not found");
+        }
+
+        if (quizSessions.length > 3) {
+            return {
+                message: "you are not allowed",
+                success: false,
+                quiz: null,
+                quizSession: null,
+            }
+
+        }
+
+        const newQuizSession = await quizSessionRepository.startQuiz(userId, quizId);
+        return {
+            message: "retry quiz success",
+            success: true,
+            quiz: quiz,
+            quizSession: newQuizSession
+        }
+
+    }
+
+
     async submitQuizSession(userId: number, payload: SubmitQuizSessionRequest) {
 
         const quizSession = await quizSessionRepository.findById(payload.quiz_session_id);
@@ -164,7 +192,7 @@ export class QuestionService {
 
     }
 
-     async myQuizzes(userId: number) {
+    async myQuizzes(userId: number) {
         const quizSessions = await quizRepository.findByUserId(userId);
         return {
             message: "get quiz success",

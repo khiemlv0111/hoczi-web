@@ -82,7 +82,8 @@ export class QuestionService {
         return {
             message: "start quiz success",
             success: true,
-            data: newQuizSession
+            quiz: newQuiz,
+            quizSession: newQuizSession
         }
 
     }

@@ -96,30 +96,33 @@ export class QuestionService {
 
     async startRetry(userId: number, quizId: number) {
         const quiz = await quizRepository.findById(quizId);
-        const quizSessions = await quizSessionRepository.findByQuizId(quizId);
         if (!quiz) {
             throw new BadRequestError("Quiz not found");
         }
 
-        if (quizSessions.length > 3) {
+        const allSessions = await quizSessionRepository.findByQuizId(quizId);
+        const userSessions = allSessions.filter(s => s.user_id === userId);
+
+        if (userSessions.length >= 3) {
             return {
                 message: "you are not allowed",
                 success: false,
                 quiz: null,
                 quizSession: null,
             }
-
         }
+
+        const lastCompletedSession = userSessions.find(s => s.status === "completed");
+        const previousAnswers = lastCompletedSession?.user_answers ?? [];
 
         const newQuizSession = await quizSessionRepository.startQuiz(userId, quizId);
 
-        const userAnswers = await quizSessionRepository.findByQuizId(quizId);
         return {
             message: "retry quiz success",
             success: true,
             quiz: quiz,
             quizSession: newQuizSession,
-            userAnswers: userAnswers
+            userAnswers: previousAnswers
         }
 
     }

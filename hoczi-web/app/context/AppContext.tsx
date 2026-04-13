@@ -20,6 +20,11 @@ export type LoginPayload = {
 }
 type Quiz = {
     id: number,
+    category_id?: number;
+    topic_id?: number;
+    grade_id?: number;
+    title?: string,
+    description?: string,
     score: string,
     status: string,
     total_questions?: string,
@@ -28,16 +33,28 @@ type Quiz = {
     user_id: number,
 }
 
+type QuizSession = {
+    id: number,
+    score: string,
+    status: string,
+    total_questions?: string,
+    correct_answers?: string,
+    end_time?: string,
+    user_id: number,
+    quiz_id: number,
+}
+
 
 type AppContextType = {
     data: any,
     user: User | undefined,
     quiz: Quiz | undefined,
+    quizSession: QuizSession | undefined,
 
     login: (loginData: LoginPayload) => void;
     // handleStartQuiz: () => Promise;
 
-    handleStartQuiz: () => Promise<any>;
+    handleStartQuiz: (data?: any) => Promise<any>;
 
     getUserProfile: () => void;
 }
@@ -49,6 +66,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const [data, setData] = useState<any>({ name: "Toan Le", email: "toan@Gmail.com" });
     const [user, setUser] = useState<User | undefined>(undefined);
     const [quiz, setQuiz] = useState<Quiz | undefined>(undefined);
+    const [quizSession, setQuizSession] = useState<QuizSession | undefined>(undefined);
     const router = useRouter();
 
     const login = ({ email, password }: LoginPayload) => {
@@ -61,8 +79,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
                     path: "/",
                 });
                 // console.log(res.user);
-                if(res.user?.role == 'admin'){
-                    router.push("/admin");
+                if (res.user?.role == 'admin') {
+                    router.push("/");
 
                 } else {
                     router.push("/");
@@ -75,25 +93,38 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const getUserProfile = () => {
         UserService.getUserInfo().then((res) => {
             console.log('RESSSssss', res);
-            
+
             setUser(res?.user);
 
         })
     }
 
-    const handleStartQuiz = async () => {
-        const quizSession = await QuestionService.startQuiz();
+    const handleStartQuiz = async (data?: any) => {
+        const payload = {
+            title: 'Do free quiz',
+            description: 'Student do free quizz',
+            category_id: data?.categoryId,
+            topic_id: data?.topicId,
+            grade_id: data?.gradeId,
+            duration_minutes: 15,
+            total_questions: 15,
+            quiz_type: 'free',
+            created_by: user?.id,
 
-        setQuiz(quizSession.data);
+        }
+        const quizData = await QuestionService.startQuiz(payload);
 
-        return quizSession.data
+        setQuiz(quizData.quiz);
+        setQuizSession(quizData.quizSession);
+
+        return quizData;
 
     }
 
 
 
     return (
-        <AppContext.Provider value={{ data, user, handleStartQuiz, quiz, login, getUserProfile }}>
+        <AppContext.Provider value={{ data, user, quizSession, handleStartQuiz, quiz, login, getUserProfile }}>
             {children}
         </AppContext.Provider>
     )

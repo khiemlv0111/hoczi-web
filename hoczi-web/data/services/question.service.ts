@@ -58,7 +58,7 @@ export class QuestionService {
         return response
     }
 
-    static async startQuiz(payload?: any) {
+    static async startQuiz(payload: any) {
         const response = await postRequest('/api/users/start-quiz', payload, true);
         return response
     }

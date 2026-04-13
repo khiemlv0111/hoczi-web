@@ -3,6 +3,7 @@
 import { QuestionService } from "@/data/services/question.service"
 import { UserService } from "@/data/services/user.service"
 import { useEffect } from "react"
+import QuizSessionTable from "./QuizSessionTable"
 
 export function ResultPage(){
     useEffect(() => {
@@ -14,7 +15,7 @@ export function ResultPage(){
     },[])
     return (
         <div>
-            <h1>Result Page</h1>
+            <QuizSessionTable />
         </div>
     )
 }

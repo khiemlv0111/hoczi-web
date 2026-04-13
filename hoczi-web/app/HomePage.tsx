@@ -33,6 +33,8 @@ export default function HomePage() {
 
     } else {
       handleStartQuiz().then((res) => {
+        console.log("QUISSSSSS", res);
+        
         router.push(`/quizzes`)
       })
 

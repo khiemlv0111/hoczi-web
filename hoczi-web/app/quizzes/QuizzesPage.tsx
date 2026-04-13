@@ -137,7 +137,7 @@ function ScorePage({
   const pct = Math.round((score / total) * 100);
 
 
-  const { user, quiz } = useAppData();
+  const { user, quiz, quizSession } = useAppData();
 
   console.log('NEW QUIXXXXXX', quiz);
   const router = useRouter();
@@ -167,7 +167,8 @@ function ScorePage({
       score: pct,
       total_questions: total,
       correct_answers: score,
-      quiz_session_id: quiz.id,
+      quiz_session_id: quizSession?.id,
+      quiz_id: quiz.id,
       quizzes: result
     }
 
@@ -283,17 +284,9 @@ export function QuizPage() {
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [finished, setFinished] = useState(false);
   const [questions, setQuestions] = useState<any[]>([]);
-  const { getUserProfile, user, quiz } = useAppData();
+  const { getUserProfile, user, quiz, quizSession } = useAppData();
   const router = useRouter();
 
-  useEffect(() => {
-
-    // getUserProfile();
-
-    console.log('Quizzzzz', quiz);
-
-
-  }, []);
 
   useEffect(() => {
     if (user) {

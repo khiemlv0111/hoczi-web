@@ -68,6 +68,11 @@ export class QuestionService {
         return response
     }
 
+    static async retryQuiz(quizId: number) {
+        const response = await postRequest(`/api/users/start-retry/${quizId}`, {}, true);
+        return response
+    }
+
     static async getQuizSessions() {
         const response = await getRequest('/api/users/my-quiz-sessions', true);
         return response.data

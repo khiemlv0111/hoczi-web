@@ -59,6 +59,7 @@ type AppContextType = {
 
     getUserProfile: () => void;
     handleGetQuizSessions: () => void;
+    handleRetryQuiz: (quizId: number) => void;
 }
 
 const AppContext = createContext<AppContextType | null>(null)
@@ -109,6 +110,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
         })
     }
 
+    const handleRetryQuiz = (quizId: number) => {
+        QuestionService.retryQuiz(quizId).then((res) => {
+            console.log("RESPONSE=====quiz", res);
+            // setQuizSessions(res);
+        })
+    }
+
     const handleStartQuiz = async (data?: any) => {
         const payload = {
             title: 'Do free quiz',
@@ -134,9 +142,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
 
     return (
-        <AppContext.Provider value={{ 
+        <AppContext.Provider value={{
             data, user, quizSession, quizSessions, quiz,
-            handleStartQuiz, handleGetQuizSessions, login, getUserProfile }}>
+            handleStartQuiz, handleGetQuizSessions,
+            handleRetryQuiz,
+            login, getUserProfile
+        }}>
             {children}
         </AppContext.Provider>
     )

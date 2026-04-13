@@ -112,11 +112,14 @@ export class QuestionService {
         }
 
         const newQuizSession = await quizSessionRepository.startQuiz(userId, quizId);
+
+        const userAnswers = await quizSessionRepository.findByQuizId(quizId);
         return {
             message: "retry quiz success",
             success: true,
             quiz: quiz,
-            quizSession: newQuizSession
+            quizSession: newQuizSession,
+            userAnswers: userAnswers
         }
 
     }

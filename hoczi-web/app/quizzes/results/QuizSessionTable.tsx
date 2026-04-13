@@ -44,9 +44,9 @@ function ScoreBadge({ score }: { score: number | string }) {
   const num = Number(score);
   const color =
     num >= 80 ? "text-emerald-600" :
-    num >= 60 ? "text-amber-600" :
-    num > 0   ? "text-rose-600" :
-    "text-gray-400";
+      num >= 60 ? "text-amber-600" :
+        num > 0 ? "text-rose-600" :
+          "text-gray-400";
   return (
     <span className={`font-semibold tabular-nums ${color}`}>
       {num > 0 ? `${num}%` : "—"}
@@ -58,9 +58,9 @@ function ProgressBar({ value }: { value: number | string }) {
   const num = Number(value);
   const color =
     num >= 80 ? "bg-emerald-400" :
-    num >= 60 ? "bg-amber-400" :
-    num > 0   ? "bg-rose-400" :
-    "bg-gray-200";
+      num >= 60 ? "bg-amber-400" :
+        num > 0 ? "bg-rose-400" :
+          "bg-gray-200";
   return (
     <div className="w-16 h-1.5 bg-gray-100 rounded-full overflow-hidden">
       <div className={`h-full rounded-full ${color}`} style={{ width: `${num}%` }} />
@@ -71,7 +71,7 @@ function ProgressBar({ value }: { value: number | string }) {
 export default function QuizSessionTable() {
   const [selected, setSelected] = useState<number | null>(null);
   const [filterStatus, setFilterStatus] = useState<string>("all");
-  const { quizSessions } = useAppData();
+  const { quizSessions, handleRetryQuiz } = useAppData();
   const router = useRouter()
 
   const sessions: QuizSession[] = quizSessions ?? [];
@@ -85,7 +85,12 @@ export default function QuizSessionTable() {
 
   const handleRetry = () => {
     console.log('CLICK detail', detail);
-    
+    const quizId = Number(detail?.quiz_id)
+    if (quizId) {
+      handleRetryQuiz(quizId)
+    }
+
+
     // router.push(`/`)
   }
 
@@ -111,11 +116,10 @@ export default function QuizSessionTable() {
               <button
                 key={s}
                 onClick={() => { setFilterStatus(s); setSelected(null); }}
-                className={`text-xs px-3 py-1.5 rounded-lg transition-colors ${
-                  filterStatus === s
+                className={`text-xs px-3 py-1.5 rounded-lg transition-colors ${filterStatus === s
                     ? "bg-indigo-600 text-white"
                     : "text-gray-500 hover:bg-gray-100"
-                }`}
+                  }`}
               >
                 {s === "all" ? "All" : s === "in_progress" ? "In Progress" : s.charAt(0).toUpperCase() + s.slice(1)}
               </button>
@@ -145,11 +149,10 @@ export default function QuizSessionTable() {
                   <tr
                     key={session.id}
                     onClick={() => setSelected(selected === session.id ? null : session.id)}
-                    className={`border-b border-gray-100 cursor-pointer transition-colors ${
-                      selected === session.id
+                    className={`border-b border-gray-100 cursor-pointer transition-colors ${selected === session.id
                         ? "bg-indigo-50 border-l-2 border-l-indigo-500"
                         : "hover:bg-gray-50"
-                    }`}
+                      }`}
                   >
                     <td className="px-6 py-3 text-gray-400 text-xs">{session.id}</td>
                     <td className="px-4 py-3 font-medium text-gray-800">{session.quiz?.title ?? "—"}</td>
@@ -201,9 +204,9 @@ export default function QuizSessionTable() {
                 const num = Number(detail.score);
                 const ringColor =
                   num >= 80 ? "border-emerald-400 text-emerald-600" :
-                  num >= 60 ? "border-amber-400 text-amber-600" :
-                  num > 0   ? "border-rose-400 text-rose-600" :
-                  "border-gray-200 text-gray-400";
+                    num >= 60 ? "border-amber-400 text-amber-600" :
+                      num > 0 ? "border-rose-400 text-rose-600" :
+                        "border-gray-200 text-gray-400";
                 return (
                   <>
                     <div className={`w-20 h-20 rounded-full flex items-center justify-center text-2xl font-bold border-4 ${ringColor}`}>
@@ -258,8 +261,8 @@ export default function QuizSessionTable() {
                 const num = Number(detail.score);
                 const barColor =
                   num >= 80 ? "bg-emerald-400" :
-                  num >= 60 ? "bg-amber-400" :
-                  "bg-rose-400";
+                    num >= 60 ? "bg-amber-400" :
+                      "bg-rose-400";
                 return (
                   <>
                     <div className="h-2 bg-gray-100 rounded-full overflow-hidden">

@@ -35,9 +35,14 @@ class QuizRepository {
         const quiz = this.repo.create({
             title: data.title,
             description: data.description,
+            duration_minutes: data.duration_minutes,
+            total_questions: data.total_questions,
+            quiz_type: data.quiz_type,
+            status: data.status,
             category_id: data.category_id,
             topic_id: data.topic_id,
             grade_id: data.grade_id,
+            created_by: data.created_by
         });
         return this.repo.save(quiz);
     }

@@ -74,6 +74,11 @@ export class QuestionService {
         const newQuiz = await quizRepository.createOne({
             title: dto.title,
             description: dto.description,
+            duration_minutes: dto.duration_minutes,
+            total_questions: dto.total_questions,
+            quiz_type: dto.quiz_type,
+            created_by: userId,
+            status: dto.status,
             category_id: dto.category_id,
             topic_id: dto.topic_id,
             grade_id: dto.grade_id

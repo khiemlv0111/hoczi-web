@@ -38,6 +38,21 @@ export class Quiz {
     @Column({ type: "int", nullable: true })
     topic_id?: number;
 
+    @Column({ type: "int", nullable: true })
+    duration_minutes?: number;
+
+    @Column({ type: "int", nullable: true })
+    total_questions?: number;
+
+    @Column({ type: "varchar", length: 255, nullable: true })
+    quiz_type?: string;
+
+    @Column({ type: "varchar", length: 255, nullable: true })
+    status?: string;
+
+    @Column({ type: "int", nullable: true })
+    created_by?: number;
+
     @ManyToOne(() => Topic, (topic) => topic.id, {
         onDelete: "SET NULL",
     })

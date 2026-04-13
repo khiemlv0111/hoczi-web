@@ -57,7 +57,26 @@ export class CreateQuizRequest {
 
     @IsNumber()
     @IsOptional()
+    duration_minutes?: number;
+
+    @IsNumber()
+    @IsOptional()
+    total_questions?: number;
+
+    @IsOptional()
+    quiz_type?: string;
+
+    @IsString()
+    @IsOptional()
+    status?: string;
+
+    @IsNumber()
+    @IsOptional()
     topic_id?: number;
+
+    @IsNumber()
+    @IsOptional()
+    created_by?: number;
 
     @IsNumber()
     @IsOptional()

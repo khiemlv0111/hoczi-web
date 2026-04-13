@@ -88,6 +88,9 @@ export class CreateQuizRequest {
 export class SubmitQuizSessionRequest {
 
     @IsNumber()
+    quiz_id!: number;
+
+    @IsNumber()
     score!: number;
 
     @IsNumber()

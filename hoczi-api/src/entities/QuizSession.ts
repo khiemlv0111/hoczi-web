@@ -8,6 +8,7 @@ import {
 } from "typeorm";
 import { UserAnswer } from "./UserAnswer";
 import { User } from "./User";
+import { Quiz } from "./Quiz";
 // import { UserAnswer } from "./user-answer.entity";
 
 @Entity("quiz_sessions")
@@ -68,4 +69,8 @@ export class QuizSession {
     @ManyToOne(() => User, (user) => user.quiz_sessions)
     @JoinColumn({ name: "user_id" })
     user!: User;
+
+    @ManyToOne(() => Quiz, (quiz) => quiz.quiz_sessions)
+    @JoinColumn({ name: "quiz_id" })
+    quiz!: Quiz;
 }

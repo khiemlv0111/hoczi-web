@@ -97,9 +97,14 @@ export class QuestionService {
     async submitQuizSession(userId: number, payload: SubmitQuizSessionRequest) {
 
         const quizSession = await quizSessionRepository.findById(payload.quiz_session_id);
+        const quiz = await quizRepository.findById(payload.quiz_id);
 
         if (!quizSession) {
             throw new BadRequestError("Quiz session not found");
+        }
+
+        if (!quiz) {
+            throw new BadRequestError("Quiz not found");
         }
 
         if (quizSession.user_id !== userId) {
@@ -123,6 +128,9 @@ export class QuestionService {
         quizSession.status = "completed";
         quizSession.end_time = new Date();
 
+        quiz.status = "completed";
+
+        await quizRepository.saveOne(quiz);
         await quizSessionRepository.saveOne(quizSession);
 
         // create user_answers

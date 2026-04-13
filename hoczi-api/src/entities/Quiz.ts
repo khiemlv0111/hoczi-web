@@ -12,6 +12,7 @@ import { Category } from "./Category";
 import { Topic } from "./Topic";
 import { Grade } from "./Grade";
 import { Question } from "./Question";
+import { QuizSession } from "./QuizSession";
 
 @Entity("quizzes")
 export class Quiz {
@@ -46,6 +47,9 @@ export class Quiz {
 
     @Column({ type: "varchar", length: 255, nullable: true })
     quiz_type?: string;
+
+    @OneToMany(() => QuizSession, (quizSession) => quizSession.quiz)
+    quiz_sessions!: QuizSession[];
 
     @Column({ type: "varchar", length: 255, nullable: true })
     status?: string;

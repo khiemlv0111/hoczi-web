@@ -41,6 +41,27 @@ export class QuizSessionDto {
 
 }
 
+export class CreateQuizRequest {
+
+    @IsString()
+    @IsNotEmpty()
+    title!: string;
+
+    @IsString()
+    description?: string;
+
+    @IsNumber()
+    category_id?: number;
+
+    @IsNumber()
+    topic_id?: number;
+
+    @IsNumber()
+    grade_id?: number;
+
+}
+
+
 export class SubmitQuizSessionRequest {
 
     @IsNumber()

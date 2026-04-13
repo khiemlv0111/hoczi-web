@@ -6,9 +6,10 @@ import { answerRepository } from "../repositories/answerRepository";
 import { CreateAnswerRequest, CreateQuestionRequest, QuestionFilterDto } from "../dto/question.dto";
 
 import { quizSessionRepository } from "../repositories/quizSessionRepository";
-import { SubmitQuizSessionRequest } from "../dto/user.dto";
+import { CreateQuizRequest, SubmitQuizSessionRequest } from "../dto/user.dto";
 import { BadRequestError } from "../helpers/api-erros";
 import { userAnswerRepository } from "../repositories/userAnswerRepository";
+import { quizRepository } from "../repositories/quizRepository";
 
 
 
@@ -69,12 +70,19 @@ export class QuestionService {
         return answerRepository.create(dto);
     }
 
-    async startQuiz(userId: number) {
-        const newQuiz = await quizSessionRepository.startQuiz(userId);
+    async startQuiz(userId: number, dto: CreateQuizRequest) {
+        const newQuiz = await quizRepository.createOne({
+            title: dto.title,
+            description: dto.description,
+            category_id: dto.category_id,
+            topic_id: dto.topic_id,
+            grade_id: dto.grade_id
+        });
+        const newQuizSession = await quizSessionRepository.startQuiz(userId, newQuiz.id);
         return {
             message: "start quiz success",
             success: true,
-            data: newQuiz
+            data: newQuizSession
         }
 
     }

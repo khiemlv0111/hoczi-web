@@ -18,6 +18,9 @@ export class QuizSession {
     @Column({ type: "int" })
     user_id!: number;
 
+    @Column({ type: "int" })
+    quiz_id?: number;
+
     @Column({
         type: "varchar",
         length: 50,

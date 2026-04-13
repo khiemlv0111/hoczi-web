@@ -31,8 +31,9 @@ class QuizSessionRepository {
         });
     }
 
-    async startQuiz(userId: number) {
+    async startQuiz(userId: number, quizId: number) {
         const quizSession = this.repo.create({
+            quiz_id: quizId,
             user_id: userId,
             status: "in_progress",
             start_time: new Date(),

@@ -164,6 +164,16 @@ export class QuestionService {
 
     }
 
+     async myQuizzes(userId: number) {
+        const quizSessions = await quizRepository.findByUserId(userId);
+        return {
+            message: "get quiz success",
+            success: true,
+            data: quizSessions
+        }
+
+    }
+
 
     async getQuizSessionDetail(id: number) {
         const quizSession = await quizSessionRepository.getDetail(id);

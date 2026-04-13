@@ -139,6 +139,14 @@ export class QuestionController {
         return res.json(response);
     }
 
+    async myQuizzes(req: Request, res: Response) {
+        const { id } = req.user;
+
+
+        const response = await questionService.myQuizzes(Number(id));
+        return res.json(response);
+    }
+
     async getQuizSessionDetail(req: Request, res: Response) {
         const id = Number(req.params.id);
 

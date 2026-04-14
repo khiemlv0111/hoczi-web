@@ -209,10 +209,6 @@ export class QuestionService {
             is_correct: item.is_correct,
         }));
 
-        console.log('userAnswersPayload', userAnswersPayload);
-        console.log('quizSession', quizSession);
-
-
         if (userAnswersPayload.length > 0) {
             await userAnswerRepository.createMany(userAnswersPayload);
         }

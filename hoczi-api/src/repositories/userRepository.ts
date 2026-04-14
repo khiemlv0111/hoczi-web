@@ -37,6 +37,19 @@ class UserRepository {
         });
     }
 
+    async findAll(page: number, limit: number) {
+        const offset = (page - 1) * limit;
+
+        const [data, total] = await this.repo.findAndCount({
+            relations: ["quiz_sessions"],
+            order: { id: "DESC" },
+            take: limit,
+            skip: offset,
+        });
+
+        return { data, total };
+    }
+
 
 }
 

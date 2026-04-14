@@ -89,6 +89,15 @@ export class UserService {
         }
     }
 
+    async userList(page: number, limit: number) {
+        const response = await userRepository.findAll(page, limit);
+        return {
+            message: "get users success",
+            success: true,
+            data: {users: response.data, total: response.total}
+        }
+    }
+
 }
 
 // score!: number;

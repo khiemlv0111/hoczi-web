@@ -4,12 +4,17 @@ import { AuthController } from '../controllers/AuthController';
 import { QuestionController } from '../controllers/QuestionController';
 // import { upload } from '../helpers/aws_s3';
 
+import { UserController } from '../controllers/UserController';
+
+
 
 const userRoutes = Router();
 
 
 
 userRoutes.get('/user-profile', new AuthController().userProfile);
+
+userRoutes.get('/user-list', new UserController().getUserList);
 
 userRoutes.post('/start-quiz', new QuestionController().startQuiz);
 

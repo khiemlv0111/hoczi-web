@@ -54,6 +54,17 @@ export class AuthController {
     }
 
 
+        async getUserList(req: Request, res: Response) {
+        const { id } = req.user;
+
+
+
+        const response = await userService.userProfile(Number(id));
+        return res.json(response);
+    }
+
+
+
 
 
 

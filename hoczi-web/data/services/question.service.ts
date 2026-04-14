@@ -4,10 +4,28 @@ import { deleteRequest, getAccessToken, getRequest, getRequestPublic, postReques
 // import { getAccessToken, getRequest, getRequestPublic, postRequest } from "../http";
 
 // import axios from 'axios'
+export type QuestionPayload = {
+    gradeId?: number;
+    categoryId?: number;
+    topicId?: number;
+    difficulty?: string;
+}
 export class QuestionService {
-    static async getQuestionList() {
-        const response = await getRequest('/api/questions/question-list', false);
-        return response
+    static async getQuestionList(payload: QuestionPayload) {
+        const params = new URLSearchParams();
+        if (payload.categoryId) params.append('categoryId', String(payload.categoryId));
+        if (payload.topicId) params.append('topicId', String(payload.topicId));
+        if (payload.gradeId) params.append('gradeId', String(payload.gradeId));
+        if (payload.difficulty) params.append('difficulty', payload.difficulty);
+
+
+        const query = params.toString() ? `?${params.toString()}` : '';
+        const response = await getRequest(`/api/questions/question-list${query}`, false);
+        return response;
+
+
+
+
     }
 
     static async getAllQuestions() {

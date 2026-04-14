@@ -74,7 +74,7 @@ type AppContextType = {
     getUserProfile: () => Promise<any>;
     handleGetQuizSessions: () => void;
     handleRetryQuiz: (quizId: number) => Promise<any>;
-    handleGetQuestionList: () => Promise<any>;
+    handleGetQuestionList: (payload: any) => Promise<any>;
 }
 
 const AppContext = createContext<AppContextType | null>(null)
@@ -128,11 +128,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
 
     // get 15 question list
-    const handleGetQuestionList = async () => {
-        const res = await QuestionService.getQuestionList();
+    const handleGetQuestionList = async (payload: any) => {
+        const res = await QuestionService.getQuestionList(payload);
 
         setListQuestions(res.data);
+
         return res;
+
+
 
     }
 

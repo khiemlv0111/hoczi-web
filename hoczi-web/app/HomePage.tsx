@@ -10,6 +10,12 @@ import { UserService } from "@/data/services/user.service";
 import { FullScreenLoading } from "./components/FullScreenLoading";
 import { CommonModal } from "./components/modal/CommonModal";
 
+const DIFFICULTY_OPTIONS = [
+  { value: '', label: 'Any difficulty' },
+  { value: 'easy', label: 'Easy' },
+  { value: 'medium', label: 'Medium' },
+  { value: 'hard', label: 'Hard' },
+];
 
 export default function HomePage() {
   const { handleStartQuiz, getUserProfile, user, handleGetQuestionList } = useAppData();
@@ -17,48 +23,68 @@ export default function HomePage() {
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
 
+  const [gradeList, setGradeList] = useState<any[]>([]);
+  const [categoryList, setCategoryList] = useState<any[]>([]);
+  const [topicList, setTopicList] = useState<any[]>([]);
+
+  const [selectedGrade, setSelectedGrade] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedTopic, setSelectedTopic] = useState('');
+  const [selectedDifficulty, setSelectedDifficulty] = useState('');
+
   useEffect(() => {
     const token = Cookies.get(APP_ACCESS_TOKEN_KEY);
-    // console.log('USSSER', user);
-    // console.log('USSSER token', token);
     if (token) {
       getUserProfile();
-
     }
-
-
-
   }, [])
 
   const prepareQuiz = () => {
-    setOpenModal(true)
-
+    setOpenModal(true);
+    Promise.all([
+      QuestionService.getGradeList(),
+      QuestionService.getCategoryList(),
+    ]).then(([grades, categories]) => {
+      setGradeList(grades ?? []);
+      setCategoryList(categories ?? []);
+    });
   }
 
+  const handleCategoryChange = (categoryId: string) => {
+    setSelectedCategory(categoryId);
+    setSelectedTopic('');
+    setTopicList([]);
+    if (categoryId) {
+      QuestionService.getTopicList(Number(categoryId)).then((topics) => {
+        setTopicList(topics ?? []);
+      });
+    }
+  }
 
   const startQuiz = () => {
+    const quizOptions = {
+      gradeId: selectedGrade ? Number(selectedGrade) : undefined,
+      categoryId: selectedCategory ? Number(selectedCategory) : undefined,
+      topicId: selectedTopic ? Number(selectedTopic) : undefined,
+      difficulty: selectedDifficulty || undefined,
+    };
+    
+
+    setOpenModal(false);
+
     if (!user) {
-      setLoading(true)
-
-      handleGetQuestionList();
-      setTimeout(() => {
-        router.push(`/quizzes`)
-        setLoading(false)
-      }, 1000);
-
-
+      setLoading(true);
+      handleGetQuestionList(quizOptions).then(() => {
+        router.push(`/quizzes`);
+        setLoading(false);
+      });
     } else {
-      // start do quiz
-      handleStartQuiz().then((res) => {
-
-        // get question list, set to global state
-        handleGetQuestionList().then((res) => {
-          router.push(`/quizzes`)
-
-        })
-
-      })
-
+      handleStartQuiz(quizOptions).then(() => {
+        handleGetQuestionList(quizOptions).then((res) => {
+          console.log('RESSSSSS============', res)
+          router.push(`/quizzes`);
+        });
+      });
     }
 
 
@@ -154,18 +180,75 @@ export default function HomePage() {
 
       </div>
       <CommonModal title="Select to do quiz" open={openModal} onClose={() => setOpenModal(false)}>
-        <div className="min-h-[500px]">
-          <div>
-            <h1>Select options to start a quiz</h1>
+        <div className="flex flex-col gap-5 py-2">
 
+          {/* Grade */}
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium text-gray-700">Grade</label>
+            <select
+              value={selectedGrade}
+              onChange={(e) => setSelectedGrade(e.target.value)}
+              className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">Any grade</option>
+              {gradeList.map((g) => (
+                <option key={g.id} value={g.id}>{g.name}</option>
+              ))}
+            </select>
           </div>
 
-          {/* body of the form  */}
-
-          <div>
-            <button className="border border-blue-600 px-4 py-1 rounded" onClick={() => startQuiz()}>Start Quiz</button>
+          {/* Category */}
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium text-gray-700">Category</label>
+            <select
+              value={selectedCategory}
+              onChange={(e) => handleCategoryChange(e.target.value)}
+              className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">Any category</option>
+              {categoryList.map((c) => (
+                <option key={c.id} value={c.id}>{c.name}</option>
+              ))}
+            </select>
           </div>
-          
+
+          {/* Topic */}
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium text-gray-700">Topic</label>
+            <select
+              value={selectedTopic}
+              onChange={(e) => setSelectedTopic(e.target.value)}
+              disabled={!selectedCategory}
+              className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:text-gray-400"
+            >
+              <option value="">Any topic</option>
+              {topicList.map((t) => (
+                <option key={t.id} value={t.id}>{t.name}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Difficulty */}
+          <div className="flex flex-col gap-1">
+            <label className="text-sm font-medium text-gray-700">Difficulty</label>
+            <select
+              value={selectedDifficulty}
+              onChange={(e) => setSelectedDifficulty(e.target.value)}
+              className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              {DIFFICULTY_OPTIONS.map((d) => (
+                <option key={d.value} value={d.value}>{d.label}</option>
+              ))}
+            </select>
+          </div>
+
+          <button
+            onClick={() => startQuiz()}
+            className="mt-2 py-3 bg-blue-600 text-white rounded-xl font-medium text-base hover:bg-blue-500 active:scale-95 transition-all duration-150"
+          >
+            Start Quiz
+          </button>
+
         </div>
       </CommonModal>
     </main>

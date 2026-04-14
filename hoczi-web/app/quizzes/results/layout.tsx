@@ -81,9 +81,15 @@ export default function ResultLayout({
     const handleNewQuiz = () => {
         // start do quiz
         handleStartQuiz().then((res) => {
+            const payload = {
+                categoryId: null,
+                gradeId: null,
+                topicId: null,
+                difficulty: null,
+            }
 
             // get question list, set to global state
-            handleGetQuestionList().then((res) => {
+            handleGetQuestionList(payload).then((res) => {
                 router.push(`/quizzes`)
 
             })

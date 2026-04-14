@@ -8,26 +8,13 @@ import { useEffect, useRef, useState } from "react";
 const EMPTY_FORM = { content: '', explanation: '', code: '', status: 'active', type: 'mcq', difficulty: 'easy', gradeId: '', categoryId: '', topicId: '' };
 
 export function CreateQuestionForm({ onSuccess }: { onSuccess?: (id: number) => void }) {
-    const [answerContent, setAnswerContent] = useState('');
-    const [isCorrect, setIsCorrect] = useState(false);
-    const [answerSubmitting, setAnswerSubmitting] = useState(false);
-
-    const [answerModalOpen, setAnswerModalOpen] = useState(false);
-    const [answerQuestionId, setAnswerQuestionId] = useState<string | number | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [questions, setQuestions] = useState<Question[]>([]);
-
+  
     const [error, setError] = useState('');
     const [submitting, setSubmitting] = useState(false);
 
     const [categories, setCategories] = useState<Category[]>([]);
     const [topics, setTopics] = useState<Topic[]>([]);
     const [grades, setGrades] = useState<Grade[]>([]);
-
-
-
-
-
 
     const [form, setForm] = useState(EMPTY_FORM);
     const firstInputRef = useRef<HTMLInputElement>(null);
@@ -43,42 +30,6 @@ export function CreateQuestionForm({ onSuccess }: { onSuccess?: (id: number) => 
             setGrades(grs);
         });
     }, []);
-
-
-
-
-
-    function closeAnswerModal() {
-        setAnswerModalOpen(false);
-        setAnswerQuestionId(null);
-    }
-
-    function fetchQuestions() {
-        setLoading(true);
-        QuestionService.getAllQuestions()
-            .then((res) => {
-                setQuestions(Array.isArray(res) ? res : res?.data ?? []);
-            })
-            .catch(() => { })
-            .finally(() => setLoading(false));
-    }
-
-    async function handleAnswerSubmit() {
-        if (!answerContent.trim() || answerQuestionId === null) return;
-        setAnswerSubmitting(true);
-        try {
-            await QuestionService.createAnswer({
-                questionId: Number(answerQuestionId),
-                content: answerContent.trim(),
-                isCorrect: isCorrect,
-            } as any);
-            closeAnswerModal();
-            fetchQuestions();
-        } catch {
-        } finally {
-            setAnswerSubmitting(false);
-        }
-    }
 
 
     async function handleSubmit(e: React.FormEvent) {

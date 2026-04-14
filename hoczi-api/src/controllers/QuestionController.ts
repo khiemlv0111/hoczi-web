@@ -12,12 +12,18 @@ const questionService = new QuestionService();
 export class QuestionController {
 
     async getQuestionList(req: Request, res: Response) {
-        const { gradeId, categoryId, topicId } = req.query;
+        // const { gradeId, categoryId, topicId, difficulty } = req.query;
+
+        const categoryId = req.query.categoryId as number | undefined;
+        const topicId = req.query.topicId as number | undefined;
+        const gradeId = req.query.gradeId as number | undefined;
+        const difficulty = req.query.difficulty as string | undefined;
 
         const questions = await questionService.getQuestionList({
-            gradeId: gradeId ? Number(gradeId) : undefined,
-            categoryId: categoryId ? Number(categoryId) : undefined,
-            topicId: topicId ? Number(topicId) : undefined,
+            gradeId: gradeId,
+            categoryId: categoryId,
+            topicId: topicId,
+            difficulty: difficulty,
         });
         return res.json({ success: true, data: questions });
 

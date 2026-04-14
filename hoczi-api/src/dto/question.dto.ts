@@ -64,4 +64,5 @@ export interface QuestionFilterDto {
   gradeId?: number;
   categoryId?: number;
   topicId?: number;
+  difficulty?: string;
 }

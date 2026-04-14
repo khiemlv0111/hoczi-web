@@ -17,6 +17,7 @@ class QuestionRepository {
             .where(filter?.categoryId ? 'question.category_id = :categoryId' : '1=1', { categoryId: filter?.categoryId })
             .andWhere(filter?.topicId ? 'question.topic_id = :topicId' : '1=1', { topicId: filter?.topicId })
             .andWhere(filter?.gradeId ? 'question.grade_id = :gradeId' : '1=1', { gradeId: filter?.gradeId })
+            .andWhere(filter?.difficulty ? 'question.difficulty = :difficulty' : '1=1', { difficulty: filter?.difficulty })
             .orderBy('RANDOM()')
             .take(limit_count)
             .getMany();

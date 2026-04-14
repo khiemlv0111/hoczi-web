@@ -16,11 +16,15 @@ import {
     TrendingDown,
     User,
     Star,
-    LogOut
+    LogOut,
+    X,
+    ChevronDown,
+    Loader2,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
+import { QuestionService } from "@/data/services/question.service";
 
 const navMain = [
     { path: '/quizzes/results/dashboard', label: "Dashboard", icon: LayoutDashboard },
@@ -46,6 +50,17 @@ export default function ResultLayout({
 
     const { handleStartQuiz, getUserProfile, user, handleGetQuestionList } = useAppData();
 
+    // Quiz modal state
+    const [modalOpen, setModalOpen] = useState(false);
+    const [categories, setCategories] = useState<any[]>([]);
+    const [topics, setTopics] = useState<any[]>([]);
+    const [grades, setGrades] = useState<any[]>([]);
+    const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+    const [selectedTopic, setSelectedTopic] = useState<number | null>(null);
+    const [selectedGrade, setSelectedGrade] = useState<number | null>(null);
+    const [selectedDifficulty, setSelectedDifficulty] = useState<string>('');
+    const [quizLoading, setQuizLoading] = useState(false);
+
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
@@ -69,25 +84,46 @@ export default function ResultLayout({
         router.push(item.path);
     }
 
-    const handleNewQuiz = () => {
-        // start do quiz
-        handleStartQuiz().then((res) => {
-            const payload = {
-                categoryId: null,
-                gradeId: null,
-                topicId: null,
-                difficulty: null,
-            }
+    const openQuizModal = () => {
+        setSelectedCategory(null);
+        setSelectedTopic(null);
+        setSelectedGrade(null);
+        setSelectedDifficulty('');
+        setTopics([]);
+        setModalOpen(true);
+        QuestionService.getCategoryList().then(setCategories).catch(() => {});
+        QuestionService.getGradeList().then(setGrades).catch(() => {});
+    };
 
-            // get question list, set to global state
-            handleGetQuestionList(payload).then((res) => {
-                router.push(`/quizzes`)
+    const handleCategoryChange = (categoryId: number | null) => {
+        setSelectedCategory(categoryId);
+        setSelectedTopic(null);
+        setTopics([]);
+        if (categoryId) {
+            QuestionService.getTopicList(categoryId).then(setTopics).catch(() => {});
+        }
+    };
 
-            })
-
-        })
-
-    }
+    const handleStartQuizSubmit = async () => {
+        setQuizLoading(true);
+        try {
+            await handleStartQuiz({
+                categoryId: selectedCategory,
+                topicId: selectedTopic,
+                gradeId: selectedGrade,
+            });
+            await handleGetQuestionList({
+                categoryId: selectedCategory,
+                topicId: selectedTopic,
+                gradeId: selectedGrade,
+                difficulty: selectedDifficulty || null,
+            });
+            setModalOpen(false);
+            router.push('/quizzes');
+        } finally {
+            setQuizLoading(false);
+        }
+    };
 
     const handleLogout = () => {
         localStorage.clear();
@@ -153,7 +189,7 @@ export default function ResultLayout({
                 <header className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
                     <span className="font-medium text-gray-900 text-[15px]">User Dashboard</span>
                     <div className="flex items-center gap-3">
-                        <button onClick={() => handleNewQuiz()} className="cursor-pointer flex items-center gap-1.5 px-3 py-1.5 border border-gray-300 rounded-md text-[13px] hover:bg-gray-50 transition-colors">
+                        <button onClick={openQuizModal} className="cursor-pointer flex items-center gap-1.5 px-3 py-1.5 border border-gray-300 rounded-md text-[13px] hover:bg-gray-50 transition-colors">
                             <Plus size={13} />
                             Do a Quiz
                         </button>
@@ -166,6 +202,15 @@ export default function ResultLayout({
                             </button>
                             {dropdownOpen && (
                                 <div className="absolute right-0 mt-2 w-44 bg-white border border-gray-200 rounded-md shadow-lg z-50 py-1">
+                                    {user?.role === 'admin' && (
+                                        <Link
+                                            href="/admin"
+                                            className="w-full flex items-center gap-2 px-4 py-2 text-[13px] text-gray-700 hover:bg-gray-50 transition-colors"
+                                        >
+                                            <LayoutDashboard size={14} />
+                                            Admin Panel
+                                        </Link>
+                                    )}
                                     <button
                                         onClick={handleLogout}
                                         className="w-full flex items-center gap-2 px-4 py-2 text-[13px] text-red-600 hover:bg-gray-50 transition-colors"
@@ -187,6 +232,121 @@ export default function ResultLayout({
 
                 </main>
             </div>
+
+            {/* Quiz setup modal */}
+            {modalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+                    <div className="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 p-6">
+                        <div className="flex items-center justify-between mb-5">
+                            <h2 className="text-[15px] font-semibold text-gray-900">Start a Quiz</h2>
+                            <button
+                                onClick={() => setModalOpen(false)}
+                                className="p-1 rounded hover:bg-gray-100 transition-colors"
+                            >
+                                <X size={16} className="text-gray-500" />
+                            </button>
+                        </div>
+
+                        <div className="space-y-4">
+                            {/* Category */}
+                            <div>
+                                <label className="block text-[12px] font-medium text-gray-600 mb-1">Category</label>
+                                <div className="relative">
+                                    <select
+                                        value={selectedCategory ?? ''}
+                                        onChange={e => handleCategoryChange(e.target.value ? Number(e.target.value) : null)}
+                                        className="w-full appearance-none border border-gray-200 rounded-lg px-3 py-2 text-[13px] text-gray-800 bg-white pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    >
+                                        <option value="">Any category</option>
+                                        {categories.map((c: any) => (
+                                            <option key={c.id} value={c.id}>{c.name}</option>
+                                        ))}
+                                    </select>
+                                    <ChevronDown size={13} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                                </div>
+                            </div>
+
+                            {/* Topic — only shown once a category is chosen */}
+                            {selectedCategory && (
+                                <div>
+                                    <label className="block text-[12px] font-medium text-gray-600 mb-1">Topic</label>
+                                    <div className="relative">
+                                        <select
+                                            value={selectedTopic ?? ''}
+                                            onChange={e => setSelectedTopic(e.target.value ? Number(e.target.value) : null)}
+                                            className="w-full appearance-none border border-gray-200 rounded-lg px-3 py-2 text-[13px] text-gray-800 bg-white pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        >
+                                            <option value="">Any topic</option>
+                                            {topics.map((t: any) => (
+                                                <option key={t.id} value={t.id}>{t.name}</option>
+                                            ))}
+                                        </select>
+                                        <ChevronDown size={13} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Grade */}
+                            <div>
+                                <label className="block text-[12px] font-medium text-gray-600 mb-1">Grade</label>
+                                <div className="relative">
+                                    <select
+                                        value={selectedGrade ?? ''}
+                                        onChange={e => setSelectedGrade(e.target.value ? Number(e.target.value) : null)}
+                                        className="w-full appearance-none border border-gray-200 rounded-lg px-3 py-2 text-[13px] text-gray-800 bg-white pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    >
+                                        <option value="">Any grade</option>
+                                        {grades.map((g: any) => (
+                                            <option key={g.id} value={g.id}>{g.name}</option>
+                                        ))}
+                                    </select>
+                                    <ChevronDown size={13} className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                                </div>
+                            </div>
+
+                            {/* Difficulty */}
+                            <div>
+                                <label className="block text-[12px] font-medium text-gray-600 mb-1">Difficulty</label>
+                                <div className="flex gap-2">
+                                    {['', 'easy', 'medium', 'hard'].map(level => (
+                                        <button
+                                            key={level}
+                                            onClick={() => setSelectedDifficulty(level)}
+                                            className={`flex-1 py-2 rounded-lg text-[12px] font-medium border transition-colors ${
+                                                selectedDifficulty === level
+                                                    ? level === 'easy' ? 'bg-green-50 border-green-400 text-green-700'
+                                                    : level === 'medium' ? 'bg-yellow-50 border-yellow-400 text-yellow-700'
+                                                    : level === 'hard' ? 'bg-red-50 border-red-400 text-red-700'
+                                                    : 'bg-blue-50 border-blue-400 text-blue-700'
+                                                    : 'border-gray-200 text-gray-500 hover:bg-gray-50'
+                                            }`}
+                                        >
+                                            {level === '' ? 'Any' : level.charAt(0).toUpperCase() + level.slice(1)}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex gap-3 mt-6">
+                            <button
+                                onClick={() => setModalOpen(false)}
+                                className="flex-1 py-2.5 rounded-lg border border-gray-200 text-[13px] text-gray-600 hover:bg-gray-50 transition-colors"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleStartQuizSubmit}
+                                disabled={quizLoading}
+                                className="flex-1 py-2.5 rounded-lg bg-blue-600 text-white text-[13px] font-medium hover:bg-blue-500 transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
+                            >
+                                {quizLoading && <Loader2 size={13} className="animate-spin" />}
+                                {quizLoading ? 'Starting…' : 'Start Quiz'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

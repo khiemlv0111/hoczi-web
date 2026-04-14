@@ -174,7 +174,7 @@ export class QuestionController {
         const id = Number(req.params.id);
 
         const response = await questionService.getSessionDetail(id);
-        return res.json({ success: true, data: response });
+        return res.json(response);
 
     }
 

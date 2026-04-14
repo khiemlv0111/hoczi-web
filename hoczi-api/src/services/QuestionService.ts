@@ -114,14 +114,14 @@ export class QuestionService {
 
         const lastCompletedSession = userSessions.find(s => s.status === "completed");
 
-        
+
         const previousAnswers = lastCompletedSession?.user_answers ?? [];
 
         const newQuizSession = await quizSessionRepository.startQuiz(userId, quizId);
 
         let questionList: any[] = [];
 
-        let message='';
+        let message = '';
 
         if (previousAnswers.length > 0) {
             // const questionIds = previousAnswers.map((q) => q.question_id);
@@ -237,6 +237,43 @@ export class QuestionService {
         }
 
     }
+
+    async getSessionDetail(sessionId: number) {
+
+        const session = await quizSessionRepository.findSessionDetail(sessionId);
+        const userAnswers = session?.user_answers ?? [];
+
+        const questionIds = userAnswers
+            .map((a) => a.question_id)
+            .filter((id): id is number => id !== null);
+
+        const questions = await questionRepository.findByIds(questionIds);
+
+        // Map answer vào từng question
+        const questionsWithAnswers = questions.map((q) => {
+            const userAnswer = userAnswers.find((a) => a.question_id === q.id);
+            return {
+                ...q,
+                user_answer: {
+                    answer_id: userAnswer?.answer_id ?? null,
+                    is_correct: userAnswer?.is_correct ?? null,
+                },
+            };
+        });
+
+        return {
+            message: "get session success",
+            success: true,
+            data: {
+                session,
+                questions: questionsWithAnswers,
+            },
+        };
+
+    }
+
+
+
 
 
     async getQuizSessionDetail(id: number) {

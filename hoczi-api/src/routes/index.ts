@@ -28,6 +28,7 @@ routes.use('/api/admin', adminRoutes);
 routes.use('/api/questions', questionRoutes);
 
 routes.use(authMiddleware);
+
 routes.use('/api/users', userRoutes);
 
 

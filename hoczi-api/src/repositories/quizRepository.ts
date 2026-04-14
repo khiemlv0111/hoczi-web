@@ -20,9 +20,9 @@ class QuizRepository {
 
     async findByUserId(userId: number) {
         return this.repo.find({
-        where: { created_by: userId },
-        relations: ['quiz_sessions']
-    });
+            where: { created_by: userId },
+            relations: ['quiz_sessions']
+        });
     }
 
     async getDetail(id: number) {
@@ -53,6 +53,14 @@ class QuizRepository {
             created_by: data.created_by
         });
         return this.repo.save(quiz);
+    }
+
+
+    async findSessionDetail(sessionId: number) {
+        return this.repo.find({
+            where: { created_by: sessionId },
+            relations: ['quiz_sessions']
+        });
     }
 
 

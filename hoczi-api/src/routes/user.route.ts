@@ -11,7 +11,6 @@ import { UserController } from '../controllers/UserController';
 const userRoutes = Router();
 
 
-
 userRoutes.get('/user-profile', new AuthController().userProfile);
 
 userRoutes.get('/user-list', new UserController().getUserList);
@@ -27,11 +26,9 @@ userRoutes.get('/my-quizzes', new QuestionController().myQuizzes);
 userRoutes.get('/get-quiz-session-detail/:id', new QuestionController().getQuizSessionDetail);
 
 
-
+userRoutes.get('/session-detail/:id', new QuestionController().getSessionDetail);
 
 userRoutes.post('/start-retry/:id', new QuestionController().startRetry);
-
-
 
 
 export default userRoutes;

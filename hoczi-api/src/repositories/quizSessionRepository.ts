@@ -21,7 +21,7 @@ class QuizSessionRepository {
         return this.repo.findOne({
             where: { id },
             relations: ['user_answers'],
-            
+
         });
     }
 
@@ -65,6 +65,14 @@ class QuizSessionRepository {
             correct_answers: data.correct_answers,
         });
         return this.repo.save(quizSession);
+    }
+
+
+    async findSessionDetail(sessionId: number) {
+        return this.repo.findOne({
+            where: { id: sessionId },
+            relations: ['quiz', 'user', 'user_answers'] //////////////////////
+        });
     }
 
 

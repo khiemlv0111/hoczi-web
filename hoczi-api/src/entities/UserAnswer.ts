@@ -6,7 +6,6 @@ import {
   JoinColumn,
 } from "typeorm";
 import { QuizSession } from "./QuizSession";
-// import { QuizSession } from "./quiz-session.entity";
 
 @Entity("user_answers")
 export class UserAnswer {

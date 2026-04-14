@@ -69,7 +69,7 @@ export class QuestionController {
 
     async getAllQuestion(req: Request, res: Response) {
 
-       const page = req.query.page ? Number(req.query.page) : 1;
+        const page = req.query.page ? Number(req.query.page) : 1;
         const limit = req.query.limit ? Number(req.query.limit) : 20;
 
         const response = await questionService.getAllQuestions(page, limit);
@@ -166,6 +166,18 @@ export class QuestionController {
         const response = await questionService.getQuizSessionDetail(id);
         return res.json(response);
     }
+
+
+
+    async getSessionDetail(req: Request, res: Response) {
+
+        const id = Number(req.params.id);
+
+        const response = await questionService.getSessionDetail(id);
+        return res.json({ success: true, data: response });
+
+    }
+
 
 
 

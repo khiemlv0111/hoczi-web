@@ -113,6 +113,8 @@ export class QuestionService {
         }
 
         const lastCompletedSession = userSessions.find(s => s.status === "completed");
+
+        
         const previousAnswers = lastCompletedSession?.user_answers ?? [];
 
         const newQuizSession = await quizSessionRepository.startQuiz(userId, quizId);

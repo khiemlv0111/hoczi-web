@@ -20,7 +20,8 @@ class QuizSessionRepository {
     async getDetail(id: number) {
         return this.repo.findOne({
             where: { id },
-            relations: ['user_answers']
+            relations: ['user_answers'],
+            
         });
     }
 
@@ -34,7 +35,8 @@ class QuizSessionRepository {
     async findByQuizId(quizId: number) {
         return this.repo.find({
             where: { quiz_id: quizId },
-            relations: ['quiz', 'user_answers']
+            relations: ['quiz', 'user_answers'],
+            order: { end_time: 'DESC' }
         });
     }
 

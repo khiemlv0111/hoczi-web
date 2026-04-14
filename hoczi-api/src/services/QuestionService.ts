@@ -119,8 +119,12 @@ export class QuestionService {
 
         let questionList: any[] = [];
 
+        let message='';
+
         if (previousAnswers.length > 0) {
             // const questionIds = previousAnswers.map((q) => q.question_id);
+
+            message = 'Questions lấy trong quiz'
 
             const questionIds = previousAnswers
                 .map((q) => q.question_id)
@@ -131,6 +135,8 @@ export class QuestionService {
             questionList = await questionRepository.findByIds(questionIds);
 
         } else {
+
+            message = 'Tạo questions mới'
 
             const filter = {
                 gradeId: quiz.grade_id,
@@ -143,7 +149,7 @@ export class QuestionService {
         }
 
         return {
-            message: "retry quiz success",
+            message: message,
             success: true,
             quiz: quiz,
             quizSession: newQuizSession,

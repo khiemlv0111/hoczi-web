@@ -2,12 +2,12 @@
 
 import { QuestionService } from "@/data/services/question.service";
 import { Category, Grade, Question, Topic } from "@/data/types";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 
 const EMPTY_FORM = { content: '', explanation: '', code: '', status: 'active', type: 'mcq', difficulty: 'easy', gradeId: '', categoryId: '', topicId: '' };
 
-export function CreateQuestionForm() {
+export function CreateQuestionForm({ onSuccess }: { onSuccess?: () => void }) {
     const [answerContent, setAnswerContent] = useState('');
     const [isCorrect, setIsCorrect] = useState(false);
     const [answerSubmitting, setAnswerSubmitting] = useState(false);
@@ -31,6 +31,18 @@ export function CreateQuestionForm() {
 
     const [form, setForm] = useState(EMPTY_FORM);
     const firstInputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        Promise.all([
+            QuestionService.getCategoryList(),
+            QuestionService.getTopicList(),
+            QuestionService.getGradeList(),
+        ]).then(([cats, tops, grs]) => {
+            setCategories(cats);
+            setTopics(tops);
+            setGrades(grs);
+        });
+    }, []);
 
 
 
@@ -84,8 +96,7 @@ export function CreateQuestionForm() {
                 categoryId: form.categoryId ? Number(form.categoryId) : undefined,
                 topicId: form.topicId ? Number(form.topicId) : undefined,
             });
-            // closeModal();
-            fetchQuestions();
+            onSuccess?.();
         } catch {
             setError('Failed to create question. Please try again.');
         } finally {

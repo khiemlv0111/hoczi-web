@@ -175,7 +175,8 @@ export function QuestionPage() {
                                             <th className="pb-2 pr-4 font-medium">Content</th>
                                             <th className="pb-2 pr-4 font-medium">Status</th>
                                             <th className="pb-2 pr-4 font-medium">Answer</th>
-                                            <th className="pb-2 pr-4 font-medium">Created At</th>
+                                            <th className="pb-2 pr-4 font-medium">CreatedAt</th>
+                                            <th className="pb-2 pr-4 font-medium">Type</th>
                                             <th className="pb-2 font-medium text-right">Action</th>
                                         </tr>
                                     </thead>
@@ -211,12 +212,15 @@ export function QuestionPage() {
                                                         {JSON.stringify(q.answers?.length)}
                                                     </td>
                                                     <td className="py-2 pr-4 text-gray-400 text-[12px]">
-                                                        {q.createdAt
-                                                            ? new Date(q.createdAt).toLocaleDateString()
+                                                        {q.created_at
+                                                            ? new Date(q.created_at).toLocaleDateString()
                                                             : '—'}
                                                     </td>
-                                                    <td className="py-2 text-right">
-                                                        <div className="flex items-center justify-end gap-2">
+                                                    <td className="py-2 pr-1 text-gray-500 max-w-[260px] truncate">
+                                                        {q.type}
+                                                    </td>
+                                                    <td className="py-2 text-right max-w-[112px]">
+                                                        <div className="flex items-center justify-end gap-1">
                                                             <button
                                                                 onClick={() => openAnswerModal(q.id)}
                                                                 className="text-[11px] px-3 py-1 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition-colors"

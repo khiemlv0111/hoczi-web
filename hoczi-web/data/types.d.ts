@@ -96,7 +96,8 @@ export interface Question {
     explanation?: string;
     status?: string;
     answers?: any[] | undefined;
-    createdAt?: string;
+    created_at?: string;
+    type?: string;
     [key: string]: unknown;
 }
 

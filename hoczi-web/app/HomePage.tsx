@@ -8,12 +8,14 @@ import Cookies from "js-cookie";
 import { APP_ACCESS_TOKEN_KEY } from "@/data/http";
 import { UserService } from "@/data/services/user.service";
 import { FullScreenLoading } from "./components/FullScreenLoading";
+import { CommonModal } from "./components/modal/CommonModal";
 
 
 export default function HomePage() {
   const { handleStartQuiz, getUserProfile, user, handleGetQuestionList } = useAppData();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     const token = Cookies.get(APP_ACCESS_TOKEN_KEY);
@@ -28,8 +30,13 @@ export default function HomePage() {
 
   }, [])
 
-
   const startQuiz = () => {
+    setOpenModal(true)
+
+  }
+
+
+  const startQuizzzzz = () => {
     if (!user) {
       setLoading(true)
 
@@ -146,6 +153,11 @@ export default function HomePage() {
 
 
       </div>
+      <CommonModal title="Select to do quiz" open={openModal} onClose={() => setOpenModal(false)}>
+        <div className="min-h-[500px]">
+          <h1>Select options to start a quiz</h1>
+        </div>
+      </CommonModal>
     </main>
   );
 }

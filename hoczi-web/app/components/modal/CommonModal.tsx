@@ -1,7 +1,7 @@
 import { X } from "lucide-react";
 import { useState } from "react";
 
-export function CommonModal({ open = false, onClose, children }: Readonly<{ open?: boolean, onClose: Function; children: React.ReactNode }>) {
+export function CommonModal({ open = false, onClose, title="", children }: Readonly<{ open?: boolean, onClose: Function;title?:string; children: React.ReactNode }>) {
     // const [open, setOpen] = useState(true)
     const closeAnswerModal = () => {
         // setOpen(false);
@@ -16,7 +16,7 @@ export function CommonModal({ open = false, onClose, children }: Readonly<{ open
                         <button onClick={() => { onClose() }} className="text-gray-400 cursor-pointer hover:text-gray-600 text-xl leading-none"><X /></button>
                     </div>
                     <div>
-                        <h2 className="text-[15px] font-semibold text-gray-900">{'Modal Title'}</h2>
+                        <h2 className="text-[15px] font-semibold text-gray-900">{title}</h2>
                     </div>
 
                     {children}

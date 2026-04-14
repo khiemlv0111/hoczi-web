@@ -69,21 +69,17 @@ export class UserService {
     }
 
 
+    static async getSessionDetail(id: number, token?: string) {
+
+        //  const response = await getServerRequest('/api/users/user-profile', true);
+
+        const response = await getRequest(`/api/users/session-detail/${id}`, true);
+
+        // const response = await getServerRequest(`/api/users/session-detail/${id}`, token, true);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return response
+    }
 
 
 

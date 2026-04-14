@@ -103,7 +103,7 @@ export class QuestionService {
         const allSessions = await quizSessionRepository.findByQuizId(quizId);
         const userSessions = allSessions.filter(s => s.user_id === userId);
 
-        if (userSessions.length >= 5) {
+        if (userSessions.length >= 3) {
             return {
                 message: "you are not allowed",
                 success: false,

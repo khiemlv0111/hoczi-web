@@ -40,7 +40,7 @@ export class QuestionService {
 
         const query = params.toString() ? `?${params.toString()}` : '';
         const response = await getRequest(`/api/questions/all-questions${query}`, false);
-        return response.data
+        return response
     }
 
     static async createQuestion(payload: any) {

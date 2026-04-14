@@ -8,7 +8,12 @@ export const Navbar = () => {
     const pathname = usePathname()
 
 
-    if (!pathname.startsWith('/quizzes') && pathname !== '/') return null;
+    const noLayoutPaths = ['/quizzes/results', '/admin', '/register'];
+    if (noLayoutPaths.some(path => pathname.startsWith(path))) return null;
+
+    let textColor = pathname.startsWith('/auth') ? 'text-gray-800' : 'text-white'
+
+
 
     const handleLogout = () => {
         localStorage.clear();
@@ -20,7 +25,7 @@ export const Navbar = () => {
             <nav className="fixed top-0 left-0 w-full z-50 border-b border-white/10">
                 <ul className="flex items-center justify-between gap-6 px-6 py-4 max-w-2xl mx-auto">
                     <li>
-                        <Link href="/" className="text-blue-500 text-white font-medium text-sm hover:opacity-75 transition-opacity">
+                        <Link href="/" className={`text-blue-500 ${textColor} font-medium text-sm hover:opacity-75 transition-opacity`}>
                             Home
                         </Link>
                     </li>

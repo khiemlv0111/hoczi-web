@@ -1,5 +1,6 @@
 
 import { deleteRequest, getAccessToken, getRequest, getRequestPublic, postRequest } from "../http";
+import { PaginationPayload } from "../types";
 
 // import { getAccessToken, getRequest, getRequestPublic, postRequest } from "../http";
 
@@ -11,10 +12,7 @@ export type QuestionPayload = {
     difficulty?: string;
 }
 
-export type PaginationPayload = {
-    page?: number;
-    limit?: number;
-}
+
 export class QuestionService {
     static async getQuestionList(payload: QuestionPayload) {
         const params = new URLSearchParams();

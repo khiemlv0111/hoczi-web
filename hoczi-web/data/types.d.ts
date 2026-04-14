@@ -118,3 +118,9 @@ export interface Grade {
     name: string,
 
 }
+
+
+export type PaginationPayload = {
+    page?: number;
+    limit?: number;
+}

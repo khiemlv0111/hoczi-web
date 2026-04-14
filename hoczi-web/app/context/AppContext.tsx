@@ -7,12 +7,15 @@ import { useRouter } from "next/navigation";
 import { createContext, useContext, useState, ReactNode } from "react"
 // import { cookies } from "next/headers";
 import Cookies from "js-cookie";
-type User = {
+import { PaginationPayload } from "@/data/types";
+export type User = {
     id: number,
     email: string,
     username: string,
     name: string,
     role?: string,
+    quiz_sessions?: any[] | undefined
+
 }
 export type LoginPayload = {
     email: string,
@@ -61,6 +64,7 @@ type Question = {
 type AppContextType = {
     data: any,
     user: User | undefined,
+    users: User[] | undefined,
     quiz: Quiz | undefined,
     quizSession: QuizSession | undefined,
     quizSessions: any[] | undefined,
@@ -75,6 +79,8 @@ type AppContextType = {
     handleGetQuizSessions: () => void;
     handleRetryQuiz: (quizId: number) => Promise<any>;
     handleGetQuestionList: (payload: any) => Promise<any>;
+    handleGetUsers: ({ page, limit }: PaginationPayload) => Promise<any>;
+
 }
 
 const AppContext = createContext<AppContextType | null>(null)
@@ -87,6 +93,11 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const [quizSession, setQuizSession] = useState<QuizSession | undefined>(undefined);
     const [quizSessions, setQuizSessions] = useState<any[] | undefined>(undefined);
     const [listQuestions, setListQuestions] = useState<Question[] | undefined>(undefined);
+
+    const [users, setUsers] = useState<User[] | undefined>(undefined);
+
+
+
     const router = useRouter();
 
     const login = ({ email, password }: LoginPayload) => {
@@ -122,10 +133,16 @@ export function AppProvider({ children }: { children: ReactNode }) {
     // get my quiz session results
     const handleGetQuizSessions = () => {
         QuestionService.getQuizSessions().then((res) => {
-            console.log("RESPONSE=====quizzesssion", res);
             setQuizSessions(res);
         })
     }
+
+    // get my quiz session results
+    const handleGetUsers = async ({ page, limit }: PaginationPayload) => {
+        const response = await UserService.getAllUsers({ page, limit });
+        return response
+    }
+
 
     // get 15 question list
     const handleGetQuestionList = async (payload: any) => {
@@ -184,6 +201,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         <AppContext.Provider value={{
             data,
             user,
+            users,
             quizSession,
             quizSessions,
             quiz,
@@ -194,6 +212,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             login,
             getUserProfile,
             handleGetQuestionList,
+            handleGetUsers,
         }}>
             {children}
         </AppContext.Provider>

@@ -40,7 +40,8 @@ class QuestionRepository {
     async findByIds(ids: number[]) {
         // find questions by ids 
         return this.repo.find({
-            where: { id: In(ids) }
+            where: { id: In(ids) },
+            relations: ['answers']
         });
     }
 

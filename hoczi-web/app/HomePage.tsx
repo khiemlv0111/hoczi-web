@@ -9,6 +9,7 @@ import { APP_ACCESS_TOKEN_KEY } from "@/data/http";
 import { UserService } from "@/data/services/user.service";
 import { FullScreenLoading } from "./components/FullScreenLoading";
 import { CommonModal } from "./components/modal/CommonModal";
+import Image from "next/image";
 
 const DIFFICULTY_OPTIONS = [
   { value: '', label: 'Any difficulty' },
@@ -68,7 +69,7 @@ export default function HomePage() {
       topicId: selectedTopic ? Number(selectedTopic) : undefined,
       difficulty: selectedDifficulty || undefined,
     };
-    
+
 
     setOpenModal(false);
 
@@ -127,15 +128,15 @@ export default function HomePage() {
 
         {/* Logo badge */}
         <div
-          className="w-24 h-24 rounded-3xl mb-9 flex items-center justify-center relative overflow-hidden"
+          className="w-24 h-24 items-center justify-center relative overflow-hidden"
           style={{
-            background: "linear-gradient(145deg, #8B3080 0%, #C84B30 100%)",
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-3xl" />
-          <span className="relative text-white font-bold text-3xl tracking-tight font-serif">
+          <div className="absolute inset-0" />
+          <Image style={{borderRadius: 10}} src={'https://d1y3v0ou093g3m.cloudfront.net/6dd5cda4-6084-4bfe-a427-a4d6f3440633-logo_hz.png'} alt="logo" width={100} height={100} />
+          {/* <span className="relative text-white font-bold text-3xl tracking-tight font-serif">
             HZ<sup className="text-lg font-normal"></sup>
-          </span>
+          </span> */}
         </div>
 
         {/* Title */}

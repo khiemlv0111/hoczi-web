@@ -12,11 +12,9 @@ const questionService = new QuestionService();
 export class QuestionController {
 
     async getQuestionList(req: Request, res: Response) {
-        // const { gradeId, categoryId, topicId, difficulty } = req.query;
-
-        const categoryId = req.query.categoryId as number | undefined;
-        const topicId = req.query.topicId as number | undefined;
-        const gradeId = req.query.gradeId as number | undefined;
+        const categoryId = req.query.categoryId ? Number(req.query.categoryId) : undefined;
+        const topicId = req.query.topicId ? Number(req.query.topicId) : undefined;
+        const gradeId = req.query.gradeId ? Number(req.query.gradeId) : undefined;
         const difficulty = req.query.difficulty as string | undefined;
 
         const questions = await questionService.getQuestionList({

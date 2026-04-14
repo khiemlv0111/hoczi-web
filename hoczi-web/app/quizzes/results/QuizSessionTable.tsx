@@ -87,7 +87,12 @@ export default function QuizSessionTable() {
     console.log('CLICK detail', detail);
     const quizId = Number(detail?.quiz_id)
     if (quizId) {
-      handleRetryQuiz(quizId)
+      handleRetryQuiz(quizId).then((res) => {
+        console.log("QUESTION LIST", res.questions);
+        router.push(`/quizzes`);
+        
+
+      })
     }
 
 
@@ -189,9 +194,9 @@ export default function QuizSessionTable() {
 
       {/* Detail panel */}
       {detail && (
-        <div className="w-80 border-l border-gray-200 bg-white flex flex-col overflow-y-auto shrink-0">
+        <div className="w-80 border-l max-h-[85vh] border-gray-200 bg-white flex flex-col overflow-y-auto shrink-0">
           {/* Header */}
-          <div className="px-5 py-4 border-b border-gray-100">
+          <div className="px-5 py-4 border-b border-gray-100 h-[67px]">
             <h2 className="font-semibold text-gray-900 text-base leading-tight">
               {detail.quiz?.title ?? "—"}
             </h2>
@@ -286,7 +291,7 @@ export default function QuizSessionTable() {
             <button className="flex-1 flex items-center justify-center gap-1.5 py-2 text-sm text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
               <Eye size={14} /> Review
             </button>
-            <button onClick={handleRetry} className="flex-1 flex items-center justify-center gap-1.5 py-2 text-sm text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors">
+            <button onClick={handleRetry} className="flex-1 cursor-pointer flex items-center justify-center gap-1.5 py-2 text-sm text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors">
               <RotateCcw size={14} /> Retry
             </button>
           </div>

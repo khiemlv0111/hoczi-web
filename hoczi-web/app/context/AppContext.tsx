@@ -44,6 +44,19 @@ type QuizSession = {
     quiz_id: number,
 }
 
+type Question = {
+    id: number;
+    content?: string;
+    type?: string;
+    difficulty?: string;
+    category_id?: number;
+    topic_id?: number;
+    grade_id?: number;
+    code?: any;
+    explanation?: string;
+    created_by?: number;
+}
+
 
 type AppContextType = {
     data: any,
@@ -51,6 +64,7 @@ type AppContextType = {
     quiz: Quiz | undefined,
     quizSession: QuizSession | undefined,
     quizSessions: any[] | undefined,
+    listQuestions: Question[] | undefined,
 
     login: (loginData: LoginPayload) => void;
     // handleStartQuiz: () => Promise;
@@ -59,7 +73,8 @@ type AppContextType = {
 
     getUserProfile: () => void;
     handleGetQuizSessions: () => void;
-    handleRetryQuiz: (quizId: number) => void;
+    handleRetryQuiz: (quizId: number) => Promise<any>;
+    handleGetQuestionList: () => Promise<any>;
 }
 
 const AppContext = createContext<AppContextType | null>(null)
@@ -71,6 +86,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const [quiz, setQuiz] = useState<Quiz | undefined>(undefined);
     const [quizSession, setQuizSession] = useState<QuizSession | undefined>(undefined);
     const [quizSessions, setQuizSessions] = useState<any[] | undefined>(undefined);
+    const [listQuestions, setListQuestions] = useState<Question[] | undefined>(undefined);
     const router = useRouter();
 
     const login = ({ email, password }: LoginPayload) => {
@@ -103,6 +119,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         })
     }
 
+    // get my quiz session results
     const handleGetQuizSessions = () => {
         QuestionService.getQuizSessions().then((res) => {
             console.log("RESPONSE=====quizzesssion", res);
@@ -110,16 +127,33 @@ export function AppProvider({ children }: { children: ReactNode }) {
         })
     }
 
-    const handleRetryQuiz = (quizId: number) => {
-        QuestionService.retryQuiz(quizId).then((res) => {
-            console.log("RESPONSE=====quiz", res);
-            // setQuizSessions(res);
-        })
+    // get 15 question list
+    const handleGetQuestionList = async () => {
+        const res = await QuestionService.getQuestionList();
+
+        setListQuestions(res.data);
+        return res;
+
+    }
+
+    const handleRetryQuiz = async (quizId: number) => {
+        const quizData = await QuestionService.retryQuiz(quizId);
+        // setQuiz(quizData.quiz);
+        // setQuizSession(quizData.quizSession);
+        console.log('quizData', quizData);
+
+        setQuiz(quizData.quiz);
+        setQuizSession(quizData.quizSession);
+
+        setListQuestions(quizData.questions);
+
+        return quizData
+
     }
 
     const handleStartQuiz = async (data?: any) => {
         const payload = {
-            title: 'Do free quiz',
+            title: `${user?.name} Do free quiz`,
             description: 'Student do free quizz',
             category_id: data?.categoryId,
             topic_id: data?.topicId,
@@ -135,18 +169,28 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setQuiz(quizData.quiz);
         setQuizSession(quizData.quizSession);
 
+        console.log('quizData: =====', quizData);
+
+
         return quizData;
 
     }
 
 
-
     return (
         <AppContext.Provider value={{
-            data, user, quizSession, quizSessions, quiz,
-            handleStartQuiz, handleGetQuizSessions,
+            data,
+            user,
+            quizSession,
+            quizSessions,
+            quiz,
+            listQuestions,
+            handleStartQuiz,
+            handleGetQuizSessions,
             handleRetryQuiz,
-            login, getUserProfile
+            login,
+            getUserProfile,
+            handleGetQuestionList,
         }}>
             {children}
         </AppContext.Provider>

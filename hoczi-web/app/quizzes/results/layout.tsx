@@ -51,7 +51,7 @@ export default function ResultLayout({
 
     }
     return (
-        <div className="flex min-h-screen bg-gray-100 font-sans text-sm">
+        <div className="flex h-screen bg-gray-100 font-sans text-sm">
             {/* Sidebar */}
             <aside className="w-56 min-w-[220px] bg-white border-r border-gray-200 flex flex-col py-2">
                 {/* Logo */}

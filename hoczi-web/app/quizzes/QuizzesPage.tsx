@@ -284,17 +284,18 @@ export function QuizPage() {
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [finished, setFinished] = useState(false);
   const [questions, setQuestions] = useState<any[]>([]);
-  const { getUserProfile, user, quiz, quizSession } = useAppData();
+  const { getUserProfile, user, quiz, quizSession, listQuestions } = useAppData();
   const router = useRouter();
 
 
   useEffect(() => {
-    if (user) {
-      if (!quiz) {
-        // router.push(`/`);
-      }
+    
 
-    }
+
+    // QuestionService.getQuizSessions().then((res) => {
+    //         console.log("RESPONSE=====quizzesssion", res);
+    //         setQuizSessions(res);
+    //     })
 
 
 
@@ -302,9 +303,18 @@ export function QuizPage() {
   }, []);
 
   useEffect(() => {
-    QuestionService.getQuestionList().then((res) => {
-      setQuestions(normalizeQuestions(res.data ?? []));
-    });
+
+    // call api to get questions here
+    if(listQuestions){
+      console.log('Quest LIST====', listQuestions);
+      
+      setQuestions(normalizeQuestions(listQuestions ?? []));
+      
+    } else {
+      router.push(`/`)
+
+    }
+
   }, []);
 
   if (questions.length === 0) {

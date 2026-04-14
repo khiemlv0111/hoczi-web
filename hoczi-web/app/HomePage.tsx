@@ -7,11 +7,13 @@ import { useAppData } from "./context/AppContext";
 import Cookies from "js-cookie";
 import { APP_ACCESS_TOKEN_KEY } from "@/data/http";
 import { UserService } from "@/data/services/user.service";
+import { FullScreenLoading } from "./components/FullScreenLoading";
 
 
 export default function HomePage() {
-  const { handleStartQuiz, getUserProfile, user } = useAppData();
+  const { handleStartQuiz, getUserProfile, user, handleGetQuestionList } = useAppData();
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const token = Cookies.get(APP_ACCESS_TOKEN_KEY);
@@ -29,13 +31,25 @@ export default function HomePage() {
 
   const startQuiz = () => {
     if (!user) {
-      router.push(`/quizzes`)
+      setLoading(true)
+
+      handleGetQuestionList();
+      setTimeout(() => {
+        router.push(`/quizzes`)
+        setLoading(false)
+      }, 1000);
+
 
     } else {
+      // start do quiz
       handleStartQuiz().then((res) => {
-        console.log("QUISSSSSS", res);
-        
-        router.push(`/quizzes`)
+
+        // get question list, set to global state
+        handleGetQuestionList().then((res) => {
+          router.push(`/quizzes`)
+
+        })
+
       })
 
     }
@@ -100,6 +114,10 @@ export default function HomePage() {
         <p className="text-white/70 text-base leading-relaxed max-w-sm mb-11">
           From basic to advanced: Learn with Hoczi.com
         </p>
+
+        {
+          loading && <FullScreenLoading />
+        }
 
         {
           user ? (

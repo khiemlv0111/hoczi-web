@@ -10,12 +10,12 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
 
     console.log("TOKEN", token);
     console.log("IDDDD", id);
-    
+
     
 
     return (
         <>
-            <SessionDetailPage />
+            <SessionDetailPage sessionId={id}/>
 
         </>
     )

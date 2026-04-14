@@ -11,7 +11,6 @@ import {
 import { Category } from "./Category";
 import { Topic } from "./Topic";
 import { Grade } from "./Grade";
-import { Question } from "./Question";
 import { QuizSession } from "./QuizSession";
 
 @Entity("quizzes")
@@ -66,9 +65,6 @@ export class Quiz {
     // 🔗 Grade
     @Column({ type: "int", nullable: true })
     grade_id?: number;
-
-    @OneToMany(() => Question, (question) => question)
-    questions!: Question[];
 
     @ManyToOne(() => Grade, (grade) => grade.id, {
         onDelete: "SET NULL",

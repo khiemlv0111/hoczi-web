@@ -103,7 +103,7 @@ export class QuestionService {
         const allSessions = await quizSessionRepository.findByQuizId(quizId);
         const userSessions = allSessions.filter(s => s.user_id === userId);
 
-        if (userSessions.length >= 3) {
+        if (userSessions.length >= 5) {
             return {
                 message: "you are not allowed",
                 success: false,
@@ -117,12 +117,38 @@ export class QuestionService {
 
         const newQuizSession = await quizSessionRepository.startQuiz(userId, quizId);
 
+        let questionList: any[] = [];
+
+        if (previousAnswers.length > 0) {
+            // const questionIds = previousAnswers.map((q) => q.question_id);
+
+            const questionIds = previousAnswers
+                .map((q) => q.question_id)
+                .filter((id): id is number => id !== null);
+            // const questionIds = previousAnswers.map((q) => q.question_id);
+
+            // questionList = await questionRepository.findByIds(questionIds);
+            questionList = await questionRepository.findByIds(questionIds);
+
+        } else {
+
+            const filter = {
+                gradeId: quiz.grade_id,
+                categoryId: quiz.category_id,
+                topicId: quiz.topic_id,
+            };
+
+            questionList = await questionRepository.findAll(filter, this.QUIZ_QUESTION_LIMIT);
+
+        }
+
         return {
             message: "retry quiz success",
             success: true,
             quiz: quiz,
             quizSession: newQuizSession,
-            userAnswers: previousAnswers
+            userAnswers: previousAnswers,
+            questions: questionList
         }
 
     }

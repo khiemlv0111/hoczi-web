@@ -1,7 +1,7 @@
 import { AppDataSource } from '../data-source';
 import { CreateQuestionRequest, QuestionFilterDto } from '../dto/question.dto';
 import { Question } from '../entities/Question';
-import { FindOptionsWhere, ILike } from 'typeorm';
+import { FindOptionsWhere, ILike, In } from 'typeorm';
 
 class QuestionRepository {
     private get repo() {
@@ -35,6 +35,13 @@ class QuestionRepository {
 
     async findById(id: number) {
         return this.repo.findOne({ where: { id } });
+    }
+
+    async findByIds(ids: number[]) {
+        // find questions by ids 
+        return this.repo.find({
+            where: { id: In(ids) }
+        });
     }
 
     async findByQuestionId(questionId: number) {

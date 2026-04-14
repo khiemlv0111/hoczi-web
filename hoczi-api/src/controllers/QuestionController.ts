@@ -68,13 +68,11 @@ export class QuestionController {
 
 
     async getAllQuestion(req: Request, res: Response) {
-        const { gradeId, categoryId, topicId } = req.query;
 
-        const questions = await questionService.getAllQuestions({
-            gradeId: gradeId ? Number(gradeId) : undefined,
-            categoryId: categoryId ? Number(categoryId) : undefined,
-            topicId: topicId ? Number(topicId) : undefined,
-        });
+       const page = req.query.page ? Number(req.query.page) : 1;
+        const limit = req.query.limit ? Number(req.query.limit) : 20;
+
+        const questions = await questionService.getAllQuestions(page, limit);
         return res.json({ success: true, data: questions });
 
     }

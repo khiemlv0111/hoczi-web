@@ -8,6 +8,21 @@ class QuestionRepository {
         return AppDataSource.getRepository(Question);
     }
 
+    async findQuestions(page: number, limit: number) {
+        const offset = (page - 1) * limit;
+
+        const [data, total] = await this.repo.findAndCount({
+            relations: ["answers"],
+            order: { id: "DESC" },
+            take: limit,
+            skip: offset,
+        });
+
+        return { data, total };
+    }
+
+
+
     async findAll(filter?: QuestionFilterDto, limit?: number) {
         let limit_count = limit ? limit : 99999;
         // Lấy random IDs trước

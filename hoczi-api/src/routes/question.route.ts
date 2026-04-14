@@ -9,6 +9,7 @@ const questionRoutes = Router();
 
 // quizzRoutes.post('/create-user', new QuizzController().homePage);
 questionRoutes.get('/question-list', new QuestionController().getQuestionList);
+
 questionRoutes.get('/all-questions', new QuestionController().getAllQuestion);
 
 questionRoutes.get('/question-detail/:id', new QuestionController().getQuestionDetail);

@@ -25,8 +25,8 @@ export class QuestionService {
         return questionRepository.deleteQuestion(questionId);
     }
 
-    async getAllQuestions(filter?: QuestionFilterDto) {
-        const questions = await questionRepository.findAll(filter);
+    async getAllQuestions(page: number, limit: number) {
+        const questions = await questionRepository.findQuestions(page, limit);
         return questions;
 
     }

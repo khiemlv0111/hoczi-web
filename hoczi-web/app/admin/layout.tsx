@@ -62,9 +62,16 @@ export default function AdminLayout({
     children: React.ReactNode;
 }>) {
     const router = useRouter();
-    const { user } = useAppData();
+    const { user, getUserProfile } = useAppData();
+
     useEffect(() => {
+        getUserProfile();
+    },[]);
+
+    useEffect(() => {
+        // console.log('USERS', user)
         if (user) {
+            
             if (user.role != 'admin') {
                 router.push(`/`)
             }

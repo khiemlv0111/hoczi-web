@@ -10,6 +10,11 @@ export type QuestionPayload = {
     topicId?: number;
     difficulty?: string;
 }
+
+export type PaginationPayload = {
+    page?: number;
+    limit?: number;
+}
 export class QuestionService {
     static async getQuestionList(payload: QuestionPayload) {
         const params = new URLSearchParams();
@@ -28,9 +33,14 @@ export class QuestionService {
 
     }
 
-    static async getAllQuestions() {
-        const response = await getRequest('/api/questions/all-questions', false);
-        return response
+    static async getAllQuestions(payload: PaginationPayload) {
+        const params = new URLSearchParams();
+        if (payload.page) params.append('page', String(payload.page));
+        if (payload.limit) params.append('limit', String(payload.limit));
+
+        const query = params.toString() ? `?${params.toString()}` : '';
+        const response = await getRequest(`/api/questions/all-questions${query}`, false);
+        return response.data
     }
 
     static async createQuestion(payload: any) {

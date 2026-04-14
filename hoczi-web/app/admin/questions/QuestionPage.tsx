@@ -46,20 +46,23 @@ export function QuestionPage() {
 
     const [categoryId, setCategoryId] = useState<number | undefined>(undefined);
 
+    const [page, setPage] = useState(1);
+    const [total, setTotal] = useState(0);
+    const LIMIT = 20;
+    const totalPages = Math.max(1, Math.ceil(total / LIMIT));
 
-
-    function fetchQuestions() {
+    function fetchQuestions({ page, limit }: any) {
         setLoading(true);
-        QuestionService.getAllQuestions()
+        QuestionService.getAllQuestions({ page, limit })
             .then((res) => {
-                setQuestions(Array.isArray(res) ? res : res?.data ?? []);
+                setQuestions(Array.isArray(res?.data) ? res.data : Array.isArray(res) ? res : []);
+                setTotal(res?.total ?? 0);
             })
             .catch(() => { })
             .finally(() => setLoading(false));
     }
+
     async function fetchData() {
-
-
         const [categories, topics, grades] = await Promise.all([
             QuestionService.getCategoryList(),
             QuestionService.getTopicList(),
@@ -69,13 +72,15 @@ export function QuestionPage() {
         setCategories(categories);
         setTopics(topics);
         setGrades(grades);
-
     }
 
     useEffect(() => {
-        fetchQuestions();
         fetchData();
     }, []);
+
+    useEffect(() => {
+        fetchQuestions({ page, limit: LIMIT });
+    }, [page]);
 
     function openModal() {
         setForm(EMPTY_FORM);
@@ -110,7 +115,7 @@ export function QuestionPage() {
                 isCorrect: isCorrect,
             } as any);
             closeAnswerModal();
-            fetchQuestions();
+            fetchQuestions({ page, limit: LIMIT });
         } catch {
         } finally {
             setAnswerSubmitting(false);
@@ -121,7 +126,7 @@ export function QuestionPage() {
         if (!confirm('Delete this question?')) return;
         try {
             await QuestionService.deleteQuestion(Number(id));
-            fetchQuestions();
+            fetchQuestions({ page, limit: LIMIT });
         } catch {
             alert('Failed to delete question.');
         }
@@ -143,13 +148,22 @@ export function QuestionPage() {
                 topicId: form.topicId ? Number(form.topicId) : undefined,
             });
             closeModal();
-            fetchQuestions();
+            fetchQuestions({ page, limit: LIMIT });
         } catch {
             setError('Failed to create question. Please try again.');
         } finally {
             setSubmitting(false);
         }
     }
+
+    const handleNextPage = () => {
+        if (page < totalPages) setPage(page + 1);
+    };
+    const handlePreviousPage = () => {
+        if (page > 1) setPage(page - 1);
+    };
+
+
 
     return (
         <>
@@ -242,7 +256,50 @@ export function QuestionPage() {
                                 </table>
                             </div>
                         )}
+                        <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
+                            <span className="text-[12px] text-gray-400">
+                                Page {page} of {totalPages} &middot; {total} total
+                            </span>
+                            <div className="flex items-center gap-1">
+                                <button
+                                    onClick={handlePreviousPage}
+                                    disabled={page <= 1}
+                                    className="px-3 py-1 text-[12px] rounded-md border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                                >
+                                    Previous
+                                </button>
+                                {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
+                                    const pageNum = totalPages <= 7
+                                        ? i + 1
+                                        : page <= 4
+                                            ? i + 1
+                                            : page >= totalPages - 3
+                                                ? totalPages - 6 + i
+                                                : page - 3 + i;
+                                    return (
+                                        <button
+                                            key={pageNum}
+                                            onClick={() => setPage(pageNum)}
+                                            className={`w-7 h-7 text-[12px] rounded-md border transition-colors ${page === pageNum
+                                                ? 'bg-blue-500 border-blue-500 text-white'
+                                                : 'border-gray-200 text-gray-600 hover:bg-gray-50'
+                                                }`}
+                                        >
+                                            {pageNum}
+                                        </button>
+                                    );
+                                })}
+                                <button
+                                    onClick={handleNextPage}
+                                    disabled={page >= totalPages}
+                                    className="px-3 py-1 text-[12px] rounded-md border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
 

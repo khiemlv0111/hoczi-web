@@ -1,9 +1,13 @@
 'use client'
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { useAppData } from "../context/AppContext"
 
 export const Navbar = () => {
     const { user } = useAppData()
+    const pathname = usePathname()
+
+    if (pathname.startsWith('/quizzes/results')) return null
 
     const handleLogout = () => {
         localStorage.clear();

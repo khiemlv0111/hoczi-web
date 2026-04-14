@@ -1,4 +1,5 @@
 'use client'
+import { useAppData } from "@/app/context/AppContext";
 // hoczi.com - Admin Dashboard
 // Stack: Next.js + Tailwind CSS + Lucide React
 
@@ -14,10 +15,12 @@ import {
     TrendingUp,
     TrendingDown,
     User,
-    Star
+    Star,
+    LogOut
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState, useRef, useEffect } from "react";
 
 const navMain = [
     { path: '/', label: "Dashboard", icon: LayoutDashboard, active: true },
@@ -39,6 +42,30 @@ export default function ResultLayout({
     children: React.ReactNode;
 }>) {
     const router = useRouter();
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    const { handleStartQuiz, getUserProfile, user, handleGetQuestionList } = useAppData();
+
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+                setDropdownOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    useEffect(() => {
+        if(!user){
+            router.push(`/`)
+        }
+
+    },[])
+
+
+
     const handleNavigate = (item: any) => {
         const { path, label, icon: Icon, active } = item;
         console.log(label);
@@ -50,6 +77,26 @@ export default function ResultLayout({
 
 
     }
+
+    const handleNewQuiz = () => {
+        // start do quiz
+        handleStartQuiz().then((res) => {
+
+            // get question list, set to global state
+            handleGetQuestionList().then((res) => {
+                router.push(`/quizzes`)
+
+            })
+
+        })
+
+    }
+
+    const handleLogout = () => {
+        localStorage.clear();
+        window.location.reload();
+    }
+
     return (
         <div className="flex h-screen bg-gray-100 font-sans text-sm">
             {/* Sidebar */}
@@ -58,9 +105,9 @@ export default function ResultLayout({
                 <div className="flex items-center gap-2 px-4 pb-4 border-b border-gray-200 mb-3">
                     <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-xs font-medium">
                         <Link href={`/`}>
-                         Te
+                            Te
                         </Link>
-                       
+
                     </div>
                     <span className="font-medium text-gray-900">hoczi</span>
                 </div>
@@ -104,12 +151,28 @@ export default function ResultLayout({
                 <header className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
                     <span className="font-medium text-gray-900 text-[15px]">Dashboard</span>
                     <div className="flex items-center gap-3">
-                        <button className="flex items-center gap-1.5 px-3 py-1.5 border border-gray-300 rounded-md text-[13px] hover:bg-gray-50 transition-colors">
+                        <button onClick={() => handleNewQuiz()} className="cursor-pointer flex items-center gap-1.5 px-3 py-1.5 border border-gray-300 rounded-md text-[13px] hover:bg-gray-50 transition-colors">
                             <Plus size={13} />
-                            Create Blog Post
+                            Do a Quiz
                         </button>
-                        <div className="w-8 h-8 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center">
-                            <User size={15} className="text-gray-500" />
+                        <div className="relative" ref={dropdownRef}>
+                            <button
+                                onClick={() => setDropdownOpen((prev) => !prev)}
+                                className="w-8 h-8 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center hover:bg-gray-200 transition-colors"
+                            >
+                                <User size={15} className="text-gray-500" />
+                            </button>
+                            {dropdownOpen && (
+                                <div className="absolute right-0 mt-2 w-44 bg-white border border-gray-200 rounded-md shadow-lg z-50 py-1">
+                                    <button
+                                        onClick={handleLogout}
+                                        className="w-full flex items-center gap-2 px-4 py-2 text-[13px] text-red-600 hover:bg-gray-50 transition-colors"
+                                    >
+                                        <LogOut size={14} />
+                                        Logout
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </header>

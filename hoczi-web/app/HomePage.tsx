@@ -30,13 +30,13 @@ export default function HomePage() {
 
   }, [])
 
-  const startQuiz = () => {
+  const prepareQuiz = () => {
     setOpenModal(true)
 
   }
 
 
-  const startQuizzzzz = () => {
+  const startQuiz = () => {
     if (!user) {
       setLoading(true)
 
@@ -129,7 +129,7 @@ export default function HomePage() {
         {
           user ? (
             <>
-              <button onClick={() => startQuiz()} className="w-80 max-w-full mt-2 py-4 bg-white rounded-xl text-gray-900 font-medium text-lg hover:bg-gray-100 active:scale-95 transition-all duration-150">
+              <button onClick={() => prepareQuiz()} className="w-80 max-w-full mt-2 py-4 bg-white rounded-xl text-gray-900 font-medium text-lg hover:bg-gray-100 active:scale-95 transition-all duration-150">
                 Do a quiz
               </button>
               <Link href={`/quizzes/results`} className="w-80 max-w-full py-4 bg-blue-400 text-white mt-2 rounded-xl text-gray-900 font-medium text-lg hover:bg-blue-300 active:scale-95 transition-all duration-150">
@@ -142,7 +142,7 @@ export default function HomePage() {
                 Login to start
               </Link>
 
-              <button onClick={() => startQuiz()} className="w-80 max-w-full mt-2 py-4 bg-blue-400 text-white cursor-pointer rounded-xl text-gray-900 font-medium text-lg hover:bg-blue-300 active:scale-95 transition-all duration-150">
+              <button onClick={() => prepareQuiz()} className="w-80 max-w-full mt-2 py-4 bg-blue-400 text-white cursor-pointer rounded-xl text-gray-900 font-medium text-lg hover:bg-blue-300 active:scale-95 transition-all duration-150">
                 Start as Anonymous
               </button>
 
@@ -155,7 +155,17 @@ export default function HomePage() {
       </div>
       <CommonModal title="Select to do quiz" open={openModal} onClose={() => setOpenModal(false)}>
         <div className="min-h-[500px]">
-          <h1>Select options to start a quiz</h1>
+          <div>
+            <h1>Select options to start a quiz</h1>
+
+          </div>
+
+          {/* body of the form  */}
+
+          <div>
+            <button className="border border-blue-600 px-4 py-1 rounded" onClick={() => startQuiz()}>Start Quiz</button>
+          </div>
+          
         </div>
       </CommonModal>
     </main>

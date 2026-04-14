@@ -149,7 +149,7 @@ export default function ResultLayout({
             <div className="flex-1 flex flex-col overflow-hidden">
                 {/* Topbar */}
                 <header className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
-                    <span className="font-medium text-gray-900 text-[15px]">Dashboard</span>
+                    <span className="font-medium text-gray-900 text-[15px]">User Dashboard</span>
                     <div className="flex items-center gap-3">
                         <button onClick={() => handleNewQuiz()} className="cursor-pointer flex items-center gap-1.5 px-3 py-1.5 border border-gray-300 rounded-md text-[13px] hover:bg-gray-50 transition-colors">
                             <Plus size={13} />

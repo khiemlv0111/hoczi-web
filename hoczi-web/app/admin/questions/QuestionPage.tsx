@@ -1,19 +1,10 @@
 'use client'
 
 import { QuestionService } from "@/data/services/question.service";
+import { Question } from "@/data/types";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react"
 
-interface Question {
-    id: string | number;
-    title: string;
-    content?: string;
-    explanation?: string;
-    status?: string;
-    answers?: any[] | undefined;
-    createdAt?: string;
-    [key: string]: unknown;
-}
 interface Category {
     id: number,
     name: string,
@@ -354,7 +345,7 @@ export function QuestionPage() {
                                             setForm({ ...form, categoryId: e.target.value });
                                             QuestionService.getTopicList(Number(e.target.value)).then((res) => {
                                                 setTopics(res);
-                                                
+
                                             })
                                         }}
                                         className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"

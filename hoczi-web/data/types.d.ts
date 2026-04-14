@@ -87,3 +87,33 @@ export type CommentPostPayload = {
     parent_comment_id?: number,
     content_text: string,
 }
+
+
+export interface Question {
+    id: string | number;
+    title: string;
+    content?: string;
+    explanation?: string;
+    status?: string;
+    answers?: any[] | undefined;
+    createdAt?: string;
+    [key: string]: unknown;
+}
+
+export interface Category {
+    id: number,
+    name: string,
+
+}
+
+export interface Topic {
+    id: number,
+    name: string,
+
+}
+
+export interface Grade {
+    id: number,
+    name: string,
+
+}

@@ -16,10 +16,12 @@ import {
     User,
     Star
 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useAppData } from "../context/AppContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { CommonModal } from "../components/modal/CommonModal";
+import { CreateQuestionForm } from "./questions/CreateQuestionForm";
 
 const posts = [
     { title: "Introduction to JavaScript", date: "Apr 10, 2026", status: "published" },
@@ -44,10 +46,10 @@ const stats = [
 
 const navMain = [
     { path: '/admin', label: "Dashboard", icon: LayoutDashboard, active: true },
-    { path: '/admin', label: "Blog Posts", icon: FileText },
-    { path: '/', label: "Quizzes", icon: Clock },
+    { path: '/admin/blogs', label: "Blog Posts", icon: FileText },
+    { path: '/admin/quizzes', label: "Quizzes", icon: Clock },
     { path: '/admin/questions', label: "Questions", icon: Star },
-    { path: '/admin/questions', label: "Students", icon: Users },
+    { path: '/admin/users', label: "Users", icon: Users },
 ];
 
 const navSettings = [
@@ -62,16 +64,19 @@ export default function AdminLayout({
     children: React.ReactNode;
 }>) {
     const router = useRouter();
+    const pathname = usePathname();
     const { user, getUserProfile } = useAppData();
+
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
         getUserProfile();
-    },[]);
+    }, []);
 
     useEffect(() => {
         // console.log('USERS', user)
         if (user) {
-            
+
             if (user.role != 'admin') {
                 router.push(`/`)
             }
@@ -82,11 +87,14 @@ export default function AdminLayout({
     const handleNavigate = (item: any) => {
         const { path, label, icon: Icon, active } = item;
         console.log(label);
-        if (label == 'Quizzes') {
-            router.push(`/admin/quizzes`)
-        } else {
-            router.push(`${path}`)
-        }
+
+        router.push(`${path}`)
+
+        // if (label == 'Quizzes') {
+        //     router.push(`/admin/quizzes`)
+        // } else {
+        //     router.push(`${path}`)
+        // }
 
 
     }
@@ -108,11 +116,15 @@ export default function AdminLayout({
                 {/* Main nav */}
                 <div className="px-2 mb-2">
                     <p className="text-[11px] text-gray-400 uppercase tracking-wider px-2 mb-1">Main</p>
-                    {navMain.map(({ path, label, icon: Icon, active }) => (
+                    {navMain.map(({ path, label, icon: Icon }) => {
+                        const isActive = label === 'Quizzes'
+                            ? pathname === '/admin/quizzes'
+                            : pathname === path;
+                        return (
                         <button
                             key={label}
-                            onClick={() => handleNavigate({ path, label, icon: Icon, active })}
-                            className={`w-full flex items-center gap-2 px-3 py-2 rounded-md text-[13px] transition-colors ${active
+                            onClick={() => handleNavigate({ path, label, icon: Icon })}
+                            className={`w-full flex items-center gap-2 px-3 py-2 rounded-md text-[13px] transition-colors ${isActive
                                 ? "bg-blue-50 text-blue-700"
                                 : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
                                 }`}
@@ -120,7 +132,8 @@ export default function AdminLayout({
                             <Icon size={15} />
                             {label}
                         </button>
-                    ))}
+                        );
+                    })}
                 </div>
 
                 {/* Settings nav */}
@@ -142,11 +155,11 @@ export default function AdminLayout({
             <div className="flex-1 flex flex-col overflow-hidden">
                 {/* Topbar */}
                 <header className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
-                    <span className="font-medium text-gray-900 text-[15px]">Dashboard</span>
+                    <span className="font-medium text-gray-900 text-[15px]">Admin Dashboard</span>
                     <div className="flex items-center gap-3">
-                        <button className="flex items-center gap-1.5 px-3 py-1.5 border border-gray-300 rounded-md text-[13px] hover:bg-gray-50 transition-colors">
+                        <button onClick={() => { setOpen(true) }} className="flex items-center gap-1.5 px-3 py-1.5 border border-gray-300 rounded-md text-[13px] hover:bg-gray-50 transition-colors">
                             <Plus size={13} />
-                            Create Blog Post
+                            Create a question
                         </button>
                         <div className="w-8 h-8 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center">
                             <User size={15} className="text-gray-500" />
@@ -159,9 +172,15 @@ export default function AdminLayout({
 
                     {children}
 
-
                 </main>
             </div>
+
+            <CommonModal open={open} onClose={() => { setOpen(v => !v) }}>
+                <div>
+                    {/* <h1>Common modal</h1> */}
+                    <CreateQuestionForm />
+                </div>
+            </CommonModal>
         </div>
     );
 }

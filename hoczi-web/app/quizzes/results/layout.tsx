@@ -19,15 +19,13 @@ import {
     LogOut
 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 
 const navMain = [
-    { path: '/', label: "Dashboard", icon: LayoutDashboard, active: true },
-    { path: '/', label: "Blog Posts", icon: FileText },
-    { path: '/', label: "Quizzes", icon: Clock },
-    { path: '/quizzes/results', label: "Questions", icon: Star },
-    { path: '/quizzes/results', label: "Students", icon: Users },
+    { path: '/quizzes/results/dashboard', label: "Dashboard", icon: LayoutDashboard },
+    { path: '/quizzes/results', label: "Quizzes", icon: Clock },
+    { path: '/quizzes/results/students', label: "Students", icon: Users },
 ];
 
 const navSettings = [
@@ -42,6 +40,7 @@ export default function ResultLayout({
     children: React.ReactNode;
 }>) {
     const router = useRouter();
+    const pathname = usePathname();
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -67,15 +66,7 @@ export default function ResultLayout({
 
 
     const handleNavigate = (item: any) => {
-        const { path, label, icon: Icon, active } = item;
-        console.log(label);
-        if (label == 'Quizzes') {
-            router.push(`/admin/quizzes`)
-        } else {
-            router.push(`${path}`)
-        }
-
-
+        router.push(item.path);
     }
 
     const handleNewQuiz = () => {
@@ -121,11 +112,15 @@ export default function ResultLayout({
                 {/* Main nav */}
                 <div className="px-2 mb-2">
                     <p className="text-[11px] text-gray-400 uppercase tracking-wider px-2 mb-1">Main</p>
-                    {navMain.map(({ path, label, icon: Icon, active }) => (
+                    {navMain.map(({ path, label, icon: Icon }) => {
+                        const isActive = path === '/quizzes/results'
+                            ? pathname === path
+                            : pathname.startsWith(path);
+                        return (
                         <button
                             key={label}
-                            onClick={() => handleNavigate({ path, label, icon: Icon, active })}
-                            className={`w-full flex items-center gap-2 px-3 py-2 rounded-md text-[13px] transition-colors ${active
+                            onClick={() => handleNavigate({ path, label, icon: Icon })}
+                            className={`w-full flex items-center gap-2 px-3 py-2 rounded-md text-[13px] transition-colors ${isActive
                                 ? "bg-blue-50 text-blue-700"
                                 : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
                                 }`}
@@ -133,7 +128,8 @@ export default function ResultLayout({
                             <Icon size={15} />
                             {label}
                         </button>
-                    ))}
+                        );
+                    })}
                 </div>
 
                 {/* Settings nav */}

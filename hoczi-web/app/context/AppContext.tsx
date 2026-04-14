@@ -71,7 +71,7 @@ type AppContextType = {
 
     handleStartQuiz: (data?: any) => Promise<any>;
 
-    getUserProfile: () => void;
+    getUserProfile: () => Promise<any>;
     handleGetQuizSessions: () => void;
     handleRetryQuiz: (quizId: number) => Promise<any>;
     handleGetQuestionList: () => Promise<any>;
@@ -110,13 +110,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
         })
     }
 
-    const getUserProfile = () => {
-        UserService.getUserInfo().then((res) => {
-            console.log('RESSSssss', res);
+    const getUserProfile = async () => {
+        let response = await UserService.getUserInfo();
+        if (response) {
+            setUser(response?.user);
+        }
+        return response
 
-            setUser(res?.user);
-
-        })
     }
 
     // get my quiz session results

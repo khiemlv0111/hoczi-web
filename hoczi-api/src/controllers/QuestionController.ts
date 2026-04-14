@@ -72,8 +72,8 @@ export class QuestionController {
        const page = req.query.page ? Number(req.query.page) : 1;
         const limit = req.query.limit ? Number(req.query.limit) : 20;
 
-        const questions = await questionService.getAllQuestions(page, limit);
-        return res.json({ success: true, data: questions });
+        const response = await questionService.getAllQuestions(page, limit);
+        return res.json({ success: true, message: "get questions success", data: response.data, total: response.total });
 
     }
 

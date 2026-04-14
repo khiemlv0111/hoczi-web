@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react";
 
 const EMPTY_FORM = { content: '', explanation: '', code: '', status: 'active', type: 'mcq', difficulty: 'easy', gradeId: '', categoryId: '', topicId: '' };
 
-export function CreateQuestionForm({ onSuccess }: { onSuccess?: () => void }) {
+export function CreateQuestionForm({ onSuccess }: { onSuccess?: (id: number) => void }) {
     const [answerContent, setAnswerContent] = useState('');
     const [isCorrect, setIsCorrect] = useState(false);
     const [answerSubmitting, setAnswerSubmitting] = useState(false);
@@ -90,13 +90,14 @@ export function CreateQuestionForm({ onSuccess }: { onSuccess?: () => void }) {
         setSubmitting(true);
         setError('');
         try {
-            await QuestionService.createQuestion({
+            const res = await QuestionService.createQuestion({
                 ...form,
                 gradeId: form.gradeId ? Number(form.gradeId) : undefined,
                 categoryId: form.categoryId ? Number(form.categoryId) : undefined,
                 topicId: form.topicId ? Number(form.topicId) : undefined,
             });
-            onSuccess?.();
+            const id = res?.data?.id ?? res?.id;
+            onSuccess?.(id);
         } catch {
             setError('Failed to create question. Please try again.');
         } finally {

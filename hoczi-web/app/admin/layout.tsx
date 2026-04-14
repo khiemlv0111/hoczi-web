@@ -218,7 +218,7 @@ export default function AdminLayout({
             <CommonModal open={open} onClose={() => { setOpen(v => !v) }}>
                 <div>
                     {/* <h1>Common modal</h1> */}
-                    <CreateQuestionForm onSuccess={() => { setOpen(false); router.push('/admin/questions'); }} />
+                    <CreateQuestionForm onSuccess={(id) => { setOpen(false); router.push(`/admin/questions/${id}`); }} />
                 </div>
             </CommonModal>
         </div>

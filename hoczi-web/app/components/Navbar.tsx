@@ -7,7 +7,8 @@ export const Navbar = () => {
     const { user } = useAppData()
     const pathname = usePathname()
 
-    if (pathname.startsWith('/quizzes/results')) return null
+
+    if (!pathname.startsWith('/quizzes') && pathname !== '/') return null;
 
     const handleLogout = () => {
         localStorage.clear();

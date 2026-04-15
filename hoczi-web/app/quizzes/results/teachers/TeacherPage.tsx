@@ -904,8 +904,9 @@ function CreateAssignmentModal({ classes, onClose, onCreate }: {
 
 type SubjectOption = { id: number; name: string }
 
-function AddToClassModal({ subject, classes, onClose, onDone }: {
+function AddToClassModal({ subject, classes, onClose, onDone, onSubjectAdded }: {
     subject: SubjectOption; classes: ClassItem[]; onClose: () => void; onDone: () => void
+    onSubjectAdded: (classId: number, subject: SubjectOption) => void
 }) {
     const [classId, setClassId] = useState<number | ''>(classes[0]?.id ?? '')
     const [loading, setLoading] = useState(false)
@@ -917,6 +918,7 @@ function AddToClassModal({ subject, classes, onClose, onDone }: {
         setLoading(true); setError('')
         try {
             await LessonService.addSubjectToClass({ class_id: classId, subject_id: subject.id })
+            onSubjectAdded(classId, subject)
             setDone(true)
             setTimeout(onDone, 800)
         } catch { setError('Failed — please try again') }
@@ -957,7 +959,10 @@ function AddToClassModal({ subject, classes, onClose, onDone }: {
     )
 }
 
-function ClassSubjectsTab({ classes }: { classes: ClassItem[] }) {
+function ClassSubjectsTab({ classes, setClasses }: {
+    classes: ClassItem[]
+    setClasses: React.Dispatch<React.SetStateAction<ClassItem[]>>
+}) {
     const [subjects, setSubjects] = useState<SubjectOption[]>([])
     const [loading, setLoading] = useState(true)
     const [selected, setSelected] = useState<SubjectOption | null>(null)
@@ -967,6 +972,16 @@ function ClassSubjectsTab({ classes }: { classes: ClassItem[] }) {
             setSubjects(res?.data ?? res ?? [])
         }).catch(() => {}).finally(() => setLoading(false))
     }, [])
+
+    const handleSubjectAdded = (classId: number, subject: SubjectOption) => {
+        setClasses(prev => prev.map(c => {
+            if (c.id !== classId) return c
+            const alreadyAdded = (c.class_subjects ?? []).some(cs => cs.subject_id === subject.id)
+            if (alreadyAdded) return c
+            const newEntry = { id: Date.now(), class_id: classId, subject_id: subject.id, status: 'active', subject: { id: subject.id, name: subject.name } }
+            return { ...c, class_subjects: [...(c.class_subjects ?? []), newEntry] }
+        }))
+    }
 
     return (
         <div>
@@ -1003,6 +1018,7 @@ function ClassSubjectsTab({ classes }: { classes: ClassItem[] }) {
                     classes={classes}
                     onClose={() => setSelected(null)}
                     onDone={() => setSelected(null)}
+                    onSubjectAdded={handleSubjectAdded}
                 />
             )}
         </div>
@@ -1051,7 +1067,7 @@ export function TeacherPage() {
             {tab === 'classes'     && <ClassesTab classes={classes} allUsers={allUsers} loadingClasses={loadingClasses} teacherId={user?.id ?? 0} setClasses={setClasses} />}
             {tab === 'lessons'     && <LessonsTab classes={classes} />}
             {tab === 'assignments' && <AssignmentsTab classes={classes} />}
-            {tab === 'subjects'    && <ClassSubjectsTab classes={classes} />}
+            {tab === 'subjects'    && <ClassSubjectsTab classes={classes} setClasses={setClasses} />}
         </div>
     )
 }

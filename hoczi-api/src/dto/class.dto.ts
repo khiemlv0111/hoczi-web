@@ -34,3 +34,14 @@ export class CreateSubjectRequest {
 
 }
 
+export class AddMemberToClassRequest {
+
+    @IsNotEmpty()
+    class_id!: number;
+
+    @IsNotEmpty()
+    user_id!: number;
+
+
+}
+

@@ -216,6 +216,13 @@ export default function ResultLayout({
                                             Admin Panel
                                         </Link>
                                     )}
+                                    <Link
+                                            href="/quizzes/results/teachers"
+                                            className="w-full flex items-center gap-2 px-4 py-2 text-[13px] text-gray-700 hover:bg-gray-50 transition-colors"
+                                        >
+                                            {`👩‍🎓`}
+                                            <span className="ml-1">Teacher cornor</span>
+                                        </Link>
                                     <button
                                         onClick={handleLogout}
                                         className="w-full flex items-center gap-2 px-4 py-2 text-[13px] text-red-600 hover:bg-gray-50 transition-colors"

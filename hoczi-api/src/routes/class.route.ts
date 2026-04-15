@@ -17,6 +17,8 @@ classRoutes.get('/get-classes-by-teacher', new ClassController().getClassByTeach
 
 classRoutes.post('/create-class', new ClassController().createClass);
 
+classRoutes.post('/add-member', new ClassController().addMember);
+
 
 
 // classRoutes.get('/get-quiz-session-detail/:id', new QuestionController().getQuizSessionDetail);

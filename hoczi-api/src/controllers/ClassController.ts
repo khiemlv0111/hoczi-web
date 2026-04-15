@@ -17,7 +17,7 @@ import { createAccessToken, createRefreshToken } from '../utils/create_token';
 import { CreateQuestionRequest } from '../dto/question.dto';
 import { QuestionService } from '../services/QuestionService';
 import { ClassService } from '../services/ClassService';
-import { CreateClassRequest } from '../dto/class.dto';
+import { AddMemberToClassRequest, CreateClassRequest } from '../dto/class.dto';
 
 
 const classService = new ClassService();
@@ -59,6 +59,26 @@ export class ClassController {
         const response = await classService.createClass(Number(id), input);
         return res.json(response);
     }
+
+
+
+    async addMember(req: Request, res: Response) {
+        // const { id } = req.user;
+
+
+        const { id } = req.user;
+
+
+        const { errors, input } = await RequestValidator(AddMemberToClassRequest, req.body);
+        if (errors) {
+            return res.status(400).json({ success: false, message: errors })
+        }
+
+
+        const response = await classService.addMember(Number(input.class_id), Number(input.user_id));
+        return res.json(response);
+    }
+
 
 
 }

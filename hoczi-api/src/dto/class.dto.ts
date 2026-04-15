@@ -57,3 +57,15 @@ export class RemoveMemberRequest {
 }
 
 
+export class AddSubjectToClassRequest {
+
+    @IsNotEmpty()
+    class_id!: number;
+
+    @IsNotEmpty()
+    subject_id!: number;
+
+
+}
+
+

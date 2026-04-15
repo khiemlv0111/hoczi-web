@@ -31,6 +31,8 @@ lessonRoutes.get('/get-my-lessons', new LessonController().getMyLessons);
 
 lessonRoutes.get('/get-all-subjects', new LessonController().getAllSubjects);
 
+lessonRoutes.post('/add-subject-to-class', new LessonController().addSubjectToClass);
+
 
 
 

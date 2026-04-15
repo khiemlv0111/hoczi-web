@@ -17,7 +17,7 @@ import { createAccessToken, createRefreshToken } from '../utils/create_token';
 import { CreateQuestionRequest } from '../dto/question.dto';
 import { QuestionService } from '../services/QuestionService';
 import { LessonService } from '../services/LessonService';
-import { AddMemberToClassRequest, CreateClassRequest, RemoveMemberRequest } from '../dto/class.dto';
+import { AddMemberToClassRequest, AddSubjectToClassRequest, CreateClassRequest, RemoveMemberRequest } from '../dto/class.dto';
 import { CreateAssignmentRequest, CreateLessonRequest } from '../dto/lesson.dto';
 
 
@@ -30,9 +30,9 @@ export class LessonController {
         // const { id } = req.user;
 
 
-         const { id } = req.user;
+        const { id } = req.user;
 
-         const page = req.query.page ? Number(req.query.page) : 1;
+        const page = req.query.page ? Number(req.query.page) : 1;
         const limit = req.query.limit ? Number(req.query.limit) : 30;
 
 
@@ -64,7 +64,7 @@ export class LessonController {
 
         const { id } = req.user;
 
-         const { errors, input } = await RequestValidator(CreateAssignmentRequest, req.body);
+        const { errors, input } = await RequestValidator(CreateAssignmentRequest, req.body);
         if (errors) {
             return res.status(400).json({ success: false, message: errors })
         }
@@ -75,9 +75,29 @@ export class LessonController {
 
 
 
-   async getAllSubjects(req: Request, res: Response) {
+    async getAllSubjects(req: Request, res: Response) {
 
         const response = await lessonService.getAllSubjects();
+        return res.json(response);
+    }
+
+
+
+    async addSubjectToClass(req: Request, res: Response) {
+
+        const { id } = req.user;
+
+        if (!id) {
+            return res.status(400).json({ success: false, message: "errors" })
+        }
+
+        const { errors, input } = await RequestValidator(AddSubjectToClassRequest, req.body);
+        if (errors) {
+            return res.status(400).json({ success: false, message: errors })
+        }
+
+
+        const response = await lessonService.addSubjectToClass(input.class_id, input.subject_id, id);
         return res.json(response);
     }
 

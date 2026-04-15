@@ -1,5 +1,6 @@
 import { classRepository } from "../repositories/classRepository";
 import { classMemberRepository } from "../repositories/classMemberRepository";
+// import { classSubjectRepository } from "../repositories/classSubjectRepository";
 
 
 
@@ -22,4 +23,6 @@ export class ClassService {
     async removeMember(classId: number, userId: number) {
         return classMemberRepository.deleteOne(classId, userId);
     }
+
+   
 }

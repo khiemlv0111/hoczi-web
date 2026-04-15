@@ -2,6 +2,7 @@ import { lessonRepository } from "../repositories/lessonRepository";
 import { assignmentRepository } from "../repositories/assignmentRepository";
 import { CreateAssignmentRequest } from "../dto/lesson.dto";
 import { subjectRepository } from "../repositories/subjectRepository";
+import { classSubjectRepository } from "../repositories/classSubjectRepository";
 
 
 
@@ -25,5 +26,9 @@ export class LessonService {
 
     async getAllSubjects() {
         return subjectRepository.findMany();
+    }
+
+    async addSubjectToClass(classId: number, subjectId: number, teacherId: number) {
+        return classSubjectRepository.addSubjectToClass(classId, subjectId, teacherId);
     }
 }

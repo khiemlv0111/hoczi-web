@@ -124,3 +124,17 @@ export type PaginationPayload = {
     page?: number;
     limit?: number;
 }
+
+export type Lesson = {
+    title: string;
+    content?: string;
+    subjectId?: number;
+    lesson_type?: string;
+    media_url: string;
+    estimated_minutes
+    topicId?: number
+    description?: string;
+    gradeId?: number;
+
+
+}

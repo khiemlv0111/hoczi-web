@@ -138,3 +138,36 @@ export type Lesson = {
 
 
 }
+
+export type Grade = {
+    id: number;
+    name: string;
+    code: string;
+}
+
+export type Subject = {
+    code :string;
+    description: string;
+    name: string;
+    status: string;
+}
+
+
+export type ClassSubject = {
+    id?: number
+    class_id: number
+    subject_id: number
+    created_at?: string
+}
+
+export type Assignment = {
+    id?: number
+    title: string
+    description?: string
+    class_subject_id?: number;
+    lesson_id?: number;
+    due_date?: string
+    class_id: number
+    student_id?: number
+    created_at?: string
+}

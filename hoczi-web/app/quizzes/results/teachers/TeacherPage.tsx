@@ -6,7 +6,7 @@ import { ClassService, ClassItem } from "@/data/services/class.service"
 import { QuestionService } from "@/data/services/question.service"
 import {
     Plus, X, Users, BookOpen, Trash2, UserPlus, ChevronRight,
-    Loader2, School, Hash, ClipboardList, GraduationCap, FileText, LayoutList,
+    Loader2, School, Hash, ClipboardList, GraduationCap, FileText, LayoutList, Eye,
 } from "lucide-react"
 import { postRequest, getRequest } from "@/data/http"
 import { LessonService } from "@/data/services/lesson.service"
@@ -34,12 +34,14 @@ type Lesson = {
 }
 
 type Assignment = {
-    id: number
+    id?: number
     title: string
     description?: string
     due_date?: string
     class_id: number
     student_id?: number
+    class_subject_id?: number
+    lesson_id?: number
     created_at?: string
 }
 
@@ -47,7 +49,7 @@ type AssignTarget =
     | { type: 'class'; classId: number; className: string }
     | { type: 'student'; classId: number; studentId: number; studentName: string }
 
-type Tab = 'classes' | 'lessons' | 'assignments'
+type Tab = 'classes' | 'lessons' | 'assignments' | 'subjects'
 
 // ── Shared ─────────────────────────────────────────────────────────────────
 
@@ -85,7 +87,21 @@ function AssignModal({ target, onClose }: { target: AssignTarget; onClose: () =>
             const payload = target.type === 'class'
                 ? { title: title.trim(), description: description.trim() || undefined, due_date: dueDate || undefined, class_id: target.classId }
                 : { title: title.trim(), description: description.trim() || undefined, due_date: dueDate || undefined, class_id: target.classId, student_id: target.studentId }
-            await postRequest('/api/classes/assign-assignment', payload, true)
+            
+            
+                // await postRequest('/api/classes/assign-assignment', payload, true)
+
+                const assignmentPayload: Assignment = {
+        
+                    title: title.trim(),
+                    description: description.trim(),
+                    due_date: dueDate,
+                    class_id: target.classId,
+                    class_subject_id: 1,
+
+                }
+            const res = await LessonService.createAssignment(assignmentPayload);
+            console.log('ASSSIENGMENT', res);
             setDone(true)
         } catch { setError('Failed to assign — please try again') }
         finally { setLoading(false) }
@@ -355,6 +371,19 @@ function ClassesTab({ classes, allUsers, loadingClasses, teacherId, setClasses }
                             </div>
                         </div>
 
+                        {/* Subjects */}
+                        {(selectedClass.class_subjects ?? []).length > 0 && (
+                            <div className="bg-white rounded-xl border border-gray-200 px-5 py-3 flex items-center gap-2 flex-wrap">
+                                <span className="text-[11px] font-medium text-gray-400 uppercase tracking-wider mr-1">Subjects</span>
+                                {(selectedClass.class_subjects ?? []).map(cs => (
+                                    <span key={cs.id} className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-indigo-50 border border-indigo-100 text-[12px] font-medium text-indigo-700">
+                                        <BookOpen size={11} className="flex-shrink-0" />
+                                        {cs.subject?.name ?? `Subject #${cs.subject_id}`}
+                                    </span>
+                                ))}
+                            </div>
+                        )}
+
                         {/* Members */}
                         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
                             <div className="px-5 py-3 border-b border-gray-100">
@@ -407,15 +436,16 @@ function LessonsTab({ classes }: { classes: ClassItem[] }) {
     const [loading, setLoading] = useState(true)
     const [filterClass, setFilterClass] = useState<number | 'all'>('all')
     const [showModal, setShowModal] = useState(false)
+    const [detailLesson, setDetailLesson] = useState<Lesson | null>(null)
 
     useEffect(() => {
-        getRequest('/api/classes/lessons', true)
+        getRequest('/api/lessons/get-my-lessons', true)
             .then(res => setLessons(res?.data ?? res ?? []))
             .catch(() => {})
             .finally(() => setLoading(false))
     }, [])
 
-    const visible = filterClass === 'all' ? lessons : lessons.filter(l => l.class_id === filterClass)
+    const visible = filterClass === 'all' ? lessons : lessons.filter(l => Number(l.class_id) === Number(filterClass))
 
     return (
         <div>
@@ -459,6 +489,9 @@ function LessonsTab({ classes }: { classes: ClassItem[] }) {
                                     </div>
                                     {cls && <span className="text-[11px] text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">{cls.name}</span>}
                                     {lesson.created_at && <span className="text-[11px] text-gray-400 flex-shrink-0">{new Date(lesson.created_at).toLocaleDateString()}</span>}
+                                    <button onClick={() => setDetailLesson(lesson)} className="p-1.5 rounded-lg border border-gray-200 hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors flex-shrink-0">
+                                        <Eye size={13} />
+                                    </button>
                                 </div>
                             )
                         })}
@@ -467,6 +500,76 @@ function LessonsTab({ classes }: { classes: ClassItem[] }) {
             </div>
 
             {showModal && <CreateLessonModal classes={classes} onClose={() => setShowModal(false)} onCreate={l => { setLessons(prev => [l, ...prev]); setShowModal(false) }} />}
+            {detailLesson && <LessonDetailModal lesson={detailLesson} classes={classes} onClose={() => setDetailLesson(null)} />}
+        </div>
+    )
+}
+
+function LessonDetailModal({ lesson, classes, onClose }: { lesson: Lesson; classes: ClassItem[]; onClose: () => void }) {
+    const cls = classes.find(c => Number(c.id) === Number(lesson.class_id))
+
+    const rows: { label: string; value?: string | number }[] = [
+        { label: 'Class', value: cls?.name },
+        { label: 'Type', value: lesson.lesson_type },
+        { label: 'Grade ID', value: lesson.grade_id },
+        { label: 'Subject ID', value: lesson.subject_id },
+        { label: 'Topic ID', value: lesson.topic_id },
+        { label: 'Created', value: lesson.created_at ? new Date(lesson.created_at).toLocaleString() : undefined },
+    ].filter(r => r.value !== undefined && r.value !== '')
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+            <div className="bg-white rounded-xl shadow-xl w-full max-w-lg mx-4 p-6 max-h-[90vh] overflow-y-auto">
+                <div className="flex items-start justify-between mb-5">
+                    <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-lg bg-purple-50 flex items-center justify-center flex-shrink-0">
+                            <FileText size={16} className="text-purple-500" />
+                        </div>
+                        <div>
+                            <h3 className="text-[15px] font-semibold text-gray-900">{lesson.title}</h3>
+                            {cls && <p className="text-[12px] text-gray-400">{cls.name}</p>}
+                        </div>
+                    </div>
+                    <button onClick={onClose} className="p-1 rounded hover:bg-gray-100"><X size={15} className="text-gray-400" /></button>
+                </div>
+
+                {/* Meta badges */}
+                {rows.length > 0 && (
+                    <div className="flex flex-wrap gap-2 mb-4">
+                        {rows.map(r => (
+                            <span key={r.label} className="text-[11px] px-2.5 py-1 rounded-full bg-gray-100 text-gray-600">
+                                <span className="text-gray-400">{r.label}: </span>{r.value}
+                            </span>
+                        ))}
+                    </div>
+                )}
+
+                {/* Description */}
+                {lesson.description && (
+                    <div className="mb-4">
+                        <p className="text-[12px] font-medium text-gray-500 mb-1">Description</p>
+                        <p className="text-[13px] text-gray-700 leading-relaxed">{lesson.description}</p>
+                    </div>
+                )}
+
+                {/* Content */}
+                {lesson.content && (
+                    <div className="mb-4">
+                        <p className="text-[12px] font-medium text-gray-500 mb-1">Content</p>
+                        <div className="bg-gray-50 rounded-lg px-4 py-3 text-[13px] text-gray-700 leading-relaxed whitespace-pre-wrap">
+                            {lesson.content}
+                        </div>
+                    </div>
+                )}
+
+                {!lesson.description && !lesson.content && (
+                    <p className="text-[13px] text-gray-400 text-center py-6">No additional details</p>
+                )}
+
+                <div className="mt-5 flex justify-end">
+                    <button onClick={onClose} className="px-4 py-2 rounded-lg border border-gray-200 text-[13px] text-gray-600 hover:bg-gray-50">Close</button>
+                </div>
+            </div>
         </div>
     )
 }
@@ -629,7 +732,7 @@ function AssignmentsTab({ classes }: { classes: ClassItem[] }) {
             .finally(() => setLoading(false))
     }, [])
 
-    const visible = filterClass === 'all' ? assignments : assignments.filter(a => a.class_id === filterClass)
+    const visible = filterClass === 'all' ? assignments : assignments.filter(a => Number(a.class_id) === Number(filterClass))
 
     return (
         <div>
@@ -700,15 +803,52 @@ function CreateAssignmentModal({ classes, onClose, onCreate }: {
     const [description, setDescription] = useState('')
     const [dueDate, setDueDate] = useState('')
     const [classId, setClassId] = useState<number | ''>(classes[0]?.id ?? '')
+    const [subjectId, setSubjectId] = useState<number | ''>('')
+    const [lessonId, setLessonId] = useState<number | ''>('')
+    const [subjects, setSubjects] = useState<{ id: number; name: string }[]>([])
+    const [lessons, setLessons] = useState<Lesson[]>([])
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
+
+    useEffect(() => {
+        QuestionService.getCategoryList().then(res => setSubjects(res ?? [])).catch(() => {})
+    }, [])
+
+    useEffect(() => {
+        if (!classId) { setLessons([]); setLessonId(''); return }
+        LessonService.getMyLessons().then(res => {
+            const all: Lesson[] = res?.data ?? res ?? []
+            setLessons(all.filter(l => Number(l.class_id) === Number(classId)))
+            setLessonId('')
+        }).catch(() => {})
+    }, [classId])
 
     const submit = async () => {
         if (!title.trim()) { setError('Title is required'); return }
         if (!classId) { setError('Select a class'); return }
         setLoading(true); setError('')
         try {
-            const res = await postRequest('/api/classes/assign-assignment', { title: title.trim(), description: description.trim() || undefined, due_date: dueDate || undefined, class_id: classId }, true)
+
+             const assignmentPayload: Assignment = {
+        
+                    title: title.trim(),
+                    description: description.trim(),
+                    due_date: dueDate,
+                    class_id: classId,
+                    class_subject_id: subjectId|| undefined,
+
+                }
+            const res = await LessonService.createAssignment(assignmentPayload);
+
+
+            // const res = await postRequest('/api/classes/assign-assignment', {
+            //     title: title.trim(),
+            //     description: description.trim() || undefined,
+            //     due_date: dueDate || undefined,
+            //     class_id: classId,
+            //     class_subject_id: subjectId || undefined,
+            //     lesson_id: lessonId || undefined,
+            // }, true)
             onCreate(res?.data ?? res)
         } catch { setError('Failed to create assignment') }
         finally { setLoading(false) }
@@ -732,6 +872,20 @@ function CreateAssignmentModal({ classes, onClose, onCreate }: {
                         </Field>
                         <Field label="Due Date"><input type="date" value={dueDate} onChange={e => setDueDate(e.target.value)} className={INPUT} /></Field>
                     </div>
+                    <div className="grid grid-cols-2 gap-3">
+                        <Field label="Subject">
+                            <select value={subjectId} onChange={e => setSubjectId(e.target.value ? Number(e.target.value) : '')} className={INPUT}>
+                                <option value="">Select subject</option>
+                                {subjects.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+                            </select>
+                        </Field>
+                        <Field label="Lesson">
+                            <select value={lessonId} onChange={e => setLessonId(e.target.value ? Number(e.target.value) : '')} className={INPUT} disabled={!classId || lessons.length === 0}>
+                                <option value="">{!classId ? 'Select class first' : lessons.length === 0 ? 'No lessons' : 'Select lesson'}</option>
+                                {lessons.map(l => <option key={l.id} value={l.id}>{l.title}</option>)}
+                            </select>
+                        </Field>
+                    </div>
                     <Field label="Description"><textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="Instructions or details…" rows={3} className={INPUT + " resize-none"} /></Field>
                     {error && <p className="text-[12px] text-red-500">{error}</p>}
                 </div>
@@ -742,6 +896,115 @@ function CreateAssignmentModal({ classes, onClose, onCreate }: {
                     </button>
                 </div>
             </div>
+        </div>
+    )
+}
+
+// ── Class Subjects ─────────────────────────────────────────────────────────
+
+type SubjectOption = { id: number; name: string }
+
+function AddToClassModal({ subject, classes, onClose, onDone }: {
+    subject: SubjectOption; classes: ClassItem[]; onClose: () => void; onDone: () => void
+}) {
+    const [classId, setClassId] = useState<number | ''>(classes[0]?.id ?? '')
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState('')
+    const [done, setDone] = useState(false)
+
+    const submit = async () => {
+        if (!classId) { setError('Select a class'); return }
+        setLoading(true); setError('')
+        try {
+            await LessonService.addSubjectToClass({ class_id: classId, subject_id: subject.id })
+            setDone(true)
+            setTimeout(onDone, 800)
+        } catch { setError('Failed — please try again') }
+        finally { setLoading(false) }
+    }
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+            <div className="bg-white rounded-xl shadow-xl w-full max-w-sm mx-4 p-6">
+                <div className="flex items-center justify-between mb-5">
+                    <h3 className="text-[15px] font-semibold text-gray-900">Add to Class</h3>
+                    <button onClick={onClose} className="p-1 rounded hover:bg-gray-100"><X size={15} className="text-gray-400" /></button>
+                </div>
+                {done ? (
+                    <p className="text-[13px] text-green-600 text-center py-4">Added successfully!</p>
+                ) : (
+                    <>
+                        <div className="space-y-3">
+                            <p className="text-[13px] text-gray-500">Subject: <span className="font-medium text-gray-900">{subject.name}</span></p>
+                            <Field label="Class" required>
+                                <select value={classId} onChange={e => setClassId(Number(e.target.value))} className={INPUT}>
+                                    <option value="">Select class</option>
+                                    {classes.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                                </select>
+                            </Field>
+                            {error && <p className="text-[12px] text-red-500">{error}</p>}
+                        </div>
+                        <div className="flex gap-2 mt-5">
+                            <button onClick={onClose} className="flex-1 py-2 rounded-lg border border-gray-200 text-[13px] text-gray-600 hover:bg-gray-50">Cancel</button>
+                            <button onClick={submit} disabled={loading} className="flex-1 py-2 rounded-lg bg-blue-600 text-white text-[13px] font-medium hover:bg-blue-500 disabled:opacity-50 flex items-center justify-center gap-1.5">
+                                {loading && <Loader2 size={13} className="animate-spin" />} Add
+                            </button>
+                        </div>
+                    </>
+                )}
+            </div>
+        </div>
+    )
+}
+
+function ClassSubjectsTab({ classes }: { classes: ClassItem[] }) {
+    const [subjects, setSubjects] = useState<SubjectOption[]>([])
+    const [loading, setLoading] = useState(true)
+    const [selected, setSelected] = useState<SubjectOption | null>(null)
+
+    useEffect(() => {
+        LessonService.getAllSubjects().then((res) => {
+            setSubjects(res?.data ?? res ?? [])
+        }).catch(() => {}).finally(() => setLoading(false))
+    }, [])
+
+    return (
+        <div>
+            <div className="flex items-center justify-between mb-4">
+                <h2 className="text-[15px] font-semibold text-gray-900">Subjects</h2>
+            </div>
+            <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+                {loading ? (
+                    <div className="py-14 text-center"><Loader2 size={20} className="mx-auto text-gray-300 animate-spin" /></div>
+                ) : subjects.length === 0 ? (
+                    <div className="py-14 text-center"><BookOpen size={28} className="mx-auto text-gray-300 mb-2" /><p className="text-[13px] text-gray-400">No subjects found</p></div>
+                ) : (
+                    <div className="divide-y divide-gray-100">
+                        {subjects.map((s, i) => (
+                            <div key={s.id ?? i} className="px-5 py-3.5 flex items-center gap-4 hover:bg-gray-50">
+                                <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center flex-shrink-0">
+                                    <BookOpen size={14} className="text-blue-500" />
+                                </div>
+                                <p className="text-[13px] font-medium text-gray-900 flex-1">{s.name}</p>
+                                <button
+                                    onClick={() => setSelected(s)}
+                                    className="flex items-center gap-1 px-2.5 py-1.5 rounded-md bg-blue-600 text-white text-[12px] hover:bg-blue-500"
+                                >
+                                    <Plus size={11} /> Add to class
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
+            {selected && (
+                <AddToClassModal
+                    subject={selected}
+                    classes={classes}
+                    onClose={() => setSelected(null)}
+                    onDone={() => setSelected(null)}
+                />
+            )}
         </div>
     )
 }
@@ -766,9 +1029,10 @@ export function TeacherPage() {
     }, [])
 
     const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
-        { id: 'classes',     label: 'Classes',     icon: <GraduationCap size={14} /> },
-        { id: 'lessons',     label: 'Lessons',     icon: <FileText size={14} /> },
-        { id: 'assignments', label: 'Assignments', icon: <LayoutList size={14} /> },
+        { id: 'classes',     label: 'Classes',       icon: <GraduationCap size={14} /> },
+        { id: 'lessons',     label: 'Lessons',       icon: <FileText size={14} /> },
+        { id: 'assignments', label: 'Assignments',   icon: <LayoutList size={14} /> },
+        { id: 'subjects',    label: 'Subjects',      icon: <BookOpen size={14} /> },
     ]
 
     return (
@@ -787,6 +1051,7 @@ export function TeacherPage() {
             {tab === 'classes'     && <ClassesTab classes={classes} allUsers={allUsers} loadingClasses={loadingClasses} teacherId={user?.id ?? 0} setClasses={setClasses} />}
             {tab === 'lessons'     && <LessonsTab classes={classes} />}
             {tab === 'assignments' && <AssignmentsTab classes={classes} />}
+            {tab === 'subjects'    && <ClassSubjectsTab classes={classes} />}
         </div>
     )
 }

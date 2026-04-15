@@ -14,6 +14,14 @@ export type ClassMember = {
     student: ClassStudent;
 };
 
+export type ClassSubjectItem = {
+    id: number;
+    class_id: number;
+    subject_id: number;
+    status: string;
+    subject?: { id: number; name: string; code?: string; description?: string };
+};
+
 export type ClassItem = {
     id: number;
     name: string;
@@ -24,6 +32,7 @@ export type ClassItem = {
     school_name?: string;
     created_at?: string;
     members?: ClassMember[];
+    class_subjects?: ClassSubjectItem[];
 };
 
 export class ClassService {
@@ -44,6 +53,16 @@ export class ClassService {
 
     static async removeMember(classId: number, userId: number) {
         const response = await deleteRequest(`/api/classes/remove-member/${classId}/${userId}`, true);
+        return response;
+    }
+
+    static async createClassSubject(payload: { class_id: number; subject_id: number }) {
+        const response = await postRequest('/api/classes/create-class-subject', payload, true);
+        return response;
+    }
+
+    static async getClassSubjects(classId: number) {
+        const response = await getRequest(`/api/classes/get-class-subjects/${classId}`, true);
         return response;
     }
 }

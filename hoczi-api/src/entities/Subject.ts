@@ -26,7 +26,7 @@ export class Subject {
   @Column({ type: 'varchar', length: 20, default: 'active' })
   status!: string;
 
-  @OneToMany(() => ClassSubject, (classSubject) => classSubject.subject)
+  @OneToMany(() => ClassSubject, (classSubject) => classSubject.class)
   class_subjects!: ClassSubject[];
 
   @CreateDateColumn({ type: 'timestamptz' })

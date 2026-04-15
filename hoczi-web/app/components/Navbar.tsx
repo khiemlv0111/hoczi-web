@@ -22,18 +22,19 @@ export const Navbar = () => {
     }
     return (
         <>
-            <nav className="fixed top-0 left-0 w-full z-50 border-b border-white/10">
-                <ul className="flex items-center justify-between gap-6 px-6 py-4 max-w-2xl mx-auto">
+            <nav className="fixed top-0 left-0 w-full z-50 border-b border-white/10 ">
+                <ul className="flex container mx-auto items-center justify-between gap-6 px-6 py-4">
                     <li>
                         <Link href="/" className={`text-blue-500 ${textColor} font-medium text-sm hover:opacity-75 transition-opacity`}>
                             Home
                         </Link>
                     </li>
                     {
-                        user && <li className="flex gap-4">
-                            <Link href="/quizzes/results" className="text-blue-500 text-white font-medium text-sm hover:opacity-75 transition-opacity">
+                        user && <li className="flex gap-4 items-center">
+                            <Link href="/quizzes/results" className={`${textColor} text-white font-medium text-sm hover:opacity-75 transition-opacity`}>
                                 Quiz Results
                             </Link>
+                            <p className={`${textColor}`}>Hi {user.name}</p>
                             <button onClick={handleLogout} className="text-white cursor-pointer font-medium text-sm hover:opacity-75 transition-opacity">
                                 Logout
                             </button>

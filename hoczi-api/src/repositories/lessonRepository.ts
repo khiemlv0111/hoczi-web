@@ -10,7 +10,7 @@ class LessonRepository {
 
     async createOne(userId: number, data: any) {
         const classRoom = this.repo.create({
-            title: data.name,
+            title: data.title,
             content: data.content,
             subject_id: data.subjectId,
             lesson_type: data.lesson_type,

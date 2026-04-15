@@ -83,16 +83,11 @@ export class ClassController {
     async removeMember(req: Request, res: Response) {
         // const { id } = req.user;
 
-
-        const { id } = req.user;
-
-         const { errors, input } = await RequestValidator(RemoveMemberRequest, req.body);
-        if (errors) {
-            return res.status(400).json({ success: false, message: errors })
-        }
+         const classId = Number(req.params.classId);
+         const userId = Number(req.params.userId);
 
 
-        const response = await classService.removeMember(Number(input.class_id), Number(input.user_id));
+        const response = await classService.removeMember(classId, userId);
         return res.json(response);
     }
 

@@ -19,7 +19,7 @@ classRoutes.post('/create-class', new ClassController().createClass);
 
 classRoutes.post('/add-member', new ClassController().addMember);
 
-classRoutes.delete('/remove-member', new ClassController().removeMember);
+classRoutes.delete('/remove-member/:classId/:userId', new ClassController().removeMember);
 
 
 

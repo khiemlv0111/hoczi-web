@@ -104,19 +104,19 @@ function AssignModal({ target, onClose }: { target: AssignTarget; onClose: () =>
             const payload = target.type === 'class'
                 ? { title: title.trim(), description: description.trim() || undefined, due_date: dueDate || undefined, class_id: target.classId }
                 : { title: title.trim(), description: description.trim() || undefined, due_date: dueDate || undefined, class_id: target.classId, student_id: target.studentId }
-            
-            
-                // await postRequest('/api/classes/assign-assignment', payload, true)
 
-                const assignmentPayload: Assignment = {
-        
-                    title: title.trim(),
-                    description: description.trim(),
-                    due_date: dueDate,
-                    class_id: target.classId,
-                    class_subject_id: 1,
 
-                }
+            // await postRequest('/api/classes/assign-assignment', payload, true)
+
+            const assignmentPayload: Assignment = {
+
+                title: title.trim(),
+                description: description.trim(),
+                due_date: dueDate,
+                class_id: target.classId,
+                class_subject_id: 1,
+
+            }
             const res = await LessonService.createAssignment(assignmentPayload);
             console.log('ASSSIENGMENT', res);
             setDone(true)
@@ -417,7 +417,7 @@ function ClassesTab({ classes, allUsers, loadingClasses, teacherId, setClasses }
                     </button>
                 </div>
                 {loadingClasses ? (
-                    [1,2,3].map(i => <div key={i} className="h-14 bg-white rounded-lg border border-gray-200 animate-pulse" />)
+                    [1, 2, 3].map(i => <div key={i} className="h-14 bg-white rounded-lg border border-gray-200 animate-pulse" />)
                 ) : classes.length === 0 ? (
                     <div className="bg-white rounded-lg border border-gray-200 p-4 text-center">
                         <BookOpen size={20} className="mx-auto text-gray-300 mb-2" />
@@ -560,7 +560,7 @@ function LessonsTab({ classes }: { classes: ClassItem[] }) {
     useEffect(() => {
         getRequest('/api/lessons/get-my-lessons', true)
             .then(res => setLessons(res?.data ?? res ?? []))
-            .catch(() => {})
+            .catch(() => { })
             .finally(() => setLoading(false))
     }, [])
 
@@ -585,7 +585,7 @@ function LessonsTab({ classes }: { classes: ClassItem[] }) {
             <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
                 {loading ? (
                     <div className="divide-y divide-gray-100">
-                        {[1,2,3].map(i => (
+                        {[1, 2, 3].map(i => (
                             <div key={i} className="px-5 py-4 flex gap-3 animate-pulse">
                                 <div className="flex-1 space-y-2"><div className="h-3 bg-gray-100 rounded w-1/3" /><div className="h-2.5 bg-gray-100 rounded w-1/4" /></div>
                             </div>
@@ -675,9 +675,18 @@ function LessonDetailModal({ lesson, classes, onClose }: { lesson: Lesson; class
                 {lesson.content && (
                     <div className="mb-4">
                         <p className="text-[12px] font-medium text-gray-500 mb-1">Content</p>
-                        <div className="bg-gray-50 rounded-lg px-4 py-3 text-[13px] text-gray-700 leading-relaxed whitespace-pre-wrap">
-                            {lesson.content}
-                        </div>
+                        {/* <div className="bg-gray-50 rounded-lg px-4 py-3 text-[13px] text-gray-700 leading-relaxed whitespace-pre-wrap">
+                            {lesson.content}===
+                        </div> */}
+
+
+                        <div
+                            dangerouslySetInnerHTML={{ __html: lesson.content }}
+                            className={""}
+                        />
+
+
+
                     </div>
                 )}
 
@@ -714,11 +723,11 @@ function CreateLessonModal({ classes, onClose, onCreate }: {
     const [topics, setTopics] = useState<any[]>([])
 
     useEffect(() => {
-        QuestionService.getGradeList().then(setGrades).catch(() => {})
-        QuestionService.getCategoryList().then(setSubjects).catch(() => {})
+        QuestionService.getGradeList().then(setGrades).catch(() => { })
+        QuestionService.getCategoryList().then(setSubjects).catch(() => { })
         LessonService.getMyLessons().then((res) => {
             console.log('RESSS LESSON', res);
-            
+
         })
     }, [])
 
@@ -726,7 +735,7 @@ function CreateLessonModal({ classes, onClose, onCreate }: {
         setSubjectId(id)
         setTopicId('')
         setTopics([])
-        if (id) QuestionService.getTopicList(id as number).then(setTopics).catch(() => {})
+        if (id) QuestionService.getTopicList(id as number).then(setTopics).catch(() => { })
     }
 
     const submit = async () => {
@@ -748,7 +757,7 @@ function CreateLessonModal({ classes, onClose, onCreate }: {
             }
             let res = await LessonService.createLesson(payload);
             console.log('RESSS===', res);
-            
+
             onCreate(res?.data ?? res)
         } catch { setError('Failed to create lesson') }
         finally { setLoading(false) }
@@ -820,8 +829,9 @@ function CreateLessonModal({ classes, onClose, onCreate }: {
                     {/* Content */}
                     <Field label="Content">
                         <RichTextEditor onChange={(v) => {
-                            setContent(v)}}
-                            />
+                            setContent(v)
+                        }}
+                        />
                         {/* <textarea value={content} onChange={e => setContent(e.target.value)} placeholder="Lesson content or notes…" rows={4} className={INPUT + " resize-none"} /> */}
                     </Field>
 
@@ -851,7 +861,7 @@ function AssignmentsTab({ classes }: { classes: ClassItem[] }) {
     useEffect(() => {
         LessonService.getAllAssignments()
             .then(res => setAssignments(res?.data ?? res ?? []))
-            .catch(() => {})
+            .catch(() => { })
             .finally(() => setLoading(false))
     }, [])
 
@@ -876,7 +886,7 @@ function AssignmentsTab({ classes }: { classes: ClassItem[] }) {
             <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
                 {loading ? (
                     <div className="divide-y divide-gray-100">
-                        {[1,2,3].map(i => (
+                        {[1, 2, 3].map(i => (
                             <div key={i} className="px-5 py-4 flex gap-3 animate-pulse">
                                 <div className="flex-1 space-y-2"><div className="h-3 bg-gray-100 rounded w-1/3" /><div className="h-2.5 bg-gray-100 rounded w-1/4" /></div>
                             </div>
@@ -1041,13 +1051,13 @@ function CreateAssignmentModal({ classes, onClose, onCreate }: {
     const [error, setError] = useState('')
 
     useEffect(() => {
-        QuestionService.getCategoryList().then(res => setSubjects(res ?? [])).catch(() => {})
+        QuestionService.getCategoryList().then(res => setSubjects(res ?? [])).catch(() => { })
     }, [])
 
     useEffect(() => {
         LessonService.getMyLessons().then(res => {
             setLessons(res?.data ?? res ?? [])
-        }).catch(() => {})
+        }).catch(() => { })
     }, [])
 
     const submit = async () => {
@@ -1057,13 +1067,13 @@ function CreateAssignmentModal({ classes, onClose, onCreate }: {
         try {
 
             const assignmentPayload: Assignment = {
-                    title: title.trim(),
-                    description: description.trim() || undefined,
-                    due_date: dueDate || undefined,
-                    class_id: classId,
-                    class_subject_id: subjectId || undefined,
-                    lesson_id: lessonId || undefined,
-                }
+                title: title.trim(),
+                description: description.trim() || undefined,
+                due_date: dueDate || undefined,
+                class_id: classId,
+                class_subject_id: subjectId || undefined,
+                lesson_id: lessonId || undefined,
+            }
             const res = await LessonService.createAssignment(assignmentPayload);
             onCreate(res?.data ?? res)
         } catch { setError('Failed to create assignment') }
@@ -1186,7 +1196,7 @@ function ClassSubjectsTab({ classes, setClasses }: {
     useEffect(() => {
         LessonService.getAllSubjects().then((res) => {
             setSubjects(res?.data ?? res ?? [])
-        }).catch(() => {}).finally(() => setLoading(false))
+        }).catch(() => { }).finally(() => setLoading(false))
     }, [])
 
     const handleSubjectAdded = (classId: number, subject: SubjectOption) => {
@@ -1253,18 +1263,18 @@ export function TeacherPage() {
     useEffect(() => {
         ClassService.getClassList()
             .then(setClasses)
-            .catch(() => {})
+            .catch(() => { })
             .finally(() => setLoadingClasses(false))
         handleGetUsers({ page: 1, limit: 999 })
             .then(res => setAllUsers(res?.users ?? []))
-            .catch(() => {})
+            .catch(() => { })
     }, [])
 
     const TABS: { id: Tab; label: string; icon: React.ReactNode }[] = [
-        { id: 'classes',     label: 'Classes',       icon: <GraduationCap size={14} /> },
-        { id: 'lessons',     label: 'Lessons',       icon: <FileText size={14} /> },
-        { id: 'assignments', label: 'Assignments',   icon: <LayoutList size={14} /> },
-        { id: 'subjects',    label: 'Subjects',      icon: <BookOpen size={14} /> },
+        { id: 'classes', label: 'Classes', icon: <GraduationCap size={14} /> },
+        { id: 'lessons', label: 'Lessons', icon: <FileText size={14} /> },
+        { id: 'assignments', label: 'Assignments', icon: <LayoutList size={14} /> },
+        { id: 'subjects', label: 'Subjects', icon: <BookOpen size={14} /> },
     ]
 
     return (
@@ -1280,10 +1290,10 @@ export function TeacherPage() {
                 ))}
             </div>
 
-            {tab === 'classes'     && <ClassesTab classes={classes} allUsers={allUsers} loadingClasses={loadingClasses} teacherId={user?.id ?? 0} setClasses={setClasses} />}
-            {tab === 'lessons'     && <LessonsTab classes={classes} />}
+            {tab === 'classes' && <ClassesTab classes={classes} allUsers={allUsers} loadingClasses={loadingClasses} teacherId={user?.id ?? 0} setClasses={setClasses} />}
+            {tab === 'lessons' && <LessonsTab classes={classes} />}
             {tab === 'assignments' && <AssignmentsTab classes={classes} />}
-            {tab === 'subjects'    && <ClassSubjectsTab classes={classes} setClasses={setClasses} />}
+            {tab === 'subjects' && <ClassSubjectsTab classes={classes} setClasses={setClasses} />}
         </div>
     )
 }

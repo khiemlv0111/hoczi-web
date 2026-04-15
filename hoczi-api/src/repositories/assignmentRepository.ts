@@ -27,7 +27,7 @@ class AssignmentRepository {
 
         const [data, total] = await this.repo.findAndCount({
             where: {assigned_by: userId},
-            relations: ["grade", "subject", "topic"],
+            relations: ["teacher", "lesson", "assignment_students"],
             order: { id: "DESC" },
             take: limit,
             skip: offset,

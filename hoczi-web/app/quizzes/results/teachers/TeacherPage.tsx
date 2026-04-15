@@ -726,7 +726,7 @@ function AssignmentsTab({ classes }: { classes: ClassItem[] }) {
     const [showModal, setShowModal] = useState(false)
 
     useEffect(() => {
-        getRequest('/api/classes/assignments', true)
+        LessonService.getAllAssignments()
             .then(res => setAssignments(res?.data ?? res ?? []))
             .catch(() => {})
             .finally(() => setLoading(false))

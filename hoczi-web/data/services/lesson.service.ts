@@ -17,22 +17,17 @@ export class LessonService {
         return response;
     }
 
-    // static async addMember(payload: { class_id: number; user_id: number }) {
-    //     const response = await postRequest('/api/classes/add-member', payload, true);
-    //     return response;
-    // }
-
-    // static async removeMember(classId: number, userId: number) {
-    //     const response = await deleteRequest(`/api/classes/remove-member/${classId}/${userId}`, true);
-    //     return response;
-    // }
-
     static async getAllSubjects() {
         const response = await getRequest('/api/lessons/get-all-subjects', true);
         return response;
     }
 
-    static async addSubjectToClass(payload: {class_id: number, subject_id: number}) {
+    static async getAllAssignments() {
+        const response = await getRequest('/api/lessons/get-assignments', true);
+        return response;
+    }
+
+    static async addSubjectToClass(payload: { class_id: number, subject_id: number }) {
         const response = await postRequest('/api/lessons/add-subject-to-class', payload, true);
         return response;
     }

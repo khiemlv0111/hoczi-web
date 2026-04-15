@@ -75,34 +75,11 @@ export class LessonController {
 
 
 
-    // async addMember(req: Request, res: Response) {
-    //     // const { id } = req.user;
+   async getAllSubjects(req: Request, res: Response) {
 
-
-    //     const { id } = req.user;
-
-
-    //     const { errors, input } = await RequestValidator(AddMemberToClassRequest, req.body);
-    //     if (errors) {
-    //         return res.status(400).json({ success: false, message: errors })
-    //     }
-
-
-    //     const response = await classService.addMember(Number(input.class_id), Number(input.user_id));
-    //     return res.json(response);
-    // }
-
-
-    // async removeMember(req: Request, res: Response) {
-    //     // const { id } = req.user;
-
-    //      const classId = Number(req.params.classId);
-    //      const userId = Number(req.params.userId);
-
-
-    //     const response = await classService.removeMember(classId, userId);
-    //     return res.json(response);
-    // }
+        const response = await lessonService.getAllSubjects();
+        return res.json(response);
+    }
 
 
 

@@ -29,6 +29,9 @@ lessonRoutes.post('/create-assignment', new LessonController().createAssignment)
 lessonRoutes.get('/get-my-lessons', new LessonController().getMyLessons);
 
 
+lessonRoutes.get('/get-all-subjects', new LessonController().getAllSubjects);
+
+
 
 
 // classRoutes.post('/start-retry/:id', new QuestionController().startRetry);

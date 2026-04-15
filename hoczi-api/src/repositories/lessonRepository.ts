@@ -39,6 +39,10 @@ class LessonRepository {
 
         return { data, total };
     }
+
+    async findSubjects() {
+       return this.repo.find();
+    }
     
 
 

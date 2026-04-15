@@ -1,7 +1,8 @@
-import { classRepository } from "../repositories/classRepository";
 import { lessonRepository } from "../repositories/lessonRepository";
 import { assignmentRepository } from "../repositories/assignmentRepository";
 import { CreateAssignmentRequest } from "../dto/lesson.dto";
+import { subjectRepository } from "../repositories/subjectRepository";
+
 
 
 
@@ -22,11 +23,7 @@ export class LessonService {
         return assignmentRepository.createOne(userId, data);
     }
 
-    // async addMember(classId: number, userId: number) {
-    //     return classMemberRepository.createOne(classId, userId);
-    // }
-
-    // async removeMember(classId: number, userId: number) {
-    //     return classMemberRepository.deleteOne(classId, userId);
-    // }
+    async getAllSubjects() {
+        return subjectRepository.findMany();
+    }
 }

@@ -16,13 +16,6 @@ import lessonRoutes from './lesson.route';
 const routes = Router();
 routes.use('/', homeRoutes);
 
-// routes.use('/api/auth', authRoutes);
-
-// routes.use('/api/internal', internalRoutes);
-
-
-
-// routes.use('/api/users', userRoutes);
 
 routes.use('/api/auth', authRoutes);
 

@@ -11,7 +11,6 @@ class AssignmentStudentRepository {
         const classRoom = this.repo.create({
             student_id: data.student_id,
             assignment_id: data.assignment_id,
-            started_at: data.started_at,
         });
         return this.repo.save(classRoom);
     }

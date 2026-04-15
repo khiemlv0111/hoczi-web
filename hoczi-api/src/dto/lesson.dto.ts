@@ -59,7 +59,4 @@ export class AssignStudentAssignmentRequest {
     @IsNotEmpty()
     assignment_id!: number;
 
-    @IsNotEmpty()
-    started_at?: string;
-
 }

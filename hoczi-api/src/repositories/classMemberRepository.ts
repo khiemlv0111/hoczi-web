@@ -7,31 +7,29 @@ class ClassMemberRepository {
         return AppDataSource.getRepository(ClassMember);
     }
 
-    // async findById(id: number) {
-    //     return this.repo.findOne({ where: { id } });
-    // }
-
-    // async findMany(teacherId: number) {
-    //     return this.repo.find({
-    //         where: { class_id: teacherId },
-    //         relations: ['teacher']
-    //     });
-    // }
-
-
-
     async createOne(classId: number, userId: number) {
         const classRoom = this.repo.create({
             class_id: classId,
             student_id: userId,
             joined_at: new Date(),
-   
+
         });
         return this.repo.save(classRoom);
     }
 
 
+    async deleteOne(classId: number, userId: number) {
+        const result = await this.repo.delete({
+            class_id: classId,
+            student_id: userId,
+        });
 
+        if (result.affected === 0) {
+            throw new Error('Class member not found');
+        }
+
+        return true;
+    }
 
 }
 

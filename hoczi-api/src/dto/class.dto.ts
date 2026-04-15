@@ -45,3 +45,15 @@ export class AddMemberToClassRequest {
 
 }
 
+export class RemoveMemberRequest {
+
+    @IsNotEmpty()
+    class_id!: number;
+
+    @IsNotEmpty()
+    user_id!: number;
+
+
+}
+
+

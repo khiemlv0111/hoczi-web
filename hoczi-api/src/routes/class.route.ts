@@ -19,6 +19,8 @@ classRoutes.post('/create-class', new ClassController().createClass);
 
 classRoutes.post('/add-member', new ClassController().addMember);
 
+classRoutes.delete('/remove-member', new ClassController().removeMember);
+
 
 
 // classRoutes.get('/get-quiz-session-detail/:id', new QuestionController().getQuizSessionDetail);

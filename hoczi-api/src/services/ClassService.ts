@@ -18,4 +18,8 @@ export class ClassService {
     async addMember(classId: number, userId: number) {
         return classMemberRepository.createOne(classId, userId);
     }
+
+    async removeMember(classId: number, userId: number) {
+        return classMemberRepository.deleteOne(classId, userId);
+    }
 }

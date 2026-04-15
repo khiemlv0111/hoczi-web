@@ -2,18 +2,21 @@
 import { useState } from "react";
 import { MemoryGame } from "./MemoryGame";
 import { DiceGame } from "./DiceGame";
+import { useRouter } from "next/navigation";
 
 const gameImageUrl = 'https://d1y3v0ou093g3m.cloudfront.net/6dd5cda4-6084-4bfe-a427-a4d6f3440633-logo_hz.png';
 
 const GAMES = [
     { id: 'memory', label: 'Memory', description: 'Match all card pairs', emoji: '🃏' },
     { id: 'dice',   label: 'Dice',   description: 'Roll to match the target number', emoji: '🎲' },
+    { id: 'challenge',   label: 'Challenge Friend',   description: 'Choose a friend to challange', emoji: '👤' },
     // add more games here
 ] as const;
 
 type GameId = typeof GAMES[number]['id'];
 
 export function GamesPage() {
+    const router = useRouter();
     const [active, setActive] = useState<GameId | null>(null);
 
     if (active === 'memory') {
@@ -21,6 +24,9 @@ export function GamesPage() {
     }
     if (active === 'dice') {
         return <DiceGame onBack={() => setActive(null)} />;
+    }
+    if (active === 'challenge') {
+        router.push(`/quizzes/results/games/challenge`)
     }
 
     return (

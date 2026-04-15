@@ -1,4 +1,5 @@
 import { AppDataSource } from '../data-source';
+import { CreateAssignmentRequest } from '../dto/lesson.dto';
 import { Assignment } from '../entities/Assignment';
 // import { UserProfile } from '../entities/UserProfile';
 
@@ -8,7 +9,7 @@ class AssignmentRepository {
     }
 
 
-    async createOne(userId: number, data: any) {
+    async createOne(userId: number, data: CreateAssignmentRequest) {
         const classRoom = this.repo.create({
             title: data.title,
             description: data.description,

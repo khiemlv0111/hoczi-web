@@ -1,6 +1,7 @@
 import { classRepository } from "../repositories/classRepository";
 import { lessonRepository } from "../repositories/lessonRepository";
 import { assignmentRepository } from "../repositories/assignmentRepository";
+import { CreateAssignmentRequest } from "../dto/lesson.dto";
 
 
 
@@ -17,7 +18,7 @@ export class LessonService {
     }
 
 
-    async createAssignment(userId: number, data: any) {
+    async createAssignment(userId: number, data: CreateAssignmentRequest) {
         return assignmentRepository.createOne(userId, data);
     }
 

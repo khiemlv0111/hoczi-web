@@ -47,5 +47,8 @@ export class CreateAssignmentRequest {
     lessonId!: number;
 
     @IsOptional()
+    classSubjectId!: number;
+
+    @IsOptional()
     description!: string;
 }

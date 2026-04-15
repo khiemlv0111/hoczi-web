@@ -13,8 +13,8 @@ class AssignmentRepository {
         const classRoom = this.repo.create({
             title: data.title,
             description: data.description,
-            class_subject_id: data.classSubjectId,
-            lesson_id: data.lessonId,
+            class_subject_id: data.class_subject_id,
+            lesson_id: data.lesson_id,
             due_at: data.due_at,
             assigned_by: userId,
 

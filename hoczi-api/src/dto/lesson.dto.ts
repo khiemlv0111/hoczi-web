@@ -35,19 +35,16 @@ export class CreateAssignmentRequest {
     title!: string;
 
     @IsOptional()
-    classId!: number;
+    class_id!: number;
 
     @IsOptional()
     due_at!: string;
 
     @IsOptional()
-    subjectId?: number;
+    lesson_id!: number;
 
     @IsOptional()
-    lessonId!: number;
-
-    @IsOptional()
-    classSubjectId!: number;
+    class_subject_id!: number;
 
     @IsOptional()
     description!: string;

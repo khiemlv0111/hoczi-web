@@ -604,7 +604,7 @@ function LessonsTab({ classes }: { classes: ClassItem[] }) {
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <p className="text-[13px] font-medium text-gray-900">{lesson.title}</p>
-                                        {lesson.content && <p className="text-[11px] text-gray-400 truncate mt-0.5">{lesson.content}</p>}
+                                        {lesson.content && <p className="text-[11px] text-gray-400 truncate mt-0.5">{lesson.description}</p>}
                                     </div>
                                     {cls && <span className="text-[11px] text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">{cls.name}</span>}
                                     {lesson.created_at && <span className="text-[11px] text-gray-400 flex-shrink-0">{new Date(lesson.created_at).toLocaleDateString()}</span>}

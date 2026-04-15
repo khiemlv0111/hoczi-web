@@ -14,7 +14,7 @@ class ClassRepository {
     async findMany(teacherId: number) {
         return this.repo.find({
             where: { teacher_id: teacherId },
-            relations: ['teacher', 'members', 'members.student']
+            relations: ['teacher', 'members', 'members.student', 'class_subjects']
         });
     }
 

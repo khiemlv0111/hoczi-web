@@ -28,3 +28,24 @@ export class CreateLessonRequest {
     @IsOptional()
     explanation?: string;
 }
+
+export class CreateAssignmentRequest {
+
+    @IsNotEmpty()
+    title!: string;
+
+    @IsOptional()
+    classId!: number;
+
+    @IsOptional()
+    due_at!: string;
+
+    @IsOptional()
+    subjectId?: number;
+
+    @IsOptional()
+    lessonId!: number;
+
+    @IsOptional()
+    description!: string;
+}

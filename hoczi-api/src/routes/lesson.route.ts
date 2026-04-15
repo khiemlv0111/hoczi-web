@@ -17,6 +17,9 @@ const lessonRoutes = Router();
 
 lessonRoutes.post('/create-lesson', new LessonController().createLesson);
 
+
+lessonRoutes.post('/create-assignment', new LessonController().createAssignment);
+
 // lessonRoutes.post('/add-member', new ClassController().addMember);
 
 // lessonRoutes.delete('/remove-member/:classId/:userId', new LessonController().removeMember);

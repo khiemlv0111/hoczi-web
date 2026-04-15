@@ -1,5 +1,6 @@
 import { classRepository } from "../repositories/classRepository";
 import { lessonRepository } from "../repositories/lessonRepository";
+import { assignmentRepository } from "../repositories/assignmentRepository";
 
 
 
@@ -13,6 +14,11 @@ export class LessonService {
 
     async createLesson(userId: number, data: any) {
         return lessonRepository.createOne(userId, data);
+    }
+
+
+    async createAssignment(userId: number, data: any) {
+        return assignmentRepository.createOne(userId, data);
     }
 
     // async addMember(classId: number, userId: number) {

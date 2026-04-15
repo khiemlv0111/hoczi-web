@@ -30,5 +30,7 @@ userRoutes.get('/session-detail/:id', new QuestionController().getSessionDetail)
 
 userRoutes.post('/start-retry/:id', new QuestionController().startRetry);
 
+userRoutes.put('/update-user/:id', new UserController().updateUser);
+
 
 export default userRoutes;

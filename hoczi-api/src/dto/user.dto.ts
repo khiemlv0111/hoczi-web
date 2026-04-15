@@ -233,3 +233,14 @@ export class UpdateUserProfileRequest {
 
 
 }
+
+
+export class UpdateUserRequest {
+
+    @IsOptional()
+    name?: string;
+
+    @IsOptional()
+    role!: string;
+
+}

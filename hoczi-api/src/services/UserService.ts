@@ -94,13 +94,22 @@ export class UserService {
         return {
             message: "get users success",
             success: true,
-            data: {users: response.data, total: response.total}
+            data: { users: response.data, total: response.total }
         }
     }
 
-}
+    async updateUser(userId: number, data: any) {
+        const user = await userRepository.findById(userId);
 
-// score!: number;
-//     total_questions!: number;
-//     correct_answers!: number;
-//     quizzes?: QuizSession[];
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        // business logic ở đây
+        user.name = data.name ?? user.name;
+        user.role = data.role ?? user.role;
+
+        return userRepository.save(user);
+    }
+
+}

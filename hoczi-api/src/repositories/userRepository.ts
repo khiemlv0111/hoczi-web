@@ -31,7 +31,7 @@ class UserRepository {
     }
 
     async userProfile(id: number) {
-        return this.repo.findOne({ 
+        return this.repo.findOne({
             where: { id },
             // relations: ['']
         });
@@ -48,6 +48,10 @@ class UserRepository {
         });
 
         return { data, total };
+    }
+
+    async save(user: User) {
+        return this.repo.save(user);
     }
 
 

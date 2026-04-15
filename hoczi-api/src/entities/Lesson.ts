@@ -11,10 +11,6 @@ import { Subject } from './Subject';
 import { Topic } from './Topic';
 import { Grade } from './Grade';
 import { User } from './User';
-// import { Subject } from './subject.entity';
-// import { Topic } from './topic.entity';
-// import { Grade } from './grade.entity';
-// import { User } from './user.entity';
 
 @Entity('lessons')
 export class Lesson {
@@ -71,7 +67,7 @@ export class Lesson {
   thumbnail_url?: string;
 
   @Column({ type: 'text', nullable: true })
-  video_url?: string;
+  media_url?: string;
 
   @Column({ nullable: true })
   estimated_minutes?: number;

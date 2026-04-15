@@ -31,4 +31,9 @@ export class LessonService {
         const response = await postRequest('/api/lessons/add-subject-to-class', payload, true);
         return response;
     }
+
+    static async assignStudentAssignment(payload: { assignment_id: number, student_id: number }) {
+        const response = await postRequest('/api/lessons/assign-student-assignment', payload, true);
+        return response;
+    }
 }

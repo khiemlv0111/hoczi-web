@@ -189,13 +189,8 @@ function AssignToStudentModal({ classId, studentId, studentName, onClose }: {
         const base = assignments.find(a => a.id === selected)!
         setSubmitting(true); setError('')
         try {
-            await LessonService.createAssignment({
-                title: base.title,
-                description: base.description,
-                due_date: base.due_date,
-                class_id: classId,
-                class_subject_id: base.class_subject_id,
-                lesson_id: base.lesson_id,
+            await LessonService.assignStudentAssignment({
+                assignment_id: base.id!,
                 student_id: studentId,
             })
             setDone(true)

@@ -28,6 +28,10 @@ export class LessonService {
         return subjectRepository.findMany();
     }
 
+    async getAllAssignments(userId: number, page: number, limit: number) {
+        return assignmentRepository.findAssignments(userId, page, limit);
+    }
+
     async addSubjectToClass(classId: number, subjectId: number, teacherId: number) {
         return classSubjectRepository.addSubjectToClass(classId, subjectId, teacherId);
     }

@@ -829,26 +829,15 @@ function CreateAssignmentModal({ classes, onClose, onCreate }: {
         setLoading(true); setError('')
         try {
 
-             const assignmentPayload: Assignment = {
-        
+            const assignmentPayload: Assignment = {
                     title: title.trim(),
-                    description: description.trim(),
-                    due_date: dueDate,
+                    description: description.trim() || undefined,
+                    due_date: dueDate || undefined,
                     class_id: classId,
-                    class_subject_id: subjectId|| undefined,
-
+                    class_subject_id: subjectId || undefined,
+                    lesson_id: lessonId || undefined,
                 }
             const res = await LessonService.createAssignment(assignmentPayload);
-
-
-            // const res = await postRequest('/api/classes/assign-assignment', {
-            //     title: title.trim(),
-            //     description: description.trim() || undefined,
-            //     due_date: dueDate || undefined,
-            //     class_id: classId,
-            //     class_subject_id: subjectId || undefined,
-            //     lesson_id: lessonId || undefined,
-            // }, true)
             onCreate(res?.data ?? res)
         } catch { setError('Failed to create assignment') }
         finally { setLoading(false) }

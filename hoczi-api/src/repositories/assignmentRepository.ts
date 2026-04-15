@@ -17,11 +17,9 @@ class AssignmentRepository {
             lesson_id: data.lesson_id,
             due_at: data.due_at,
             assigned_by: userId,
-
         });
         return this.repo.save(classRoom);
     }
-
 
 
     async findAssignments(userId: number, page: number, limit: number) {

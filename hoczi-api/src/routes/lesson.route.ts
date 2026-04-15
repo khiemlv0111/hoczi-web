@@ -22,6 +22,10 @@ lessonRoutes.post('/create-assignment', new LessonController().createAssignment)
 
 lessonRoutes.get('/get-assignments', new LessonController().getAllAssignments);
 
+
+lessonRoutes.post('/assign-student-assignment', new LessonController().assignStudentAssignment);
+
+
 // lessonRoutes.post('/add-member', new ClassController().addMember);
 
 // lessonRoutes.delete('/remove-member/:classId/:userId', new LessonController().removeMember);

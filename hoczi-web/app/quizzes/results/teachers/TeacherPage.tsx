@@ -33,6 +33,20 @@ type Lesson = {
     created_at?: string
 }
 
+type AssignmentStudent = {
+    id: number
+    assignment_id: number
+    student_id: number
+    status?: string
+    submitted_at?: string
+    due_at?: string
+    feedback?: string
+    score?: number
+    started_at?: string
+    total_points?: number
+    student?: User
+}
+
 type Assignment = {
     id?: number
     title: string
@@ -43,6 +57,8 @@ type Assignment = {
     class_subject_id?: number
     lesson_id?: number
     created_at?: string
+    detail?: Assignment
+    assignment_students?: AssignmentStudent[]
 }
 
 type AssignTarget =
@@ -140,6 +156,104 @@ function AssignModal({ target, onClose }: { target: AssignTarget; onClose: () =>
                             <button onClick={onClose} className="flex-1 py-2 rounded-lg border border-gray-200 text-[13px] text-gray-600 hover:bg-gray-50">Cancel</button>
                             <button onClick={submit} disabled={loading} className="flex-1 py-2 rounded-lg bg-blue-600 text-white text-[13px] font-medium hover:bg-blue-500 disabled:opacity-50 flex items-center justify-center gap-1.5">
                                 {loading && <Loader2 size={13} className="animate-spin" />} Assign
+                            </button>
+                        </div>
+                    </>
+                )}
+            </div>
+        </div>
+    )
+}
+
+// ── Assign Existing Assignment to Student Modal ────────────────────────────
+
+function AssignToStudentModal({ classId, studentId, studentName, onClose }: {
+    classId: number; studentId: number; studentName: string; onClose: () => void
+}) {
+    const [assignments, setAssignments] = useState<Assignment[]>([])
+    const [selected, setSelected] = useState<number | null>(null)
+    const [loading, setLoading] = useState(true)
+    const [submitting, setSubmitting] = useState(false)
+    const [error, setError] = useState('')
+    const [done, setDone] = useState(false)
+
+    useEffect(() => {
+        LessonService.getAllAssignments()
+            .then(res => setAssignments(res?.data ?? res ?? []))
+            .catch(() => setError('Failed to load assignments'))
+            .finally(() => setLoading(false))
+    }, [])
+
+    const submit = async () => {
+        if (!selected) { setError('Select an assignment'); return }
+        const base = assignments.find(a => a.id === selected)!
+        setSubmitting(true); setError('')
+        try {
+            await LessonService.createAssignment({
+                title: base.title,
+                description: base.description,
+                due_date: base.due_date,
+                class_id: classId,
+                class_subject_id: base.class_subject_id,
+                lesson_id: base.lesson_id,
+                student_id: studentId,
+            })
+            setDone(true)
+        } catch { setError('Failed to assign') }
+        finally { setSubmitting(false) }
+    }
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+            <div className="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 p-6 max-h-[90vh] flex flex-col">
+                <div className="flex items-center justify-between mb-5">
+                    <div>
+                        <h3 className="text-[15px] font-semibold text-gray-900">Assign to {studentName}</h3>
+                        <p className="text-[11px] text-gray-400 mt-0.5">Pick an existing assignment</p>
+                    </div>
+                    <button onClick={onClose} className="p-1 rounded hover:bg-gray-100"><X size={15} className="text-gray-400" /></button>
+                </div>
+                {done ? (
+                    <div className="py-6 flex flex-col items-center gap-3 text-center">
+                        <div className="w-10 h-10 rounded-full bg-green-50 flex items-center justify-center">
+                            <ClipboardList size={18} className="text-green-500" />
+                        </div>
+                        <p className="text-[13px] font-medium text-gray-900">Assignment sent!</p>
+                        <p className="text-[12px] text-gray-400">{studentName} has been assigned.</p>
+                        <button onClick={onClose} className="mt-2 px-5 py-2 rounded-lg bg-blue-600 text-white text-[13px] font-medium hover:bg-blue-500">Done</button>
+                    </div>
+                ) : (
+                    <>
+                        <div className="flex-1 overflow-y-auto -mx-6 px-6">
+                            {loading ? (
+                                <div className="space-y-2">
+                                    {[1, 2, 3].map(i => <div key={i} className="h-14 bg-gray-100 rounded-lg animate-pulse" />)}
+                                </div>
+                            ) : assignments.length === 0 ? (
+                                <div className="py-10 text-center">
+                                    <ClipboardList size={24} className="mx-auto text-gray-300 mb-2" />
+                                    <p className="text-[12px] text-gray-400">No assignments available</p>
+                                </div>
+                            ) : (
+                                <div className="space-y-2">
+                                    {assignments.map(a => (
+                                        <button key={a.id} onClick={() => setSelected(a.id!)}
+                                            className={`w-full text-left px-4 py-3 rounded-lg border transition-colors ${selected === a.id ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'}`}>
+                                            <p className="text-[13px] font-medium text-gray-900">{a.title}</p>
+                                            <div className="flex gap-3 mt-0.5">
+                                                {a.due_date && <p className="text-[11px] text-gray-400">Due {new Date(a.due_date).toLocaleDateString()}</p>}
+                                                {a.description && <p className="text-[11px] text-gray-400 truncate">{a.description}</p>}
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                        {error && <p className="text-[12px] text-red-500 mt-3">{error}</p>}
+                        <div className="flex gap-2 mt-5">
+                            <button onClick={onClose} className="flex-1 py-2 rounded-lg border border-gray-200 text-[13px] text-gray-600 hover:bg-gray-50">Cancel</button>
+                            <button onClick={submit} disabled={submitting || !selected} className="flex-1 py-2 rounded-lg bg-green-600 text-white text-[13px] font-medium hover:bg-green-500 disabled:opacity-50 flex items-center justify-center gap-1.5">
+                                {submitting && <Loader2 size={13} className="animate-spin" />} Assign
                             </button>
                         </div>
                     </>
@@ -262,6 +376,7 @@ function ClassesTab({ classes, allUsers, loadingClasses, teacherId, setClasses }
     const [showCreate, setShowCreate] = useState(false)
     const [showAddMember, setShowAddMember] = useState(false)
     const [assignTarget, setAssignTarget] = useState<AssignTarget | null>(null)
+    const [assignStudentTarget, setAssignStudentTarget] = useState<{ classId: number; studentId: number; studentName: string } | null>(null)
 
     const selectClass = (cls: ClassItem) => {
         setSelectedClass(cls)
@@ -402,7 +517,7 @@ function ClassesTab({ classes, allUsers, loadingClasses, teacherId, setClasses }
                                                 <p className="text-[13px] font-medium text-gray-900 truncate">{member.student.name}</p>
                                                 <p className="text-[11px] text-gray-400 truncate">{member.student.email}</p>
                                             </div>
-                                            <button onClick={() => setAssignTarget({ type: 'student', classId: selectedClass.id, studentId: member.student.id, studentName: member.student.name })}
+                                            <button onClick={() => setAssignStudentTarget({ classId: selectedClass.id, studentId: member.student.id, studentName: member.student.name })}
                                                 className="p-1.5 rounded-md text-gray-400 hover:text-green-600 hover:bg-green-50 transition-colors" title="Assign">
                                                 <ClipboardList size={13} />
                                             </button>
@@ -425,6 +540,14 @@ function ClassesTab({ classes, allUsers, loadingClasses, teacherId, setClasses }
                     onClose={() => setShowAddMember(false)} onAdded={handleMemberAdded} />
             )}
             {assignTarget && <AssignModal target={assignTarget} onClose={() => setAssignTarget(null)} />}
+            {assignStudentTarget && (
+                <AssignToStudentModal
+                    classId={assignStudentTarget.classId}
+                    studentId={assignStudentTarget.studentId}
+                    studentName={assignStudentTarget.studentName}
+                    onClose={() => setAssignStudentTarget(null)}
+                />
+            )}
         </div>
     )
 }
@@ -724,6 +847,7 @@ function AssignmentsTab({ classes }: { classes: ClassItem[] }) {
     const [loading, setLoading] = useState(true)
     const [filterClass, setFilterClass] = useState<number | 'all'>('all')
     const [showModal, setShowModal] = useState(false)
+    const [selected, setSelected] = useState<Assignment | null>(null)
 
     useEffect(() => {
         LessonService.getAllAssignments()
@@ -767,7 +891,7 @@ function AssignmentsTab({ classes }: { classes: ClassItem[] }) {
                             const cls = classes.find(c => c.id === a.class_id)
                             const overdue = a.due_date && new Date(a.due_date) < new Date()
                             return (
-                                <div key={a.id} className="px-5 py-4 flex items-center gap-4 hover:bg-gray-50">
+                                <div key={a.id} onClick={() => setSelected(a)} className="px-5 py-4 flex items-center gap-4 hover:bg-gray-50 cursor-pointer">
                                     <div className="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center flex-shrink-0">
                                         <ClipboardList size={14} className="text-green-500" />
                                     </div>
@@ -792,6 +916,113 @@ function AssignmentsTab({ classes }: { classes: ClassItem[] }) {
                 <CreateAssignmentModal classes={classes} onClose={() => setShowModal(false)}
                     onCreate={a => { setAssignments(prev => [a, ...prev]); setShowModal(false) }} />
             )}
+            {selected && (
+                <AssignmentDetailModal assignment={selected} classes={classes} onClose={() => setSelected(null)} />
+            )}
+        </div>
+    )
+}
+
+function AssignmentDetailModal({ assignment, classes, onClose }: {
+    assignment: Assignment; classes: ClassItem[]; onClose: () => void
+}) {
+    const a = assignment.detail ?? assignment
+    const students = assignment.assignment_students ?? []
+    const cls = classes.find(c => c.id === a.class_id)
+    const overdue = a.due_date && new Date(a.due_date) < new Date()
+
+    return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+            <div className="bg-white rounded-xl shadow-xl w-full max-w-lg mx-4 p-6 max-h-[90vh] flex flex-col">
+                <div className="flex items-center justify-between mb-5">
+                    <div>
+                        <h3 className="text-[15px] font-semibold text-gray-900">{a.title}</h3>
+                        <div className="flex items-center gap-2 mt-1">
+                            {cls && <span className="text-[11px] text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">{cls.name}</span>}
+                            {a.due_date && (
+                                <span className={`text-[11px] px-2 py-0.5 rounded-full ${overdue ? 'text-red-600 bg-red-50' : 'text-gray-500 bg-gray-100'}`}>
+                                    Due {new Date(a.due_date).toLocaleDateString()}
+                                </span>
+                            )}
+                        </div>
+                    </div>
+                    <button onClick={onClose} className="p-1 rounded hover:bg-gray-100"><X size={15} className="text-gray-400" /></button>
+                </div>
+
+                {a.description && (
+                    <p className="text-[13px] text-gray-600 mb-5 leading-relaxed">{a.description}</p>
+                )}
+
+                <div className="flex-1 overflow-y-auto">
+                    <p className="text-[12px] font-semibold text-gray-500 uppercase tracking-wide mb-3">
+                        Students ({students.length})
+                    </p>
+                    {students.length === 0 ? (
+                        <div className="py-8 text-center">
+                            <Users size={24} className="mx-auto text-gray-300 mb-2" />
+                            <p className="text-[12px] text-gray-400">No students assigned</p>
+                        </div>
+                    ) : (
+                        <div className="divide-y divide-gray-100 border border-gray-200 rounded-lg overflow-hidden">
+                            {students.map(s => {
+                                const name = s.student ? s.student.name || s.student.email : `Student #${s.student_id}`
+                                const submitted = !!s.submitted_at
+                                return (
+                                    <div key={s.id} className="px-4 py-4">
+                                        <div className="flex items-center justify-between gap-3 mb-3">
+                                            <div className="flex items-center gap-2 min-w-0">
+                                                <div className="w-7 h-7 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0">
+                                                    <GraduationCap size={13} className="text-blue-500" />
+                                                </div>
+                                                <p className="text-[13px] font-medium text-gray-900 truncate">{name}</p>
+                                            </div>
+                                            <span className={`text-[11px] px-2 py-0.5 rounded-full flex-shrink-0 ${submitted ? 'text-green-600 bg-green-50' : 'text-yellow-600 bg-yellow-50'}`}>
+                                                {s.status ?? (submitted ? 'Submitted' : 'Pending')}
+                                            </span>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-x-4 gap-y-2 ml-9">
+                                            {s.started_at && (
+                                                <div>
+                                                    <p className="text-[10px] text-gray-400 uppercase tracking-wide">Started</p>
+                                                    <p className="text-[12px] text-gray-700">{new Date(s.started_at).toLocaleString()}</p>
+                                                </div>
+                                            )}
+                                            {s.submitted_at && (
+                                                <div>
+                                                    <p className="text-[10px] text-gray-400 uppercase tracking-wide">Submitted</p>
+                                                    <p className="text-[12px] text-gray-700">{new Date(s.submitted_at).toLocaleString()}</p>
+                                                </div>
+                                            )}
+                                            {s.due_at && (
+                                                <div>
+                                                    <p className="text-[10px] text-gray-400 uppercase tracking-wide">Due</p>
+                                                    <p className="text-[12px] text-gray-700">{new Date(s.due_at).toLocaleString()}</p>
+                                                </div>
+                                            )}
+                                            {(s.score != null || s.total_points != null) && (
+                                                <div>
+                                                    <p className="text-[10px] text-gray-400 uppercase tracking-wide">Score</p>
+                                                    <p className="text-[12px] text-gray-700 font-medium">{s.score ?? '—'}{s.total_points != null ? ` / ${s.total_points}` : ''}</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                        {s.feedback && (
+                                            <div className="mt-2 ml-9">
+                                                <p className="text-[10px] text-gray-400 uppercase tracking-wide mb-0.5">Feedback</p>
+                                                <p className="text-[12px] text-gray-600 italic">{s.feedback}</p>
+                                            </div>
+                                        )}
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    )}
+                </div>
+
+                <div className="mt-5 pt-4 border-t border-gray-100">
+                    <button onClick={onClose} className="w-full py-2 rounded-lg border border-gray-200 text-[13px] text-gray-600 hover:bg-gray-50">Close</button>
+                </div>
+            </div>
         </div>
     )
 }

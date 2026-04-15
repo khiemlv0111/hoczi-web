@@ -49,3 +49,17 @@ export class CreateAssignmentRequest {
     @IsOptional()
     description!: string;
 }
+
+
+export class AssignStudentAssignmentRequest {
+
+    @IsNotEmpty()
+    student_id!: number;
+
+    @IsNotEmpty()
+    assignment_id!: number;
+
+    @IsNotEmpty()
+    started_at?: string;
+
+}

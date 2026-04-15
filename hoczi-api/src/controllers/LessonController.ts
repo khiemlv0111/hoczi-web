@@ -18,7 +18,7 @@ import { CreateQuestionRequest } from '../dto/question.dto';
 import { QuestionService } from '../services/QuestionService';
 import { LessonService } from '../services/LessonService';
 import { AddMemberToClassRequest, AddSubjectToClassRequest, CreateClassRequest, RemoveMemberRequest } from '../dto/class.dto';
-import { CreateAssignmentRequest, CreateLessonRequest } from '../dto/lesson.dto';
+import { AssignStudentAssignmentRequest, CreateAssignmentRequest, CreateLessonRequest } from '../dto/lesson.dto';
 
 
 const lessonService = new LessonService();
@@ -72,6 +72,20 @@ export class LessonController {
         const response = await lessonService.createAssignment(Number(id), input);
         return res.json(response);
     }
+
+        async assignStudentAssignment(req: Request, res: Response) {
+
+        const { id } = req.user;
+
+        const { errors, input } = await RequestValidator(AssignStudentAssignmentRequest, req.body);
+        if (errors) {
+            return res.status(400).json({ success: false, message: errors })
+        }
+
+        const response = await lessonService.assignStudentAssignment(input);
+        return res.json(response);
+    }
+
 
 
 

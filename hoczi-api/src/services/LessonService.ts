@@ -1,8 +1,11 @@
 import { lessonRepository } from "../repositories/lessonRepository";
 import { assignmentRepository } from "../repositories/assignmentRepository";
-import { CreateAssignmentRequest } from "../dto/lesson.dto";
+import { AssignStudentAssignmentRequest, CreateAssignmentRequest } from "../dto/lesson.dto";
 import { subjectRepository } from "../repositories/subjectRepository";
 import { classSubjectRepository } from "../repositories/classSubjectRepository";
+
+import { assignmentStudentRepository } from "../repositories/assignmentStudentRepository";
+
 
 
 
@@ -19,7 +22,6 @@ export class LessonService {
         return lessonRepository.createOne(userId, data);
     }
 
-
     async createAssignment(userId: number, data: CreateAssignmentRequest) {
         return assignmentRepository.createOne(userId, data);
     }
@@ -34,5 +36,9 @@ export class LessonService {
 
     async addSubjectToClass(classId: number, subjectId: number, teacherId: number) {
         return classSubjectRepository.addSubjectToClass(classId, subjectId, teacherId);
+    }
+
+     async assignStudentAssignment(data: AssignStudentAssignmentRequest) {
+        return assignmentStudentRepository.createOne(data);
     }
 }

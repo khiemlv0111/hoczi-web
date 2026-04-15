@@ -21,6 +21,7 @@ import {
     ChevronDown,
     Loader2,
     ChessKing,
+    Brain,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
@@ -33,6 +34,7 @@ const navMain = [
     { path: '/quizzes/results', label: "Quizzes", icon: Clock },
     { path: '/quizzes/results/students', label: "Students", icon: Users },
     { path: '/quizzes/results/games', label: "Games", icon: ChessKing },
+    { path: '/quizzes/results/ai-learn', label: "AI Learn", icon: Brain },
 ];
 
 const navSettings = [

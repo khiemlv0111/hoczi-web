@@ -20,16 +20,19 @@ import {
     X,
     ChevronDown,
     Loader2,
+    ChessKing,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import { QuestionService } from "@/data/services/question.service";
 
+
 const navMain = [
     { path: '/quizzes/results/dashboard', label: "Dashboard", icon: LayoutDashboard },
     { path: '/quizzes/results', label: "Quizzes", icon: Clock },
     { path: '/quizzes/results/students', label: "Students", icon: Users },
+    { path: '/quizzes/results/games', label: "Games", icon: ChessKing },
 ];
 
 const navSettings = [

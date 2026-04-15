@@ -10,6 +10,7 @@ import {
 } from "lucide-react"
 import { postRequest, getRequest } from "@/data/http"
 import { LessonService } from "@/data/services/lesson.service"
+import { RichTextEditor } from "@/app/components/RichTextEditor"
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -167,7 +168,7 @@ function AssignModal({ target, onClose }: { target: AssignTarget; onClose: () =>
 
 // ── Assign Existing Assignment to Student Modal ────────────────────────────
 
-function AssignToStudentModal({ classId, studentId, studentName, onClose }: {
+function AssignToStudentModal({ studentId, studentName, onClose }: {
     classId: number; studentId: number; studentName: string; onClose: () => void
 }) {
     const [assignments, setAssignments] = useState<Assignment[]>([])
@@ -818,7 +819,10 @@ function CreateLessonModal({ classes, onClose, onCreate }: {
 
                     {/* Content */}
                     <Field label="Content">
-                        <textarea value={content} onChange={e => setContent(e.target.value)} placeholder="Lesson content or notes…" rows={4} className={INPUT + " resize-none"} />
+                        <RichTextEditor onChange={(v) => {
+                            setContent(v)}}
+                            />
+                        {/* <textarea value={content} onChange={e => setContent(e.target.value)} placeholder="Lesson content or notes…" rows={4} className={INPUT + " resize-none"} /> */}
                     </Field>
 
                     {error && <p className="text-[12px] text-red-500">{error}</p>}
@@ -1041,13 +1045,10 @@ function CreateAssignmentModal({ classes, onClose, onCreate }: {
     }, [])
 
     useEffect(() => {
-        if (!classId) { setLessons([]); setLessonId(''); return }
         LessonService.getMyLessons().then(res => {
-            const all: Lesson[] = res?.data ?? res ?? []
-            setLessons(all.filter(l => Number(l.class_id) === Number(classId)))
-            setLessonId('')
+            setLessons(res?.data ?? res ?? [])
         }).catch(() => {})
-    }, [classId])
+    }, [])
 
     const submit = async () => {
         if (!title.trim()) { setError('Title is required'); return }
@@ -1095,8 +1096,8 @@ function CreateAssignmentModal({ classes, onClose, onCreate }: {
                             </select>
                         </Field>
                         <Field label="Lesson">
-                            <select value={lessonId} onChange={e => setLessonId(e.target.value ? Number(e.target.value) : '')} className={INPUT} disabled={!classId || lessons.length === 0}>
-                                <option value="">{!classId ? 'Select class first' : lessons.length === 0 ? 'No lessons' : 'Select lesson'}</option>
+                            <select value={lessonId} onChange={e => setLessonId(e.target.value ? Number(e.target.value) : '')} className={INPUT} disabled={lessons.length === 0}>
+                                <option value="">{lessons.length === 0 ? 'No lessons' : 'Select lesson'}</option>
                                 {lessons.map(l => <option key={l.id} value={l.id}>{l.title}</option>)}
                             </select>
                         </Field>

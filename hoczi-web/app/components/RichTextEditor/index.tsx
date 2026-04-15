@@ -1,0 +1,211 @@
+// components/post/RichTextEditor.tsx
+'use client'
+import { useEditor, EditorContent } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
+import Image from '@tiptap/extension-image'
+import { useRef } from 'react'
+// import {
+//   Bold, Italic, List, ListOrdered, ImageIcon, Smile
+// } from 'lucide-react'
+
+import {
+  Bold, Italic, List, ListOrdered, ImageIcon, Smile, Link2, Link2Off
+} from 'lucide-react'
+import Link from '@tiptap/extension-link'
+
+const EMOJI_LIST = ['😀', '😂', '❤️', '👍', '🔥', '🎉', '🙏', '💯', '😎', '🤔', '✅', '❌', '⚠️', '⏳', '🟢', '🟡', '🔴', '📌', '📎', '⚡', '🐛', '💀', '👉', '🔐']
+
+interface RichTextEditorProps {
+  onChange?: (html: string) => void
+  placeholder?: string
+}
+
+export function RichTextEditor({ onChange, placeholder }: RichTextEditorProps) {
+  const fileRef = useRef<HTMLInputElement>(null)
+  const emojiRef = useRef<HTMLDivElement>(null)
+
+  const editor = useEditor({
+    immediatelyRender: false, // 👈 thêm dòng này
+    extensions: [
+      StarterKit,
+      Image.configure({ inline: false, allowBase64: true }),
+      Link.configure({
+        openOnClick: false,
+        HTMLAttributes: {
+          class: 'text-blue-500 underline cursor-pointer',
+        },
+      }),
+    ],
+    content: '',
+    editorProps: {
+      attributes: {
+        class: 'outline-none min-h-[120px] text-sm text-gray-800 leading-relaxed',
+      },
+    },
+    onUpdate: ({ editor }) => onChange?.(editor.getHTML()),
+  })
+
+  const insertImage = (file: File) => {
+    const reader = new FileReader()
+    reader.onload = e => {
+      editor?.chain().focus().setImage({ src: e.target?.result as string }).run()
+    }
+    reader.readAsDataURL(file)
+  }
+  const setLink = () => {
+    const url = window.prompt('Nhập URL:', editor?.getAttributes('link').href ?? 'https://')
+    if (!url) return
+    if (url === '') {
+      editor?.chain().focus().unsetLink().run()
+      return
+    }
+    editor?.chain().focus().setLink({ href: url, target: '_blank' }).run()
+  }
+
+  const toggleEmoji = () => {
+    if (emojiRef.current) {
+      emojiRef.current.classList.toggle('hidden')
+    }
+  }
+
+  if (!editor) return null
+
+  return (
+    <div className="border border-gray-200 rounded-lg overflow-hidden focus-within:border-blue-400 focus-within:ring-1 focus-within:ring-blue-100 transition-all">
+
+      {/* Toolbar */}
+      <div className="flex items-center gap-1 px-3 py-2 border-b border-gray-100">
+        <ToolbarBtn
+          onClick={() => editor.chain().focus().toggleBold().run()}
+          active={editor.isActive('bold')}
+          title="Bold"
+        >
+          <Bold className="w-4 h-4" />
+        </ToolbarBtn>
+
+        <ToolbarBtn
+          onClick={() => editor.chain().focus().toggleItalic().run()}
+          active={editor.isActive('italic')}
+          title="Italic"
+        >
+          <Italic className="w-4 h-4" />
+        </ToolbarBtn>
+
+        <div className="w-px h-4 bg-gray-200 mx-1" />
+
+        <ToolbarBtn
+          onClick={() => editor.chain().focus().toggleBulletList().run()}
+          active={editor.isActive('bulletList')}
+          title="Bullet list"
+        >
+          <List className="w-4 h-4" />
+        </ToolbarBtn>
+
+        <ToolbarBtn
+          onClick={() => editor.chain().focus().toggleOrderedList().run()}
+          active={editor.isActive('orderedList')}
+          title="Ordered list"
+        >
+          <ListOrdered className="w-4 h-4" />
+        </ToolbarBtn>
+
+        <div className="w-px h-4 bg-gray-200 mx-1" />
+
+        {/* Image upload */}
+        <ToolbarBtn onClick={() => fileRef.current?.click()} title="Insert image">
+          <ImageIcon className="w-4 h-4" />
+        </ToolbarBtn>
+
+        <ToolbarBtn
+          onClick={() => editor.chain().focus().unsetLink().run()}
+          title="Remove link"
+        >
+          <Link2Off className="w-4 h-4" />
+        </ToolbarBtn>
+
+
+        <ToolbarBtn
+          onClick={setLink}
+          active={editor.isActive('link')}
+          title="Insert link"
+        >
+          <Link2 className="w-4 h-4" />
+        </ToolbarBtn>
+        <input
+          ref={fileRef}
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={e => e.target.files?.[0] && insertImage(e.target.files[0])}
+        />
+
+        {/* Emoji picker */}
+        <div className="relative">
+          <ToolbarBtn onClick={toggleEmoji} title="Emoji">
+            <Smile className="w-4 h-4" />
+          </ToolbarBtn>
+          <div
+            ref={emojiRef}
+            className="hidden absolute top-8 left-0 z-10 bg-white border border-gray-200 rounded-lg shadow-md p-2 grid grid-cols-5 gap-1 w-44"
+          >
+            {EMOJI_LIST.map(emoji => (
+              <button
+                key={emoji}
+                onClick={() => {
+                  editor.chain().focus().insertContent(emoji).run()
+                  emojiRef.current?.classList.add('hidden')
+                }}
+                className="text-lg hover:bg-gray-100 rounded p-1 transition-colors"
+              >
+                {emoji}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Editor area */}
+      <div className="px-3 py-2.5 relative min-h-[250px]">
+        {editor.isEmpty && (
+          <p className="absolute top-2.5 left-3 text-sm text-gray-400 pointer-events-none select-none">
+            {placeholder ?? 'Enter content...'}
+          </p>
+        )}
+        <EditorContent editor={editor} />
+      </div>
+
+      {/* Tiptap default list styles */}
+      <style>{`
+        .ProseMirror ul { list-style-type: disc; padding-left: 1.25rem; }
+        .ProseMirror ol { list-style-type: decimal; padding-left: 1.25rem; }
+        .ProseMirror li { margin: 2px 0; }
+        .ProseMirror img { max-width: 100%; border-radius: 8px; margin: 8px 0; }
+        .ProseMirror strong { font-weight: 600; }
+        .ProseMirror em { font-style: italic; }
+      `}</style>
+    </div>
+  )
+}
+
+function ToolbarBtn({
+  children, onClick, active, title
+}: {
+  children: React.ReactNode
+  onClick: () => void
+  active?: boolean
+  title?: string
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      title={title}
+      className={`p-1.5 rounded transition-colors ${active
+        ? 'bg-blue-50 text-blue-600'
+        : 'text-gray-500 hover:bg-gray-100 hover:text-gray-700'
+        }`}
+    >
+      {children}
+    </button>
+  )
+}

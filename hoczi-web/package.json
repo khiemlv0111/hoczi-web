@@ -9,6 +9,10 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@tiptap/extension-image": "^3.22.3",
+    "@tiptap/extension-link": "^3.22.3",
+    "@tiptap/react": "^3.22.3",
+    "@tiptap/starter-kit": "^3.22.3",
     "@types/cookie": "^1.0.0",
     "axios": "^1.15.0",
     "cookie": "^1.1.1",

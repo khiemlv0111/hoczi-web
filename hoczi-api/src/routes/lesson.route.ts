@@ -23,7 +23,7 @@ lessonRoutes.post('/create-lesson', new LessonController().createLesson);
 
 
 
-// classRoutes.get('/get-quiz-session-detail/:id', new QuestionController().getQuizSessionDetail);
+lessonRoutes.get('/get-my-lessons', new LessonController().getMyLessons);
 
 
 

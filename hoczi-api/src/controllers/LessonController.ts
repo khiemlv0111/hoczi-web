@@ -26,31 +26,29 @@ const lessonService = new LessonService();
 export class LessonController {
 
 
-    // async getClassByTeacher(req: Request, res: Response) {
-    //     // const { id } = req.user;
-
-
-    //      const { id } = req.user;
-
-
-
-
-    //     const response = await classService.getClassesByTeacherId(Number(id));
-    //     return res.json(response);
-    // }
-
-    async createLesson(req: Request, res: Response) {
+    async getMyLessons(req: Request, res: Response) {
         // const { id } = req.user;
 
 
-        const { id } = req.user;
+         const { id } = req.user;
 
+         const page = req.query.page ? Number(req.query.page) : 1;
+        const limit = req.query.limit ? Number(req.query.limit) : 30;
+
+
+
+
+        const response = await lessonService.getMyLessons(Number(id), page, limit);
+        return res.json(response);
+    }
+
+    async createLesson(req: Request, res: Response) {
+
+        const { id } = req.user;
 
         if (!id) {
             return res.status(400).json({ success: false, message: "errors" })
         }
-
-
 
         const { errors, input } = await RequestValidator(CreateLessonRequest, req.body);
         if (errors) {

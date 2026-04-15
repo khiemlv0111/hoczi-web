@@ -5,11 +5,11 @@ import { lessonRepository } from "../repositories/lessonRepository";
 
 export class LessonService {
 
-    private readonly QUIZ_QUESTION_LIMIT = 15;
+    private readonly QUESTION_LIMIT = 30;
 
-    // async getClassesByTeacherId(teacherId: number) {
-    //     return classRepository.findMany(teacherId);
-    // }
+    async getMyLessons(userId: number, page: number, limit: number) {
+        return lessonRepository.findLessons(userId, page, limit);
+    }
 
     async createLesson(userId: number, data: any) {
         return lessonRepository.createOne(userId, data);

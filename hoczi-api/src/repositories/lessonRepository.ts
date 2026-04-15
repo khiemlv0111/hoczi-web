@@ -26,11 +26,12 @@ class LessonRepository {
 
 
 
-    async findAll(page: number, limit: number) {
+    async findLessons(userId: number, page: number, limit: number) {
         const offset = (page - 1) * limit;
 
         const [data, total] = await this.repo.findAndCount({
-            relations: ["quiz_sessions"],
+            where: {created_by: userId},
+            relations: ["grade", "subject", "topic"],
             order: { id: "DESC" },
             take: limit,
             skip: offset,
@@ -38,6 +39,7 @@ class LessonRepository {
 
         return { data, total };
     }
+    
 
 
 }

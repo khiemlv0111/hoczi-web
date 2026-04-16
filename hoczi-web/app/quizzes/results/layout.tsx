@@ -22,6 +22,7 @@ import {
     Loader2,
     ChessKing,
     Brain,
+    Menu,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
@@ -51,6 +52,7 @@ export default function ResultLayout({
     const router = useRouter();
     const pathname = usePathname();
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
     const { handleStartQuiz, getUserProfile, user, handleGetQuestionList } = useAppData();
@@ -86,6 +88,7 @@ export default function ResultLayout({
 
 
     const handleNavigate = (item: any) => {
+        setSidebarOpen(false);
         router.push(item.path);
     }
 
@@ -137,8 +140,20 @@ export default function ResultLayout({
 
     return (
         <div className="flex h-screen bg-gray-100 font-sans text-sm">
+            {/* Mobile sidebar backdrop */}
+            {sidebarOpen && (
+                <div
+                    className="fixed inset-0 z-20 bg-black/40 md:hidden"
+                    onClick={() => setSidebarOpen(false)}
+                />
+            )}
+
             {/* Sidebar */}
-            <aside className="w-56 min-w-[220px] bg-white border-r border-gray-200 flex flex-col py-2">
+            <aside className={`
+                fixed inset-y-0 left-0 z-30 w-56 bg-white border-r border-gray-200 flex flex-col py-2 transition-transform duration-200
+                md:static md:translate-x-0 md:z-auto
+                ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+            `}>
                 {/* Logo */}
                 <div className="flex items-center gap-2 px-4 pb-4 border-b border-gray-200 mb-3">
                     <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-xs font-medium">
@@ -200,8 +215,16 @@ export default function ResultLayout({
             {/* Main content */}
             <div className="flex-1 flex flex-col overflow-hidden">
                 {/* Topbar */}
-                <header className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
-                    <span className="font-medium text-gray-900 text-[15px]">User Dashboard</span>
+                <header className="bg-white border-b border-gray-200 px-4 md:px-6 py-3 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => setSidebarOpen(true)}
+                            className="md:hidden p-1.5 rounded-md hover:bg-gray-100 transition-colors"
+                        >
+                            <Menu size={18} className="text-gray-500" />
+                        </button>
+                        <span className="font-medium text-gray-900 text-[15px]">User Dashboard</span>
+                    </div>
                     <div className="flex items-center gap-3">
                         <button onClick={openQuizModal} className="cursor-pointer flex items-center gap-1.5 px-3 py-1.5 border border-gray-300 rounded-md text-[13px] hover:bg-gray-50 transition-colors">
                             <Plus size={13} />

@@ -32,5 +32,8 @@ userRoutes.post('/start-retry/:id', new QuestionController().startRetry);
 
 userRoutes.put('/update-user/:id', new UserController().updateUser);
 
+userRoutes.get('/all-teacher-questions', new QuestionController().getAllTeacherQuestions);
+
+
 
 export default userRoutes;

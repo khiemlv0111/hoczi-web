@@ -99,6 +99,24 @@ class QuestionRepository {
         return this.repo.save(question);
     }
 
+
+    async findTeacherQuestions(userId: number, page: number, limit: number) {
+        const offset = (page - 1) * limit;
+
+        const [data, total] = await this.repo.findAndCount({
+            relations: ["answers"],
+            where: { created_by: userId },
+            order: { id: "DESC" },
+            take: limit,
+            skip: offset,
+        });
+
+        return { data, total };
+    }
+
+
+
+
     async update(id: number, data: Partial<Question>) {
         await this.repo.update(id, data);
         return this.findById(id);

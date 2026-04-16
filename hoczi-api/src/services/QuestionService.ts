@@ -288,4 +288,16 @@ export class QuestionService {
 
     }
 
+
+    async getAllTeacherQuestions(userId: number, page: number, limit: number) {
+        const response = await questionRepository.findTeacherQuestions(userId, page, limit);
+        return {
+            message: "get questions success",
+            success: true,
+            data: response.data,
+            total: response.total,
+        }
+
+    }
+
 }

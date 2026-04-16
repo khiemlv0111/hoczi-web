@@ -50,7 +50,7 @@ lessonRoutes.post('/complete-assignment', new LessonController().commentOnAssign
 
 
 // classRoutes.post('/start-retry/:id', new QuestionController().startRetry);
-lessonRoutes.post('/create-quiz', new LessonController().createNewQuiz);
+lessonRoutes.post('/create-quiz-assignment', new LessonController().createNewQuiz);
 
 lessonRoutes.get('/get-my-quizzes', new LessonController().getMyQuizzes);
 

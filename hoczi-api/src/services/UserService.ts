@@ -112,4 +112,8 @@ export class UserService {
         return userRepository.save(user);
     }
 
+    async findUserById(userId: number) {
+        return await userRepository.findById(userId);
+    }
+
 }

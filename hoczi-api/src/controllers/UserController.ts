@@ -3,6 +3,7 @@ import { RequestValidator } from '../helpers/requestValidator';
 import { UpdateUserRequest } from '../dto/user.dto';
 
 import { UserService } from '../services/UserService';
+import { isAdmin } from '../helpers';
 
 
 const userService = new UserService();
@@ -26,7 +27,17 @@ export class UserController {
     }
 
     async updateUser(req: Request, res: Response) {
-        const id = Number(req.params.id);
+
+        const { id } = req.user;
+        const editedUser = await userService.findUserById(Number(id));
+
+        if (!editedUser || !isAdmin(editedUser.role as string)) {
+            return res.status(400).json({ success: false, message: "No Permission" });
+        }
+
+
+
+        const userId = Number(req.params.id);
 
 
         const { errors, input } = await RequestValidator(UpdateUserRequest, req.body);
@@ -34,7 +45,7 @@ export class UserController {
             return res.status(400).json({ success: false, message: errors })
         }
 
-        const user = await userService.updateUser(id, input);
+        const user = await userService.updateUser(userId, input);
         return res.json({ success: true, data: user });
 
     }

@@ -94,3 +94,10 @@ export async function generateHashPassword(password: string) {
         return await bcrypt.hash(password, 10);
 
 }
+
+const ADMIN_ROLES = ['admin', 'super_admin'] as const;
+export type AdminRole = typeof ADMIN_ROLES[number];
+
+export function isAdmin(role: string): boolean {
+  return (ADMIN_ROLES as readonly string[]).includes(role);
+}

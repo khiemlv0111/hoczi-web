@@ -1,21 +1,6 @@
 import { Request, Response } from 'express'
-import bcrypt from 'bcrypt'
-
-import { v4 as uuidv4 } from 'uuid';
-import { userRepository } from '../repositories/userRepository';
-
-import { generateDigitCode, generateIdWithTimestamp, isExpired, isStrongPassword } from '../helpers';
-
-import { BadRequestError } from '../helpers/api-erros';
-import { ILike } from 'typeorm';
-import { JwtPayload } from '../middlewares/authMiddleware';
-// import { createAccessToken, createRefreshToken } from '../utils/create_token';
-import { RequestValidator } from '../helpers/requestValidator';
-import { SubmitQuizSessionRequest, UserLoginRequest, UserRegisterRequest } from '../dto/user.dto';
-import { generateRandomCode } from '../utils';
-import { createAccessToken, createRefreshToken } from '../utils/create_token';
-import { CreateQuestionRequest } from '../dto/question.dto';
-import { QuestionService } from '../services/QuestionService';
+import { RequestValidator } from '../dto/requestValidator';
+import { UserRegisterRequest } from '../dto/user.dto';
 import { UserService } from '../services/UserService';
 
 

@@ -7,7 +7,7 @@ import { CreateAnswerRequest, CreateQuestionRequest, QuestionFilterDto } from ".
 
 import { quizSessionRepository } from "../repositories/quizSessionRepository";
 import { CreateQuizRequest, SubmitQuizSessionRequest } from "../dto/user.dto";
-import { BadRequestError } from "../helpers/api-erros";
+import { BadRequestError } from "../errors/api-erros";
 import { userAnswerRepository } from "../repositories/userAnswerRepository";
 import { quizRepository } from "../repositories/quizRepository";
 

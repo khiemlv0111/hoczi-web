@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express'
-import { UnauthorizedError } from '../helpers/api-erros'
+import { UnauthorizedError } from '../errors/api-erros'
 import jwt from 'jsonwebtoken'
 
 export type JwtPayload = {

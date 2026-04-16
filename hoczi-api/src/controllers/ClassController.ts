@@ -1,30 +1,11 @@
 import { Request, Response } from 'express'
-import bcrypt from 'bcrypt'
-
-import { v4 as uuidv4 } from 'uuid';
-import { userRepository } from '../repositories/userRepository';
-
-import { generateDigitCode, generateIdWithTimestamp, isExpired, isStrongPassword } from '../helpers';
-
-import { BadRequestError } from '../helpers/api-erros';
-import { ILike } from 'typeorm';
-import { JwtPayload } from '../middlewares/authMiddleware';
-// import { createAccessToken, createRefreshToken } from '../utils/create_token';
-import { RequestValidator } from '../helpers/requestValidator';
-import { SubmitQuizSessionRequest, UserLoginRequest, UserRegisterRequest } from '../dto/user.dto';
-import { generateRandomCode } from '../utils';
-import { createAccessToken, createRefreshToken } from '../utils/create_token';
-import { CreateQuestionRequest } from '../dto/question.dto';
-import { QuestionService } from '../services/QuestionService';
+import { RequestValidator } from '../dto/requestValidator';
 import { ClassService } from '../services/ClassService';
-import { AddMemberToClassRequest, CreateClassRequest, RemoveMemberRequest } from '../dto/class.dto';
+import { AddMemberToClassRequest, CreateClassRequest } from '../dto/class.dto';
 
 
 const classService = new ClassService();
-
 export class ClassController {
-
-
 
 
     async getClassByTeacher(req: Request, res: Response) {
@@ -32,8 +13,6 @@ export class ClassController {
 
 
          const { id } = req.user;
-
-
 
 
         const response = await classService.getClassesByTeacherId(Number(id));

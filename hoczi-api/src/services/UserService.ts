@@ -1,4 +1,4 @@
-import { BadRequestError } from "../helpers/api-erros";
+import { BadRequestError } from "../errors/api-erros";
 import { JwtPayload } from "../middlewares/authMiddleware";
 import { userRepository } from "../repositories/userRepository";
 import { generateRandomCode } from "../utils";

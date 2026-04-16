@@ -1,23 +1,7 @@
 import { Request, Response } from 'express'
-import bcrypt from 'bcrypt'
-
-import { v4 as uuidv4 } from 'uuid';
-import { userRepository } from '../repositories/userRepository';
-
-import { generateDigitCode, generateIdWithTimestamp, isExpired, isStrongPassword } from '../helpers';
-
-import { BadRequestError } from '../helpers/api-erros';
-import { ILike } from 'typeorm';
-import { JwtPayload } from '../middlewares/authMiddleware';
-// import { createAccessToken, createRefreshToken } from '../utils/create_token';
-import { RequestValidator } from '../helpers/requestValidator';
-import { SubmitQuizSessionRequest, UserLoginRequest, UserRegisterRequest } from '../dto/user.dto';
-import { generateRandomCode } from '../utils';
-import { createAccessToken, createRefreshToken } from '../utils/create_token';
-import { CreateQuestionRequest } from '../dto/question.dto';
-import { QuestionService } from '../services/QuestionService';
+import { RequestValidator } from '../dto/requestValidator';
 import { LessonService } from '../services/LessonService';
-import { AddMemberToClassRequest, AddSubjectToClassRequest, CreateClassRequest, RemoveMemberRequest } from '../dto/class.dto';
+import { AddSubjectToClassRequest } from '../dto/class.dto';
 import { AssignStudentAssignmentRequest, CommentOnAssignmentRequest, CreateAssignmentRequest, CreateLessonRequest } from '../dto/lesson.dto';
 
 
@@ -34,8 +18,6 @@ export class LessonController {
 
         const page = req.query.page ? Number(req.query.page) : 1;
         const limit = req.query.limit ? Number(req.query.limit) : 30;
-
-
 
 
         const response = await lessonService.getMyLessons(Number(id), page, limit);

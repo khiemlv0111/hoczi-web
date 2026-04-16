@@ -1,13 +1,10 @@
 import { Request, Response } from 'express'
-import bcrypt from 'bcrypt'
-import { RequestValidator } from '../helpers/requestValidator';
+import { RequestValidator } from '../dto/requestValidator';
 import { QuestionService } from '../services/QuestionService';
 import { CreateAnswerRequest, CreateQuestionRequest } from '../dto/question.dto';
-import { AppDataSource } from '../data-source';
 import { CreateQuizRequest, SubmitQuizSessionRequest } from '../dto/user.dto';
 
 const questionService = new QuestionService();
-// const questionService = new QuestionService();
 
 export class QuestionController {
 
@@ -130,13 +127,10 @@ export class QuestionController {
         const { id } = req.user;
 
         const { errors, input } = await RequestValidator(SubmitQuizSessionRequest, req.body);
-        console.log('INPUTTTTT', input);
 
         if (errors) {
             return res.status(400).json({ success: false, message: errors })
         }
-
-        console.log('PAYLOSDDDDD', input);
 
 
         const response = await questionService.submitQuizSession(Number(id), input);

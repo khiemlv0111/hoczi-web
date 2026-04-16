@@ -6,11 +6,6 @@ import cors from 'cors';
 import http from "http";
 import cookieParser from 'cookie-parser';
 
-// import { startKafkaConsumerWithRetry } from './kafka/initKafka';
-// import { startKafkaConsumerWithRetry } from './kafka/kafka';
-// import { startConsumer } from './kafka/kafka.consumer';
-
-
 AppDataSource.initialize().then(() => {
 	const app = express();
 	const PORT = process.env.PORT || 8000;

@@ -1,16 +1,13 @@
 import { Request, Response } from 'express'
-import { RequestValidator } from '../helpers/requestValidator';
+import { RequestValidator } from '../dto/requestValidator';
 import { UpdateUserRequest } from '../dto/user.dto';
 
 import { UserService } from '../services/UserService';
-import { isAdmin } from '../helpers';
-
+import { isAdmin } from '../utils/string_utils';
 
 const userService = new UserService();
 
 export class UserController {
-
-
 
 
     async getUserList(req: Request, res: Response) {

@@ -23,7 +23,7 @@ class UserRepository {
         const question = this.repo.create({
             name: data.name,
             email: data.email,
-            username: data.name,
+            username: data.username,
             role: data.role || 'user',
             password: data.hashPassword
         });

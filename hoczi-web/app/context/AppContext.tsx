@@ -7,7 +7,8 @@ import { useRouter } from "next/navigation";
 import { createContext, useContext, useState, ReactNode } from "react"
 // import { cookies } from "next/headers";
 import Cookies from "js-cookie";
-import { PaginationPayload } from "@/data/types";
+import { PaginationPayload, StudentAssignment } from "@/data/types";
+import { LessonService } from "@/data/services/lesson.service";
 export type User = {
     id: number,
     email: string,
@@ -69,6 +70,7 @@ type AppContextType = {
     quizSession: QuizSession | undefined,
     quizSessions: any[] | undefined,
     listQuestions: Question[] | undefined,
+    myAssignments: StudentAssignment[] | undefined,
 
     login: (loginData: LoginPayload) => void;
     // handleStartQuiz: () => Promise;
@@ -80,6 +82,7 @@ type AppContextType = {
     handleRetryQuiz: (quizId: number) => Promise<any>;
     handleGetQuestionList: (payload: any) => Promise<any>;
     handleGetUsers: ({ page, limit }: PaginationPayload) => Promise<any>;
+    handleGetMyAssignments: () => void;
 
 }
 
@@ -93,6 +96,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const [quizSession, setQuizSession] = useState<QuizSession | undefined>(undefined);
     const [quizSessions, setQuizSessions] = useState<any[] | undefined>(undefined);
     const [listQuestions, setListQuestions] = useState<Question[] | undefined>(undefined);
+    const [myAssignments, setMyAssignments] = useState<any[] | undefined>(undefined);
+
+    
 
     const [users, setUsers] = useState<User[] | undefined>(undefined);
 
@@ -134,6 +140,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const handleGetQuizSessions = () => {
         QuestionService.getQuizSessions().then((res) => {
             setQuizSessions(res);
+        })
+    }
+
+    const handleGetMyAssignments = () => {
+        LessonService.getMyAssignments().then((res) => {
+            setMyAssignments(res.data);
+            
         })
     }
 
@@ -206,6 +219,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             quizSessions,
             quiz,
             listQuestions,
+            myAssignments,
             handleStartQuiz,
             handleGetQuizSessions,
             handleRetryQuiz,
@@ -213,6 +227,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             getUserProfile,
             handleGetQuestionList,
             handleGetUsers,
+            handleGetMyAssignments,
         }}>
             {children}
         </AppContext.Provider>

@@ -36,4 +36,25 @@ export class LessonService {
         const response = await postRequest('/api/lessons/assign-student-assignment', payload, true);
         return response;
     }
+
+    static async getMyAssignments(page?: number, limit?: number) {
+
+        const params = new URLSearchParams();
+        if (page) params.append('page', String(page));
+        if (limit) params.append('limit', String(limit));
+
+        const query = params.toString() ? `?${params.toString()}` : '';
+
+        const response = await getRequest(`/api/lessons/my-assignments/${query}`, true);
+
+
+
+        return response
+    }
+
+
+    static async commentOnAssignment(payload: { assignmentStudentId: number, content: string }) {
+        const response = await postRequest('/api/lessons/comment-on-assignment', payload, true);
+        return response;
+    }
 }

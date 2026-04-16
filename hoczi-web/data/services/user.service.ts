@@ -64,7 +64,7 @@ export class UserService {
     }
 
     static async updateUser(id: number, payload: { name?: string; role?: string }) {
-        const response = await putRequest(`/api/users/${id}`, payload, true);
+        const response = await putRequest(`/api/users/update-user/${id}`, payload, true);
         return response
     }
 
@@ -91,6 +91,9 @@ export class UserService {
 
         return response
     }
+
+
+   
 
 
 }

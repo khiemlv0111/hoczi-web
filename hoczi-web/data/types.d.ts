@@ -171,3 +171,16 @@ export type Assignment = {
     student_id?: number
     created_at?: string
 }
+
+export type StudentAssignment = {
+    id: number,
+    student_id: number,
+    status: string,
+    started_at?: string,
+    score: number,
+    feedback?: string,
+    assignment_id: number,
+    assigned_at?: string,
+    assignment: Assignment
+
+}

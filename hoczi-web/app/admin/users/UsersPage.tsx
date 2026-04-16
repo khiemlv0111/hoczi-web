@@ -7,6 +7,13 @@ import { UserService } from "@/data/services/user.service";
 import Link from "next/link";
 import { useEffect, useState } from "react"
 
+const userRoles = [
+    {value: 'admin', label: 'Admin'},
+    {value: 'teacher', label: 'Teacher'},
+    {value: 'user', label: 'User'},
+    {value: 'author', label: 'Author'},
+]
+
 export function UsersPage() {
     const { handleGetUsers } = useAppData();
     const [users, setUsers] = useState<User[]>([]);
@@ -194,8 +201,11 @@ export function UsersPage() {
                             onChange={(e) => setEditForm({ ...editForm, role: e.target.value })}
                             className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                         >
-                            <option value="user">User</option>
-                            <option value="admin">Admin</option>
+                            {
+                                userRoles.map((r) => <option key={r.value} value={r.value}>{r.label}</option>)
+                            }
+                            
+
                         </select>
                     </div>
                     <div className="flex justify-end gap-2 mt-2">

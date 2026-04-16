@@ -369,6 +369,7 @@ function ClassesTab({ classes, allUsers, loadingClasses, teacherId, setClasses }
     const [selectedClass, setSelectedClass] = useState<ClassItem | null>(null)
     const [members, setMembers] = useState<Member[]>([])
     const [removingId, setRemovingId] = useState<number | null>(null)
+    const [confirmRemoveId, setConfirmRemoveId] = useState<number | null>(null)
     const [showCreate, setShowCreate] = useState(false)
     const [showAddMember, setShowAddMember] = useState(false)
     const [assignTarget, setAssignTarget] = useState<AssignTarget | null>(null)
@@ -395,6 +396,7 @@ function ClassesTab({ classes, allUsers, loadingClasses, teacherId, setClasses }
     }
 
     const removeMember = async (member: Member) => {
+        setConfirmRemoveId(null)
         setRemovingId(member.student.id)
         try {
             await ClassService.removeMember(selectedClass!.id, member.student.id)
@@ -517,10 +519,23 @@ function ClassesTab({ classes, allUsers, loadingClasses, teacherId, setClasses }
                                                 className="p-1.5 rounded-md text-gray-400 hover:text-green-600 hover:bg-green-50 transition-colors" title="Assign">
                                                 <ClipboardList size={13} />
                                             </button>
-                                            <button onClick={() => removeMember(member)} disabled={removingId === member.student.id}
-                                                className="p-1.5 rounded-md text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors disabled:opacity-40">
-                                                {removingId === member.student.id ? <Loader2 size={13} className="animate-spin" /> : <Trash2 size={13} />}
-                                            </button>
+                                            {confirmRemoveId === member.student.id ? (
+                                                <div className="flex items-center gap-1">
+                                                    <button onClick={() => removeMember(member)} disabled={removingId === member.student.id}
+                                                        className="px-2 py-0.5 text-[11px] font-medium rounded bg-red-500 text-white hover:bg-red-600 disabled:opacity-40">
+                                                        {removingId === member.student.id ? <Loader2 size={11} className="animate-spin" /> : 'Remove'}
+                                                    </button>
+                                                    <button onClick={() => setConfirmRemoveId(null)}
+                                                        className="px-2 py-0.5 text-[11px] font-medium rounded bg-gray-100 text-gray-600 hover:bg-gray-200">
+                                                        Cancel
+                                                    </button>
+                                                </div>
+                                            ) : (
+                                                <button onClick={() => setConfirmRemoveId(member.student.id)} disabled={removingId === member.student.id}
+                                                    className="p-1.5 rounded-md text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors disabled:opacity-40">
+                                                    {removingId === member.student.id ? <Loader2 size={13} className="animate-spin" /> : <Trash2 size={13} />}
+                                                </button>
+                                            )}
                                         </div>
                                     ))}
                                 </div>

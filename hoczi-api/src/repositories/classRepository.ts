@@ -18,8 +18,6 @@ class ClassRepository {
         });
     }
 
-
-
     async createOne(teacherId: number, data: any) {
         const classRoom = this.repo.create({
             name: data.name,

@@ -7,7 +7,7 @@ import { classSubjectRepository } from "../repositories/classSubjectRepository";
 import { assignmentStudentRepository } from "../repositories/assignmentStudentRepository";
 import { assignmentCommentRepository } from "../repositories/assignmentCommentRepository";
 
-
+import { classMemberRepository } from "../repositories/classMemberRepository";
 
 
 
@@ -49,6 +49,22 @@ export class LessonService {
 
     async commentOnAssignment(userId: number, data: CommentOnAssignmentRequest) {
         return assignmentCommentRepository.createOne(userId, data);
+    }
+
+
+    async getMyClasses(studentId: number) {
+        const classMembers = await classMemberRepository.getMyClasses(studentId);
+
+
+        return classMembers.map((item) => ({
+            id: item.class.id,
+            name: item.class.name,
+            description: item.class.description,
+            teacher_id: item.class.teacher_id,
+            grade_id: item.class.grade_id,
+            status: item.class.status,
+            joined_at: item.joined_at,
+        }));
     }
 
 

@@ -6,9 +6,11 @@ import {
     ManyToOne,
     JoinColumn,
     Unique,
+    OneToMany,
 } from 'typeorm';
 import { Assignment } from './Assignment';
 import { User } from './User';
+import { AssignmentComment } from './AssignmentComment';
 
 @Entity('assignment_students')
 @Unique(['assignment_id', 'student_id'])
@@ -35,6 +37,12 @@ export class AssignmentStudent {
     @Column({ type: 'varchar', length: 50, default: 'assigned' })
     status!: string;
     // assigned / in_progress / submitted / overdue
+
+    @OneToMany(
+        () => AssignmentComment,
+        (comment) => comment.assignment_student
+    )
+    comments!: AssignmentComment[];
 
     @CreateDateColumn({ type: 'timestamptz' })
     assigned_at!: Date;

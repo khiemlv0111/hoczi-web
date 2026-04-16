@@ -103,4 +103,14 @@ export class QuestionService {
         const response = await getRequest('/api/users/my-quiz-sessions', true);
         return response.data
     }
+
+    static async getAllTeacherQuestions(payload: PaginationPayload) {
+        const params = new URLSearchParams();
+        if (payload.page) params.append('page', String(payload.page));
+        if (payload.limit) params.append('limit', String(payload.limit));
+
+        const query = params.toString() ? `?${params.toString()}` : '';
+        const response = await getRequest(`/api/users/all-teacher-questions${query}`, true);
+        return response
+    }
 }

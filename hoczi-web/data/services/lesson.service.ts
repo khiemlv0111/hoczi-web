@@ -1,5 +1,6 @@
 import { deleteRequest, getRequest, postRequest } from "../http";
 import { Assignment, Lesson } from "../types";
+import { QuizAssignment } from "./payload_type";
 
 export class LessonService {
     static async getMyLessons() {
@@ -55,6 +56,16 @@ export class LessonService {
 
     static async commentOnAssignment(payload: { assignmentStudentId: number, content: string }) {
         const response = await postRequest('/api/lessons/comment-on-assignment', payload, true);
+        return response;
+    }
+
+    static async getMyQuizzes() {
+        const response = await getRequest('/api/lessons/get-my-quizzes', true);
+        return response;
+    }
+
+    static async createQuizAssignment(payload: QuizAssignment) {
+        const response = await postRequest('/api/lessons/create-quiz-assignment', payload, true);
         return response;
     }
 

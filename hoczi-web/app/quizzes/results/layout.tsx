@@ -81,11 +81,11 @@ export default function ResultLayout({
     }, []);
 
     useEffect(() => {
-        if(!user){
+        if (!user) {
             router.push(`/`)
         }
 
-    },[])
+    }, [])
 
 
 
@@ -101,8 +101,8 @@ export default function ResultLayout({
         setSelectedDifficulty('');
         setTopics([]);
         setModalOpen(true);
-        QuestionService.getCategoryList().then(setCategories).catch(() => {});
-        QuestionService.getGradeList().then(setGrades).catch(() => {});
+        QuestionService.getCategoryList().then(setCategories).catch(() => { });
+        QuestionService.getGradeList().then(setGrades).catch(() => { });
     };
 
     const handleCategoryChange = (categoryId: number | null) => {
@@ -110,7 +110,7 @@ export default function ResultLayout({
         setSelectedTopic(null);
         setTopics([]);
         if (categoryId) {
-            QuestionService.getTopicList(categoryId).then(setTopics).catch(() => {});
+            QuestionService.getTopicList(categoryId).then(setTopics).catch(() => { });
         }
     };
 
@@ -179,22 +179,22 @@ export default function ResultLayout({
                             ? pathname === path
                             : pathname.startsWith(path);
                         return (
-                        <>
-                        {
-                            <button
-                            key={label}
-                            onClick={() => handleNavigate({ path, label, icon: Icon })}
-                            className={`w-full flex items-center gap-2 px-3 py-2 rounded-md text-[13px] transition-colors ${isActive
-                                ? "bg-blue-50 text-blue-700"
-                                : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
-                                }`}
-                        >
-                            <Icon size={15} />
-                            {label}
-                        </button>
-                        }
-                        
-                        </>
+                            <>
+                                {
+                                    <button
+                                        key={label}
+                                        onClick={() => handleNavigate({ path, label, icon: Icon })}
+                                        className={`w-full flex items-center gap-2 px-3 py-2 rounded-md text-[13px] transition-colors ${isActive
+                                            ? "bg-blue-50 text-blue-700"
+                                            : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+                                            }`}
+                                    >
+                                        <Icon size={15} />
+                                        {label}
+                                    </button>
+                                }
+
+                            </>
                         );
                     })}
                 </div>
@@ -223,7 +223,7 @@ export default function ResultLayout({
                             onClick={() => setSidebarOpen(true)}
                             className="md:hidden p-1.5 rounded-md hover:bg-gray-100 transition-colors"
                         >
-                            <Menu size={18} className="text-gray-500" />
+                            <Menu size={16} className="text-gray-500" />
                         </button>
                         <span className="font-medium text-gray-900 text-[15px]">User Dashboard</span>
                     </div>
@@ -251,12 +251,20 @@ export default function ResultLayout({
                                         </Link>
                                     )}
                                     <Link
-                                            href="/quizzes/results/teachers"
-                                            className="w-full flex items-center gap-2 px-4 py-2 text-[13px] text-gray-700 hover:bg-gray-50 transition-colors"
-                                        >
-                                            {`👩‍🎓`}
-                                            <span className="ml-1">Teacher cornor</span>
-                                        </Link>
+                                        href="/quizzes/results/teachers"
+                                        className="w-full flex items-center gap-2 px-4 py-2 text-[13px] text-gray-700 hover:bg-gray-50 transition-colors"
+                                    >
+                                        {`👩‍🎓`}
+                                        <span className="ml-1">Teacher cornor</span>
+                                    </Link>
+
+                                    <Link
+                                        href="/quizzes/results/profile"
+                                        className="w-full flex items-center gap-2 px-4 py-2 text-[13px] text-gray-700 hover:bg-gray-50 transition-colors"
+                                    >
+                                        <User size={16}/>
+                                        <span className="ml-1">Profile</span>
+                                    </Link>
                                     <button
                                         onClick={handleLogout}
                                         className="w-full flex items-center gap-2 px-4 py-2 text-[13px] text-red-600 hover:bg-gray-50 transition-colors"
@@ -358,14 +366,13 @@ export default function ResultLayout({
                                         <button
                                             key={level}
                                             onClick={() => setSelectedDifficulty(level)}
-                                            className={`flex-1 py-2 rounded-lg text-[12px] font-medium border transition-colors ${
-                                                selectedDifficulty === level
+                                            className={`flex-1 py-2 rounded-lg text-[12px] font-medium border transition-colors ${selectedDifficulty === level
                                                     ? level === 'easy' ? 'bg-green-50 border-green-400 text-green-700'
-                                                    : level === 'medium' ? 'bg-yellow-50 border-yellow-400 text-yellow-700'
-                                                    : level === 'hard' ? 'bg-red-50 border-red-400 text-red-700'
-                                                    : 'bg-blue-50 border-blue-400 text-blue-700'
+                                                        : level === 'medium' ? 'bg-yellow-50 border-yellow-400 text-yellow-700'
+                                                            : level === 'hard' ? 'bg-red-50 border-red-400 text-red-700'
+                                                                : 'bg-blue-50 border-blue-400 text-blue-700'
                                                     : 'border-gray-200 text-gray-500 hover:bg-gray-50'
-                                            }`}
+                                                }`}
                                         >
                                             {level === '' ? 'Any' : level.charAt(0).toUpperCase() + level.slice(1)}
                                         </button>

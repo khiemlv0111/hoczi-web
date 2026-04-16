@@ -10,7 +10,7 @@ class ClassRepository {
     async findById(id: number) {
         return this.repo.findOne({ 
             where: { id },
-            relations: ['teacher', 'class_subjects', 'members']
+            relations: ['teacher', 'class_subjects', 'members', 'members.student']
         });
     }
 

@@ -82,6 +82,20 @@ export class ClassController {
         });
     }
 
+    async getMyClassDetail(req: Request, res: Response) {
+        const studentId = req.user.id;
+
+        const classId = Number(req.params.classId);
+
+        const data = await classService.getClassDetail(Number(classId));
+
+        return res.json({
+            success: true,
+            message: "get class detail success",
+            data,
+        });
+    }
+
 
 
 

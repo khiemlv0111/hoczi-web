@@ -131,17 +131,5 @@ export class LessonController {
         return res.json(response);
     }
 
-    async getMyClasses(req: Request, res: Response) {
-        const studentId = req.user.id;
-        const data = await lessonService.getMyClasses(Number(studentId));
-
-        return res.json({
-            success: true,
-            message: "get my classes success",
-            data,
-        });
-    }
-
-
-
+    
 }

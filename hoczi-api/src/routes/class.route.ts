@@ -25,6 +25,9 @@ classRoutes.delete('/remove-member/:classId/:userId', new ClassController().remo
 classRoutes.get('/get-my-classes', new ClassController().getMyClasses);
 
 
+classRoutes.get('/get-my-class-detail/:classId', new ClassController().getMyClassDetail);
+
+
 
 
 // classRoutes.get('/get-quiz-session-detail/:id', new QuestionController().getQuizSessionDetail);

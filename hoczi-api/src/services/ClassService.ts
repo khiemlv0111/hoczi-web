@@ -39,5 +39,9 @@ export class ClassService {
         }));
     }
 
+    async getClassDetail(classId: number) {
+        return classRepository.findById(classId);
+    }
+
 
 }

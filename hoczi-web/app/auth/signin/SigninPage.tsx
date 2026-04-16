@@ -11,14 +11,17 @@ import { APP_ACCESS_TOKEN_KEY } from "@/data/http";
 export function SigninForm() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
+    // const [loading, setLoading] = useState(false);
+        const { login, errorMessage,loading, setLoading } = useAppData()
+    // const [errorMessage, setErrorMessage] = useState("");
+
 
     const [isSecured, setIsSecured] = useState(true);
 
 
     const pwValid = password.length >= 6;
     //   const router = useRouter();
-    const { login } = useAppData()
+
 
     const handleLogin = async () => {
         if (!email || !password) return;
@@ -33,7 +36,7 @@ export function SigninForm() {
             <div className="bg-white rounded-xl border border-gray-200 p-10 w-full max-w-md">
 
                 {/* Header */}
-                <div className="mb-7">
+                <div className="mb-5">
                     <h1 className="text-2xl font-semibold text-gray-900 tracking-tight">
                         LOGIN
                     </h1>
@@ -41,9 +44,11 @@ export function SigninForm() {
                         SIGN IN TO YOUR ACCOUNT
                     </p>
                 </div>
+                {errorMessage && <span className="text-red-400">{errorMessage}</span>}
+
 
                 {/* Email */}
-                <div className="mb-5">
+                <div className="mb-5 mt-3">
                     <label className="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5">
                         YOUR E-MAIL
                     </label>

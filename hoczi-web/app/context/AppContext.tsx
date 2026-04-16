@@ -65,14 +65,17 @@ type Question = {
 type AppContextType = {
     data: any,
     user: User | undefined,
+    loading: boolean,
     users: User[] | undefined,
     quiz: Quiz | undefined,
     quizSession: QuizSession | undefined,
     quizSessions: any[] | undefined,
     listQuestions: Question[] | undefined,
     myAssignments: StudentAssignment[] | undefined,
+    errorMessage: string | undefined,
 
     login: (loginData: LoginPayload) => void;
+    setLoading: (isLoading: boolean) => void;
     // handleStartQuiz: () => Promise;
 
     handleStartQuiz: (data?: any) => Promise<any>;
@@ -97,10 +100,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const [quizSessions, setQuizSessions] = useState<any[] | undefined>(undefined);
     const [listQuestions, setListQuestions] = useState<Question[] | undefined>(undefined);
     const [myAssignments, setMyAssignments] = useState<any[] | undefined>(undefined);
+    const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
+
 
     
 
     const [users, setUsers] = useState<User[] | undefined>(undefined);
+    const [loading, setLoading] = useState<boolean>(false);
 
 
 
@@ -115,7 +121,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
                     expires: 7,
                     path: "/",
                 });
-                // console.log(res.user);
                 if (res.user?.role == 'admin') {
                     router.push("/");
 
@@ -124,6 +129,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
                 }
 
             }
+        }).catch((err) => {
+            setErrorMessage(`Login failed`)
+            setLoading(v => !v)
         })
     }
 
@@ -213,13 +221,17 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return (
         <AppContext.Provider value={{
             data,
+            errorMessage,
             user,
+            loading,
             users,
+            
             quizSession,
             quizSessions,
             quiz,
             listQuestions,
             myAssignments,
+            setLoading,
             handleStartQuiz,
             handleGetQuizSessions,
             handleRetryQuiz,

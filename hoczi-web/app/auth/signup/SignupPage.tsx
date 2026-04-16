@@ -46,6 +46,11 @@ export function SignupForm() {
             setLoading(false);
             router.push(`/auth/signin`);
             
+        }).catch((err) => {
+            console.log('ERROR', err);
+            
+            setErrorMessage(`Signup failed, please contact admin for help`)
+            setLoading(false);
         })
         // console.log({name, email, password, confirmPassword});
         
@@ -59,17 +64,17 @@ export function SignupForm() {
                 {/* Header */}
                 <div className="mb-7">
                     <h1 className="text-2xl font-semibold text-gray-900 tracking-tight">
-                        LOGIN
+                        SIGNUP
                     </h1>
                     <p className="text-xs text-gray-400 tracking-widest mt-1">
-                        SIGN IN TO YOUR ACCOUNT
+                        SIGN UP NEW ACCOUNT
                     </p>
                 </div>
 
-                {errorMessage && <span className="text-red-600">{errorMessage}</span>}
+                {errorMessage && <span className="text-red-400">{errorMessage}</span>}
 
                 {/* Email */}
-                <div className="mb-5">
+                <div className="mb-5 mt-3">
                     <label className="block text-xs font-semibold text-gray-500 tracking-wider mb-1.5">
                         YOUR NAME
                     </label>
@@ -192,7 +197,7 @@ export function SignupForm() {
                 {/* Button */}
                 <button
                     onClick={handleSubmit}
-                    disabled={!email || !password || loading}
+                    disabled={!email || !password || loading || !pwValid}
                     className="w-full py-3 bg-indigo-500 hover:bg-indigo-600 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium text-sm rounded-lg transition-all duration-150 mb-4"
                 >
                     {loading ? "Đang đăng nhập..." : "Register"}

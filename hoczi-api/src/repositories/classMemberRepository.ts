@@ -34,7 +34,7 @@ class ClassMemberRepository {
     async getMyClasses(studentId: number) {
         return this.repo
             .createQueryBuilder('cm')
-            .leftJoinAndSelect('cm.classs', 'c')
+            .leftJoinAndSelect('cm.class', 'c')
             .where('cm.student_id = :studentId', { studentId })
             .andWhere('cm.status = :status', { status: 'active' })
             .getMany();

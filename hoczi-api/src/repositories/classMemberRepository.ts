@@ -32,12 +32,21 @@ class ClassMemberRepository {
     }
 
     async getMyClasses(studentId: number) {
+
         return this.repo
             .createQueryBuilder('cm')
             .leftJoinAndSelect('cm.class', 'c')
+            .leftJoinAndSelect('c.members', 'members')
+            .leftJoinAndSelect('members.student', 'student')
             .where('cm.student_id = :studentId', { studentId })
             .andWhere('cm.status = :status', { status: 'active' })
             .getMany();
+        // return this.repo
+        //     .createQueryBuilder('cm')
+        //     .leftJoinAndSelect('cm.class', 'c')
+        //     .where('cm.student_id = :studentId', { studentId })
+        //     .andWhere('cm.status = :status', { status: 'active' })
+        //     .getMany();
 
     }
 

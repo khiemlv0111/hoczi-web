@@ -15,6 +15,21 @@ class AssignmentStudentRepository {
         return this.repo.save(classRoom);
     }
 
+
+    async findByUserId(userId: number, page: number, limit: number) {
+        const offset = (page - 1) * limit;
+
+        const [data, total] = await this.repo.findAndCount({
+            where: { student_id: userId },
+            relations: ["assignment"],
+            order: { id: "DESC" },
+            take: limit,
+            skip: offset,
+        });
+
+        return { data, total };
+    }
+
 }
 
 

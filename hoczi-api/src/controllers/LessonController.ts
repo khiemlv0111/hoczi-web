@@ -73,7 +73,7 @@ export class LessonController {
         return res.json(response);
     }
 
-        async assignStudentAssignment(req: Request, res: Response) {
+    async assignStudentAssignment(req: Request, res: Response) {
 
         const { id } = req.user;
 
@@ -95,13 +95,23 @@ export class LessonController {
         return res.json(response);
     }
 
-     async getAllAssignments(req: Request, res: Response) {
+    async getAllAssignments(req: Request, res: Response) {
         const { id } = req.user;
         const page = req.query.page ? Number(req.query.page) : 1;
         const limit = req.query.limit ? Number(req.query.limit) : 30;
 
 
         const response = await lessonService.getAllAssignments(Number(id), page, limit);
+        return res.json(response);
+    }
+
+    async getMyAssignments(req: Request, res: Response) {
+        const { id } = req.user;
+        const page = req.query.page ? Number(req.query.page) : 1;
+        const limit = req.query.limit ? Number(req.query.limit) : 30;
+
+
+        const response = await lessonService.getMyAssignments(Number(id), page, limit);
         return res.json(response);
     }
 

@@ -40,6 +40,10 @@ lessonRoutes.get('/get-all-subjects', new LessonController().getAllSubjects);
 lessonRoutes.post('/add-subject-to-class', new LessonController().addSubjectToClass);
 
 
+lessonRoutes.get('/my-assignments', new LessonController().getMyAssignments);
+
+
+
 
 
 // classRoutes.post('/start-retry/:id', new QuestionController().startRetry);

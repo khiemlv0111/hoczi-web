@@ -13,7 +13,7 @@ import {
     Settings,
     Plus,
     TrendingUp,
-    TrendingDown,
+    BookPlus,
     User,
     Star,
     LogOut,
@@ -28,11 +28,11 @@ import { useRouter, usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import { QuestionService } from "@/data/services/question.service";
 
-
 const navMain = [
     { path: '/quizzes/results/dashboard', label: "Dashboard", icon: LayoutDashboard },
     { path: '/quizzes/results', label: "Quizzes", icon: Clock },
     { path: '/quizzes/results/students', label: "Students", icon: Users },
+    { path: '/quizzes/results/teachers', label: "Teachers", icon: BookPlus },
     { path: '/quizzes/results/games', label: "Games", icon: ChessKing },
     { path: '/quizzes/results/ai-learn', label: "AI Learn", icon: Brain },
 ];
@@ -153,12 +153,18 @@ export default function ResultLayout({
                 {/* Main nav */}
                 <div className="px-2 mb-2">
                     <p className="text-[11px] text-gray-400 uppercase tracking-wider px-2 mb-1">Main</p>
-                    {navMain.map(({ path, label, icon: Icon }) => {
+                    {navMain.filter(({ label }) => {
+                        if (label === 'Students') return user?.role === 'user';
+                        if (label === 'Teachers') return user?.role === 'teacher';
+                        return true;
+                    }).map(({ path, label, icon: Icon }) => {
                         const isActive = path === '/quizzes/results'
                             ? pathname === path
                             : pathname.startsWith(path);
                         return (
-                        <button
+                        <>
+                        {
+                            <button
                             key={label}
                             onClick={() => handleNavigate({ path, label, icon: Icon })}
                             className={`w-full flex items-center gap-2 px-3 py-2 rounded-md text-[13px] transition-colors ${isActive
@@ -169,6 +175,9 @@ export default function ResultLayout({
                             <Icon size={15} />
                             {label}
                         </button>
+                        }
+                        
+                        </>
                         );
                     })}
                 </div>

@@ -24,5 +24,20 @@ export class ClassService {
         return classMemberRepository.deleteOne(classId, userId);
     }
 
-   
+    async getMyClasses(studentId: number) {
+        const classMembers = await classMemberRepository.getMyClasses(studentId);
+
+
+        return classMembers.map((item) => ({
+            id: item.class.id,
+            name: item.class.name,
+            description: item.class.description,
+            teacher_id: item.class.teacher_id,
+            grade_id: item.class.grade_id,
+            status: item.class.status,
+            joined_at: item.joined_at,
+        }));
+    }
+
+
 }

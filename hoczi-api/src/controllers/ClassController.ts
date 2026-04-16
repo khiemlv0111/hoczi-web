@@ -12,7 +12,7 @@ export class ClassController {
         // const { id } = req.user;
 
 
-         const { id } = req.user;
+        const { id } = req.user;
 
 
         const response = await classService.getClassesByTeacherId(Number(id));
@@ -62,13 +62,26 @@ export class ClassController {
     async removeMember(req: Request, res: Response) {
         // const { id } = req.user;
 
-         const classId = Number(req.params.classId);
-         const userId = Number(req.params.userId);
+        const classId = Number(req.params.classId);
+        const userId = Number(req.params.userId);
 
 
         const response = await classService.removeMember(classId, userId);
         return res.json(response);
     }
+
+
+    async getMyClasses(req: Request, res: Response) {
+        const studentId = req.user.id;
+        const data = await classService.getMyClasses(Number(studentId));
+
+        return res.json({
+            success: true,
+            message: "get my classes success",
+            data,
+        });
+    }
+
 
 
 

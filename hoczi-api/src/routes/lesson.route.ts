@@ -44,12 +44,7 @@ lessonRoutes.get('/my-assignments', new LessonController().getMyAssignments);
 
 lessonRoutes.post('/comment-on-assignment', new LessonController().commentOnAssignment);
 
-lessonRoutes.get('/get-my-classes', new LessonController().getMyClasses);
-
-
-
-
-
+// lessonRoutes.get('/get-my-classes', new LessonController().getMyClasses);
 
 
 // classRoutes.post('/start-retry/:id', new QuestionController().startRetry);

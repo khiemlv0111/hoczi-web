@@ -44,10 +44,17 @@ lessonRoutes.get('/my-assignments', new LessonController().getMyAssignments);
 
 lessonRoutes.post('/comment-on-assignment', new LessonController().commentOnAssignment);
 
+lessonRoutes.post('/complete-assignment', new LessonController().commentOnAssignment);
+
 // lessonRoutes.get('/get-my-classes', new LessonController().getMyClasses);
 
 
 // classRoutes.post('/start-retry/:id', new QuestionController().startRetry);
+lessonRoutes.post('/create-quiz', new LessonController().createNewQuiz);
+
+lessonRoutes.get('/get-my-quizzes', new LessonController().getMyQuizzes);
+
+
 
 
 export default lessonRoutes;

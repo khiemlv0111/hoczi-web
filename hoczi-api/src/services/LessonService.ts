@@ -7,7 +7,7 @@ import { classSubjectRepository } from "../repositories/classSubjectRepository";
 import { assignmentStudentRepository } from "../repositories/assignmentStudentRepository";
 import { assignmentCommentRepository } from "../repositories/assignmentCommentRepository";
 
-import { classMemberRepository } from "../repositories/classMemberRepository";
+import { quizRepository } from "../repositories/quizRepository";
 
 
 
@@ -50,10 +50,18 @@ export class LessonService {
     async commentOnAssignment(userId: number, data: CommentOnAssignmentRequest) {
         return assignmentCommentRepository.createOne(userId, data);
     }
-    
 
+    async createNewQuiz(userId: number, data: any) {
+        const dto = {
+            ...data,
+            created_by: userId,
+        }
+        return quizRepository.createOne(dto);
+    }
 
-   
+    async getMyQuizzes(userId: number) {
+        return quizRepository.findByUserId(userId);
+    }
 
 
 }

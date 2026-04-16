@@ -72,3 +72,36 @@ export class CommentOnAssignmentRequest {
 
 
 }
+
+
+
+// export class CreateQuizRequest {
+
+//     @IsNotEmpty()
+//     title!: string;
+
+//     @IsOptional()
+//     content!: string;
+
+//     @IsOptional()
+//     quizType!: string;
+
+//     @IsOptional()
+//     categoryId!: number;
+
+//     @IsOptional()
+//     gradeId?: number;
+
+//     @IsOptional()
+//     topicId?: number;
+
+//     @IsOptional()
+//     difficulty?: string;
+
+//     @IsOptional()
+//     duration_minutes?: number;
+
+//     @IsOptional()
+//     total_questions?: number;
+
+// }

@@ -10,6 +10,7 @@ import Cookies from "js-cookie";
 import { PaginationPayload, StudentAssignment } from "@/data/types";
 import { LessonService } from "@/data/services/lesson.service";
 import { ClassService } from "@/data/services/class.service";
+import { getMessages } from "@/messages/locale";
 export type User = {
     id: number,
     email: string,
@@ -87,7 +88,7 @@ type AppContextType = {
     myAssignments: StudentAssignment[] | undefined,
     errorMessage: string | undefined,
     classDetail: ClassDetailData | undefined;
-
+    messages: any;
     login: (loginData: LoginPayload) => void;
     setLoading: (isLoading: boolean) => void;
     // handleStartQuiz: () => Promise;
@@ -101,6 +102,8 @@ type AppContextType = {
     handleGetUsers: ({ page, limit }: PaginationPayload) => Promise<any>;
     handleGetMyAssignments: () => void;
     handleGetClassDetail: (id: number) => void;
+
+    handleSetMessages: () => void;
 
 }
 
@@ -120,10 +123,34 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const [classDetail, setClassDetail] = useState<ClassDetailData | undefined>(undefined);
 
 
-    
+
+    const [messages, setMessages] = useState<any>(undefined);
+
+    const handleSetMessages = () => {
+        const locale =
+            document.cookie
+                .split('; ')
+                .find((row) => row.startsWith('locale='))
+                ?.split('=')[1] || 'vi';
+
+        const msg = getMessages(locale);
+        setMessages(msg)
+
+    }
+
+
+
+
+
+
+
+
 
     const [users, setUsers] = useState<User[] | undefined>(undefined);
     const [loading, setLoading] = useState<boolean>(false);
+
+
+
 
 
 
@@ -171,7 +198,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const handleGetClassDetail = (id: number) => {
         ClassService.getMyClassDetail(id).then((res) => {
             console.log('CLASS DETIAILLL', res.data);
-            
+
             setClassDetail(res.data);
         })
     }
@@ -179,7 +206,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const handleGetMyAssignments = () => {
         LessonService.getMyAssignments().then((res) => {
             setMyAssignments(res.data);
-            
+
         })
     }
 
@@ -249,6 +276,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             errorMessage,
             user,
             loading,
+            messages,
             users,
             classDetail,
             quizSession,
@@ -265,7 +293,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
             handleGetQuestionList,
             handleGetUsers,
             handleGetMyAssignments,
-            handleGetClassDetail
+            handleGetClassDetail,
+            handleSetMessages
         }}>
             {children}
         </AppContext.Provider>

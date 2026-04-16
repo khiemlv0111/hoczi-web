@@ -10,6 +10,7 @@ import { UserService } from "@/data/services/user.service";
 import { FullScreenLoading } from "./components/FullScreenLoading";
 import { CommonModal } from "./components/modal/CommonModal";
 import Image from "next/image";
+import { t } from "@/messages/locale";
 
 const DIFFICULTY_OPTIONS = [
   { value: '', label: 'Any difficulty' },
@@ -19,7 +20,7 @@ const DIFFICULTY_OPTIONS = [
 ];
 
 export default function HomePage() {
-  const { handleStartQuiz, getUserProfile, user, handleGetQuestionList } = useAppData();
+  const { handleStartQuiz, getUserProfile, user, handleGetQuestionList, messages } = useAppData();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -146,7 +147,7 @@ export default function HomePage() {
 
         {/* Subtitle */}
         <p className="text-white/70 text-base leading-relaxed max-w-sm mb-11">
-          From basic to advanced: Learn with Hoczi.com
+          {t(messages, 'common.introduce')}
         </p>
 
         {
@@ -157,20 +158,20 @@ export default function HomePage() {
           user ? (
             <>
               <button onClick={() => prepareQuiz()} className="w-80 max-w-full mt-2 py-4 bg-white rounded-xl text-gray-900 font-medium text-lg hover:bg-gray-100 active:scale-95 transition-all duration-150">
-                Do a quiz
+                {t(messages, 'common.do_quiz')}
               </button>
               <Link href={`/quizzes/results`} className="w-80 max-w-full py-4 bg-blue-400 text-white mt-2 rounded-xl text-gray-900 font-medium text-lg hover:bg-blue-300 active:scale-95 transition-all duration-150">
-                Go to dashboard
+                {t(messages, 'common.go_dashboard')}
               </Link>
             </>
           ) : (
             <>
               <Link href={`/auth/signin`} className="w-80 max-w-full py-4 bg-white rounded-xl text-gray-900 font-medium text-lg hover:bg-gray-100 active:scale-95 transition-all duration-150">
-                Login to start
+                {t(messages, 'common.login_to_start')}
               </Link>
 
               <button onClick={() => prepareQuiz()} className="w-80 max-w-full mt-2 py-4 bg-blue-400 text-white cursor-pointer rounded-xl text-gray-900 font-medium text-lg hover:bg-blue-300 active:scale-95 transition-all duration-150">
-                Start as Anonymous
+                {t(messages, 'common.start_as_anonymous')}
               </button>
 
             </>

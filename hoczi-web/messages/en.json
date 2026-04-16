@@ -1,0 +1,26 @@
+{
+  "common": {
+    "home": "Home",
+    "save": "Save",
+    "logout": "Logout",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "introduce": "From basic to advanced: Learn with Hoczi.com",
+    "do_quiz": "Do a quiz",
+    "go_dashboard": "Go to dashboard",
+    "login_to_start": "Login to start",
+    "start_as_anonymous": "Start as Anonymous"
+  },
+  "teacher": {
+    "dashboard": "Teacher Dashboard",
+    "classes": "Classes",
+    "assignments": "Assignments",
+    "lessons": "Lessons"
+  },
+  "student": {
+    "myClasses": "My Classes",
+    "assignments": "Assignments",
+    "results": "Results"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "common": {
+    "home": "Trang chủ",
+    "save": "Lưu",
+    "logout": "Đăng xuất",
+    "cancel": "Hủy",
+    "delete": "Xóa",
+    "edit": "Sửa",
+    "introduce": "Học từ cơ bản đến nâng cao với Hoczi.com",
+    "do_quiz": "Làm bài test",
+    "go_dashboard": "Đến trang quản lý",
+    "login_to_start": "Đăng nhập để bắt đầu",
+    "start_as_anonymous": "Làm bài ẩn danh"
+  },
+  "teacher": {
+    "dashboard": "Bảng điều khiển giáo viên",
+    "classes": "Lớp học",
+    "assignments": "Bài tập",
+    "lessons": "Bài học"
+  },
+  "student": {
+    "myClasses": "Lớp của tôi",
+    "assignments": "Bài được giao",
+    "results": "Kết quả"
+  }
+}

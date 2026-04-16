@@ -42,6 +42,9 @@ lessonRoutes.post('/add-subject-to-class', new LessonController().addSubjectToCl
 
 lessonRoutes.get('/my-assignments', new LessonController().getMyAssignments);
 
+lessonRoutes.post('/comment-on-assignment', new LessonController().commentOnAssignment);
+
+
 
 
 

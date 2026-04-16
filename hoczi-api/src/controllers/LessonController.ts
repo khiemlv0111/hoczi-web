@@ -18,7 +18,7 @@ import { CreateQuestionRequest } from '../dto/question.dto';
 import { QuestionService } from '../services/QuestionService';
 import { LessonService } from '../services/LessonService';
 import { AddMemberToClassRequest, AddSubjectToClassRequest, CreateClassRequest, RemoveMemberRequest } from '../dto/class.dto';
-import { AssignStudentAssignmentRequest, CreateAssignmentRequest, CreateLessonRequest } from '../dto/lesson.dto';
+import { AssignStudentAssignmentRequest, CommentOnAssignmentRequest, CreateAssignmentRequest, CreateLessonRequest } from '../dto/lesson.dto';
 
 
 const lessonService = new LessonService();
@@ -132,6 +132,20 @@ export class LessonController {
 
 
         const response = await lessonService.addSubjectToClass(input.class_id, input.subject_id, id);
+        return res.json(response);
+    }
+
+
+    async commentOnAssignment(req: Request, res: Response) {
+
+        const { id } = req.user;
+
+        const { errors, input } = await RequestValidator(CommentOnAssignmentRequest, req.body);
+        if (errors) {
+            return res.status(400).json({ success: false, message: errors })
+        }
+
+        const response = await lessonService.commentOnAssignment(Number(id), input);
         return res.json(response);
     }
 

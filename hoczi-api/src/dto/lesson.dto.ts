@@ -60,3 +60,15 @@ export class AssignStudentAssignmentRequest {
     assignment_id!: number;
 
 }
+
+
+export class CommentOnAssignmentRequest {
+
+    @IsNotEmpty()
+    content!: string;
+
+    @IsNotEmpty()
+    assignmentStudentId!: number;
+
+
+}

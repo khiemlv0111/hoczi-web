@@ -1,10 +1,11 @@
 import { lessonRepository } from "../repositories/lessonRepository";
 import { assignmentRepository } from "../repositories/assignmentRepository";
-import { AssignStudentAssignmentRequest, CreateAssignmentRequest } from "../dto/lesson.dto";
+import { AssignStudentAssignmentRequest, CommentOnAssignmentRequest, CreateAssignmentRequest } from "../dto/lesson.dto";
 import { subjectRepository } from "../repositories/subjectRepository";
 import { classSubjectRepository } from "../repositories/classSubjectRepository";
 
 import { assignmentStudentRepository } from "../repositories/assignmentStudentRepository";
+import { assignmentCommentRepository } from "../repositories/assignmentCommentRepository";
 
 
 
@@ -38,11 +39,17 @@ export class LessonService {
         return classSubjectRepository.addSubjectToClass(classId, subjectId, teacherId);
     }
 
-     async assignStudentAssignment(data: AssignStudentAssignmentRequest) {
+    async assignStudentAssignment(data: AssignStudentAssignmentRequest) {
         return assignmentStudentRepository.createOne(data);
     }
 
     async getMyAssignments(userId: number, page: number, limit: number) {
         return assignmentStudentRepository.findByUserId(userId, page, limit);
     }
+
+    async commentOnAssignment(userId: number, data: CommentOnAssignmentRequest) {
+        return assignmentCommentRepository.createOne(userId, data);
+    }
+
+
 }

@@ -41,6 +41,11 @@ export class ClassService {
         return response as ClassItem[];
     }
 
+    static async getStudentClasses() {
+        const response = await getRequest('/api/classes/get-my-classes', true);
+        return response;
+    }
+
     static async createClass(payload: { name: string; code: string; description?: string; teacher_id: number; school_name?: string }) {
         const response = await postRequest('/api/classes/create-class', payload, true);
         return response as ClassItem;
@@ -63,6 +68,11 @@ export class ClassService {
 
     static async getClassSubjects(classId: number) {
         const response = await getRequest(`/api/classes/get-class-subjects/${classId}`, true);
+        return response;
+    }
+
+     static async getMyClassDetail(classId: number) {
+        const response = await getRequest(`/api/classes/get-my-class-detail/${classId}`, true);
         return response;
     }
 }

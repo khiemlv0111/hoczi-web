@@ -160,7 +160,7 @@ export default function HomePage() {
                 Do a quiz
               </button>
               <Link href={`/quizzes/results`} className="w-80 max-w-full py-4 bg-blue-400 text-white mt-2 rounded-xl text-gray-900 font-medium text-lg hover:bg-blue-300 active:scale-95 transition-all duration-150">
-                Go to results
+                Go to dashboard
               </Link>
             </>
           ) : (

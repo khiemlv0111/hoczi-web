@@ -9,6 +9,7 @@ import { createContext, useContext, useState, ReactNode } from "react"
 import Cookies from "js-cookie";
 import { PaginationPayload, StudentAssignment } from "@/data/types";
 import { LessonService } from "@/data/services/lesson.service";
+import { ClassService } from "@/data/services/class.service";
 export type User = {
     id: number,
     email: string,
@@ -61,6 +62,18 @@ type Question = {
     created_by?: number;
 }
 
+type ClassDetailData = {
+    id: number;
+    name: string,
+    code: string,
+    description: string,
+    school_name: string,
+    status: string,
+    grade_id: number
+    members: any[]
+
+}
+
 
 type AppContextType = {
     data: any,
@@ -73,6 +86,7 @@ type AppContextType = {
     listQuestions: Question[] | undefined,
     myAssignments: StudentAssignment[] | undefined,
     errorMessage: string | undefined,
+    classDetail: ClassDetailData | undefined;
 
     login: (loginData: LoginPayload) => void;
     setLoading: (isLoading: boolean) => void;
@@ -86,6 +100,7 @@ type AppContextType = {
     handleGetQuestionList: (payload: any) => Promise<any>;
     handleGetUsers: ({ page, limit }: PaginationPayload) => Promise<any>;
     handleGetMyAssignments: () => void;
+    handleGetClassDetail: (id: number) => void;
 
 }
 
@@ -101,6 +116,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const [listQuestions, setListQuestions] = useState<Question[] | undefined>(undefined);
     const [myAssignments, setMyAssignments] = useState<any[] | undefined>(undefined);
     const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
+
+    const [classDetail, setClassDetail] = useState<ClassDetailData | undefined>(undefined);
 
 
     
@@ -148,6 +165,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const handleGetQuizSessions = () => {
         QuestionService.getQuizSessions().then((res) => {
             setQuizSessions(res);
+        })
+    }
+
+    const handleGetClassDetail = (id: number) => {
+        ClassService.getMyClassDetail(id).then((res) => {
+            console.log('CLASS DETIAILLL', res.data);
+            
+            setClassDetail(res.data);
         })
     }
 
@@ -225,7 +250,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             user,
             loading,
             users,
-            
+            classDetail,
             quizSession,
             quizSessions,
             quiz,
@@ -240,6 +265,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
             handleGetQuestionList,
             handleGetUsers,
             handleGetMyAssignments,
+            handleGetClassDetail
         }}>
             {children}
         </AppContext.Provider>

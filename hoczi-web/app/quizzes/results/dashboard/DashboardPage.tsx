@@ -30,7 +30,7 @@ export function DashboardPage() {
     return (
         <div className="space-y-6">
             {/* Stats */}
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {stats.map(({ label, value, delta, positive }) => (
                     <div key={label} className="bg-white border border-gray-200 rounded-xl p-4">
                         <p className="text-xs text-gray-500 mb-1">{label}</p>
@@ -44,7 +44,7 @@ export function DashboardPage() {
             </div>
 
             {/* Two-col row */}
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* Recent Quizzes */}
                 <div className="bg-white border border-gray-200 rounded-xl p-4">
                     <div className="flex items-center justify-between mb-4">

@@ -5,7 +5,7 @@ import en from '@/messages/en.json';
 const messages = { vi, en };
 
 export function getMessages(locale: string) {
-  return messages[locale as keyof typeof messages] || messages.vi;
+  return messages[locale as keyof typeof messages] || messages.en;
 }
 
 export function t(messages: any, path: string): string {

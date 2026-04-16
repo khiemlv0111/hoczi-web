@@ -9,6 +9,7 @@ import {
   Eye,
   RotateCcw,
   Trophy,
+  X,
 } from "lucide-react";
 import { useAppData } from "@/app/context/AppContext";
 import { useRouter } from "next/navigation";
@@ -110,28 +111,28 @@ export default function QuizSessionTable() {
   }
 
   return (
-    <div className="flex h-screen bg-gray-50 font-sans overflow-hidden">
+    <div className="flex flex-col md:flex-row h-screen bg-gray-50 font-sans overflow-hidden">
       {/* Main table */}
       <div className="flex flex-col flex-1 min-w-0 transition-all duration-200">
         {/* Toolbar */}
-        <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-200 bg-white">
+        <div className="flex flex-wrap items-center gap-2 px-4 sm:px-6 py-3 border-b border-gray-200 bg-white">
           <button className="flex items-center gap-1.5 text-sm text-gray-500 border border-gray-200 rounded-lg px-3 py-1.5 hover:bg-gray-50">
             <span className="text-xs font-mono text-indigo-500">&lt;/&gt;</span>
-            2 hidden fields
+            <span className="hidden sm:inline">2 hidden fields</span>
             <ChevronDown size={14} />
           </button>
           <button className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 px-3 py-1.5 rounded-lg hover:bg-gray-50">
-            <Filter size={14} /> Filter
+            <Filter size={14} /> <span className="hidden sm:inline">Filter</span>
           </button>
           <button className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 px-3 py-1.5 rounded-lg hover:bg-gray-50">
-            <ArrowUpDown size={14} /> Sort
+            <ArrowUpDown size={14} /> <span className="hidden sm:inline">Sort</span>
           </button>
-          <div className="ml-auto flex gap-2">
+          <div className="flex gap-1.5 flex-wrap">
             {(["all", "completed", "in_progress", "failed"] as const).map((s) => (
               <button
                 key={s}
                 onClick={() => { setFilterStatus(s); setSelected(null); }}
-                className={`text-xs px-3 py-1.5 rounded-lg transition-colors ${filterStatus === s
+                className={`text-xs px-2.5 py-1.5 rounded-lg transition-colors ${filterStatus === s
                     ? "bg-indigo-600 text-white"
                     : "text-gray-500 hover:bg-gray-100"
                   }`}
@@ -147,13 +148,13 @@ export default function QuizSessionTable() {
           <table className="w-full text-sm border-collapse">
             <thead>
               <tr className="border-b border-gray-200 bg-white sticky top-0 z-10">
-                <th className="text-left px-6 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider w-10">#</th>
+                <th className="hidden sm:table-cell text-left px-6 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider w-10">#</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Quiz name</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Status</th>
                 <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Score</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Questions</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Duration</th>
-                <th className="text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Date</th>
+                <th className="hidden md:table-cell text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Questions</th>
+                <th className="hidden md:table-cell text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Duration</th>
+                <th className="hidden sm:table-cell text-left px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider">Date</th>
                 <th className="px-4 py-3 w-10" />
               </tr>
             </thead>
@@ -169,7 +170,7 @@ export default function QuizSessionTable() {
                         : "hover:bg-gray-50"
                       }`}
                   >
-                    <td className="px-6 py-3 text-gray-400 text-xs">{session.id}</td>
+                    <td className="hidden sm:table-cell px-6 py-3 text-gray-400 text-xs">{session.id}</td>
                     <td className="px-4 py-3 font-medium text-gray-800">{session.quiz?.title ?? "—"}</td>
                     <td className="px-4 py-3">
                       <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${cfg.className}`}>
@@ -182,13 +183,13 @@ export default function QuizSessionTable() {
                         <ProgressBar value={session.score} />
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-gray-600 tabular-nums">
+                    <td className="hidden md:table-cell px-4 py-3 text-gray-600 tabular-nums">
                       {session.correct_answers ?? 0}/{session.total_questions ?? 0}
                     </td>
-                    <td className="px-4 py-3 text-gray-500 text-xs">
+                    <td className="hidden md:table-cell px-4 py-3 text-gray-500 text-xs">
                       {session.quiz?.duration_minutes != null ? `${session.quiz.duration_minutes}m` : "—"}
                     </td>
-                    <td className="px-4 py-3 text-gray-500 text-xs">{session.start_time ?? "—"}</td>
+                    <td className="hidden sm:table-cell px-4 py-3 text-gray-500 text-xs">{session.start_time ?? "—"}</td>
                     <td className="px-4 py-3">
                       <button className="p-1 rounded hover:bg-gray-200 text-gray-400">
                         <MoreHorizontal size={15} />
@@ -204,12 +205,18 @@ export default function QuizSessionTable() {
 
       {/* Detail panel */}
       {detail && (
-        <div className="w-80 border-l max-h-[85vh] border-gray-200 bg-white flex flex-col overflow-y-auto shrink-0">
+        <div className="fixed bottom-0 left-0 right-0 z-20 md:static md:z-auto md:w-80 md:border-l md:border-t-0 border-t border-gray-200 bg-white flex flex-col overflow-y-auto shrink-0 max-h-[55vh] md:max-h-[85vh] shadow-[0_-4px_16px_rgba(0,0,0,0.08)] md:shadow-none">
           {/* Header */}
-          <div className="px-5 py-4 border-b border-gray-100 h-[67px]">
+          <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between h-[67px]">
             <h2 className="font-semibold text-gray-900 text-base leading-tight">
               {detail.quiz?.title ?? "—"}
             </h2>
+            <button
+              onClick={() => setSelected(null)}
+              className="md:hidden p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+            >
+              <X size={16} />
+            </button>
           </div>
 
           <div className="flex-1 px-5 py-4 space-y-5">
@@ -297,7 +304,7 @@ export default function QuizSessionTable() {
           </div>
 
           {/* Actions */}
-          <div className="px-5 py-4 border-t border-gray-100 flex gap-2">
+          <div className="sticky bottom-0 px-5 py-4 border-t border-gray-100 bg-white flex gap-2">
             <button onClick={handleViewSession} className="flex-1 flex items-center justify-center gap-1.5 py-2 text-sm text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
               <Eye size={14} /> Review
             </button>

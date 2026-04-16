@@ -18,14 +18,14 @@ export function ChallangeFriendPage() {
     const others = users.filter(u => u.id !== currentUser?.id)
 
     return (
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto px-4 sm:px-0">
             <div className="mb-6">
                 <h2 className="text-[15px] font-semibold text-gray-900">Challenge a Friend</h2>
                 <p className="text-[12px] text-gray-400 mt-0.5">Pick someone to challenge</p>
             </div>
 
             {loading ? (
-                <div className="grid grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                     {Array.from({ length: 8 }).map((_, i) => (
                         <div key={i} className="bg-white rounded-xl border border-gray-200 p-4 animate-pulse">
                             <div className="w-12 h-12 rounded-full bg-gray-100 mx-auto mb-3" />
@@ -38,7 +38,7 @@ export function ChallangeFriendPage() {
             ) : others.length === 0 ? (
                 <div className="text-center py-16 text-gray-400 text-[13px]">No other users found</div>
             ) : (
-                <div className="grid grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                     {others.map(u => (
                         <div
                             key={u.id}

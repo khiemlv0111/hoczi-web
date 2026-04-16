@@ -35,7 +35,7 @@ export function GamesPage() {
     }
 
     return (
-        <div className="max-w-sm mx-auto mt-10">
+        <div className="max-w-sm mx-auto mt-10 px-4 sm:px-0">
             <div className="bg-white rounded-xl border border-gray-200 p-6">
                 <div className="flex items-center gap-3 mb-6">
                     <img src={gameImageUrl} alt="hoczi" className="w-8 h-8 object-contain" />

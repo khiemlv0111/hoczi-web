@@ -89,4 +89,9 @@ export class LessonService {
         return response;
     }
 
+    static async markQuizComplete(quizId: number) {
+        const response = await postRequest(`/api/lessons/mark-quiz-complete/${quizId}`, {}, true);
+        return response;
+    }
+
 }

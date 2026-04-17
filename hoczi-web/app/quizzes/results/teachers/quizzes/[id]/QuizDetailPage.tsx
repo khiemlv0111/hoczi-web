@@ -5,6 +5,7 @@ import { LessonService } from "@/data/services/lesson.service";
 import { QuestionService } from "@/data/services/question.service";
 import { Grade, Topic } from "@/data/types.d";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
     Clock, BookOpen, Tag, GraduationCap, Calendar, Users,
     CheckCircle2, XCircle, Circle, Plus, X, Shuffle, ListChecks, Loader2, Eye,
@@ -102,9 +103,12 @@ function CreateAssignmentModal({ quizId, onClose, onCreated }: {
         if (finalIds.length === 0) { setError('Select at least one question'); return; }
         setSaving(true); setError('');
         try {
-            await LessonService.addQuestionsToQuiz(quizId, finalIds);
-            onCreated();
-            onClose();
+            // await LessonService.addQuestionsToQuiz(quizId, finalIds);
+            // onCreated();
+            // onClose();
+            console.log("Quiz", quizId);
+            console.log("IDDS", finalIds);
+            
         } catch {
             setError('Failed to create assignment');
         } finally {
@@ -117,7 +121,7 @@ function CreateAssignmentModal({ quizId, onClose, onCreated }: {
             <div className="bg-white rounded-xl shadow-xl w-full max-w-lg mx-4 flex flex-col max-h-[90vh]">
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100">
-                    <h3 className="text-[15px] font-semibold text-gray-900">Create Assignment</h3>
+                    <h3 className="text-[15px] font-semibold text-gray-900">Create Assignment !!!</h3>
                     <button onClick={onClose} className="p-1 rounded hover:bg-gray-100">
                         <X size={15} className="text-gray-400" />
                     </button>
@@ -335,10 +339,12 @@ function SessionDetailModal({ session, onClose }: { session: QuizSession; onClos
 }
 
 export function QuizDetailPage({ id }: { id: number }) {
+    const router = useRouter();
     const [quizDetail, setQuizDetail] = useState<QuizDetail | undefined>(undefined);
     const [showAssignModal, setShowAssignModal] = useState(false);
     const [viewSession, setViewSession] = useState<QuizSession | null>(null);
     const [completingId, setCompletingId] = useState<number | null>(null);
+    const [markingQuizComplete, setMarkingQuizComplete] = useState(false);
 
     const fetchDetail = () => {
         LessonService.getQuizDetail(id).then((res) => {
@@ -356,6 +362,16 @@ export function QuizDetailPage({ id }: { id: number }) {
         }
     };
 
+    const markQuizComplete = async () => {
+        setMarkingQuizComplete(true);
+        try {
+            await LessonService.markQuizComplete(id);
+            fetchDetail();
+        } finally {
+            setMarkingQuizComplete(false);
+        }
+    };
+
     useEffect(() => { fetchDetail(); }, []);
 
     if (!quizDetail) return <FullScreenLoading />;
@@ -364,6 +380,13 @@ export function QuizDetailPage({ id }: { id: number }) {
 
     return (
         <div className="max-w-3xl mx-auto px-4 py-8 space-y-6">
+            <button
+                onClick={() => router.back()}
+                className="flex items-center gap-1.5 text-[13px] text-gray-500 hover:text-gray-800"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                Back
+            </button>
             {/* Detail card */}
             <div className="bg-white rounded-xl border border-gray-200 p-6">
                 <div className="flex items-start justify-between gap-4 mb-4">
@@ -373,7 +396,21 @@ export function QuizDetailPage({ id }: { id: number }) {
                             <p className="text-[13px] text-gray-500 mt-1">{quizDetail.description}</p>
                         )}
                     </div>
-                    <StatusBadge status={quizDetail.status} />
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                        <StatusBadge status={quizDetail.status} />
+                        {quizDetail.status !== 'completed' && (
+                            <button
+                                onClick={markQuizComplete}
+                                disabled={markingQuizComplete}
+                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-600 text-white text-[12px] font-medium hover:bg-green-500 disabled:opacity-50"
+                            >
+                                {markingQuizComplete
+                                    ? <Loader2 size={12} className="animate-spin" />
+                                    : <CheckCircle2 size={12} />}
+                                Mark Complete
+                            </button>
+                        )}
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -434,7 +471,8 @@ export function QuizDetailPage({ id }: { id: number }) {
                     </div>
                     <button
                         onClick={() => setShowAssignModal(true)}
-                        className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white rounded-lg text-[12px] font-medium hover:bg-blue-500"
+                        disabled={quizDetail.status === 'completed'}
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-600 text-white rounded-lg text-[12px] font-medium hover:bg-blue-500 disabled:opacity-40 disabled:cursor-not-allowed"
                     >
                         <Plus size={12} /> Create Assignment
                     </button>
@@ -468,7 +506,7 @@ export function QuizDetailPage({ id }: { id: number }) {
                                     )}
                                     <StatusBadge status={s.status} />
                                     <button
-                                        onClick={() => setViewSession(s)}
+                                        onClick={() => router.push(`/quizzes/results/sessions/${s.id}`)}
                                         className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-gray-200 text-[11px] text-gray-600 hover:bg-gray-50 flex-shrink-0"
                                     >
                                         <Eye size={11} /> View

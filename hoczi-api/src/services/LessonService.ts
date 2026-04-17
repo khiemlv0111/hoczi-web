@@ -67,5 +67,9 @@ export class LessonService {
         return quizRepository.findOnDetail(quizId);
     }
 
+    async markQuizComplete(quizId: number) {
+        return quizRepository.updateStatus(quizId);
+    }
+
 
 }

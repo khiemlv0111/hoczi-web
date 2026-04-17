@@ -58,6 +58,10 @@ lessonRoutes.get('/get-my-quizzes', new LessonController().getMyQuizzes);
 lessonRoutes.get('/get-quiz-detail/:id', new LessonController().getQuizDetail);
 
 
+lessonRoutes.post('/mark-quiz-complete/:id', new LessonController().markQuizComplete);
+
+
+
 
 
 export default lessonRoutes;

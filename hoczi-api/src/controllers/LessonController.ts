@@ -162,4 +162,13 @@ export class LessonController {
     }
 
 
+    async markQuizComplete(req: Request, res: Response) {
+
+        const id = Number(req.params.id);
+
+        const response = await lessonService.markQuizComplete(Number(id));
+        return res.json(response);
+    }
+
+
 }

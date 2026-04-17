@@ -73,6 +73,13 @@ class QuizRepository {
     }
 
 
+    async updateStatus(quizId: number) {
+        await this.repo.update(quizId, {
+            status: 'completed',
+        });
+    }
+
+
 }
 
 export const quizRepository = new QuizRepository();

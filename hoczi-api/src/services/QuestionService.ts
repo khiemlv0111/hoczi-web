@@ -62,8 +62,8 @@ export class QuestionService {
     }
 
 
-    async createQuestion(dto: CreateQuestionRequest) {
-        return questionRepository.create(dto);
+    async createQuestion(userId: number, dto: CreateQuestionRequest) {
+        return questionRepository.create(userId, dto);
     }
 
     async createAnswer(dto: CreateAnswerRequest) {

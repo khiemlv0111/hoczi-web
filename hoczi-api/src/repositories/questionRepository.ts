@@ -83,7 +83,7 @@ class QuestionRepository {
         // return this.repo.delete({ id: questionId });
     }
 
-    async create(data: CreateQuestionRequest) {
+    async create(userId: number, data: CreateQuestionRequest) {
         const question = this.repo.create({
             content: data.content,
             code: {
@@ -95,6 +95,7 @@ class QuestionRepository {
             category_id: data.categoryId,
             topic_id: data.topicId,
             explanation: data.explanation,
+            created_by: userId,
         });
         return this.repo.save(question);
     }

@@ -75,13 +75,14 @@ export class QuestionController {
     }
 
     async createQuestion(req: Request, res: Response) {
+        const { id } = req.user;
 
         const { errors, input } = await RequestValidator(CreateQuestionRequest, req.body);
         if (errors) {
             return res.status(400).json({ success: false, message: errors })
         }
 
-        const question = await questionService.createQuestion(input);
+        const question = await questionService.createQuestion(Number(id), input);
         return res.json({ success: true, data: question });
 
     }

@@ -55,6 +55,9 @@ lessonRoutes.post('/create-quiz-assignment', new LessonController().createNewQui
 lessonRoutes.get('/get-my-quizzes', new LessonController().getMyQuizzes);
 
 
+lessonRoutes.get('/get-quiz-detail/:id', new LessonController().getQuizDetail);
+
+
 
 
 export default lessonRoutes;

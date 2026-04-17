@@ -63,5 +63,9 @@ export class LessonService {
         return quizRepository.findByUserId(userId);
     }
 
+    async getQuizDetail(quizId: number) {
+        return quizRepository.findOnDetail(quizId);
+    }
+
 
 }

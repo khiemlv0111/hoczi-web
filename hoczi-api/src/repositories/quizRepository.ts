@@ -15,7 +15,16 @@ class QuizRepository {
     }
 
     async findById(id: number) {
-        return this.repo.findOne({ where: { id } });
+        return this.repo.findOne({
+            where: { id }
+        });
+    }
+
+    async findOnDetail(id: number) {
+        return this.repo.findOne({
+            where: { id },
+            relations: ['quiz_sessions', 'category', 'topic', 'grade', 'quiz_sessions.user_answers']
+        });
     }
 
     async findByUserId(userId: number) {

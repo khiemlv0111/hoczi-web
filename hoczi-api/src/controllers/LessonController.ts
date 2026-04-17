@@ -152,5 +152,14 @@ export class LessonController {
         return res.json(response);
     }
 
+    async getQuizDetail(req: Request, res: Response) {
+        // const { id } = req.user;
+
+        const id = Number(req.params.id);
+
+        const response = await lessonService.getQuizDetail(Number(id));
+        return res.json(response);
+    }
+
 
 }

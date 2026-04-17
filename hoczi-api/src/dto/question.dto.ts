@@ -66,3 +66,16 @@ export interface QuestionFilterDto {
   topicId?: number;
   difficulty?: string;
 }
+
+export interface TeacherFilterQuestionDto {
+    categoryId?: number;
+    topicId?: number;
+    gradeId?: number;
+    teacherId?: number;
+    difficulty?: 'easy' | 'medium' | 'hard';
+    keyword?: string;
+    quizId?: number;
+    source?: 'teacher' | 'system' | 'all';
+    page?: number;
+    perPage?: number;
+}

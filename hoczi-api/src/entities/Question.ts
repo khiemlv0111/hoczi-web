@@ -54,6 +54,9 @@ export class Question {
     @Column({ type: "boolean", default: true })
     is_active!: boolean;
 
+    @Column({ type: "boolean", default: false })
+    is_system!: boolean;
+
     @CreateDateColumn({ type: "timestamptz" })
     created_at!: Date;
 

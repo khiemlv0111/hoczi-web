@@ -1,5 +1,5 @@
 import { AppDataSource } from '../data-source';
-import { CreateQuestionRequest, QuestionFilterDto } from '../dto/question.dto';
+import { CreateQuestionRequest, QuestionFilterDto, TeacherFilterQuestionDto } from '../dto/question.dto';
 import { Question } from '../entities/Question';
 import { FindOptionsWhere, ILike, In } from 'typeorm';
 
@@ -47,6 +47,85 @@ class QuestionRepository {
             .leftJoinAndSelect('question.answers', 'answers')
             .where('question.id IN (:...ids)', { ids })
             .getMany();
+    }
+
+    async filterQuestions(filter?: TeacherFilterQuestionDto) {
+
+        const qb = this.repo
+            .createQueryBuilder('question')
+            .leftJoinAndSelect('question.answers', 'answers');
+
+    
+        if (filter?.source === 'teacher') {
+            qb.andWhere('question.created_by = :teacherId', {
+                teacherId: filter.teacherId,
+            });
+        } else if (filter?.source === 'system') {
+            qb.andWhere('question.is_system = true');
+        } else {
+            qb.andWhere(
+                '(question.created_by = :teacherId OR question.is_system = true)',
+                { teacherId: filter?.teacherId }
+            );
+        }
+
+        if (filter?.categoryId) {
+            qb.andWhere('question.category_id = :categoryId', {
+                categoryId: filter.categoryId,
+            });
+        }
+
+        if (filter?.topicId) {
+            qb.andWhere('question.topic_id = :topicId', {
+                topicId: filter.topicId,
+            });
+        }
+
+        if (filter?.gradeId) {
+            qb.andWhere('question.grade_id = :gradeId', {
+                gradeId: filter.gradeId,
+            });
+        }
+
+        if (filter?.difficulty) {
+            qb.andWhere('question.difficulty = :difficulty', {
+                difficulty: filter.difficulty,
+            });
+        }
+
+        if (filter?.keyword) {
+            qb.andWhere('question.content ILIKE :keyword', {
+                keyword: `%${filter.keyword}%`,
+            });
+        }
+
+        if (filter?.quizId) {
+            qb.andWhere(
+                `question.id NOT IN (
+                SELECT qq.question_id
+                FROM quiz_questions qq
+                WHERE qq.quiz_id = :quizId
+            )`,
+                { quizId: filter.quizId }
+            );
+        }
+
+        const page = filter?.page || 1;
+        const perPage = filter?.perPage || 20;
+
+        qb.orderBy('question.created_at', 'DESC')
+            .skip((page - 1) * perPage)
+            .take(perPage);
+
+        const [items, total] = await qb.getManyAndCount();
+
+        return {
+            items,
+            total,
+            page,
+            perPage,
+            totalPages: Math.ceil(total / perPage),
+        };
     }
 
     async findById(id: number) {

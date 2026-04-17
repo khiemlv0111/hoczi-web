@@ -9,6 +9,9 @@ import { Plus, X, HelpCircle, Loader2, CheckCircle2, Circle } from "lucide-react
 import { CommonModal } from "@/app/components/modal/CommonModal"
 import { CreateQuestionForm } from "@/app/admin/questions/CreateQuestionForm"
 import { Field, INPUT, Quiz } from "./shared"
+import { useAppData } from "@/app/context/AppContext"
+import { SystemRoles } from "@/data/config/constants"
+import { QuizAssignment } from "@/data/services/payload_type"
 
 const DIFFICULTIES = ['easy', 'medium', 'hard']
 
@@ -130,12 +133,17 @@ function QuizDetailModal({ quiz, onClose, onUpdated }: {
     const [error, setError] = useState('')
 
     useEffect(() => {
+
+    }, [])
+
+    const fetchQuestions = () => {
         setLoadingQ(true)
         QuestionService.getAllTeacherQuestions({ page: 1, limit: 50 })
             .then(res => setBankQuestions(res?.data ?? res ?? []))
             .catch(() => { })
             .finally(() => setLoadingQ(false))
-    }, [])
+
+    }
 
     const toggleQuestion = (id: number) => {
         setSelectedIds(prev => {
@@ -230,7 +238,8 @@ export function QuizzesTab({ classes }: { classes: ClassItem[] }) {
     const [showModal, setShowModal] = useState(false)
     const [showQuestionModal, setShowQuestionModal] = useState(false)
     const [selected, setSelected] = useState<Quiz | null>(null)
-    const [filterClass, setFilterClass] = useState<number | 'all'>('all')
+    const [filterClass, setFilterClass] = useState<number | 'all'>('all');
+    const { user } = useAppData();
 
     useEffect(() => {
         LessonService.getMyQuizzes()
@@ -243,6 +252,10 @@ export function QuizzesTab({ classes }: { classes: ClassItem[] }) {
 
     const handleUpdated = (updated: Quiz) => {
         setQuizzes(prev => prev.map(q => q.id === updated.id ? updated : q))
+    }
+
+    const handleSelectQuiz = (quiz: QuizAssignment) => {
+        router.push(`/quizzes/results/teachers/quizzes/${quiz.id}`);
     }
 
     return (
@@ -286,7 +299,12 @@ export function QuizzesTab({ classes }: { classes: ClassItem[] }) {
                             const cls = classes.find(c => c.id === q.class_id)
                             const qCount = q.question_count ?? 0
                             return (
-                                <div key={q.id} onClick={() => setSelected(q)}
+                                <div key={q.id} onClick={() => {
+                                    console.log('QUIXXXXX', q);
+                                    handleSelectQuiz(q);
+                                    
+                                    // setSelected(q)
+                                }}
                                     className="px-5 py-4 flex items-center gap-4 hover:bg-gray-50 cursor-pointer">
                                     <div className="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center flex-shrink-0">
                                         <HelpCircle size={14} className="text-violet-500" />
@@ -321,7 +339,20 @@ export function QuizzesTab({ classes }: { classes: ClassItem[] }) {
                 />
             )}
             <CommonModal open={showQuestionModal} onClose={() => setShowQuestionModal(false)}>
-                <CreateQuestionForm onSuccess={id => { setShowQuestionModal(false); router.push(`/admin/questions/${id}`) }} />
+                <CreateQuestionForm
+                    onSuccess={id => {
+                        setShowQuestionModal(false);
+                        if (!user) return;
+                        if (user.role === SystemRoles.ADMIN) {
+                            router.push(`/admin/questions/${id}`);
+
+                        } else if (user.role === SystemRoles.TEACHER) {
+                            router.push(`/quizzes/results/teachers/questions/${id}`);
+
+                        }
+
+                    }}
+                />
             </CommonModal>
             {selected && (
                 <QuizDetailModal

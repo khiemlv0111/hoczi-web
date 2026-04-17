@@ -69,4 +69,24 @@ export class LessonService {
         return response;
     }
 
+    static async getQuizDetail(id: number) {
+        const response = await getRequest(`/api/lessons/get-quiz-detail/${id}`, true);
+        return response;
+    }
+
+    static async addQuestionsToQuiz(quizId: number, questionIds: number[]) {
+        const response = await postRequest('/api/lessons/add-questions-to-quiz', { quiz_id: quizId, question_ids: questionIds }, true);
+        return response;
+    }
+
+    static async getSessionDetail(sessionId: number) {
+        const response = await getRequest(`/api/lessons/get-session-detail/${sessionId}`, true);
+        return response;
+    }
+
+    static async markSessionComplete(sessionId: number) {
+        const response = await postRequest(`/api/lessons/mark-session-complete/${sessionId}`, {}, true);
+        return response;
+    }
+
 }

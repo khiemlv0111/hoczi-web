@@ -101,7 +101,7 @@ export default function AdminLayout({
         // console.log('USERS', user)
         if (user) {
 
-            if (user.role != 'admin') {
+            if (user.role !== 'admin') {
                 router.push(`/`)
             }
 

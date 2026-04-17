@@ -41,6 +41,8 @@ export function CreateQuestionForm({ onSuccess }: { onSuccess?: (id: number) => 
         setSubmitting(true);
         setError('');
         try {
+            console.log('FORM', form);
+            
             const res = await QuestionService.createQuestion({
                 ...form,
                 gradeId: form.gradeId ? Number(form.gradeId) : undefined,

@@ -1,5 +1,6 @@
 
 export type QuizAssignment = {
+    id?: number;
     title: string,
     description?: string,
     quiz_type?: string,

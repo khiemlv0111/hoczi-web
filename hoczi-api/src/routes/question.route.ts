@@ -14,8 +14,6 @@ questionRoutes.get('/all-questions', new QuestionController().getAllQuestion);
 
 questionRoutes.get('/question-detail/:id', new QuestionController().getQuestionDetail);
 
-
-questionRoutes.post('/create-question', new QuestionController().createQuestion);
 questionRoutes.post('/create-answer', new QuestionController().createAnswer);
 
 questionRoutes.get('/category-list', new QuestionController().getCategoryList);

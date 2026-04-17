@@ -34,6 +34,8 @@ userRoutes.put('/update-user/:id', new UserController().updateUser);
 
 userRoutes.get('/all-teacher-questions', new QuestionController().getAllTeacherQuestions);
 
+userRoutes.post('/create-question', new QuestionController().createQuestion);
+
 
 
 export default userRoutes;

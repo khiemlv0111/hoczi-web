@@ -43,7 +43,7 @@ export class QuestionService {
 
     static async createQuestion(payload: any) {
         // const user = localStorage.getItem('')
-        const response = await postRequest('/api/questions/create-question', payload, false);
+        const response = await postRequest('/api/users/create-question', payload, true);
         console.log("response: ", response);
 
         return response

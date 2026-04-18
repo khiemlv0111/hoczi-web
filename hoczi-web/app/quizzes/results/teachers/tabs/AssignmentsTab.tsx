@@ -188,7 +188,7 @@ function CreateAssignmentModal({ classes, onClose, onCreate }: {
 
                         <RichTextEditor onChange={v => setDescription(v)} />
 
-                        </Field>
+                    </Field>
                     {error && <p className="text-[12px] text-red-500">{error}</p>}
                 </div>
                 <div className="flex gap-2 mt-5">
@@ -257,7 +257,12 @@ export function AssignmentsTab({ classes }: { classes: ClassItem[] }) {
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <p className="text-[13px] font-medium text-gray-900">{a.title}</p>
-                                        {a.description && <p className="text-[11px] text-gray-400 truncate mt-0.5">{a.description}</p>}
+                                        {a.description && <div className="text-[11px] text-gray-400 truncate-20 mt-0.5" dangerouslySetInnerHTML={{
+                                            __html: a.description.length > 20
+                                                ? a.description.slice(0, 20) + '...'
+                                                : a.description
+                                        }} />
+                                        }
                                     </div>
                                     {cls && <span className="text-[11px] text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">{cls.name}</span>}
                                     {a.due_date && (

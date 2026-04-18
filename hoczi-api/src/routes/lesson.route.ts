@@ -68,7 +68,7 @@ lessonRoutes.post('/assign-quiz-to-students', new LessonController().assignQuizT
 lessonRoutes.post('/assign-session-to-student', new LessonController().assignSessionToStudent);
 
 
-lessonRoutes.get('/teacher-get-assignment-student-detail/:assignmentId/:studentId', new LessonController().teacherGetAssignmentStudentDetail);
+lessonRoutes.get('/teacher-get-assignment-student-detail/:assignmentStudentId', new LessonController().teacherGetAssignmentStudentDetail);
 
 
 

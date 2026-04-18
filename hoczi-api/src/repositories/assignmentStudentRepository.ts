@@ -30,6 +30,15 @@ class AssignmentStudentRepository {
         return { data, total };
     }
 
+    async findAssignmentStudentDetail(assignmentId: number, studentId: number) {
+        const response = await this.repo.findOne({
+            where: {assignment_id: assignmentId, student_id: studentId},
+            relations: ['assignment', 'student', 'comments']
+        });
+        return response;
+
+    }
+
 }
 
 

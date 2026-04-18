@@ -35,7 +35,7 @@ export class CreateAssignmentRequest {
     title!: string;
 
     @IsOptional()
-    class_id!: number;
+    class_id?: number;
 
     @IsOptional()
     due_at!: string;
@@ -44,10 +44,10 @@ export class CreateAssignmentRequest {
     assignment_type?: string;
 
     @IsOptional()
-    lesson_id!: number;
+    lesson_id?: number;
 
     @IsOptional()
-    class_subject_id!: number;
+    class_subject_id?: number;
 
     @IsOptional()
     description!: string;

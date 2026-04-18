@@ -63,6 +63,7 @@ lessonRoutes.post('/mark-quiz-complete/:id', new LessonController().markQuizComp
 
 // Teacher create quiz_sessions
 lessonRoutes.post('/create-quiz-session-for-assignment', new LessonController().createNewQuizSessionForAssignment);
+
 lessonRoutes.post('/assign-quiz-to-students', new LessonController().assignQuizToStudents);
 lessonRoutes.post('/assign-session-to-student', new LessonController().assignSessionToStudent);
 

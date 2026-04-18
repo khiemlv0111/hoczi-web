@@ -117,6 +117,15 @@ export class LessonService {
         quizSession.status = "draft";
         quizSession.start_time = new Date();
 
+        // 3. Update session và save
+        await quizSessionRepository.update(quizSession.id, {
+            score: 0,
+            correct_answers: 0,
+            total_questions: questionIds.length,
+            status: "draft",
+            start_time: new Date(),
+        });
+
         // create user_answers
         const userAnswersPayload = questionIds.map((questionId) => ({
             session_id: quizSession.id,

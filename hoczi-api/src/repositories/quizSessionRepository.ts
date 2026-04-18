@@ -1,6 +1,5 @@
 import { AppDataSource } from '../data-source';
 import { SubmitQuizSessionRequest } from '../dto/user.dto';
-import { Grade } from '../entities/Grade';
 import { QuizSession } from '../entities/QuizSession';
 
 class QuizSessionRepository {
@@ -73,6 +72,16 @@ class QuizSessionRepository {
             where: { id: sessionId },
             relations: ['quiz', 'user', 'user_answers'] //////////////////////
         });
+    }
+
+    async update(id: number, data: Partial<QuizSession>) {
+        // await this.repo.update(id, data);
+        // return this.findById(id);
+
+        await this.repo.update(id, data);
+        const updated = await this.findById(id);
+        if (!updated) throw new Error(`QuizSession ${id} not found after update`);
+        return updated;
     }
 
 }

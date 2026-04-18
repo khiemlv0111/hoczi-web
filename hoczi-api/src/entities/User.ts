@@ -13,6 +13,9 @@ export class User {
 	@Column({ type: 'text', name: 'role', nullable: true })
 	role?: string
 
+	@Column({ type: "int", nullable: true })
+	tenant_id?: number;
+
 
 	@Column({ type: 'varchar', unique: true })
 	username!: string
@@ -29,7 +32,7 @@ export class User {
 
 	@UpdateDateColumn()
 	updated_at!: Date;
-	
+
 	@OneToMany(() => QuizSession, (session) => session.user)
 	quiz_sessions!: QuizSession[];
 }

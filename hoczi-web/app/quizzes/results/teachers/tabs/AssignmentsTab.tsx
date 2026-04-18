@@ -7,6 +7,7 @@ import { LessonService } from "@/data/services/lesson.service"
 import { Plus, X, ClipboardList, Loader2, Users, GraduationCap } from "lucide-react"
 import { Field, INPUT, Assignment, Lesson } from "./shared"
 import { RichTextEditor } from "@/app/components/RichTextEditor"
+import { useRouter } from "next/navigation"
 
 
 function AssignmentDetailModal({ assignment, classes, onClose }: {
@@ -15,7 +16,22 @@ function AssignmentDetailModal({ assignment, classes, onClose }: {
     const a = assignment.detail ?? assignment
     const students = assignment.assignment_students ?? []
     const cls = classes.find(c => c.id === a.class_id)
-    const overdue = a.due_date && new Date(a.due_date) < new Date()
+    const overdue = a.due_date && new Date(a.due_date) < new Date();
+
+    const router = useRouter()
+
+    const handleViewAssignmentStudentDetail = (assignment: any) => {
+        const assignmentStudentId = assignment.id;
+        router.push(`/quizzes/results/teachers/assignments/students/${assignmentStudentId}`)
+
+
+        console.log('ASSSIGNMENT', assignment);
+        
+
+    }
+
+    
+    
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
@@ -32,6 +48,7 @@ function AssignmentDetailModal({ assignment, classes, onClose }: {
                             )}
                         </div>
                     </div>
+                    <button onClick={() => {}}>View Detail</button>
                     <button onClick={onClose} className="p-1 rounded hover:bg-gray-100"><X size={15} className="text-gray-400" /></button>
                 </div>
 
@@ -54,7 +71,7 @@ function AssignmentDetailModal({ assignment, classes, onClose }: {
                                 const name = s.student ? s.student.name || s.student.email : `Student #${s.student_id}`
                                 const submitted = !!s.submitted_at
                                 return (
-                                    <div key={s.id} className="px-4 py-4">
+                                    <div key={s.id} className="px-4 py-4" onClick={() => handleViewAssignmentStudentDetail(s)}>
                                         <div className="flex items-center justify-between gap-3 mb-3">
                                             <div className="flex items-center gap-2 min-w-0">
                                                 <div className="w-7 h-7 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0">

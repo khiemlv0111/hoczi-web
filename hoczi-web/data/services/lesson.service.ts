@@ -109,4 +109,10 @@ export class LessonService {
         return response;
     }
 
+
+    static async getAssignmentStudentDetail(assignmentStudentDetail: number) {
+        const response = await getRequest(`/api/lessons/teacher-get-assignment-student-detail/${assignmentStudentDetail}`, true);
+        return response;
+    }
+
 }

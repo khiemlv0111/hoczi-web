@@ -146,7 +146,7 @@ export type Grade = {
 }
 
 export type Subject = {
-    code :string;
+    code: string;
     description: string;
     name: string;
     status: string;
@@ -182,5 +182,28 @@ export type StudentAssignment = {
     assignment_id: number,
     assigned_at?: string,
     assignment: Assignment
+
+}
+
+export type StudentAssignmentComment = {
+    content: string,
+    user_id: number,
+    created_at: string,
+}
+
+export type StudentAssignmentDetail = {
+    id: number,
+    attempt_count?: number;
+    feedback?: string,
+    student_id: number,
+    status?: string,
+    started_at?: string,
+    score?: number,
+    status?: string,
+    assignment_id: number,
+    assigned_at?: string,
+    assignment: Assignment
+    submitted_at?: string,
+    comments: StudentAssignmentComment[]
 
 }

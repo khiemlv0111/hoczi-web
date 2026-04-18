@@ -3,7 +3,7 @@ import { RequestValidator } from '../dto/requestValidator';
 import { LessonService } from '../services/LessonService';
 import { AddSubjectToClassRequest } from '../dto/class.dto';
 import { AssignStudentAssignmentRequest, CommentOnAssignmentRequest, CreateAssignmentRequest, CreateLessonRequest } from '../dto/lesson.dto';
-import { CreateQuizRequest } from '../dto/user.dto';
+import { CreateQuizRequest, TeacherCreateQuizSessionRequest } from '../dto/user.dto';
 
 
 const lessonService = new LessonService();
@@ -167,6 +167,20 @@ export class LessonController {
         const id = Number(req.params.id);
 
         const response = await lessonService.markQuizComplete(Number(id));
+        return res.json(response);
+    }
+
+
+    async createNewQuizSessionForAssignment(req: Request, res: Response) {
+
+        const { id } = req.user;
+
+        const { errors, input } = await RequestValidator(TeacherCreateQuizSessionRequest, req.body);
+        if (errors) {
+            return res.status(400).json({ success: false, message: errors });
+        }
+
+        const response = await lessonService.createNewQuizSessionAssignment(Number(id), Number(input.quiz_id), input.question_ids ?? []);
         return res.json(response);
     }
 

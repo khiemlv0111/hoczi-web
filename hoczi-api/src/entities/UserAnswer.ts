@@ -19,7 +19,7 @@ export class UserAnswer {
   question_id!: number | null;
 
   @Column({ type: "int", nullable: true })
-  answer_id!: number | null;
+  answer_id?: number | null;
 
   @Column({ type: "boolean", nullable: true })
   is_correct!: boolean | null;

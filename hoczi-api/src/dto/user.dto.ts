@@ -112,6 +112,15 @@ export class SubmitQuizSessionRequest {
 
 
 
+export class TeacherCreateQuizSessionRequest {
+
+    @IsNumber()
+    quiz_id!: number;
+
+    question_ids!: number[];
+
+}
+
 
 
 

@@ -61,6 +61,10 @@ lessonRoutes.get('/get-quiz-detail/:id', new LessonController().getQuizDetail);
 lessonRoutes.post('/mark-quiz-complete/:id', new LessonController().markQuizComplete);
 
 
+// Teacher create quiz_sessions
+lessonRoutes.post('/create-quiz-session-for-assignment', new LessonController().createNewQuizSessionForAssignment);
+
+
 
 
 

@@ -178,8 +178,9 @@ export class QuestionController {
         const { id } = req.user;
         const page = req.query.page ? Number(req.query.page) : 1;
         const limit = req.query.limit ? Number(req.query.limit) : 30;
+        const source = req.query.source as 'teacher' | 'system' | 'all' | undefined;
 
-        const response = await questionService.getAllTeacherQuestions(Number(id), page, limit);
+        const response = await questionService.getAllTeacherQuestions(Number(id), page, limit, source);
         return res.json(response);
 
     }

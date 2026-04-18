@@ -75,7 +75,6 @@ class QuizSessionRepository {
         });
     }
 
-
 }
 
 export const quizSessionRepository = new QuizSessionRepository();

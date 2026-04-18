@@ -8,6 +8,9 @@ import { assignmentStudentRepository } from "../repositories/assignmentStudentRe
 import { assignmentCommentRepository } from "../repositories/assignmentCommentRepository";
 
 import { quizRepository } from "../repositories/quizRepository";
+import { quizSessionRepository } from "../repositories/quizSessionRepository";
+import { BadRequestError } from "../errors/api-erros";
+import { userAnswerRepository } from "../repositories/userAnswerRepository";
 
 
 
@@ -69,6 +72,59 @@ export class LessonService {
 
     async markQuizComplete(quizId: number) {
         return quizRepository.updateStatus(quizId);
+    }
+
+    async createNewQuizSessionAssignment(userId: number, quizId: number, questionIds: number[]) {
+        const quiz = await quizRepository.findById(quizId);
+        const quizSession = await quizSessionRepository.startQuiz(userId, quizId);
+
+        if (!quizSession) {
+            throw new BadRequestError("Quiz session not found");
+        }
+
+        if (!quiz) {
+            throw new BadRequestError("Quiz not found");
+        }
+
+        if (quizSession.user_id !== userId) {
+            throw new BadRequestError("You cannot submit this quiz session");
+        }
+
+        if (quizSession.status === "completed") {
+            throw new BadRequestError("Quiz session already submitted");
+        }
+
+        // update session
+        quizSession.score = 0;
+        quizSession.correct_answers = 0;
+        quizSession.total_questions = questionIds.length;
+        quizSession.status = "in_progress";
+        quizSession.start_time = new Date();
+
+        // create user_answers
+        const userAnswersPayload = questionIds.map((questionId) => ({
+            session_id: quizSession.id,
+            question_id: questionId,
+            answer_id: null,
+            is_correct: false,
+
+        }));
+
+        if (!userAnswersPayload || userAnswersPayload.length === 0) {
+            throw new BadRequestError("Quizzes Answers not found");
+        }
+
+        if (userAnswersPayload.length > 0) {
+            await userAnswerRepository.createMany(userAnswersPayload);
+        }
+
+
+        return {
+            success: true,
+            message: 'Questions added to quiz',
+            quiz_id: quizId,
+            quizSession: quizSession,
+        };
     }
 
 

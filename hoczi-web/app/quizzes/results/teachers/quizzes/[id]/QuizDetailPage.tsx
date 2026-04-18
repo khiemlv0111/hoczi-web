@@ -266,6 +266,8 @@ function AssignToStudentModal({ sessionId, onClose, onAssigned }: {
     const [selectedId, setSelectedId] = useState<number | null>(null);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState('');
+    const [title, setTitle] = useState('');
+    const [dueAt, setDueAt] = useState('');
 
     useEffect(() => {
         ClassService.getClassList()
@@ -278,7 +280,7 @@ function AssignToStudentModal({ sessionId, onClose, onAssigned }: {
         if (!selectedId) { setError('Select a student'); return; }
         setSaving(true); setError('');
         try {
-            await LessonService.assignSessionToStudent(sessionId, selectedId);
+            await LessonService.assignSessionToStudent(sessionId, selectedId, title || undefined, dueAt || undefined);
             onAssigned();
             onClose();
         } catch {
@@ -292,13 +294,34 @@ function AssignToStudentModal({ sessionId, onClose, onAssigned }: {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
             <div className="bg-white rounded-xl shadow-xl w-full max-w-lg mx-4 flex flex-col max-h-[90vh]">
                 <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100">
-                    <h3 className="text-[15px] font-semibold text-gray-900">Assign Session to Student</h3>
+                    <h3 className="text-[15px] font-semibold text-gray-900">Assign Session to Student !</h3>
                     <button onClick={onClose} className="p-1 rounded hover:bg-gray-100">
                         <X size={15} className="text-gray-400" />
                     </button>
                 </div>
 
                 <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
+                    <div className="space-y-3">
+                        <div>
+                            <label className="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1">Title</label>
+                            <input
+                                type="text"
+                                value={title}
+                                onChange={e => setTitle(e.target.value)}
+                                placeholder="Assignment title"
+                                className="w-full px-3 py-2 text-[13px] border border-gray-200 rounded-lg outline-none focus:border-indigo-400"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-[11px] font-semibold text-gray-500 uppercase tracking-wider mb-1">Due Date</label>
+                            <input
+                                type="datetime-local"
+                                value={dueAt}
+                                onChange={e => setDueAt(e.target.value)}
+                                className="w-full px-3 py-2 text-[13px] border border-gray-200 rounded-lg outline-none focus:border-indigo-400"
+                            />
+                        </div>
+                    </div>
                     {loading ? (
                         <div className="space-y-2">
                             {[1, 2, 3].map(i => <div key={i} className="h-10 bg-gray-100 rounded-lg animate-pulse" />)}

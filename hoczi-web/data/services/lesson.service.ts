@@ -104,8 +104,8 @@ export class LessonService {
         return response;
     }
 
-    static async assignSessionToStudent(sessionId: number, studentId: number) {
-        const response = await postRequest('/api/lessons/assign-session-to-student', { session_id: sessionId, student_id: studentId }, true);
+    static async assignSessionToStudent(sessionId: number, studentId: number, title?: string, due_at?: string) {
+        const response = await postRequest('/api/lessons/assign-session-to-student', { session_id: sessionId, student_id: studentId, title, due_at }, true);
         return response;
     }
 

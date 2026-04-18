@@ -6,6 +6,8 @@ import { QuestionService } from "@/data/services/question.service"
 import { LessonService } from "@/data/services/lesson.service"
 import { Plus, X, ClipboardList, Loader2, Users, GraduationCap } from "lucide-react"
 import { Field, INPUT, Assignment, Lesson } from "./shared"
+import { RichTextEditor } from "@/app/components/RichTextEditor"
+
 
 function AssignmentDetailModal({ assignment, classes, onClose }: {
     assignment: Assignment; classes: ClassItem[]; onClose: () => void
@@ -34,7 +36,7 @@ function AssignmentDetailModal({ assignment, classes, onClose }: {
                 </div>
 
                 {a.description && (
-                    <p className="text-[13px] text-gray-600 mb-5 leading-relaxed">{a.description}</p>
+                    <div dangerouslySetInnerHTML={{ __html: a.description }} />
                 )}
 
                 <div className="flex-1 overflow-y-auto">
@@ -152,9 +154,9 @@ function CreateAssignmentModal({ classes, onClose, onCreate }: {
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-            <div className="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 p-6">
+            <div className="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 p-6 max-h-[90vh] overflow-y-auto">
                 <div className="flex items-center justify-between mb-5">
-                    <h3 className="text-[15px] font-semibold text-gray-900">New Assignment</h3>
+                    <h3 className="text-[15px] font-semibold text-gray-900">New Assignment -!</h3>
                     <button onClick={onClose} className="p-1 rounded hover:bg-gray-100"><X size={15} className="text-gray-400" /></button>
                 </div>
                 <div className="space-y-3">
@@ -182,7 +184,11 @@ function CreateAssignmentModal({ classes, onClose, onCreate }: {
                             </select>
                         </Field>
                     </div>
-                    <Field label="Description"><textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="Instructions or details…" rows={3} className={INPUT + " resize-none"} /></Field>
+                    <Field label="Description">
+
+                        <RichTextEditor onChange={v => setDescription(v)} />
+
+                        </Field>
                     {error && <p className="text-[12px] text-red-500">{error}</p>}
                 </div>
                 <div className="flex gap-2 mt-5">

@@ -26,7 +26,10 @@ class QuizSessionRepository {
 
     async findByUserId(userId: number) {
         return this.repo.find({
-            where: { user_id: userId },
+            where: { 
+                user_id: userId,
+                quiz: { quiz_type: 'free' }
+            },
             relations: ['quiz', 'user_answers']
         });
     }

@@ -171,6 +171,24 @@ export class LessonController {
     }
 
 
+    async assignSessionToStudent(req: Request, res: Response) {
+        const { session_id, student_id } = req.body;
+        if (!session_id || !student_id) {
+            return res.status(400).json({ success: false, message: 'session_id and student_id are required' });
+        }
+        const response = await lessonService.assignSessionToStudent(Number(session_id), Number(student_id));
+        return res.json(response);
+    }
+
+    async assignQuizToStudents(req: Request, res: Response) {
+        const { quiz_id, student_ids } = req.body;
+        if (!quiz_id || !Array.isArray(student_ids) || student_ids.length === 0) {
+            return res.status(400).json({ success: false, message: 'quiz_id and student_ids are required' });
+        }
+        const response = await lessonService.assignQuizToStudents(Number(quiz_id), student_ids.map(Number));
+        return res.json(response);
+    }
+
     async createNewQuizSessionForAssignment(req: Request, res: Response) {
 
         const { id } = req.user;

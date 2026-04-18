@@ -74,6 +74,22 @@ export class LessonService {
         return quizRepository.updateStatus(quizId);
     }
 
+    async assignSessionToStudent(sessionId: number, studentId: number) {
+        await quizSessionRepository.saveOne({ id: sessionId, user_id: studentId });
+        return { success: true, message: 'Session assigned to student' };
+    }
+
+    async assignQuizToStudents(quizId: number, studentIds: number[]) {
+        const sessions = await Promise.all(
+            studentIds.map(studentId => quizSessionRepository.startQuiz(studentId, quizId))
+        );
+        return {
+            success: true,
+            message: 'Quiz assigned to students',
+            sessions,
+        };
+    }
+
     async createNewQuizSessionAssignment(userId: number, quizId: number, questionIds: number[]) {
         const quiz = await quizRepository.findById(quizId);
         const quizSession = await quizSessionRepository.startQuiz(userId, quizId);
@@ -98,7 +114,7 @@ export class LessonService {
         quizSession.score = 0;
         quizSession.correct_answers = 0;
         quizSession.total_questions = questionIds.length;
-        quizSession.status = "in_progress";
+        quizSession.status = "draft";
         quizSession.start_time = new Date();
 
         // create user_answers

@@ -36,6 +36,7 @@ userRoutes.get('/all-teacher-questions', new QuestionController().getAllTeacherQ
 
 userRoutes.post('/create-question', new QuestionController().createQuestion);
 
+userRoutes.get('/get-dashboard-result', new UserController().getDashboarResult);
 
 
 export default userRoutes;

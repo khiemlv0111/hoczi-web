@@ -47,5 +47,16 @@ export class UserController {
 
     }
 
+    async getDashboarResult(req: Request, res: Response) {
+        const { id } = req.user;
+
+        if (!id) {
+            return res.status(400).json({ success: false, message: "No user found" })
+        }
+
+        const response = await userService.getDashboardData(Number(id));
+        return res.json(response);
+    }
+
 
 }

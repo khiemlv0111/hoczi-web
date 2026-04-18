@@ -8,6 +8,8 @@ import { quizSessionRepository } from "../repositories/quizSessionRepository";
 import { SubmitQuizSessionRequest } from "../dto/user.dto";
 
 import { userAnswerRepository } from "../repositories/userAnswerRepository";
+import { assignmentStudentRepository } from "../repositories/assignmentStudentRepository";
+import { classMemberRepository } from "../repositories/classMemberRepository";
 
 
 
@@ -114,6 +116,52 @@ export class UserService {
 
     async findUserById(userId: number) {
         return await userRepository.findById(userId);
+    }
+
+    async getDashboardData(userId: number) {
+        const [allSessions, assignmentsData, myClasses] = await Promise.all([
+            quizSessionRepository.findByUserId(userId),
+            assignmentStudentRepository.findByUserId(userId, 1, 100),
+            classMemberRepository.getMyClasses(userId),
+        ]);
+
+        const completedSessions = allSessions.filter(s => s.status === 'completed');
+        const totalQuizzes = completedSessions.length;
+        const avgScore = totalQuizzes > 0
+            ? Math.round(completedSessions.reduce((sum, s) => sum + s.score, 0) / totalQuizzes)
+            : 0;
+        const bestScore = totalQuizzes > 0
+            ? Math.max(...completedSessions.map(s => s.score))
+            : 0;
+
+        const recentSessions = completedSessions
+            .sort((a, b) => new Date(b.end_time!).getTime() - new Date(a.end_time!).getTime())
+            .slice(0, 5);
+
+        const assignments = assignmentsData.data;
+        const pendingAssignments = assignments
+            .filter(a => ['assigned', 'in_progress'].includes(a.status))
+            .slice(0, 5);
+        const totalAssignments = assignments.length;
+        const completedAssignments = assignments.filter(a => a.status === 'submitted').length;
+
+        return {
+            message: "get dashboard success",
+            success: true,
+            data: {
+                stats: {
+                    totalQuizzesCompleted: totalQuizzes,
+                    avgScore,
+                    bestScore,
+                    totalClasses: myClasses.length,
+                    totalAssignments,
+                    completedAssignments,
+                },
+                recentQuizSessions: recentSessions,
+                pendingAssignments,
+                classes: myClasses,
+            }
+        }
     }
 
 }

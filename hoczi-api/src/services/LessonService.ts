@@ -181,8 +181,8 @@ export class LessonService {
         };
     }
 
-     async getAssignmentStudentDetail(assignmentId: number, studentId: number) {
-        const response = await assignmentStudentRepository.findAssignmentStudentDetail(assignmentId, studentId);
+     async getAssignmentStudentDetail(assignmentStudentId: number) {
+        const response = await assignmentStudentRepository.findAssignmentStudentDetail(assignmentStudentId);
         return {
             success: true,
             message: 'Get Assignment Student success',

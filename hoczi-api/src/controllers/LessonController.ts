@@ -207,11 +207,10 @@ export class LessonController {
     async teacherGetAssignmentStudentDetail(req: Request, res: Response) {
         const { id } = req.user;
 
-        const assignmentId = Number(req.params.assignmentId);
-        const studentId = Number(req.params.studentId);
+        const assignmentStudentId = Number(req.params.assignmentStudentId);
 
 
-        const response = await lessonService.getAssignmentStudentDetail(assignmentId, studentId);
+        const response = await lessonService.getAssignmentStudentDetail(assignmentStudentId);
 
         return res.json(response);
     }

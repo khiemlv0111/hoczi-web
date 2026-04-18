@@ -94,4 +94,19 @@ export class LessonService {
         return response;
     }
 
+    static async createQuizSession(payload: { quiz_id: number; question_ids: number[] }) {
+        const response = await postRequest('/api/lessons/create-quiz-session-for-assignment', payload, true);
+        return response;
+    }
+
+    static async assignQuizToStudents(quizId: number, studentIds: number[]) {
+        const response = await postRequest('/api/lessons/assign-quiz-to-students', { quiz_id: quizId, student_ids: studentIds }, true);
+        return response;
+    }
+
+    static async assignSessionToStudent(sessionId: number, studentId: number) {
+        const response = await postRequest('/api/lessons/assign-session-to-student', { session_id: sessionId, student_id: studentId }, true);
+        return response;
+    }
+
 }

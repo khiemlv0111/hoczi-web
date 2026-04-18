@@ -47,6 +47,7 @@ export type Assignment = {
     class_subject_id?: number
     lesson_id?: number
     created_at?: string
+    assignment_type?: string,
     detail?: Assignment
     assignment_students?: AssignmentStudent[]
 }

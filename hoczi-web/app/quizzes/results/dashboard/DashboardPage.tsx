@@ -2,6 +2,8 @@
 
 import { TrendingUp, TrendingDown, Clock, Star, FileText, CheckCircle } from "lucide-react";
 import { useAppData } from "@/app/context/AppContext";
+import { useEffect } from "react";
+import { UserService } from "@/data/services/user.service";
 
 const stats = [
     { label: "Quizzes Taken", value: "24", delta: "+3 this week", positive: true },
@@ -26,6 +28,13 @@ const achievements = [
 
 export function DashboardPage() {
     const { user } = useAppData();
+    useEffect(() => {
+        UserService.getDashboardResult().then((res) => {
+            console.log('RESULT DASHBOARD', res);
+
+        })
+    }, []);
+
 
     return (
         <div className="space-y-6">

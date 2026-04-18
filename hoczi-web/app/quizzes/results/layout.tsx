@@ -250,19 +250,24 @@ export default function ResultLayout({
                                             Admin Panel
                                         </Link>
                                     )}
-                                    <Link
-                                        href="/quizzes/results/teachers"
-                                        className="w-full flex items-center gap-2 px-4 py-2 text-[13px] text-gray-700 hover:bg-gray-50 transition-colors"
-                                    >
-                                        {`👩‍🎓`}
-                                        <span className="ml-1">Teacher cornor</span>
-                                    </Link>
+
+                                    {user?.role !== 'user' && (
+                                        <Link
+                                            href="/quizzes/results/teachers"
+                                            className="w-full flex items-center gap-2 px-4 py-2 text-[13px] text-gray-700 hover:bg-gray-50 transition-colors"
+                                        >
+                                            {`👩‍🎓`}
+                                            <span className="ml-1">Teacher cornor</span>
+                                        </Link>
+
+                                    )}
+
 
                                     <Link
                                         href="/quizzes/results/profile"
                                         className="w-full flex items-center gap-2 px-4 py-2 text-[13px] text-gray-700 hover:bg-gray-50 transition-colors"
                                     >
-                                        <User size={16}/>
+                                        <User size={16} />
                                         <span className="ml-1">Profile</span>
                                     </Link>
                                     <button
@@ -367,11 +372,11 @@ export default function ResultLayout({
                                             key={level}
                                             onClick={() => setSelectedDifficulty(level)}
                                             className={`flex-1 py-2 rounded-lg text-[12px] font-medium border transition-colors ${selectedDifficulty === level
-                                                    ? level === 'easy' ? 'bg-green-50 border-green-400 text-green-700'
-                                                        : level === 'medium' ? 'bg-yellow-50 border-yellow-400 text-yellow-700'
-                                                            : level === 'hard' ? 'bg-red-50 border-red-400 text-red-700'
-                                                                : 'bg-blue-50 border-blue-400 text-blue-700'
-                                                    : 'border-gray-200 text-gray-500 hover:bg-gray-50'
+                                                ? level === 'easy' ? 'bg-green-50 border-green-400 text-green-700'
+                                                    : level === 'medium' ? 'bg-yellow-50 border-yellow-400 text-yellow-700'
+                                                        : level === 'hard' ? 'bg-red-50 border-red-400 text-red-700'
+                                                            : 'bg-blue-50 border-blue-400 text-blue-700'
+                                                : 'border-gray-200 text-gray-500 hover:bg-gray-50'
                                                 }`}
                                         >
                                             {level === '' ? 'Any' : level.charAt(0).toUpperCase() + level.slice(1)}

@@ -92,6 +92,13 @@ export class UserService {
         return response
     }
 
+    static async getDashboardResult() {
+
+        const response = await getRequest(`/api/users/get-dashboard-result`, true);
+
+        return response
+    }
+
 
    
 

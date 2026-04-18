@@ -93,7 +93,6 @@ export default function HomePage() {
   }
 
 
-
   return (
     <main className="relative min-h-screen flex items-center justify-center overflow-hidden">
 

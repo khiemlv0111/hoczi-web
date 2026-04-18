@@ -142,6 +142,7 @@ function CreateAssignmentModal({ classes, onClose, onCreate }: {
                 class_id: classId,
                 class_subject_id: subjectId || undefined,
                 lesson_id: lessonId || undefined,
+                assignment_type: 'lesson', // quiz, lesson, mixed
             }
             const res = await LessonService.createAssignment(assignmentPayload)
             onCreate(res?.data ?? res)

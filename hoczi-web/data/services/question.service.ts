@@ -104,10 +104,11 @@ export class QuestionService {
         return response.data
     }
 
-    static async getAllTeacherQuestions(payload: PaginationPayload) {
+    static async getAllTeacherQuestions(payload: PaginationPayload & { source?: 'teacher' | 'system' | 'all' }) {
         const params = new URLSearchParams();
         if (payload.page) params.append('page', String(payload.page));
         if (payload.limit) params.append('limit', String(payload.limit));
+        if (payload.source) params.append('source', payload.source);
 
         const query = params.toString() ? `?${params.toString()}` : '';
         const response = await getRequest(`/api/users/all-teacher-questions${query}`, true);

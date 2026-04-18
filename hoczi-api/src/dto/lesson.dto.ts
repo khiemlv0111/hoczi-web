@@ -41,6 +41,9 @@ export class CreateAssignmentRequest {
     due_at!: string;
 
     @IsOptional()
+    assignment_type?: string;
+
+    @IsOptional()
     lesson_id!: number;
 
     @IsOptional()

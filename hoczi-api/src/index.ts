@@ -5,6 +5,7 @@ import routes from './routes';
 import cors from 'cors';
 import http from "http";
 import cookieParser from 'cookie-parser';
+import { runCronJobMinute } from './utils/schedule_job';
 
 AppDataSource.initialize().then(() => {
 	const app = express();
@@ -35,7 +36,7 @@ AppDataSource.initialize().then(() => {
 
 	app.use(routes);
 
-	// runCronJobKYC(15);
+	runCronJobMinute(5);
 	// runCronJobKYCIdNumber(15);
 	// runCronJobCheckKycDocument(1);
 	// runCronJobMinute(5);

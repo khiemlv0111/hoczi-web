@@ -1,3 +1,4 @@
+import { MoreThan, Not } from 'typeorm';
 import { AppDataSource } from '../data-source';
 import { CreateAssignmentRequest } from '../dto/lesson.dto';
 import { Assignment } from '../entities/Assignment';
@@ -34,7 +35,7 @@ class AssignmentRepository {
         const offset = (page - 1) * limit;
 
         const [data, total] = await this.repo.findAndCount({
-            where: {assigned_by: userId},
+            where: { assigned_by: userId },
             relations: ["teacher", "lesson", "assignment_students", "assignment_students.student"],
             order: { id: "DESC" },
             take: limit,
@@ -43,7 +44,28 @@ class AssignmentRepository {
 
         return { data, total };
     }
-    
+
+    async findAddUpdateDueDateAssignments() {
+        const assignments = await this.repo.find({
+            where: {
+                due_at: MoreThan(new Date()),
+                status: Not('closed')
+            }
+        });
+
+        if (assignments.length === 0) return;
+
+        // update status thành 'closed' cho các assignment đã quá hạn
+        await this.repo
+            .createQueryBuilder()
+            .update(Assignment)
+            .set({ status: 'closed' })
+            .whereInIds(assignments.map(a => a.id))
+            .execute();
+
+        return assignments;
+    }
+
 
 
 }

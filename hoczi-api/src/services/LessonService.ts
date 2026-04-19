@@ -206,5 +206,10 @@ export class LessonService {
 
     }
 
+    async checkAssignmentDueDate(){
+       const response = await assignmentRepository.findAddUpdateDueDateAssignments();
+       return response;
+    }
+
 
 }

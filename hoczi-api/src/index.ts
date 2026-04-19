@@ -6,6 +6,7 @@ import cors from 'cors';
 import http from "http";
 import cookieParser from 'cookie-parser';
 import { runCronJobMinute } from './utils/schedule_job';
+import { initProject } from './utils/init_project';
 
 AppDataSource.initialize().then(() => {
 	const app = express();
@@ -58,7 +59,7 @@ AppDataSource.initialize().then(() => {
 
 	return server.listen(PORT, async () => {
 		console.log(`Server is running on port ${PORT}`);
-		// initProject();
+		initProject();
 		// await connectProducer();
 		// startKafkaConsumerWithRetry();
 

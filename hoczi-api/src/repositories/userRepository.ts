@@ -54,6 +54,10 @@ class UserRepository {
         return this.repo.save(user);
     }
 
+    async createInitUser(user: any) {
+        return this.repo.save(user);
+    }
+
 
 }
 

@@ -23,7 +23,7 @@ export enum TenantStatus {
 @Entity('tenants')
 export class Tenant {
   @PrimaryGeneratedColumn({ type: 'bigint' })
-  id!: string;
+  id!: number;
 
   @Column({ type: 'varchar', length: 255 })
   name!: string;

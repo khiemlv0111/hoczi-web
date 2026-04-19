@@ -13,7 +13,7 @@ class AssignmentRepository {
         const classRoom = this.repo.create({
             title: data.title,
             description: data.description,
-            class_subject_id: 10, //data.class_subject_id,
+            class_subject_id: data.class_subject_id,
             lesson_id: data.lesson_id,
             due_at: data.due_at,
             assigned_by: userId,
@@ -22,6 +22,13 @@ class AssignmentRepository {
         return this.repo.save(classRoom);
     }
 
+
+    async findByQuizAndTeacher(quizId: number, teacherId: number) {
+        return this.repo.findOne({
+            where: { quiz_id: quizId, assigned_by: teacherId },
+            order: { id: 'DESC' },
+        });
+    }
 
     async findAssignments(userId: number, page: number, limit: number) {
         const offset = (page - 1) * limit;

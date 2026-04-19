@@ -9,6 +9,13 @@ class ClassSubjectRepository {
         return this.repo.find({ relations: ['class', 'teacher', 'subject'] });
     }
 
+
+    async findByTeacherId(teacherId: number) {
+        return this.repo.find({
+            where: {teacher_id: teacherId}
+        });
+    }
+
     async addSubjectToClass(classId: number, subjectId: number, teacherId: number) {
         const existing = await this.repo.findOne({
             where: {

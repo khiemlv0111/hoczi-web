@@ -75,9 +75,24 @@ export class LessonService {
     }
 
     async assignSessionToStudent(sessionId: number, studentId: number, teacherId?: number, title?: string, due_at?: string) {
-        await quizSessionRepository.saveOne({ id: sessionId, user_id: studentId });
+       const quizSesson = await quizSessionRepository.saveOne({ id: sessionId, user_id: studentId });
+
+       const quizId = quizSesson.quiz_id!;
+
         if (title && teacherId) {
-            const assignment = await assignmentRepository.createOne(teacherId, { title, due_at: due_at ?? '', description: '', assignment_type: 'quiz' } as any);
+            const classSubjects = await classSubjectRepository.findByTeacherId(teacherId);
+
+            let class_subject_id: number;
+            if (classSubjects.length === 1) {
+                class_subject_id = classSubjects[0].id;
+            } else {
+                const existing = await assignmentRepository.findByQuizAndTeacher(quizId, teacherId);
+                class_subject_id = existing?.class_subject_id ?? classSubjects[0].id;
+            }
+
+            const assignment = await assignmentRepository.createOne(teacherId,
+                { title, class_subject_id, due_at: due_at ?? '', description: '', assignment_type: 'quiz' } as any
+            );
             await assignmentStudentRepository.createOne({ assignment_id: assignment.id, student_id: studentId });
         }
         return { success: true, message: 'Session assigned to student' };

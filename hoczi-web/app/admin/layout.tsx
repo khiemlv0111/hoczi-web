@@ -15,7 +15,8 @@ import {
     TrendingDown,
     User,
     Star,
-    LogOut
+    LogOut,
+    Building2
 } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAppData } from "../context/AppContext";
@@ -47,7 +48,7 @@ const stats = [
 
 const navMain = [
     { path: '/admin', label: "Dashboard", icon: LayoutDashboard, active: true },
-    { path: '/admin/blogs', label: "Blog Posts", icon: FileText },
+    { path: '/admin/tenants', label: "Tenants", icon: Building2  },
     { path: '/admin/quizzes', label: "Quizzes", icon: Clock },
     { path: '/admin/questions', label: "Questions", icon: Star },
     { path: '/admin/users', label: "Users", icon: Users },

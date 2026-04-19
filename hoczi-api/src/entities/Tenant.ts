@@ -6,7 +6,9 @@ import {
   UpdateDateColumn,
   DeleteDateColumn,
   Index,
+  OneToMany,
 } from 'typeorm';
+import { TenantUser } from './TenantUser';
 
 export enum TenantPlanType {
   FREE = 'free',
@@ -93,6 +95,10 @@ export class Tenant {
 
   @Column({ type: 'text', array: true, nullable: true })
   allowed_ips?: string[] | null;
+
+
+  @OneToMany(() => TenantUser, (tenantUser) => tenantUser.tenant)
+  tenantUsers!: TenantUser[];
 
   @CreateDateColumn({ type: 'timestamptz' })
   created_at!: Date;

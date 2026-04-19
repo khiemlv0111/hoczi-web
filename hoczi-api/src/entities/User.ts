@@ -1,6 +1,7 @@
 import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 import { Exclude } from 'class-transformer'
 import { QuizSession } from './QuizSession'
+import { TenantUser } from './TenantUser'
 
 @Entity('users')
 export class User {
@@ -35,4 +36,7 @@ export class User {
 
 	@OneToMany(() => QuizSession, (session) => session.user)
 	quiz_sessions!: QuizSession[];
+
+	@OneToMany(() => TenantUser, (tenantUser) => tenantUser.user)
+	tenantUsers!: TenantUser[];
 }

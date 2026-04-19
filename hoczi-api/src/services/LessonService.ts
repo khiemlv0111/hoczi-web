@@ -75,7 +75,7 @@ export class LessonService {
     }
 
     async assignSessionToStudent(sessionId: number, studentId: number, teacherId?: number, title?: string, due_at?: string) {
-       const quizSesson = await quizSessionRepository.saveOne({ id: sessionId, user_id: studentId });
+       const quizSesson = await quizSessionRepository.saveOne({ id: sessionId, user_id: studentId, status: 'assigned' });
 
        const quizId = quizSesson.quiz_id!;
 

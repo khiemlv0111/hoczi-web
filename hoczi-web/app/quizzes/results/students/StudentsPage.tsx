@@ -22,7 +22,9 @@ function AssignmentModal({ assignment, onClose }: { assignment: any, onClose: ()
 
         }
         LessonService.commentOnAssignment(payload).then((res) => {
-            handleGetMyAssignments();
+            let page = 1;
+            let limit = 999;
+            handleGetMyAssignments(page, limit);
             onClose()
         })
         setFeedback('')
@@ -276,9 +278,11 @@ export function StudentsdPage() {
             setClasses(res.data);
             
         }).finally(() => setLoadingClasses(false))
+        let page = 1;
+        let limit = 999;
 
 
-        handleGetMyAssignments()
+        handleGetMyAssignments(page, limit);
         // ClassService.getClassList()
         //     .then(setClasses)
         //     .catch(() => { })

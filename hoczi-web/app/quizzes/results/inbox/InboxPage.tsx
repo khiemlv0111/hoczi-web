@@ -72,7 +72,7 @@ export function InboxPage() {
     const threadEndRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        handleGetMyAssignments()
+        handleGetMyAssignments(1, 999)
     }, [])
 
     useEffect(() => {
@@ -87,7 +87,7 @@ export function InboxPage() {
 
     const refresh = async () => {
         setRefreshing(true)
-        handleGetMyAssignments()
+        handleGetMyAssignments(1, 999)
         if (selected && myAssignments) {
             const updated = (myAssignments as AssignmentThread[]).find(a => a.id === selected.id)
             if (updated) setSelected(updated)
@@ -104,7 +104,7 @@ export function InboxPage() {
                 content: reply.trim(),
             })
             setReply('')
-            handleGetMyAssignments()
+            handleGetMyAssignments(1, 999)
             // re-sync selected thread
             const updated = (myAssignments as AssignmentThread[] | undefined)?.find(a => a.id === selected.id)
             if (updated) setSelected({ ...updated })

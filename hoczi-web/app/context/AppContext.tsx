@@ -100,7 +100,7 @@ type AppContextType = {
     handleRetryQuiz: (quizId: number) => Promise<any>;
     handleGetQuestionList: (payload: any) => Promise<any>;
     handleGetUsers: ({ page, limit }: PaginationPayload) => Promise<any>;
-    handleGetMyAssignments: () => void;
+    handleGetMyAssignments: (page: number, limit: number) => void;
     handleGetClassDetail: (id: number) => void;
 
     handleSetMessages: () => void;
@@ -203,8 +203,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         })
     }
 
-    const handleGetMyAssignments = () => {
-        LessonService.getMyAssignments().then((res) => {
+    const handleGetMyAssignments = (page: number, limit: number) => {
+        LessonService.getMyAssignments(page, limit).then((res) => {
             setMyAssignments(res.data);
 
         })

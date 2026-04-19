@@ -55,7 +55,7 @@ function AssignmentModal({ assignment, onClose }: { assignment: any, onClose: ()
                     {a.description && (
                         <div>
                             <p className="text-[11px] font-medium text-gray-400 uppercase tracking-wide mb-1">Description</p>
-                            <p className="text-[13px] text-gray-700 leading-relaxed">{a.description}</p>
+                            <div className="text-[13px] text-gray-700 leading-relaxed" dangerouslySetInnerHTML={{ __html: a.description }} />
                         </div>
                     )}
 

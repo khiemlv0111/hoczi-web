@@ -48,7 +48,6 @@ function AssignmentDetailModal({ assignment, classes, onClose }: {
                             )}
                         </div>
                     </div>
-                    <button onClick={() => {}}>View Detail</button>
                     <button onClick={onClose} className="p-1 rounded hover:bg-gray-100"><X size={15} className="text-gray-400" /></button>
                 </div>
 
@@ -71,7 +70,7 @@ function AssignmentDetailModal({ assignment, classes, onClose }: {
                                 const name = s.student ? s.student.name || s.student.email : `Student #${s.student_id}`
                                 const submitted = !!s.submitted_at
                                 return (
-                                    <div key={s.id} className="px-4 py-4" onClick={() => handleViewAssignmentStudentDetail(s)}>
+                                    <div key={s.id} className="px-4 py-4 cursor-pointer hover:bg-blue-50" onClick={() => handleViewAssignmentStudentDetail(s)}>
                                         <div className="flex items-center justify-between gap-3 mb-3">
                                             <div className="flex items-center gap-2 min-w-0">
                                                 <div className="w-7 h-7 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0">

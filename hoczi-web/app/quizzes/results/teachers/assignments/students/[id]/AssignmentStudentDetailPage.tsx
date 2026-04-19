@@ -5,7 +5,7 @@ import { StudentAssignmentDetail } from "@/data/types";
 import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/navigation";
 import {
-    Calendar, CheckCircle2, Clock, GraduationCap, Loader2,
+    Calendar, ChartBarStacked, CheckCircle2, Clock, GraduationCap, Loader2,
     MessageSquare, RotateCcw, Send, Users, XCircle,
 } from "lucide-react";
 import { useAppData } from "@/app/context/AppContext";
@@ -128,6 +128,11 @@ export function AssignmentStudentDetailPage({ id }: { id: number }) {
                             <span>Assigned {new Date(detail.assigned_at).toLocaleDateString()}</span>
                         </div>
                     )}
+
+                    <div className="flex items-center gap-2 text-[12px] text-gray-500">
+                        <ChartBarStacked size={13} className="text-gray-400 flex-shrink-0" />
+                        <span className="capitalize">Type: {detail.assignment.assignment_type}</span>
+                    </div>
                 </div>
             </div>
 
@@ -197,7 +202,7 @@ export function AssignmentStudentDetailPage({ id }: { id: number }) {
                                     <div className="flex items-center gap-2 mb-1">
                                         <div className={`w-6 h-6 rounded-full bg-blue-200 flex items-center justify-center flex-shrink-0`}>
                                             {
-                                                user?.id == c.user_id ? (<Users color="blue" size={12}/>) : (<GraduationCap size={11} className="text-blue-500" />)
+                                                user?.id == c.user_id ? (<Users color="blue" size={12} />) : (<GraduationCap size={11} className="text-blue-500" />)
                                             }
                                             {/* <GraduationCap size={11} className="text-blue-500" /> */}
 

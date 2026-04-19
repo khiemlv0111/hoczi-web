@@ -1,4 +1,5 @@
 import { IsBoolean, IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, Min } from "class-validator";
+import { TenantPlanType } from "../entities/Tenant";
 
 export class CreateLessonRequest {
 
@@ -108,3 +109,33 @@ export class CommentOnAssignmentRequest {
 //     total_questions?: number;
 
 // }
+
+
+export class CreateTenantRequest {
+
+    @IsNotEmpty()
+    name!: string;
+
+    @IsOptional()
+    description?: string;
+
+    @IsOptional()
+    logo_url?: string;
+
+    @IsOptional()
+    owner_user_id?: number;
+
+    @IsOptional()
+    code!: string;
+
+    @IsOptional()
+    domain?: string;
+
+    @IsOptional()
+    max_users?: number;
+
+    @IsOptional()
+    plan_type?: TenantPlanType;
+
+    
+}

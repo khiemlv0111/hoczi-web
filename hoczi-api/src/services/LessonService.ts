@@ -1,6 +1,6 @@
 import { lessonRepository } from "../repositories/lessonRepository";
 import { assignmentRepository } from "../repositories/assignmentRepository";
-import { AssignStudentAssignmentRequest, CommentOnAssignmentRequest, CreateAssignmentRequest } from "../dto/lesson.dto";
+import { AssignStudentAssignmentRequest, CommentOnAssignmentRequest, CreateAssignmentRequest, CreateTenantRequest } from "../dto/lesson.dto";
 import { subjectRepository } from "../repositories/subjectRepository";
 import { classSubjectRepository } from "../repositories/classSubjectRepository";
 
@@ -11,6 +11,7 @@ import { quizRepository } from "../repositories/quizRepository";
 import { quizSessionRepository } from "../repositories/quizSessionRepository";
 import { BadRequestError } from "../errors/api-erros";
 import { userAnswerRepository } from "../repositories/userAnswerRepository";
+import { tenantRepository } from "../repositories/tenantRepository";
 
 
 
@@ -75,9 +76,9 @@ export class LessonService {
     }
 
     async assignSessionToStudent(sessionId: number, studentId: number, teacherId?: number, title?: string, due_at?: string) {
-       const quizSesson = await quizSessionRepository.saveOne({ id: sessionId, user_id: studentId, status: 'assigned' });
+        const quizSesson = await quizSessionRepository.saveOne({ id: sessionId, user_id: studentId, status: 'assigned' });
 
-       const quizId = quizSesson.quiz_id!;
+        const quizId = quizSesson.quiz_id!;
 
         if (title && teacherId) {
             const classSubjects = await classSubjectRepository.findByTeacherId(teacherId);
@@ -196,7 +197,7 @@ export class LessonService {
         };
     }
 
-     async getAssignmentStudentDetail(assignmentStudentId: number) {
+    async getAssignmentStudentDetail(assignmentStudentId: number) {
         const response = await assignmentStudentRepository.findAssignmentStudentDetail(assignmentStudentId);
         return {
             success: true,
@@ -206,9 +207,19 @@ export class LessonService {
 
     }
 
-    async checkAssignmentDueDate(){
-       const response = await assignmentRepository.findAddUpdateDueDateAssignments();
-       return response;
+    async checkAssignmentDueDate() {
+        const response = await assignmentRepository.findAddUpdateDueDateAssignments();
+        return response;
+    }
+
+
+    async createTenant(data: CreateTenantRequest) {
+        return tenantRepository.createOne(data);
+    }
+
+
+    async getTenantList() {
+        return tenantRepository.findAll();
     }
 
 

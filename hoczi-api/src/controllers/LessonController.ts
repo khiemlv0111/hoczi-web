@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { RequestValidator } from '../dto/requestValidator';
 import { LessonService } from '../services/LessonService';
 import { AddSubjectToClassRequest } from '../dto/class.dto';
-import { AssignStudentAssignmentRequest, CommentOnAssignmentRequest, CreateAssignmentRequest, CreateLessonRequest } from '../dto/lesson.dto';
+import { AssignStudentAssignmentRequest, CommentOnAssignmentRequest, CreateAssignmentRequest, CreateLessonRequest, CreateTenantRequest } from '../dto/lesson.dto';
 import { CreateQuizRequest, TeacherCreateQuizSessionRequest } from '../dto/user.dto';
 
 
@@ -212,6 +212,25 @@ export class LessonController {
 
         const response = await lessonService.getAssignmentStudentDetail(assignmentStudentId);
 
+        return res.json(response);
+    }
+
+
+    async createTenant(req: Request, res: Response) {
+
+        const { id } = req.user;
+
+        const { errors, input } = await RequestValidator(CreateTenantRequest, req.body);
+        if (errors) {
+            return res.status(400).json({ success: false, message: errors })
+        }
+
+        const response = await lessonService.createTenant(input);
+        return res.json(response);
+    }
+
+    async getTenantList(req: Request, res: Response) {
+        const response = await lessonService.getTenantList();
         return res.json(response);
     }
 

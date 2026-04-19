@@ -54,7 +54,7 @@ export class Tenant {
   secondary_color?: string | null;
 
   @Column({ type: 'bigint', nullable: true })
-  owner_user_id?: string | null;
+  owner_user_id?: number | null;
 
   @Column({ type: 'bigint', nullable: true })
   organization_id?: string | null;

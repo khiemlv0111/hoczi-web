@@ -1,8 +1,4 @@
 import { AppDataSource } from '../data-source';
-import { CreateAnswerRequest, CreateQuestionRequest } from '../dto/question.dto';
-import { Answer } from '../entities/Answer';
-import { Question } from '../entities/Question';
-import { FindOptionsWhere, ILike } from 'typeorm';
 import { Tenant } from '../entities/Tenant';
 
 class TenantRepository {
@@ -13,7 +9,7 @@ class TenantRepository {
 
 
     async findAll() {
-
+        return this.repo.find();
 
     }
 
@@ -21,13 +17,6 @@ class TenantRepository {
         return this.repo.findOne({ where: { id } });
     }
 
-    async findByQuestionId(quizId: number) {
-        return this.repo.find({
-            where: { id: quizId },
-            order: { id: 'ASC' },
-            relations: ['question'],
-        });
-    }
 
     async update(id: number, data: Partial<Tenant>) {
         await this.repo.update(id, data);

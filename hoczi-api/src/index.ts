@@ -6,7 +6,7 @@ import cors from 'cors';
 import http from "http";
 import cookieParser from 'cookie-parser';
 import { runCronJobMinute } from './utils/schedule_job';
-import { initProject } from './utils/init_project';
+import { initProject } from './seeds/init_project';
 
 AppDataSource.initialize().then(() => {
 	const app = express();

@@ -71,6 +71,13 @@ lessonRoutes.post('/assign-session-to-student', new LessonController().assignSes
 lessonRoutes.get('/teacher-get-assignment-student-detail/:assignmentStudentId', new LessonController().teacherGetAssignmentStudentDetail);
 
 
+lessonRoutes.post('/create-tenant', new LessonController().createTenant);
+
+lessonRoutes.get('/get-tenant-list', new LessonController().getTenantList);
+
+
+
+
 
 
 

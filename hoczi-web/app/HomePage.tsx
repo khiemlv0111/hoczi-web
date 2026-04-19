@@ -180,7 +180,7 @@ export default function HomePage() {
 
 
       </div>
-      <CommonModal title="Select to do quiz" open={openModal} onClose={() => setOpenModal(false)}>
+      <CommonModal title={t(messages, 'common.select_to_do_quiz')} open={openModal} onClose={() => setOpenModal(false)}>
         <div className="flex flex-col gap-5 py-2">
 
           {/* Grade */}

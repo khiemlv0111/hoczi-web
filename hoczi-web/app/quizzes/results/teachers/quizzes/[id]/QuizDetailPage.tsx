@@ -256,8 +256,9 @@ function CreateAssignmentModal({ quizId, onClose, onCreated }: {
     );
 }
 
-function AssignToStudentModal({ sessionId, onClose, onAssigned }: {
+function AssignToStudentModal({ sessionId, assigningSession, onClose, onAssigned }: {
     sessionId: number;
+    assigningSession: any;
     onClose: () => void;
     onAssigned: () => void;
 }) {
@@ -268,6 +269,8 @@ function AssignToStudentModal({ sessionId, onClose, onAssigned }: {
     const [error, setError] = useState('');
     const [title, setTitle] = useState('');
     const [dueAt, setDueAt] = useState('');
+
+
 
     useEffect(() => {
         ClassService.getClassList()
@@ -294,7 +297,7 @@ function AssignToStudentModal({ sessionId, onClose, onAssigned }: {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
             <div className="bg-white rounded-xl shadow-xl w-full max-w-lg mx-4 flex flex-col max-h-[90vh]">
                 <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100">
-                    <h3 className="text-[15px] font-semibold text-gray-900">Assign Session to Student !</h3>
+                    <h3 className="text-[15px] font-semibold text-gray-900">{assigningSession.status === 'draft' ? 'Assign Session to Student' : 'This Session already assigned'} </h3>
                     <button onClick={onClose} className="p-1 rounded hover:bg-gray-100">
                         <X size={15} className="text-gray-400" />
                     </button>
@@ -369,14 +372,21 @@ function AssignToStudentModal({ sessionId, onClose, onAssigned }: {
                     <button onClick={onClose} className="flex-1 py-2 rounded-lg border border-gray-200 text-[13px] text-gray-600 hover:bg-gray-50">
                         Cancel
                     </button>
-                    <button
-                        onClick={submit}
-                        disabled={saving || !selectedId}
-                        className="flex-1 py-2 rounded-lg bg-indigo-600 text-white text-[13px] font-medium hover:bg-indigo-500 disabled:opacity-50 flex items-center justify-center gap-1.5"
-                    >
-                        {saving && <Loader2 size={13} className="animate-spin" />}
-                        Assign
-                    </button>
+                    {
+                        assigningSession.status === 'draft' && (
+                            <button
+                                onClick={submit}
+                                disabled={saving || !selectedId}
+                                className="flex-1 py-2 rounded-lg bg-indigo-600 text-white text-[13px] font-medium hover:bg-indigo-500 disabled:opacity-50 flex items-center justify-center gap-1.5"
+                            >
+                                {saving && <Loader2 size={13} className="animate-spin" />}
+                                Assign
+                            </button>
+
+                        )
+
+                    }
+
                 </div>
             </div>
         </div>
@@ -521,7 +531,7 @@ export function QuizDetailPage({ id }: { id: number }) {
                 onClick={() => router.back()}
                 className="flex items-center gap-1.5 text-[13px] text-gray-500 hover:text-gray-800"
             >
-                <svg xmlns="http://www.w3.org/2000/svg" width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M15 18l-6-6 6-6" /></svg>
                 Back
             </button>
             {/* Detail card */}
@@ -671,6 +681,7 @@ export function QuizDetailPage({ id }: { id: number }) {
             {assigningSession && (
                 <AssignToStudentModal
                     sessionId={assigningSession.id}
+                    assigningSession={assigningSession}
                     onClose={() => setAssigningSession(null)}
                     onAssigned={fetchDetail}
                 />

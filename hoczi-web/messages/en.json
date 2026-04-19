@@ -51,7 +51,8 @@
     "assign": "Assign",
     "introduction_or_details": "Introduction or details",
     "search_by_name_or_email": "Search by name or email",
-    "no_members_yet_add_some": "No members yet — add some!"
+    "no_members_yet_add_some": "No members yet — add some!",
+    "select_to_do_quiz": "Select to do quiz"
   },
   "teacher": {
     "dashboard": "Teacher Dashboard",

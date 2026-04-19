@@ -313,9 +313,9 @@ export function ClassesTab({ classes, allUsers, loadingClasses, teacherId, setCl
     const memberIds = members.map(m => m.student.id)
 
     return (
-        <div className="flex gap-5">
+        <div className="flex flex-col md:flex-row gap-5">
             {/* Left: class list */}
-            <div className="w-64 flex-shrink-0 flex flex-col gap-3">
+            <div className={`md:w-64 md:flex-shrink-0 flex flex-col gap-3 ${selectedClass ? 'hidden md:flex' : 'flex'}`}>
                 <div className="flex items-center justify-between">
                     <h2 className="text-[14px] font-semibold text-gray-900">Classes</h2>
                     <button onClick={() => setShowCreate(true)} className="flex items-center gap-1 px-2.5 py-1.5 bg-blue-600 text-white rounded-lg text-[12px] font-medium hover:bg-blue-500">
@@ -350,14 +350,17 @@ export function ClassesTab({ classes, allUsers, loadingClasses, teacherId, setCl
             </div>
 
             {/* Right: detail */}
-            <div className="flex-1 min-w-0">
+            <div className={`flex-1 min-w-0 ${selectedClass ? 'block' : 'hidden md:block'}`}>
                 {!selectedClass ? (
                     <div className="h-64 flex items-center justify-center text-center text-gray-400">
                         <div><BookOpen size={32} className="mx-auto mb-2 opacity-30" /><p className="text-[13px]">Select a class to manage members</p></div>
                     </div>
                 ) : (
                     <div className="flex flex-col gap-4">
-                        <div className="bg-white rounded-xl border border-gray-200 px-5 py-4 flex items-center justify-between">
+                        <button onClick={() => setSelectedClass(null)} className="md:hidden flex items-center gap-1.5 text-[13px] text-blue-600 font-medium mb-1 self-start">
+                            <ChevronRight size={14} className="rotate-180" /> Back to Classes
+                        </button>
+                        <div className="bg-white rounded-xl border border-gray-200 px-5 py-4 flex items-center justify-between flex-wrap gap-3">
                             <div>
                                 <div className="flex items-center gap-2 flex-wrap">
                                     <h3 className="text-[15px] font-semibold text-gray-900">{selectedClass.name}</h3>
@@ -372,7 +375,7 @@ export function ClassesTab({ classes, allUsers, loadingClasses, teacherId, setCl
                                     {selectedClass.description && <p className="text-[12px] text-gray-400">{selectedClass.description}</p>}
                                 </div>
                             </div>
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-2 flex-wrap">
                                 <span className="flex items-center gap-1.5 text-[12px] text-gray-500 bg-gray-100 px-3 py-1.5 rounded-lg">
                                     <Users size={12} /> {members.length} member{members.length !== 1 ? 's' : ''}
                                 </span>

@@ -157,15 +157,12 @@ export default function ResultLayout({
                 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
             `}>
                 {/* Logo */}
-                <div className="flex items-center gap-2 px-4 pb-4 border-b border-gray-200 mb-3">
+                <Link href="/" className="flex items-center gap-2 px-4 pb-4 border-b border-gray-200 mb-3">
                     <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-xs font-medium">
-                        <Link href={`/`}>
-                            Te
-                        </Link>
-
+                        Te
                     </div>
-                    <span className="font-medium text-gray-900">hoczi</span>
-                </div>
+                    <span className="font-medium text-gray-900">{user?.name}</span>
+                </Link>
 
                 {/* Main nav */}
                 <div className="px-2 mb-2">

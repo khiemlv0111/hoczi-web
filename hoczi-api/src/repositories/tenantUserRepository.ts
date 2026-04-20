@@ -11,6 +11,13 @@ class TenantUserRepository {
         return this.repo.find();
     }
 
+    async findByUserId(userId: number) {
+        return this.repo.find({ 
+            where: { user_id: userId },
+            relations: ['tenant']
+        });
+    }
+
     async findById(id: number) {
         return this.repo.findOne({ where: { id } });
     }

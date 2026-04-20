@@ -221,6 +221,9 @@ export class LessonService {
     async getTenantList() {
         return tenantRepository.findAll();
     }
+    async getMyTenantList(userId: number) {
+        return tenantUserRepository.findByUserId(userId);
+    }
 
     async assignUserToTenant(userId: number, data: AssignUserToTenantRequest) {
         const user = await userRepository.findById(data.user_id);

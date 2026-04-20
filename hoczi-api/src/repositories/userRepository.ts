@@ -34,7 +34,7 @@ class UserRepository {
     async userProfile(id: number) {
         return this.repo.findOne({
             where: { id },
-            relations: ['']
+            relations: ['tenantUsers']
         });
     }
 

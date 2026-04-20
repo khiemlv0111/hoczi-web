@@ -13,6 +13,7 @@ import { BadRequestError } from "../errors/api-erros";
 import { userAnswerRepository } from "../repositories/userAnswerRepository";
 import { tenantRepository } from "../repositories/tenantRepository";
 import { tenantUserRepository } from "../repositories/tenantUserRepository";
+import { userRepository } from "../repositories/userRepository";
 
 
 
@@ -222,6 +223,13 @@ export class LessonService {
     }
 
     async assignUserToTenant(userId: number, data: AssignUserToTenantRequest) {
+        const user = await userRepository.findById(data.user_id);
+        if(user){
+            user.tenant_id = data.tenant_id;
+            await userRepository.save(user);
+        }
+        
+
         return tenantUserRepository.assignUserToTenant(userId, data);
     }
 

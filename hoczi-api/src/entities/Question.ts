@@ -16,6 +16,9 @@ export class Question {
     @PrimaryGeneratedColumn("increment")
     id!: number;
 
+    @Column({ type: "bigint", nullable: true })
+    tenant_id?: number;
+
     @Column({ type: "text" })
     content!: string;
 

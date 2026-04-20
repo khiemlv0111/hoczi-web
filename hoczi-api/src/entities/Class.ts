@@ -17,6 +17,9 @@ export class Class {
     @PrimaryGeneratedColumn()
     id!: number;
 
+    @Column({ type: "int", nullable: true })
+	tenant_id?: number;
+
     @Column({ type: 'varchar', length: 255 })
     name!: string;
 

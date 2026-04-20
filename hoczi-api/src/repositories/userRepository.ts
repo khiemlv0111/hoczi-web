@@ -1,4 +1,5 @@
 import { AppDataSource } from '../data-source';
+import { ILike } from 'typeorm';
 import { User } from '../entities/User';
 // import { UserProfile } from '../entities/UserProfile';
 
@@ -37,10 +38,19 @@ class UserRepository {
         });
     }
 
-    async findAll(page: number, limit: number) {
+    async findAll(page: number, limit: number, keyword?: string) {
         const offset = (page - 1) * limit;
 
+        const where = keyword
+            ? [
+                { name: ILike(`%${keyword}%`) },
+                { email: ILike(`%${keyword}%`) },
+                { username: ILike(`%${keyword}%`) },
+              ]
+            : undefined;
+
         const [data, total] = await this.repo.findAndCount({
+            where,
             relations: ["quiz_sessions"],
             order: { id: "DESC" },
             take: limit,

@@ -91,8 +91,8 @@ export class UserService {
         }
     }
 
-    async userList(page: number, limit: number) {
-        const response = await userRepository.findAll(page, limit);
+    async userList(page: number, limit: number, keyword?: string) {
+        const response = await userRepository.findAll(page, limit, keyword);
         return {
             message: "get users success",
             success: true,

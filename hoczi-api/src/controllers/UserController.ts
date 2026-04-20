@@ -15,11 +15,9 @@ export class UserController {
 
         const page = req.query.page ? Number(req.query.page) : 1;
         const limit = req.query.limit ? Number(req.query.limit) : 20;
+        const keyword = req.query.keyword ? String(req.query.keyword).trim() : undefined;
 
-
-
-
-        const response = await userService.userList(page, limit);
+        const response = await userService.userList(page, limit, keyword);
         return res.json(response);
     }
 

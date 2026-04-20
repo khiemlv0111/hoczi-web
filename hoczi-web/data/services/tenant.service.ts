@@ -42,6 +42,11 @@ export class TenantService {
         return response;
     }
 
+    static async getMyTenants() {
+        const response = await getRequest(`/api/lessons/get-my-tenants`, true);
+        return response;
+    }
+
     static async createTenant(payload: CreateTenantPayload) {
         const response = await postRequest('/api/lessons/create-tenant', payload, true);
         return response;

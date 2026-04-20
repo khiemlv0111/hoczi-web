@@ -5,6 +5,7 @@ import { useAppData, User } from "@/app/context/AppContext"
 import { ClassService, ClassItem } from "@/data/services/class.service"
 import { LessonService } from "@/data/services/lesson.service"
 import { TenantService, Tenant } from "@/data/services/tenant.service"
+import { QuestionService } from "@/data/services/question.service"
 import {
     Plus, X, Users, BookOpen, Trash2, UserPlus, ChevronRight,
     Loader2, School, Hash, ClipboardList, GraduationCap, Building2,
@@ -177,16 +178,23 @@ function CreateClassModal({ onClose, onCreate, teacherId }: {
     const [code, setCode] = useState('')
     const [description, setDescription] = useState('')
     const [tenantId, setTenantId] = useState<number | ''>('')
-    const [tenants, setTenants] = useState<Tenant[]>([])
+    const [gradeId, setGradeId] = useState<number | ''>('')
+    const [tenants, setTenants] = useState<any[]>([])
+    const [grades, setGrades] = useState<any[]>([])
     const [loadingTenants, setLoadingTenants] = useState(true)
+    const [loadingGrades, setLoadingGrades] = useState(true)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
     useEffect(() => {
-        TenantService.getTenants(1, 100)
+        TenantService.getMyTenants()
             .then(res => setTenants(res?.data ?? res ?? []))
-            .catch(() => {})
+            .catch(() => { })
             .finally(() => setLoadingTenants(false))
+        QuestionService.getGradeList()
+            .then(res => setGrades(res ?? []))
+            .catch(() => { })
+            .finally(() => setLoadingGrades(false))
     }, [])
 
     const submit = async () => {
@@ -203,6 +211,7 @@ function CreateClassModal({ onClose, onCreate, teacherId }: {
                 teacher_id: teacherId,
                 school_name: selectedTenant?.name,
                 tenant_id: tenantId as number,
+                grade_id: gradeId !== '' ? gradeId as number : undefined,
             })
             onCreate(cls)
         } catch { setError('Failed to create class') }
@@ -237,7 +246,29 @@ function CreateClassModal({ onClose, onCreate, teacherId }: {
                                 >
                                     <option value="">Select a tenant…</option>
                                     {tenants.map(t => (
-                                        <option key={t.id} value={t.id}>{t.name}{t.code ? ` (${t.code})` : ''}</option>
+                                        <option key={t.id} value={t.tenant_id}>{t.tenant.name}{t.tenant.code ? ` (${t.tenant.code})` : ''}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
+                    </Field>
+                    <Field label="Grade">
+                        {loadingGrades ? (
+                            <div className={INPUT + " flex items-center gap-2 text-gray-400"}>
+                                <Loader2 size={13} className="animate-spin" />
+                                <span className="text-[13px]">Loading grades…</span>
+                            </div>
+                        ) : (
+                            <div className="relative">
+                                <GraduationCap size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                                <select
+                                    value={gradeId}
+                                    onChange={e => setGradeId(e.target.value ? Number(e.target.value) : '')}
+                                    className={INPUT + " pl-8 appearance-none"}
+                                >
+                                    <option value="">Select a grade…</option>
+                                    {grades.map(g => (
+                                        <option key={g.id} value={g.id}>{g.name}</option>
                                     ))}
                                 </select>
                             </div>
@@ -248,7 +279,7 @@ function CreateClassModal({ onClose, onCreate, teacherId }: {
                 </div>
                 <div className="flex gap-2 mt-5">
                     <button onClick={onClose} className="flex-1 py-2 rounded-lg border border-gray-200 text-[13px] text-gray-600 hover:bg-gray-50">Cancel</button>
-                    <button onClick={submit} disabled={loading || loadingTenants} className="flex-1 py-2 rounded-lg bg-blue-600 text-white text-[13px] font-medium hover:bg-blue-500 disabled:opacity-50 flex items-center justify-center gap-1.5">
+                    <button onClick={submit} disabled={loading || loadingTenants || loadingGrades} className="flex-1 py-2 rounded-lg bg-blue-600 text-white text-[13px] font-medium hover:bg-blue-500 disabled:opacity-50 flex items-center justify-center gap-1.5">
                         {loading && <Loader2 size={13} className="animate-spin" />} Create
                     </button>
                 </div>
@@ -322,6 +353,9 @@ export function ClassesTab({ classes, allUsers, loadingClasses, teacherId, setCl
     const selectClass = (cls: ClassItem) => {
         setSelectedClass(cls)
         setMembers((cls.members as Member[]) ?? [])
+
+        console.log('ClassItem', cls);
+        
     }
 
     const handleClassCreated = (cls: ClassItem) => {
@@ -411,8 +445,8 @@ export function ClassesTab({ classes, allUsers, loadingClasses, teacherId, setCl
                                     )}
                                 </div>
                                 <div className="flex items-center gap-3 mt-1">
-                                    {selectedClass.school_name && <span className="flex items-center gap-1 text-[11px] text-gray-500"><School size={11} />{selectedClass.school_name}</span>}
-                                    {selectedClass.description && <p className="text-[12px] text-gray-400">{selectedClass.description}</p>}
+                                    {selectedClass.tenant && <span className="flex items-center gap-1 text-[11px] text-gray-500"><School size={11} />{selectedClass.tenant.code}</span>}
+                                    {selectedClass.tenant && <p className="text-[12px] text-gray-400">{selectedClass.tenant.name}</p>}
                                 </div>
                             </div>
                             <div className="flex items-center gap-2 flex-wrap">

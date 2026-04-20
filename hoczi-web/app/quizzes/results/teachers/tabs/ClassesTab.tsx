@@ -4,9 +4,10 @@ import { useEffect, useState } from "react"
 import { useAppData, User } from "@/app/context/AppContext"
 import { ClassService, ClassItem } from "@/data/services/class.service"
 import { LessonService } from "@/data/services/lesson.service"
+import { TenantService, Tenant } from "@/data/services/tenant.service"
 import {
     Plus, X, Users, BookOpen, Trash2, UserPlus, ChevronRight,
-    Loader2, School, Hash, ClipboardList, GraduationCap,
+    Loader2, School, Hash, ClipboardList, GraduationCap, Building2,
 } from "lucide-react"
 import { Field, INPUT, Member, Assignment, AssignTarget } from "./shared"
 
@@ -175,16 +176,34 @@ function CreateClassModal({ onClose, onCreate, teacherId }: {
     const [name, setName] = useState('')
     const [code, setCode] = useState('')
     const [description, setDescription] = useState('')
-    const [schoolName, setSchoolName] = useState('')
+    const [tenantId, setTenantId] = useState<number | ''>('')
+    const [tenants, setTenants] = useState<Tenant[]>([])
+    const [loadingTenants, setLoadingTenants] = useState(true)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
+
+    useEffect(() => {
+        TenantService.getTenants(1, 100)
+            .then(res => setTenants(res?.data ?? res ?? []))
+            .catch(() => {})
+            .finally(() => setLoadingTenants(false))
+    }, [])
 
     const submit = async () => {
         if (!name.trim()) { setError('Class name is required'); return }
         if (!code.trim()) { setError('Class code is required'); return }
+        if (!tenantId) { setError('Please select a tenant'); return }
         setLoading(true); setError('')
         try {
-            const cls = await ClassService.createClass({ name: name.trim(), code: code.trim().toUpperCase(), description: description.trim() || undefined, teacher_id: teacherId, school_name: schoolName.trim() || undefined })
+            const selectedTenant = tenants.find(t => t.id === tenantId)
+            const cls = await ClassService.createClass({
+                name: name.trim(),
+                code: code.trim().toUpperCase(),
+                description: description.trim() || undefined,
+                teacher_id: teacherId,
+                school_name: selectedTenant?.name,
+                tenant_id: tenantId as number,
+            })
             onCreate(cls)
         } catch { setError('Failed to create class') }
         finally { setLoading(false) }
@@ -202,13 +221,34 @@ function CreateClassModal({ onClose, onCreate, teacherId }: {
                         <Field label="Class Name" required><input value={name} onChange={e => setName(e.target.value)} placeholder="e.g. Math Grade 10" className={INPUT} /></Field>
                         <Field label="Class Code" required><input value={code} onChange={e => setCode(e.target.value)} placeholder="e.g. MATH10A" className={INPUT + " uppercase"} /></Field>
                     </div>
-                    <Field label="School Name"><input value={schoolName} onChange={e => setSchoolName(e.target.value)} placeholder="e.g. Hanoi High School" className={INPUT} /></Field>
+                    <Field label="Tenant" required>
+                        {loadingTenants ? (
+                            <div className={INPUT + " flex items-center gap-2 text-gray-400"}>
+                                <Loader2 size={13} className="animate-spin" />
+                                <span className="text-[13px]">Loading tenants…</span>
+                            </div>
+                        ) : (
+                            <div className="relative">
+                                <Building2 size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                                <select
+                                    value={tenantId}
+                                    onChange={e => setTenantId(e.target.value ? Number(e.target.value) : '')}
+                                    className={INPUT + " pl-8 appearance-none"}
+                                >
+                                    <option value="">Select a tenant…</option>
+                                    {tenants.map(t => (
+                                        <option key={t.id} value={t.id}>{t.name}{t.code ? ` (${t.code})` : ''}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        )}
+                    </Field>
                     <Field label="Description"><textarea value={description} onChange={e => setDescription(e.target.value)} placeholder="Optional description" rows={3} className={INPUT + " resize-none"} /></Field>
                     {error && <p className="text-[12px] text-red-500">{error}</p>}
                 </div>
                 <div className="flex gap-2 mt-5">
                     <button onClick={onClose} className="flex-1 py-2 rounded-lg border border-gray-200 text-[13px] text-gray-600 hover:bg-gray-50">Cancel</button>
-                    <button onClick={submit} disabled={loading} className="flex-1 py-2 rounded-lg bg-blue-600 text-white text-[13px] font-medium hover:bg-blue-500 disabled:opacity-50 flex items-center justify-center gap-1.5">
+                    <button onClick={submit} disabled={loading || loadingTenants} className="flex-1 py-2 rounded-lg bg-blue-600 text-white text-[13px] font-medium hover:bg-blue-500 disabled:opacity-50 flex items-center justify-center gap-1.5">
                         {loading && <Loader2 size={13} className="animate-spin" />} Create
                     </button>
                 </div>

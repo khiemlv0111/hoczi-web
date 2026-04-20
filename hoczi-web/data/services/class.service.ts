@@ -30,6 +30,8 @@ export type ClassItem = {
     teacher_id: number;
     teacher?: ClassStudent;
     school_name?: string;
+    tenant_id?: number;
+    tenant?: { id: number; name: string; code: string };
     created_at?: string;
     members?: ClassMember[];
     class_subjects?: ClassSubjectItem[];
@@ -46,7 +48,7 @@ export class ClassService {
         return response;
     }
 
-    static async createClass(payload: { name: string; code: string; description?: string; teacher_id: number; school_name?: string }) {
+    static async createClass(payload: { name: string; code: string; description?: string; teacher_id: number; school_name?: string; tenant_id?: number }) {
         const response = await postRequest('/api/classes/create-class', payload, true);
         return response as ClassItem;
     }

@@ -4,11 +4,10 @@ import { useEffect, useState } from "react"
 import { useAppData, User } from "@/app/context/AppContext"
 import { ClassService, ClassItem } from "@/data/services/class.service"
 import { LessonService } from "@/data/services/lesson.service"
-import { TenantService, Tenant } from "@/data/services/tenant.service"
 import { QuestionService } from "@/data/services/question.service"
 import {
     Plus, X, Users, BookOpen, Trash2, UserPlus, ChevronRight,
-    Loader2, School, Hash, ClipboardList, GraduationCap, Building2,
+    Loader2, School, Hash, ClipboardList, GraduationCap,
 } from "lucide-react"
 import { Field, INPUT, Member, Assignment, AssignTarget } from "./shared"
 
@@ -174,23 +173,17 @@ function AssignToStudentModal({ studentId, studentName, onClose }: {
 function CreateClassModal({ onClose, onCreate, teacherId }: {
     onClose: () => void; onCreate: (cls: ClassItem) => void; teacherId: number
 }) {
+    const { user } = useAppData()
     const [name, setName] = useState('')
     const [code, setCode] = useState('')
     const [description, setDescription] = useState('')
-    const [tenantId, setTenantId] = useState<number | ''>('')
     const [gradeId, setGradeId] = useState<number | ''>('')
-    const [tenants, setTenants] = useState<any[]>([])
     const [grades, setGrades] = useState<any[]>([])
-    const [loadingTenants, setLoadingTenants] = useState(true)
     const [loadingGrades, setLoadingGrades] = useState(true)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
     useEffect(() => {
-        TenantService.getMyTenants()
-            .then(res => setTenants(res?.data ?? res ?? []))
-            .catch(() => { })
-            .finally(() => setLoadingTenants(false))
         QuestionService.getGradeList()
             .then(res => setGrades(res ?? []))
             .catch(() => { })
@@ -200,17 +193,16 @@ function CreateClassModal({ onClose, onCreate, teacherId }: {
     const submit = async () => {
         if (!name.trim()) { setError('Class name is required'); return }
         if (!code.trim()) { setError('Class code is required'); return }
-        if (!tenantId) { setError('Please select a tenant'); return }
+        if (!user?.tenant?.id) { setError('User has no tenant assigned'); return }
         setLoading(true); setError('')
         try {
-            const selectedTenant = tenants.find(t => t.id === tenantId)
             const cls = await ClassService.createClass({
                 name: name.trim(),
                 code: code.trim().toUpperCase(),
                 description: description.trim() || undefined,
                 teacher_id: teacherId,
-                school_name: selectedTenant?.name,
-                tenant_id: tenantId as number,
+                school_name: user.tenant.name,
+                tenant_id: user.tenant.id,
                 grade_id: gradeId !== '' ? gradeId as number : undefined,
             })
             onCreate(cls)
@@ -230,28 +222,7 @@ function CreateClassModal({ onClose, onCreate, teacherId }: {
                         <Field label="Class Name" required><input value={name} onChange={e => setName(e.target.value)} placeholder="e.g. Math Grade 10" className={INPUT} /></Field>
                         <Field label="Class Code" required><input value={code} onChange={e => setCode(e.target.value)} placeholder="e.g. MATH10A" className={INPUT + " uppercase"} /></Field>
                     </div>
-                    <Field label="Tenant" required>
-                        {loadingTenants ? (
-                            <div className={INPUT + " flex items-center gap-2 text-gray-400"}>
-                                <Loader2 size={13} className="animate-spin" />
-                                <span className="text-[13px]">Loading tenants…</span>
-                            </div>
-                        ) : (
-                            <div className="relative">
-                                <Building2 size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-                                <select
-                                    value={tenantId}
-                                    onChange={e => setTenantId(e.target.value ? Number(e.target.value) : '')}
-                                    className={INPUT + " pl-8 appearance-none"}
-                                >
-                                    <option value="">Select a tenant…</option>
-                                    {tenants.map(t => (
-                                        <option key={t.id} value={t.tenant_id}>{t.tenant.name}{t.tenant.code ? ` (${t.tenant.code})` : ''}</option>
-                                    ))}
-                                </select>
-                            </div>
-                        )}
-                    </Field>
+
                     <Field label="Grade">
                         {loadingGrades ? (
                             <div className={INPUT + " flex items-center gap-2 text-gray-400"}>
@@ -279,7 +250,7 @@ function CreateClassModal({ onClose, onCreate, teacherId }: {
                 </div>
                 <div className="flex gap-2 mt-5">
                     <button onClick={onClose} className="flex-1 py-2 rounded-lg border border-gray-200 text-[13px] text-gray-600 hover:bg-gray-50">Cancel</button>
-                    <button onClick={submit} disabled={loading || loadingTenants || loadingGrades} className="flex-1 py-2 rounded-lg bg-blue-600 text-white text-[13px] font-medium hover:bg-blue-500 disabled:opacity-50 flex items-center justify-center gap-1.5">
+                    <button onClick={submit} disabled={loading || loadingGrades} className="flex-1 py-2 rounded-lg bg-blue-600 text-white text-[13px] font-medium hover:bg-blue-500 disabled:opacity-50 flex items-center justify-center gap-1.5">
                         {loading && <Loader2 size={13} className="animate-spin" />} Create
                     </button>
                 </div>

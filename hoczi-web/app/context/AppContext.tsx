@@ -17,7 +17,8 @@ export type User = {
     username: string,
     name: string,
     role?: string,
-    quiz_sessions?: any[] | undefined
+    quiz_sessions?: any[] | undefined,
+    tenant?: { id: number; name: string; code?: string }
 
 }
 export type LoginPayload = {

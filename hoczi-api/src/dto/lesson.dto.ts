@@ -139,3 +139,17 @@ export class CreateTenantRequest {
 
     
 }
+
+
+export class AssignUserToTenantRequest {
+
+    @IsNotEmpty()
+    user_id!: number;
+
+    @IsNotEmpty()
+    tenant_id!: number;
+
+    @IsNotEmpty()
+    role!: string;
+
+}

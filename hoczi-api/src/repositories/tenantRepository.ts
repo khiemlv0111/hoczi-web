@@ -1,4 +1,5 @@
 import { AppDataSource } from '../data-source';
+import { AssignUserToTenantRequest } from '../dto/lesson.dto';
 import { Tenant } from '../entities/Tenant';
 
 class TenantRepository {
@@ -27,6 +28,11 @@ class TenantRepository {
         return await this.repo.save(data);
 
     }
+
+    // async assignUserToTenant(data: AssignUserToTenantRequest) {
+    //     return await this.repo.save(data);
+
+    // }
 
 
 }

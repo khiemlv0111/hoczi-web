@@ -1,4 +1,5 @@
 import { AppDataSource } from '../data-source';
+import { AssignUserToTenantRequest } from '../dto/lesson.dto';
 import { TenantUser } from '../entities/TenantUser';
 
 class TenantUserRepository {
@@ -21,6 +22,17 @@ class TenantUserRepository {
 
     async createOne(data: Partial<TenantUser>) {
         return await this.repo.save(data);
+    }
+
+    async assignUserToTenant(userId: number, data: AssignUserToTenantRequest) {
+        const payload = {
+            tenant_id: data.tenant_id,
+            user_id: data.user_id,
+            invited_by: userId,
+            role: data.role,
+        }
+        return await this.repo.save(payload);
+
     }
 
 

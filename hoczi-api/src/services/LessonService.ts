@@ -1,6 +1,6 @@
 import { lessonRepository } from "../repositories/lessonRepository";
 import { assignmentRepository } from "../repositories/assignmentRepository";
-import { AssignStudentAssignmentRequest, CommentOnAssignmentRequest, CreateAssignmentRequest, CreateTenantRequest } from "../dto/lesson.dto";
+import { AssignStudentAssignmentRequest, AssignUserToTenantRequest, CommentOnAssignmentRequest, CreateAssignmentRequest, CreateTenantRequest } from "../dto/lesson.dto";
 import { subjectRepository } from "../repositories/subjectRepository";
 import { classSubjectRepository } from "../repositories/classSubjectRepository";
 
@@ -12,6 +12,7 @@ import { quizSessionRepository } from "../repositories/quizSessionRepository";
 import { BadRequestError } from "../errors/api-erros";
 import { userAnswerRepository } from "../repositories/userAnswerRepository";
 import { tenantRepository } from "../repositories/tenantRepository";
+import { tenantUserRepository } from "../repositories/tenantUserRepository";
 
 
 
@@ -212,15 +213,16 @@ export class LessonService {
         return response;
     }
 
-
     async createTenant(data: CreateTenantRequest) {
         return tenantRepository.createOne(data);
     }
-
 
     async getTenantList() {
         return tenantRepository.findAll();
     }
 
+    async assignUserToTenant(userId: number, data: AssignUserToTenantRequest) {
+        return tenantUserRepository.assignUserToTenant(userId, data);
+    }
 
 }

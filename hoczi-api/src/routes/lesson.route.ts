@@ -76,6 +76,12 @@ lessonRoutes.post('/create-tenant', new LessonController().createTenant);
 lessonRoutes.get('/get-tenant-list', new LessonController().getTenantList);
 
 
+lessonRoutes.post('/assign-user-to-tenant', new LessonController().assignUserToTenant);
+
+
+
+
+
 
 
 

@@ -8,6 +8,7 @@ import {
   Index,
   OneToMany,
 } from 'typeorm';
+import { User } from './User';
 
 export enum TenantPlanType {
   FREE = 'free',
@@ -56,6 +57,10 @@ export class Tenant {
 
   @Column({ type: 'bigint', nullable: true })
   owner_user_id?: number | null;
+
+  @OneToMany(() => User, (user) => user.tenant)
+  users!: User[];
+
 
   @Column({ type: 'bigint', nullable: true })
   organization_id?: string | null;

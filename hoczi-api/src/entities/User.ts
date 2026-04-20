@@ -1,6 +1,7 @@
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm'
 import { Exclude } from 'class-transformer'
 import { QuizSession } from './QuizSession'
+import { Tenant } from './Tenant'
 
 @Entity('users')
 export class User {
@@ -32,6 +33,12 @@ export class User {
 
 	@UpdateDateColumn()
 	updated_at!: Date;
+
+	@ManyToOne(() => Tenant, (tenant) => tenant.users, {
+		onDelete: 'CASCADE',
+	})
+	@JoinColumn({ name: 'tenant_id' })
+	tenant!: Tenant;
 
 	@OneToMany(() => QuizSession, (session) => session.user)
 	quiz_sessions!: QuizSession[];

@@ -11,14 +11,20 @@ import {
 import { User } from './User';
 import { ClassMember } from './ClassMember';
 import { ClassSubject } from './ClassSubject';
+import { Tenant } from './Tenant';
 
 @Entity('classes')
 export class Class {
     @PrimaryGeneratedColumn()
     id!: number;
 
+
     @Column({ type: "int", nullable: true })
-	tenant_id?: number;
+    tenant_id?: number;
+
+    @ManyToOne(() => Tenant)
+    @JoinColumn({ name: 'tenant_id' })
+    tenant?: Tenant;
 
     @Column({ type: 'varchar', length: 255 })
     name!: string;
@@ -31,6 +37,7 @@ export class Class {
 
     @Column()
     teacher_id!: number;
+
 
     @ManyToOne(() => User)
     @JoinColumn({ name: 'teacher_id' })

@@ -234,13 +234,6 @@ export class LessonController {
         return res.json(response);
     }
 
-    async getMyTenantList(req: Request, res: Response) {
-        const { id } = req.user;
-        const response = await lessonService.getMyTenantList(Number(id));
-        return res.json(response);
-    }
-
-
     async assignUserToTenant(req: Request, res: Response) {
         const { id } = req.user;
 

@@ -12,11 +12,7 @@ import { quizSessionRepository } from "../repositories/quizSessionRepository";
 import { BadRequestError } from "../errors/api-erros";
 import { userAnswerRepository } from "../repositories/userAnswerRepository";
 import { tenantRepository } from "../repositories/tenantRepository";
-import { tenantUserRepository } from "../repositories/tenantUserRepository";
 import { userRepository } from "../repositories/userRepository";
-import { TenantUser } from "../entities/TenantUser";
-
-
 
 export class LessonService {
 
@@ -222,27 +218,16 @@ export class LessonService {
     async getTenantList() {
         return tenantRepository.findAll();
     }
-    async getMyTenantList(userId: number) {
-        return tenantUserRepository.findByUserId(userId);
-    }
+
 
     async assignUserToTenant(userId: number, data: AssignUserToTenantRequest) {
-        // const user = await userRepository.findById(data.user_id);
-        if (data.user_id) {
-            // user.tenant_id = data.tenant_id;
-            const payload = {
-                tenant_id: data.tenant_id,
-                user_id: data.user_id,
-                role: data.role
+        const user = await userRepository.findById(data.user_id);
+        if (user) {
+            user.tenant_id = data.tenant_id;
 
-
-            }
-            await tenantUserRepository.createOne(payload);
-            // await userRepository.save(user);
+            await userRepository.save(user);
         }
 
-
-        return tenantUserRepository.assignUserToTenant(userId, data);
     }
 
     async getTenantDetail(id: number) {

@@ -36,12 +36,12 @@ export type TenantMember = {
 
 export class TenantService {
     static async getTenants(page = 1, limit = 20) {
-        const response = await getRequest(`/api/tenants?page=${page}&limit=${limit}`, true);
+        const response = await getRequest(`/api/lessons/get-tenant-list?page=${page}&limit=${limit}`, true);
         return response;
     }
 
     static async createTenant(payload: CreateTenantPayload) {
-        const response = await postRequest('/api/tenants', payload, true);
+        const response = await postRequest('/api/lessons/create-tenant', payload, true);
         return response;
     }
 

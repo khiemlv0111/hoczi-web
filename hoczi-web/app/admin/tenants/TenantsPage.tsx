@@ -174,9 +174,7 @@ export function TenantsPage() {
         setAddingUser(true);
         try {
             await TenantService.addUserToTenant(addUserTenant.id, Number(selectedUserId), memberRole);
-            const res = await TenantService.getTenantMembers(addUserTenant.id);
-            setMembers(Array.isArray(res?.data) ? res.data : Array.isArray(res) ? res : []);
-            setSelectedUserId('');
+            setAddUserTenant(null);
         } catch {
             alert('Failed to add user to tenant.');
         } finally {

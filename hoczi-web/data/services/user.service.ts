@@ -52,6 +52,7 @@ export class UserService {
         const params = new URLSearchParams();
         if (payload.page) params.append('page', String(payload.page));
         if (payload.limit) params.append('limit', String(payload.limit));
+        if (payload.keyword) params.append('keyword', payload.keyword);
 
         const query = params.toString() ? `?${params.toString()}` : '';
         const response = await getRequest(`/api/users/user-list${query}`, true);

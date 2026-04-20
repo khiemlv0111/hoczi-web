@@ -123,6 +123,7 @@ export interface Grade {
 export type PaginationPayload = {
     page?: number;
     limit?: number;
+    keyword?: string;
 }
 
 export type Lesson = {

@@ -225,4 +225,8 @@ export class LessonService {
         return tenantUserRepository.assignUserToTenant(userId, data);
     }
 
+    async getTenantDetail(id: number) {
+        return await tenantRepository.findById(id);
+    }
+
 }

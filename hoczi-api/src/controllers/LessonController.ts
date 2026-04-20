@@ -248,6 +248,14 @@ export class LessonController {
         return res.json(response);
     }
 
+    async getTenantDetail(req: Request, res: Response) {
+
+        const tenantId = Number(req.params.id);
+
+        const response = await lessonService.getTenantDetail(tenantId);
+        return res.json(response);
+    }
+
 
 
 }

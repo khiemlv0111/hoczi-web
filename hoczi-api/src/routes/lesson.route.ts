@@ -78,6 +78,9 @@ lessonRoutes.get('/get-tenant-list', new LessonController().getTenantList);
 
 lessonRoutes.post('/assign-user-to-tenant', new LessonController().assignUserToTenant);
 
+lessonRoutes.get('/get-tenant-detail/:id', new LessonController().getTenantDetail);
+
+
 
 
 

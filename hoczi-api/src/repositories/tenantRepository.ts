@@ -15,7 +15,10 @@ class TenantRepository {
     }
 
     async findById(id: number) {
-        return this.repo.findOne({ where: { id } });
+        return this.repo.findOne({ 
+            where: { id },
+            relations: ['tenantUsers', 'tenantUsers.user']
+        });
     }
 
 
@@ -33,6 +36,8 @@ class TenantRepository {
     //     return await this.repo.save(data);
 
     // }
+
+    
 
 
 }

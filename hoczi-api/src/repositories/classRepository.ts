@@ -30,7 +30,8 @@ class ClassRepository {
             description: data.description,
             teacher_id: teacherId,
             school_name: data.school_name,
-            grade_id: 4,
+            grade_id: data.grade_id || undefined,
+            tenant_id: data.tenant_id,
         });
         return this.repo.save(classRoom);
     }

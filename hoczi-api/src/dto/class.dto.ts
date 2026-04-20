@@ -6,6 +6,9 @@ export class CreateClassRequest {
     @IsNotEmpty()
     name!: string;
 
+    @IsNotEmpty()
+    tenant_id!: number;
+
     @IsOptional()
     code!: string;
 
@@ -14,6 +17,9 @@ export class CreateClassRequest {
 
     @IsOptional()
     school_name?: number;
+
+    @IsOptional()
+    teacher_id?: number;
 
     @IsOptional()
     gradeId!: number;

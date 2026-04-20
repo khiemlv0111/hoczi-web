@@ -70,6 +70,7 @@ export default function AdminLayout({
     const { user, getUserProfile } = useAppData();
 
     const [open, setOpen] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -111,22 +112,25 @@ export default function AdminLayout({
     }, [user])
     const handleNavigate = (item: any) => {
         const { path, label, icon: Icon, active } = item;
-        console.log(label);
-
-        router.push(`${path}`)
-
-        // if (label == 'Quizzes') {
-        //     router.push(`/admin/quizzes`)
-        // } else {
-        //     router.push(`${path}`)
-        // }
-
-
+        router.push(`${path}`);
+        setSidebarOpen(false);
     }
     return (
         <div className="flex h-screen bg-gray-100 font-sans text-sm">
+            {/* Mobile overlay */}
+            {sidebarOpen && (
+                <div
+                    className="fixed inset-0 z-20 bg-black/40 md:hidden"
+                    onClick={() => setSidebarOpen(false)}
+                />
+            )}
+
             {/* Sidebar */}
-            <aside className="w-56 min-w-[220px] bg-white border-r border-gray-200 flex flex-col py-2">
+            <aside className={`
+                fixed inset-y-0 left-0 z-30 w-56 bg-white border-r border-gray-200 flex flex-col py-2 transition-transform duration-200
+                md:static md:translate-x-0 md:shrink-0
+                ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+            `}>
                 {/* Logo */}
                 <div className="flex items-center gap-2 px-4 pb-4 border-b border-gray-200 mb-3">
                     <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-xs font-medium">
@@ -179,12 +183,23 @@ export default function AdminLayout({
             {/* Main content */}
             <div className="flex-1 flex flex-col overflow-hidden">
                 {/* Topbar */}
-                <header className="bg-white border-b border-gray-200 px-6 py-3 flex items-center justify-between">
-                    <span className="font-medium text-gray-900 text-[15px]">Admin Dashboard</span>
+                <header className="bg-white border-b border-gray-200 px-4 md:px-6 py-3 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                        <button
+                            className="md:hidden p-1.5 rounded-md hover:bg-gray-100 transition-colors"
+                            onClick={() => setSidebarOpen(true)}
+                            aria-label="Open menu"
+                        >
+                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                                <line x1="2" y1="5" x2="16" y2="5"/><line x1="2" y1="9" x2="16" y2="9"/><line x1="2" y1="13" x2="16" y2="13"/>
+                            </svg>
+                        </button>
+                        <span className="font-medium text-gray-900 text-[15px]">Admin Dashboard</span>
+                    </div>
                     <div className="flex items-center gap-3">
                         <button onClick={() => { setOpen(true) }} className="flex items-center gap-1.5 px-3 py-1.5 border border-gray-300 rounded-md text-[13px] hover:bg-gray-50 transition-colors">
                             <Plus size={13} />
-                            Create a question
+                            <span className="hidden sm:inline">Create a question</span>
                         </button>
                         <div className="relative" ref={dropdownRef}>
                             <button

@@ -1,3 +1,4 @@
+import { User } from "@/app/context/AppContext";
 import { deleteRequest, getRequest, postRequest, putRequest } from "../http";
 
 export type Tenant = {
@@ -13,6 +14,7 @@ export type Tenant = {
     status?: string;
     created_at?: string;
     members?: TenantMember[];
+    tenantUsers: any[],
 };
 
 export type CreateTenantPayload = {
@@ -61,12 +63,17 @@ export class TenantService {
     }
 
     static async addUserToTenant(tenantId: number, userId: number, role = 'member') {
-        const response = await postRequest(`/api/tenants/${tenantId}/members`, { user_id: userId, role }, true);
+        const response = await postRequest(`/api/lessons/assign-user-to-tenant`, { user_id: userId, tenant_id: tenantId, role }, true);
         return response;
     }
 
     static async removeUserFromTenant(tenantId: number, userId: number) {
         const response = await deleteRequest(`/api/tenants/${tenantId}/members/${userId}`, true);
+        return response;
+    }
+
+    static async getTenantDetail(tenantId: number) {
+        const response = await getRequest(`/api/lessons/get-tenant-detail/${tenantId}`, true);
         return response;
     }
 }

@@ -57,9 +57,9 @@ export default function Dashboard() {
       <>
 
         {/* Content */}
-        <main className="flex-1 p-6 overflow-y-auto">
+        <main className="flex-1 p-4 md:p-6 overflow-y-auto">
           {/* Stats */}
-          <div className="grid grid-cols-4 gap-3 mb-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
             {stats.map(({ label, value, delta, positive }) => (
               <div
                 key={label}
@@ -76,7 +76,7 @@ export default function Dashboard() {
           </div>
 
           {/* Two-col row */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Blog Posts */}
             <div className="bg-white border border-gray-200 rounded-xl p-4">
               <div className="flex items-center justify-between mb-4">

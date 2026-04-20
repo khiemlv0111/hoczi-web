@@ -5,6 +5,7 @@ import { CommonModal } from "@/app/components/modal/CommonModal";
 import { PAGE_SIZE } from "@/data/config/constants";
 import { Tenant, TenantMember, TenantService } from "@/data/services/tenant.service";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 const PLAN_TYPES = ['free', 'basic', 'pro', 'enterprise'];
 
@@ -241,7 +242,11 @@ export function TenantsPage() {
                                         tenants.map((t, idx) => (
                                             <tr key={t.id} className="hover:bg-gray-50 transition-colors">
                                                 <td className="py-2 pr-4 text-gray-400">{(page - 1) * PAGE_SIZE + idx + 1}</td>
-                                                <td className="py-2 pr-4 font-medium text-gray-900 max-w-[140px] truncate">{t.name}</td>
+                                                <td className="py-2 pr-4 font-medium text-gray-900 max-w-[140px] truncate">
+                                                    <Link href={`/admin/tenants/${t.id}`}>
+                                                    {t.name}
+                                                    </Link>
+                                                </td>
                                                 <td className="py-2 pr-4 text-gray-500 max-w-[100px] truncate">{t.code}</td>
                                                 <td className="py-2 pr-4 text-gray-400 max-w-[140px] truncate">{t.domain ?? '—'}</td>
                                                 <td className="py-2 pr-4">

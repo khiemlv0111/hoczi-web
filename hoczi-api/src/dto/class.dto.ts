@@ -22,7 +22,7 @@ export class CreateClassRequest {
     teacher_id?: number;
 
     @IsOptional()
-    gradeId!: number;
+    grade_id?: number;
 
 }
 

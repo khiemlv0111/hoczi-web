@@ -14,6 +14,7 @@ import { userAnswerRepository } from "../repositories/userAnswerRepository";
 import { tenantRepository } from "../repositories/tenantRepository";
 import { tenantUserRepository } from "../repositories/tenantUserRepository";
 import { userRepository } from "../repositories/userRepository";
+import { TenantUser } from "../entities/TenantUser";
 
 
 
@@ -226,12 +227,20 @@ export class LessonService {
     }
 
     async assignUserToTenant(userId: number, data: AssignUserToTenantRequest) {
-        const user = await userRepository.findById(data.user_id);
-        if(user){
-            user.tenant_id = data.tenant_id;
-            await userRepository.save(user);
+        // const user = await userRepository.findById(data.user_id);
+        if (data.user_id) {
+            // user.tenant_id = data.tenant_id;
+            const payload = {
+                tenant_id: data.tenant_id,
+                user_id: data.user_id,
+                role: data.role
+
+
+            }
+            await tenantUserRepository.createOne(payload);
+            // await userRepository.save(user);
         }
-        
+
 
         return tenantUserRepository.assignUserToTenant(userId, data);
     }

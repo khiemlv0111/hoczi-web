@@ -14,10 +14,6 @@ export class User {
 	@Column({ type: 'text', name: 'role', nullable: true })
 	role?: string
 
-	@Column({ type: "int", nullable: true })
-	tenant_id?: number;
-
-
 	@Column({ type: 'varchar', unique: true })
 	username!: string
 

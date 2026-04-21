@@ -15,6 +15,8 @@ userRoutes.get('/user-profile', new AuthController().userProfile);
 
 userRoutes.get('/user-list', new UserController().getUserList);
 
+userRoutes.get('/user-tenant-list', new UserController().getUserTenantList);
+
 userRoutes.post('/start-quiz', new QuestionController().startQuiz);
 
 userRoutes.post('/submit-quiz-session', new QuestionController().submitQuizSession);

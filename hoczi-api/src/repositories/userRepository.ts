@@ -1,5 +1,5 @@
 import { AppDataSource } from '../data-source';
-import { ILike } from 'typeorm';
+import { ILike, IsNull } from 'typeorm';
 import { User } from '../entities/User';
 // import { UserProfile } from '../entities/UserProfile';
 
@@ -46,7 +46,7 @@ class UserRepository {
                 { name: ILike(`%${keyword}%`) },
                 { email: ILike(`%${keyword}%`) },
                 { username: ILike(`%${keyword}%`) },
-              ]
+            ]
             : undefined;
 
         const [data, total] = await this.repo.findAndCount({
@@ -60,8 +60,28 @@ class UserRepository {
         return { data, total };
     }
 
+    async findTenantUsers(keyword?: string) {
+
+        const query = this.repo
+            .createQueryBuilder("user")
+            .leftJoinAndSelect("user.quiz_sessions", "quiz_sessions")
+            .where("user.tenant_id IS NULL")
+            .orderBy("user.id", "DESC");
+
+        if (keyword) {
+            query.andWhere(
+                "(user.name ILIKE :keyword OR user.email ILIKE :keyword OR user.username ILIKE :keyword)",
+                { keyword: `%${keyword}%` }
+            );
+        }
+
+        const [data, total] = await query.getManyAndCount();
+
+        return { data, total };
+    }
+
     async save(user: User) {
-        
+
         return this.repo.save(user);
     }
 

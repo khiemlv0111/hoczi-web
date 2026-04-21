@@ -21,6 +21,15 @@ export class UserController {
         return res.json(response);
     }
 
+    async getUserTenantList(req: Request, res: Response) {
+        // const { id } = req.user;
+
+        const keyword = req.query.keyword ? String(req.query.keyword).trim() : undefined;
+
+        const response = await userService.userTenantList(keyword);
+        return res.json(response);
+    }
+
     async updateUser(req: Request, res: Response) {
 
         const { id } = req.user;
@@ -33,7 +42,7 @@ export class UserController {
 
 
         const userId = Number(req.params.id);
-        
+
         if(Number(id) === userId){
             return res.status(400).json({ success: false, message: "Cannt update yourself" });
         }

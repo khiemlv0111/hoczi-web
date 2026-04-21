@@ -100,6 +100,15 @@ export class UserService {
         }
     }
 
+    async userTenantList(keyword?: string) {
+        const response = await userRepository.findTenantUsers(keyword);
+        return {
+            message: "get users success",
+            success: true,
+            data: { users: response.data, total: response.total }
+        }
+    }
+
     async updateUser(userId: number, data: any) {
         const user = await userRepository.findById(userId);
 

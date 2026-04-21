@@ -118,6 +118,21 @@ export function TenantDetailPage({ id }: { id: number }) {
     const [tenant, setTenant] = useState<Tenant | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [showAddModal, setShowAddModal] = useState(false);
+    const [removingUserId, setRemovingUserId] = useState<number | null>(null);
+    const [confirmRemoveId, setConfirmRemoveId] = useState<number | null>(null);
+
+    async function handleRemoveMember(userId: number) {
+        console.log('USER ID', userId);
+        
+        setRemovingUserId(userId);
+        try {
+            await TenantService.removeUserFromTenant(userId);
+            loadTenant();
+        } finally {
+            setRemovingUserId(null);
+            setConfirmRemoveId(null);
+        }
+    }
 
     function loadTenant() {
         setLoading(true);
@@ -208,6 +223,32 @@ export function TenantDetailPage({ id }: { id: number }) {
                 />
             )}
 
+            {confirmRemoveId !== null && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30">
+                    <div className="bg-white rounded-xl shadow-xl w-full max-w-sm p-6">
+                        <h3 className="text-[14px] font-semibold text-gray-900 mb-2">Remove Member</h3>
+                        <p className="text-[12px] text-gray-500 mb-5">
+                            Are you sure you want to remove this member from the tenant? This action cannot be undone.
+                        </p>
+                        <div className="flex justify-end gap-2">
+                            <button
+                                onClick={() => setConfirmRemoveId(null)}
+                                className="px-4 py-2 text-[12px] text-gray-600 hover:text-gray-800"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={() => handleRemoveMember(confirmRemoveId)}
+                                disabled={removingUserId === confirmRemoveId}
+                                className="px-4 py-2 text-[12px] bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 transition-colors"
+                            >
+                                {removingUserId === confirmRemoveId ? 'Removing...' : 'Remove'}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             {/* Users Table */}
             <div className="bg-white border border-gray-200 rounded-xl p-4">
                 <div className="flex items-center justify-between mb-4">
@@ -230,13 +271,14 @@ export function TenantDetailPage({ id }: { id: number }) {
                                 <th className="pb-2 pr-4 font-medium">Name</th>
                                 <th className="pb-2 pr-4 font-medium">Email</th>
                                 <th className="pb-2 pr-4 font-medium">Username</th>
-                                <th className="pb-2 font-medium">Role</th>
+                                <th className="pb-2 pr-4 font-medium">Role</th>
+                                <th className="pb-2 font-medium"></th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
                             {users.length === 0 ? (
                                 <tr>
-                                    <td colSpan={5} className="py-6 text-center text-gray-400 text-[12px]">
+                                    <td colSpan={6} className="py-6 text-center text-gray-400 text-[12px]">
                                         No members found.
                                     </td>
                                 </tr>
@@ -251,10 +293,19 @@ export function TenantDetailPage({ id }: { id: number }) {
                                             </td>
                                             <td className="py-2 pr-4 text-gray-500 text-[12px]">{user.email ?? '—'}</td>
                                             <td className="py-2 pr-4 text-gray-400 text-[12px]">{user.username ?? '—'}</td>
-                                            <td className="py-2 text-[12px]">
+                                            <td className="py-2 pr-4 text-[12px]">
                                                 <span className="text-[11px] px-2 py-0.5 rounded-full bg-blue-50 text-blue-700">
                                                     {m.role ?? 'member'}
                                                 </span>
+                                            </td>
+                                            <td className="py-2 text-right">
+                                                <button
+                                                    onClick={() => setConfirmRemoveId(user.id)}
+                                                    disabled={removingUserId === m.user_id}
+                                                    className="text-[11px] px-2 py-0.5 rounded text-red-500 hover:bg-red-50 transition-colors disabled:opacity-40"
+                                                >
+                                                    {removingUserId === m.user_id ? 'Removing...' : 'Remove'}
+                                                </button>
                                             </td>
                                         </tr>
                                     );

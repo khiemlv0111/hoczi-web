@@ -186,7 +186,7 @@ export function TenantsPage() {
         if (!addUserTenant) return;
         setRemovingUserId(userId);
         try {
-            await TenantService.removeUserFromTenant(addUserTenant.id, userId);
+            await TenantService.removeUserFromTenant(userId);
             setMembers((prev) => prev.filter((m) => m.user_id !== userId));
         } catch {
             alert('Failed to remove member.');

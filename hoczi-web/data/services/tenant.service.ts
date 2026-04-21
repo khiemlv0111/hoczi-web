@@ -72,8 +72,8 @@ export class TenantService {
         return response;
     }
 
-    static async removeUserFromTenant(tenantId: number, userId: number) {
-        const response = await deleteRequest(`/api/tenants/${tenantId}/members/${userId}`, true);
+    static async removeUserFromTenant(userId: number) {
+        const response = await putRequest(`/api/users/remove-user-from-tenant/${userId}`,{}, true);
         return response;
     }
 

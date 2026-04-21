@@ -33,6 +33,10 @@ export class UserController {
 
 
         const userId = Number(req.params.id);
+        
+        if(Number(id) === userId){
+            return res.status(400).json({ success: false, message: "Cannt update yourself" });
+        }
 
 
         const { errors, input } = await RequestValidator(UpdateUserRequest, req.body);

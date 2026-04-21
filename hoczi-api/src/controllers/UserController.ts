@@ -47,6 +47,8 @@ export class UserController {
 
     async removeUserFromTenant(req: Request, res: Response) {
         const userId = Number(req.params.id);
+        console.log('USER ID===', userId);
+        
         const user = await userService.removeUserFromTenant(userId);
         return res.json({ success: true, data: user });
     }

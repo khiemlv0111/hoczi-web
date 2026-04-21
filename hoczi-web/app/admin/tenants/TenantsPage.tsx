@@ -64,7 +64,7 @@ export function TenantsPage() {
                 setTenants(Array.isArray(res?.data) ? res.data : Array.isArray(res) ? res : []);
                 setTotal(res?.total ?? 0);
             })
-            .catch(() => {})
+            .catch(() => { })
             .finally(() => setLoading(false));
     }
 
@@ -75,7 +75,7 @@ export function TenantsPage() {
         setFormUsersLoading(true);
         handleGetUsers({ page: 1, limit: 500 })
             .then((res) => setFormUsers(Array.isArray(res?.users) ? res.users : []))
-            .catch(() => {})
+            .catch(() => { })
             .finally(() => setFormUsersLoading(false));
     }
 
@@ -160,7 +160,7 @@ export function TenantsPage() {
         setMembersLoading(true);
         handleGetUsers({ page: 1, limit: 200 })
             .then((res) => setAllUsers(Array.isArray(res?.users) ? res.users : []))
-            .catch(() => {})
+            .catch(() => { })
             .finally(() => setUsersLoading(false));
         TenantService.getTenantMembers(t.id)
             .then((res) => setMembers(Array.isArray(res?.data) ? res.data : Array.isArray(res) ? res : []))
@@ -242,7 +242,7 @@ export function TenantsPage() {
                                                 <td className="py-2 pr-4 text-gray-400">{(page - 1) * PAGE_SIZE + idx + 1}</td>
                                                 <td className="py-2 pr-4 font-medium text-gray-900 max-w-[140px] truncate">
                                                     <Link href={`/admin/tenants/${t.id}`}>
-                                                    {t.name}
+                                                        {t.name}
                                                     </Link>
                                                 </td>
                                                 <td className="py-2 pr-4 text-gray-500 max-w-[100px] truncate">{t.code}</td>
@@ -262,12 +262,12 @@ export function TenantsPage() {
                                                 </td>
                                                 <td className="py-2 text-right">
                                                     <div className="flex items-center justify-end gap-1">
-                                                        <button
-                                                            onClick={() => openAddUserModal(t)}
-                                                            className="text-[11px] px-3 py-1 rounded-md bg-green-600 text-white hover:bg-green-700 transition-colors"
+                                                        <Link
+                                                            href={`/admin/tenants/${t.id}`}
+                                                            className="text-[11px] px-3 py-1 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition-colors"
                                                         >
-                                                            Users
-                                                        </button>
+                                                            View
+                                                        </Link>
                                                         <button
                                                             onClick={() => openEditModal(t)}
                                                             className="text-[11px] px-3 py-1 rounded-md bg-gray-600 text-white hover:bg-gray-700 transition-colors"
@@ -296,8 +296,8 @@ export function TenantsPage() {
                             {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
                                 const pageNum = totalPages <= 7 ? i + 1
                                     : page <= 4 ? i + 1
-                                    : page >= totalPages - 3 ? totalPages - 6 + i
-                                    : page - 3 + i;
+                                        : page >= totalPages - 3 ? totalPages - 6 + i
+                                            : page - 3 + i;
                                 return (
                                     <button key={pageNum} onClick={() => setPage(pageNum)}
                                         className={`w-7 h-7 text-[12px] rounded-md border transition-colors ${page === pageNum

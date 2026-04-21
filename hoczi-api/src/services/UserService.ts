@@ -123,7 +123,11 @@ export class UserService {
 
         user.tenant_id = undefined;
 
-        return userRepository.save(user);
+        const response = await userRepository.save(user);
+        console.log('RESPONSE', response);
+        
+
+        return response
     }
 
     async findUserById(userId: number) {

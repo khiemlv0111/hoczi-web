@@ -15,7 +15,7 @@ export class User {
 	role?: string
 
 	@Column({ type: "int", nullable: true })
-	tenant_id?: number;
+	tenant_id?: number|null;
 
 
 	@Column({ type: 'varchar', unique: true })

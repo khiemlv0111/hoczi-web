@@ -121,7 +121,7 @@ export class UserService {
             throw new Error('User not found');
         }
 
-        user.tenant_id = undefined;
+        user.tenant_id = null;
 
         const response = await userRepository.save(user);
         console.log('RESPONSE', response);

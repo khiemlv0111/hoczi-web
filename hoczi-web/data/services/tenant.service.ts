@@ -14,7 +14,7 @@ export type Tenant = {
     status?: string;
     created_at?: string;
     members?: TenantMember[];
-    tenantUsers: any[],
+    users: any[],
 };
 
 export type CreateTenantPayload = {

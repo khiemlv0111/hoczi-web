@@ -136,10 +136,10 @@ export function TenantDetailPage({ id }: { id: number }) {
         return <div className="text-center py-12 text-sm text-gray-400">Tenant not found.</div>;
     }
 
-    const users: TenantMember[] = Array.isArray(tenant.members)
-        ? tenant.members
-        : Array.isArray(tenant.tenantUsers)
-        ? tenant.tenantUsers
+    const users: TenantMember[] = Array.isArray(tenant.users)
+        ? tenant.users
+        : Array.isArray(tenant.users)
+        ? tenant.users
         : [];
 
     return (

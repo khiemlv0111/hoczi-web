@@ -224,9 +224,11 @@ export class LessonService {
         const user = await userRepository.findById(data.user_id);
         if (user) {
             user.tenant_id = data.tenant_id;
+            user.role = data.role
 
             await userRepository.save(user);
         }
+        return user;
 
     }
 

@@ -71,6 +71,8 @@ export function SubjectsTab({ classes, setClasses }: {
 
     useEffect(() => {
         LessonService.getAllSubjects().then(res => {
+            console.log('ALL SUBJECT', res);
+            
             setSubjects(res?.data ?? res ?? [])
         }).catch(() => { }).finally(() => setLoading(false))
     }, [])

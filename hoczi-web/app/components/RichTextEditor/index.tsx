@@ -3,17 +3,22 @@
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Image from '@tiptap/extension-image'
-import { useRef } from 'react'
-// import {
-//   Bold, Italic, List, ListOrdered, ImageIcon, Smile
-// } from 'lucide-react'
+import { useRef, useState } from 'react'
 
 import {
-  Bold, Italic, List, ListOrdered, ImageIcon, Smile, Link2, Link2Off
+  Bold, Italic, List, ListOrdered, ImageIcon, Smile, Link2, Link2Off, Baseline
 } from 'lucide-react'
 import Link from '@tiptap/extension-link'
+import { Color } from '@tiptap/extension-color'
+import { TextStyle } from '@tiptap/extension-text-style'
 
 const EMOJI_LIST = ['😀', '😂', '❤️', '👍', '🔥', '🎉', '🙏', '💯', '😎', '🤔', '✅', '❌', '⚠️', '⏳', '🟢', '🟡', '🔴', '📌', '📎', '⚡', '🐛', '💀', '👉', '🔐']
+
+const COLOR_PRESETS = [
+  '#000000', '#374151', '#6B7280', '#EF4444', '#F97316',
+  '#EAB308', '#22C55E', '#3B82F6', '#8B5CF6', '#EC4899',
+  '#06B6D4', '#14B8A6', '#F59E0B', '#84CC16', '#A855F7',
+]
 
 interface RichTextEditorProps {
   onChange?: (html: string) => void
@@ -23,12 +28,16 @@ interface RichTextEditorProps {
 export function RichTextEditor({ onChange, placeholder }: RichTextEditorProps) {
   const fileRef = useRef<HTMLInputElement>(null)
   const emojiRef = useRef<HTMLDivElement>(null)
+  const colorRef = useRef<HTMLDivElement>(null)
+  const [currentColor, setCurrentColor] = useState('#000000')
 
   const editor = useEditor({
     immediatelyRender: false, // 👈 thêm dòng này
     extensions: [
       StarterKit,
       Image.configure({ inline: false, allowBase64: true }),
+      TextStyle,
+      Color,
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
@@ -66,6 +75,16 @@ export function RichTextEditor({ onChange, placeholder }: RichTextEditorProps) {
     if (emojiRef.current) {
       emojiRef.current.classList.toggle('hidden')
     }
+  }
+
+  const toggleColorPicker = () => {
+    colorRef.current?.classList.toggle('hidden')
+  }
+
+  const applyColor = (color: string) => {
+    setCurrentColor(color)
+    editor?.chain().focus().setColor(color).run()
+    colorRef.current?.classList.add('hidden')
   }
 
   if (!editor) return null
@@ -138,6 +157,43 @@ export function RichTextEditor({ onChange, placeholder }: RichTextEditorProps) {
           className="hidden"
           onChange={e => e.target.files?.[0] && insertImage(e.target.files[0])}
         />
+
+        <div className="w-px h-4 bg-gray-200 mx-1" />
+
+        {/* Text color picker */}
+        <div className="relative">
+          <ToolbarBtn onClick={toggleColorPicker} title="Text color">
+            <span className="flex flex-col items-center gap-0.5">
+              <Baseline className="w-4 h-4" />
+              <span className="w-4 h-0.5 rounded-full" style={{ backgroundColor: currentColor }} />
+            </span>
+          </ToolbarBtn>
+          <div
+            ref={colorRef}
+            className="hidden absolute top-9 left-0 z-10 bg-white border border-gray-200 rounded-lg shadow-md p-2 w-44"
+          >
+            <div className="grid grid-cols-5 gap-1 mb-2">
+              {COLOR_PRESETS.map(color => (
+                <button
+                  key={color}
+                  onClick={() => applyColor(color)}
+                  title={color}
+                  className="w-7 h-7 rounded-full border border-gray-200 hover:scale-110 transition-transform"
+                  style={{ backgroundColor: color }}
+                />
+              ))}
+            </div>
+            <div className="flex items-center gap-1.5 border-t border-gray-100 pt-2">
+              <label className="text-xs text-gray-500 shrink-0">Custom:</label>
+              <input
+                type="color"
+                value={currentColor}
+                onChange={e => applyColor(e.target.value)}
+                className="w-full h-7 rounded cursor-pointer border border-gray-200"
+              />
+            </div>
+          </div>
+        </div>
 
         {/* Emoji picker */}
         <div className="relative">

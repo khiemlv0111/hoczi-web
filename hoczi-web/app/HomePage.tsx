@@ -60,6 +60,7 @@ export default function HomePage() {
     setTopicList([]);
     if (categoryId) {
       QuestionService.getTopicList(Number(categoryId)).then((topics) => {
+        
         setTopicList(topics ?? []);
       });
     }

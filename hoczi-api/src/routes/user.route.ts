@@ -38,5 +38,8 @@ userRoutes.post('/create-question', new QuestionController().createQuestion);
 
 userRoutes.get('/get-dashboard-result', new UserController().getDashboarResult);
 
+userRoutes.put('/remove-user-from-tenant/:id', new UserController().removeUserFromTenant);
+
+
 
 export default userRoutes;

@@ -114,6 +114,18 @@ export class UserService {
         return userRepository.save(user);
     }
 
+    async removeUserFromTenant(userId: number) {
+        const user = await userRepository.findById(userId);
+
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        user.tenant_id = undefined;
+
+        return userRepository.save(user);
+    }
+
     async findUserById(userId: number) {
         return await userRepository.findById(userId);
     }

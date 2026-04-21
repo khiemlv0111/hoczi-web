@@ -45,6 +45,12 @@ export class UserController {
 
     }
 
+    async removeUserFromTenant(req: Request, res: Response) {
+        const userId = Number(req.params.id);
+        const user = await userService.removeUserFromTenant(userId);
+        return res.json({ success: true, data: user });
+    }
+
     async getDashboarResult(req: Request, res: Response) {
         const { id } = req.user;
 

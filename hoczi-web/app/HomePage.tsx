@@ -22,7 +22,7 @@ const DIFFICULTY_OPTIONS = [
 export default function HomePage() {
   const { handleStartQuiz, getUserProfile, user, handleGetQuestionList, messages } = useAppData();
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [openModal, setOpenModal] = useState(false);
 
   const [gradeList, setGradeList] = useState<any[]>([]);
@@ -37,7 +37,9 @@ export default function HomePage() {
   useEffect(() => {
     const token = Cookies.get(APP_ACCESS_TOKEN_KEY);
     if (token) {
-      getUserProfile();
+      getUserProfile().then((r) => {
+        setLoading(false)
+      })
     }
   }, [])
 
@@ -91,6 +93,10 @@ export default function HomePage() {
 
 
   }
+
+  // if(1==1){
+  //   return <FullScreenLoading />
+  // }
 
 
   return (
@@ -150,7 +156,7 @@ export default function HomePage() {
         </p>
 
         {
-          loading && <FullScreenLoading />
+         loading &&  <FullScreenLoading isBlur/>
         }
 
         {

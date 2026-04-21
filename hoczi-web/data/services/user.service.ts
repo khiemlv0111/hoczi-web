@@ -59,6 +59,15 @@ export class UserService {
         return response.data
     }
 
+    static async getTenantUsers(payload: PaginationPayload) {
+        const params = new URLSearchParams();
+        if (payload.keyword) params.append('keyword', payload.keyword);
+
+        const query = params.toString() ? `?${params.toString()}` : '';
+        const response = await getRequest(`/api/users/user-tenant-list${query}`, true);
+        return response.data
+    }
+
     static async deleteUser(id: number) {
         const response = await deleteRequest(`/api/users/${id}`, true);
         return response

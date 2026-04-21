@@ -19,7 +19,7 @@ function AddMemberModal({ tenantId, onClose, onAdded }: { tenantId: number; onCl
     useEffect(() => {
         const timer = setTimeout(() => {
             setSearching(true);
-            UserService.getAllUsers({ page: 1, limit: 50, keyword: search || undefined })
+            UserService.getTenantUsers({ page: 1, limit: 50, keyword: search || undefined })
                 .then((data) => {
                     const list = Array.isArray(data) ? data : (data?.users ?? data?.data ?? data?.items ?? []);
                     setUsers(list);

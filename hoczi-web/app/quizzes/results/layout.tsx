@@ -24,6 +24,7 @@ import {
     Brain,
     Menu,
     Mail,
+    CalendarCheck,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
@@ -36,6 +37,7 @@ const navMain = [
     { path: '/quizzes/results/students', label: "Students", icon: Users },
     { path: '/quizzes/results/teachers', label: "Teachers", icon: BookPlus },
     { path: '/quizzes/results/games', label: "Games", icon: ChessKing },
+    { path: '/quizzes/results/schedules', label: "Schedules", icon: CalendarCheck },
     { path: '/quizzes/results/ai-learn', label: "AI Learn", icon: Brain },
     { path: '/quizzes/results/inbox', label: "Inbox", icon: Mail },
 ];

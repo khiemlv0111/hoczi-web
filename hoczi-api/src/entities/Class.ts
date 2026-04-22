@@ -12,6 +12,7 @@ import { User } from './User';
 import { ClassMember } from './ClassMember';
 import { ClassSubject } from './ClassSubject';
 import { Tenant } from './Tenant';
+import { Schedule } from './Schedule';
 
 @Entity('classes')
 export class Class {
@@ -63,4 +64,7 @@ export class Class {
 
     @UpdateDateColumn()
     updated_at!: Date;
+
+    @OneToMany(() => Schedule, (schedule) => schedule.class)
+    schedules!: Schedule[];
 }

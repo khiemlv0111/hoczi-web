@@ -2,6 +2,8 @@ import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, Ma
 import { Exclude } from 'class-transformer'
 import { QuizSession } from './QuizSession'
 import { Tenant } from './Tenant'
+import { Schedule } from './Schedule'
+import { ScheduleUser } from './ScheduleUser'
 
 @Entity('users')
 export class User {
@@ -15,7 +17,7 @@ export class User {
 	role?: string
 
 	@Column({ type: "int", nullable: true })
-	tenant_id?: number|null;
+	tenant_id?: number | null;
 
 
 	@Column({ type: 'varchar', unique: true })
@@ -42,4 +44,11 @@ export class User {
 
 	@OneToMany(() => QuizSession, (session) => session.user)
 	quiz_sessions!: QuizSession[];
+
+
+	@OneToMany(() => Schedule, (schedule) => schedule.creator)
+	created_schedules!: Schedule[];
+
+	@OneToMany(() => ScheduleUser, (scheduleUser) => scheduleUser.user)
+	schedule_users!: ScheduleUser[];
 }

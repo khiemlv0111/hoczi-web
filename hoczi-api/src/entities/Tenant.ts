@@ -9,6 +9,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { User } from './User';
+import { Schedule } from './Schedule';
 
 export enum TenantPlanType {
   FREE = 'free',
@@ -108,4 +109,7 @@ export class Tenant {
 
   @DeleteDateColumn({ type: 'timestamptz', nullable: true })
   deleted_at?: Date | null;
+
+  @OneToMany(() => Schedule, (schedule) => schedule.tenant)
+  schedules!: Schedule[];
 }

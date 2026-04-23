@@ -236,4 +236,9 @@ export class LessonService {
         return await tenantRepository.findById(id);
     }
 
+
+    async updateAssignmentStatus(id: number, status: string) {
+        return assignmentRepository.updateStatus(id, status);
+    }
+
 }

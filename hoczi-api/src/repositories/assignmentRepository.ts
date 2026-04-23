@@ -16,7 +16,7 @@ class AssignmentRepository {
             description: data.description,
             class_subject_id: data.class_subject_id,
             lesson_id: data.lesson_id,
-            due_at: data.due_at,
+            due_at: data.due_date,
             assigned_by: userId,
             assignment_type: data.assignment_type
         });
@@ -64,6 +64,14 @@ class AssignmentRepository {
             .execute();
 
         return assignments;
+    }
+    async updateStatus(id: number, status: string) {
+        const assignment = await this.repo.findOneBy({ id });
+        if (!assignment) {
+            throw new Error('Assignment not found');
+        }
+        assignment.status = status;
+        return this.repo.save(assignment);
     }
 
 

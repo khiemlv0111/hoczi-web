@@ -256,5 +256,15 @@ export class LessonController {
     }
 
 
+    async updateAssignmentStatus(req: Request, res: Response) {
+        const { id } = req.params;
+        const { status } = req.body;
+        if (!status) {
+            return res.status(400).json({ success: false, message: 'status is required' });
+        }
+        const response = await lessonService.updateAssignmentStatus(Number(id), status);
+        return res.json(response);
+    }   
+
 
 }

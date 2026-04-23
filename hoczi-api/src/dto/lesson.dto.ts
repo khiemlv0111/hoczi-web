@@ -39,7 +39,7 @@ export class CreateAssignmentRequest {
     class_id?: number;
 
     @IsOptional()
-    due_at!: string;
+    due_date!: string;
 
     @IsOptional()
     assignment_type?: string;

@@ -79,6 +79,9 @@ lessonRoutes.post('/assign-user-to-tenant', new LessonController().assignUserToT
 
 lessonRoutes.get('/get-tenant-detail/:id', new LessonController().getTenantDetail);
 
+lessonRoutes.put('/update-assignment-status/:id', new LessonController().updateAssignmentStatus);
+
+
 
 
 

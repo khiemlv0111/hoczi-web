@@ -275,15 +275,6 @@ export default function ResultLayout({
                                     )}
 
                                     <Link
-                                        href="/admin/tenants/5"
-                                        className="w-full flex items-center gap-2 px-4 py-2 text-[13px] text-gray-700 hover:bg-gray-50 transition-colors"
-                                    >
-                                        <User size={16} />
-                                        <span className="ml-1">Company</span>
-                                    </Link>
-
-
-                                    <Link
                                         href="/quizzes/results/profile"
                                         className="w-full flex items-center gap-2 px-4 py-2 text-[13px] text-gray-700 hover:bg-gray-50 transition-colors"
                                     >

@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { QuestionService } from "@/data/services/question.service";
 import { useAppData } from "../context/AppContext";
 import { FullScreenLoading } from "../components/FullScreenLoading";
+import Link from "next/link";
 
 
 function tokenize(line: string): { type: string; value: string }[] {
@@ -289,7 +290,7 @@ export function QuizPage() {
 
 
   useEffect(() => {
-    
+
 
 
     // QuestionService.getQuizSessions().then((res) => {
@@ -305,11 +306,11 @@ export function QuizPage() {
   useEffect(() => {
 
     // call api to get questions here
-    if(listQuestions){
+    if (listQuestions) {
       console.log('Quest LIST====', listQuestions);
-      
+
       setQuestions(normalizeQuestions(listQuestions ?? []));
-      
+
     } else {
       router.push(`/`)
 
@@ -318,7 +319,24 @@ export function QuizPage() {
   }, []);
 
   if (questions.length === 0) {
-    return <FullScreenLoading />;
+    return (
+      <main className="relative min-h-screen flex flex-col overflow-hidden pt-[90px]">
+        <Background />
+        <div className="relative z-10 flex-1 flex flex-col justify-center px-6 py-12 max-w-2xl mx-auto w-full">
+        {/* <div>
+          {user?.name}
+        </div> */}
+
+        {/* Question title */}
+        <h2 className="text-white text-2xl font-semibold mb-5">
+          {'Không có câu hỏi nào được tìm thấy cho quiz này. Vui lòng quay lại sau hoặc chọn một quiz khác.'}
+        </h2>
+        <Link href="/" className="text-blue-500 hover:underline">
+          Quay lại trang chủ
+        </Link>
+        </div>
+      </main>
+    )
   }
 
   const q = questions[current];

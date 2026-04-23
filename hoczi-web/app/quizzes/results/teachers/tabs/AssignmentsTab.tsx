@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import { ClassItem } from "@/data/services/class.service"
-import { QuestionService } from "@/data/services/question.service"
 import { LessonService } from "@/data/services/lesson.service"
 import { Plus, X, ClipboardList, Loader2, Users, GraduationCap } from "lucide-react"
 import { Field, INPUT, Assignment, Lesson } from "./shared"
@@ -138,30 +137,36 @@ function CreateAssignmentModal({ classes, onClose, onCreate }: {
     const [classId, setClassId] = useState<number | ''>(classes[0]?.id ?? '')
     const [subjectId, setSubjectId] = useState<number | ''>('')
     const [lessonId, setLessonId] = useState<number | ''>('')
-    const [subjects, setSubjects] = useState<{ id: number; name: string }[]>([])
     const [lessons, setLessons] = useState<Lesson[]>([])
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
     useEffect(() => {
-        QuestionService.getCategoryList().then(res => setSubjects(res ?? [])).catch(() => { })
         LessonService.getMyLessons().then(res => setLessons(res?.data ?? res ?? [])).catch(() => { })
     }, [])
+
+    const availableSubjects = classes.find(c => c.id === classId)?.class_subjects ?? []
 
     const submit = async () => {
         if (!title.trim()) { setError('Title is required'); return }
         if (!classId) { setError('Select a class'); return }
         setLoading(true); setError('')
         try {
+            const classSubjectId = subjectId
+                ? availableSubjects.find(cs => cs.subject_id === subjectId)?.id
+                : undefined
+
             const assignmentPayload: Assignment = {
                 title: title.trim(),
                 description: description.trim() || undefined,
                 due_date: dueDate || undefined,
                 class_id: classId,
-                class_subject_id: subjectId || undefined,
+                class_subject_id: classSubjectId,
                 lesson_id: lessonId || undefined,
                 assignment_type: 'lesson', // quiz, lesson, mixed
             }
+
+            
             const res = await LessonService.createAssignment(assignmentPayload)
             onCreate(res?.data ?? res)
         } catch { setError('Failed to create assignment') }
@@ -179,7 +184,7 @@ function CreateAssignmentModal({ classes, onClose, onCreate }: {
                     <Field label="Title" required><input value={title} onChange={e => setTitle(e.target.value)} placeholder="e.g. Chapter 3 exercises" className={INPUT} /></Field>
                     <div className="grid grid-cols-2 gap-3">
                         <Field label="Class" required>
-                            <select value={classId} onChange={e => setClassId(Number(e.target.value))} className={INPUT}>
+                            <select value={classId} onChange={e => { setClassId(Number(e.target.value)); setSubjectId('') }} className={INPUT}>
                                 <option value="">Select class</option>
                                 {classes.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                             </select>
@@ -188,9 +193,9 @@ function CreateAssignmentModal({ classes, onClose, onCreate }: {
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                         <Field label="Subject">
-                            <select value={subjectId} onChange={e => setSubjectId(e.target.value ? Number(e.target.value) : '')} className={INPUT}>
-                                <option value="">Select subject</option>
-                                {subjects.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+                            <select value={subjectId} onChange={e => setSubjectId(e.target.value ? Number(e.target.value) : '')} className={INPUT} disabled={availableSubjects.length === 0}>
+                                <option value="">{availableSubjects.length === 0 ? 'No subjects' : 'Select subject'}</option>
+                                {availableSubjects.map(cs => <option key={cs.id} value={cs.subject_id}>{cs.subject?.name ?? cs.subject_id}</option>)}
                             </select>
                         </Field>
                         <Field label="Lesson">

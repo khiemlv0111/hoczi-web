@@ -1,4 +1,4 @@
-import { deleteRequest, getRequest, postRequest } from "../http";
+import { deleteRequest, getRequest, postRequest, putRequest } from "../http";
 import { Assignment, Lesson } from "../types";
 import { QuizAssignment } from "./payload_type";
 
@@ -112,6 +112,11 @@ export class LessonService {
 
     static async getAssignmentStudentDetail(assignmentStudentDetail: number) {
         const response = await getRequest(`/api/lessons/teacher-get-assignment-student-detail/${assignmentStudentDetail}`, true);
+        return response;
+    }
+
+    static async updateAssignmentStudent(assignmentStudentId: number, status: string) {
+        const response = await putRequest(`/api/lessons/update-assignment-status/${assignmentStudentId}`, { status }, true);
         return response;
     }
 

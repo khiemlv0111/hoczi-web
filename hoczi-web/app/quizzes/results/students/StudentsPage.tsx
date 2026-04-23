@@ -270,7 +270,8 @@ export function StudentsdPage() {
             const next = new Set(prev)
             next.has(id) ? next.delete(id) : next.add(id)
             return next
-        })
+        });
+        LessonService.updateAssignmentStudent(id, completedIds.has(id) ? 'completed' : 'pending');
     }
 
     useEffect(() => {
@@ -348,7 +349,8 @@ export function StudentsdPage() {
                                         <div className="min-w-0">
                                             <p className={`text-[13px] font-semibold truncate ${done ? 'line-through text-gray-400' : 'text-gray-900'}`}>{a.assignment.title}</p>
                                             {a.assignment.description && (
-                                                <p className="text-[12px] text-gray-500 truncate">{a.assignment.description}</p>
+                                                <div className="text-[12px] text-gray-500 truncate" dangerouslySetInnerHTML={{ __html: a.assignment.description }} />
+                                
                                             )}
                                             {a.assignment.due_date && (
                                                 <p className="text-[11px] text-gray-400 mt-0.5">Due: {a.assignment.due_date}</p>
@@ -363,13 +365,18 @@ export function StudentsdPage() {
                                             View
                                         </button>
                                         <button
-                                            onClick={() => toggleCompleted(id)}
+                                            onClick={() => {
+                                                console.log('ASSSIGME', a);
+                                                
+                                                toggleCompleted(id)
+                                            }}
                                             className={`px-3 py-1.5 text-[12px] font-medium rounded-lg border transition-colors ${done
                                                     ? 'bg-green-500 border-green-500 text-white hover:bg-green-600'
                                                     : 'border-gray-200 text-gray-500 hover:border-green-400 hover:text-green-600'
                                                 }`}
                                         >
-                                            {done ? 'Completed' : 'Mark done'}
+                                            {/* {done ? 'Completed' : 'Mark done'}  */}
+                                            {a.status === 'completed' ? 'Completed' : 'Mark as Complete'}
                                         </button>
                                     </div>
                                 </div>

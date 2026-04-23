@@ -62,7 +62,7 @@ export class AuthController {
 
 
     uploadFile = async (req: Request, res: Response) => {
-        const file = req.file;
+        const file = (req as any).file;
 
         if (!file) {
             return res.status(400).json({ message: "No file uploaded" });

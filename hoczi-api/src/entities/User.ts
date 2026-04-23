@@ -42,6 +42,9 @@ export class User {
 	@JoinColumn({ name: 'tenant_id' })
 	tenant!: Tenant;
 
+	@OneToOne(() => Tenant, (tenant) => tenant.owner)
+	ownedTenant!: Tenant | null;
+
 	@OneToMany(() => QuizSession, (session) => session.user)
 	quiz_sessions!: QuizSession[];
 

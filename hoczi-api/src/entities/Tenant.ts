@@ -7,6 +7,9 @@ import {
   DeleteDateColumn,
   Index,
   OneToMany,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
 } from 'typeorm';
 import { User } from './User';
 import { Schedule } from './Schedule';
@@ -62,6 +65,9 @@ export class Tenant {
   @OneToMany(() => User, (user) => user.tenant)
   users!: User[];
 
+  @OneToOne(() => User, (user) => user.ownedTenant)
+  @JoinColumn({ name: 'owner_user_id' })
+  owner!: User;
 
   @Column({ type: 'bigint', nullable: true })
   organization_id?: string | null;

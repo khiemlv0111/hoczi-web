@@ -212,6 +212,16 @@ export class LessonService {
     }
 
     async createTenant(data: CreateTenantRequest) {
+        
+        const response = await tenantRepository.createOne(data);
+        
+        if(data.owner_user_id && response){
+            const user = await userRepository.findById(data.owner_user_id);
+            if(user){
+                user.tenant_id = response.id;
+                await userRepository.save(user);
+            }
+        }
         return tenantRepository.createOne(data);
     }
 

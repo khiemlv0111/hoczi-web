@@ -44,7 +44,7 @@ const navMain = [
 
 const navSettings = [
     { path: '/quizzes/results/teachers', label: "Account preferences", icon: Settings },
-    { path: '/organization/tenants/5', label: "Company Management", icon: Monitor },
+    { path: '/organization/tenants', label: "Company Management", icon: Monitor },
     { path: '/quizzes/results/teachers', label: "Notifications", icon: Bell },
 ];
 
@@ -93,6 +93,18 @@ export default function ResultLayout({
 
     const handleNavigate = (item: any) => {
         setSidebarOpen(false);
+        if (item.label === 'Company Management') {
+            if ((user as any)?.ownedTenant) {
+                const tenantId = (user as any)?.ownedTenant?.id; // 
+                router.push(`/organization/tenants/${tenantId}`);
+                return;
+
+            } else {
+                return
+            }
+
+
+        }
         router.push(item.path);
     }
 
@@ -201,7 +213,7 @@ export default function ResultLayout({
                 {/* Settings nav */}
                 <div className="px-2 mt-3">
                     <p className="text-[11px] text-gray-400 uppercase tracking-wider px-2 mb-1">Settings</p>
-                    {navSettings.map(({path, label, icon: Icon }) => (
+                    {navSettings.map(({ path, label, icon: Icon }) => (
                         <button
                             key={label}
                             onClick={() => handleNavigate({ path, label, icon: Icon })}

@@ -7,9 +7,12 @@ import QuizSessionTable from "./QuizSessionTable"
 import { useAppData } from "@/app/context/AppContext"
 
 export function ResultPage(){
-    const { handleGetQuizSessions } = useAppData();
+    const { handleGetQuizSessions, user } = useAppData();
+
     useEffect(() => {
         handleGetQuizSessions();
+        console.log('USER INFO', user);
+        
     },[])
 
 

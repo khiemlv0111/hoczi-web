@@ -102,6 +102,8 @@ export default function AdminLayout({
     useEffect(() => {
         // console.log('USERS', user)
         if (user) {
+            console.log('USERS===', user);
+            
 
             if (user.role !== 'admin') {
                 router.push(`/`)

@@ -32,11 +32,20 @@ class AssignmentStudentRepository {
 
     async findAssignmentStudentDetail(assignmentStudentId: number) {
         const response = await this.repo.findOne({
-            where: {id: assignmentStudentId},
+            where: { id: assignmentStudentId },
             relations: ['assignment', 'student', 'comments']
         });
         return response;
 
+    }
+
+    async updateStatus(id: number, status: string) {
+        const assignment = await this.repo.findOneBy({ id });
+        if (!assignment) {
+            throw new Error('Assignment not found');
+        }
+        assignment.status = status;
+        return this.repo.save(assignment);
     }
 }
 

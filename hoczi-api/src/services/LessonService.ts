@@ -238,7 +238,7 @@ export class LessonService {
 
 
     async updateAssignmentStatus(id: number, status: string) {
-        return assignmentRepository.updateStatus(id, status);
+        return assignmentStudentRepository.updateStatus(id, status);
     }
 
 }

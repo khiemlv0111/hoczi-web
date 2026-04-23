@@ -19,7 +19,7 @@ export const Navbar = () => {
     const { user, messages, handleSetMessages } = useAppData()
     const pathname = usePathname()
 
-    const noLayoutPaths = ['/quizzes/results', '/admin', '/register'];
+    const noLayoutPaths = ['/quizzes/results','/organization', '/admin', '/register'];
     if (noLayoutPaths.some(path => pathname.startsWith(path))) return null;
 
     let textColor = pathname.startsWith('/auth') ? 'text-gray-800' : 'text-white'

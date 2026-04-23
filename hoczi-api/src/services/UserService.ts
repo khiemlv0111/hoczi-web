@@ -84,10 +84,11 @@ export class UserService {
 
     async userProfile(id: number) {
         const user = await userRepository.userProfile(id);
+        const { password: _, ...userWithoutPassword } = user as any;
         return {
             message: "get user success",
             success: true,
-            user: user
+            user: userWithoutPassword
         }
     }
 

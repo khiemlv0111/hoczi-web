@@ -173,11 +173,15 @@ export class LessonController {
 
     async assignSessionToStudent(req: Request, res: Response) {
         const { session_id, student_id, title, due_at } = req.body;
+        
         if (!session_id || !student_id) {
             return res.status(400).json({ success: false, message: 'session_id and student_id are required' });
         }
-        const userId = (req as any).user?.id;
-        const response = await lessonService.assignSessionToStudent(Number(session_id), Number(student_id), userId, title, due_at);
+        const teacherId = req.user.id;
+        if (!teacherId) {
+            return res.status(400).json({ success: false, message: "No teacher ID found" });
+        }
+        const response = await lessonService.assignSessionToStudent(Number(session_id), Number(student_id), teacherId, title, due_at);
         return res.json(response);
     }
 
@@ -264,7 +268,7 @@ export class LessonController {
         }
         const response = await lessonService.updateAssignmentStatus(Number(id), status);
         return res.json(response);
-    }   
+    }
 
 
 }

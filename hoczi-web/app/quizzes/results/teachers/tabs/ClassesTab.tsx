@@ -10,6 +10,7 @@ import {
     Loader2, School, Hash, ClipboardList, GraduationCap,
 } from "lucide-react"
 import { Field, INPUT, Member, Assignment, AssignTarget } from "./shared"
+import { UserService } from "@/data/services/user.service"
 
 function AssignModal({ target, onClose }: { target: AssignTarget; onClose: () => void }) {
     const [title, setTitle] = useState('')
@@ -319,7 +320,15 @@ export function ClassesTab({ classes, allUsers, loadingClasses, teacherId, setCl
     const [showCreate, setShowCreate] = useState(false)
     const [showAddMember, setShowAddMember] = useState(false)
     const [assignTarget, setAssignTarget] = useState<AssignTarget | null>(null)
-    const [assignStudentTarget, setAssignStudentTarget] = useState<{ classId: number; studentId: number; studentName: string } | null>(null)
+    const [assignStudentTarget, setAssignStudentTarget] = useState<{ classId: number; studentId: number; studentName: string } | null>(null);
+    const [sameTenantUsers, setSameTenantUsers] = useState<User[]>([])
+
+    useEffect(() => {
+        ///
+        UserService.getUsersSameTenant({ keyword: ''}).then(res => {
+            setSameTenantUsers(res)
+        }).catch(() => { })  
+    }, [])
 
     const selectClass = (cls: ClassItem) => {
         setSelectedClass(cls)
@@ -496,7 +505,7 @@ export function ClassesTab({ classes, allUsers, loadingClasses, teacherId, setCl
 
             {showCreate && <CreateClassModal onClose={() => setShowCreate(false)} onCreate={handleClassCreated} teacherId={teacherId} />}
             {showAddMember && selectedClass && (
-                <AddMemberModal classId={selectedClass.id} existingIds={memberIds} allUsers={allUsers}
+                <AddMemberModal classId={selectedClass.id} existingIds={memberIds} allUsers={sameTenantUsers}
                     onClose={() => setShowAddMember(false)} onAdded={handleMemberAdded} />
             )}
             {assignTarget && <AssignModal target={assignTarget} onClose={() => setAssignTarget(null)} />}

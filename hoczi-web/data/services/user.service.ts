@@ -123,6 +123,16 @@ export class UserService {
     }
 
 
+    static async getUsersSameTenant(payload: PaginationPayload) {
+        const params = new URLSearchParams();
+        if (payload.keyword) params.append('keyword', payload.keyword);
+
+        const query = params.toString() ? `?${params.toString()}` : '';
+        const response = await getRequest(`/api/users/user-list-same-tenant${query}`, true);
+        return response
+    }
+
+
 
 
 

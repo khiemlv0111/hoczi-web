@@ -54,7 +54,9 @@ class QuizSessionRepository {
     }
 
     async saveOne(payload: any) {
-        return await this.repo.save(payload);
+        const response = await this.repo.save(payload);
+        const quizSession = await this.findById(response.id);
+        return quizSession;
     }
 
 

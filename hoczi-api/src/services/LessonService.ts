@@ -100,7 +100,7 @@ export class LessonService {
         }
 
         const assignment = await assignmentRepository.createOne(teacherId,
-            { title, class_subject_id, due_at: due_at ?? '', description: '', assignment_type: 'quiz' } as any
+            { title, class_subject_id, due_at: due_at ?? '', description: '', assignment_type: 'quiz', quizId: quizId } as any
         );
         await assignmentStudentRepository.createOne({ assignment_id: assignment.id, student_id: studentId });
         return { success: true, session: quizSession, message: 'Session assigned to student' };

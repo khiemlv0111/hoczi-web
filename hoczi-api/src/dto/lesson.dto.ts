@@ -52,6 +52,9 @@ export class CreateAssignmentRequest {
 
     @IsOptional()
     description!: string;
+
+    @IsOptional()
+    quizId?: number;
 }
 
 

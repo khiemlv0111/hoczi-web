@@ -227,11 +227,21 @@ export class LessonService {
 
         const response = await tenantRepository.createOne(data);
 
+        const ixisitingUser = await userRepository.findById(data.owner_user_id);
+
+        if(!ixisitingUser){
+            throw new BadRequestError("User not found");
+        }
+
+        if(ixisitingUser?.tenant){
+            throw new BadRequestError("User already belongs to a tenant");
+        }
+
         if (data.owner_user_id && response) {
-            const user = await userRepository.findById(data.owner_user_id);
-            if (user) {
-                user.tenant_id = response.id;
-                await userRepository.save(user);
+            // const user = await userRepository.findById(data.owner_user_id);
+            if (ixisitingUser) {
+                ixisitingUser.tenant_id = response.id;
+                await userRepository.save(ixisitingUser);
             }
         }
         return tenantRepository.createOne(data);

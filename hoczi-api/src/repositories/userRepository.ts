@@ -9,7 +9,10 @@ class UserRepository {
     }
 
     async findById(id: number) {
-        return this.repo.findOne({ where: { id } });
+        return this.repo.findOne({ 
+            where: { id },
+            relations: ['tenant']
+        });
     }
 
     async findUserDetail(id: number) {

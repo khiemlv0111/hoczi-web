@@ -15,12 +15,11 @@ class TenantRepository {
     }
 
     async findById(id: number) {
-        return this.repo.findOne({ 
+        return this.repo.findOne({
             where: { id },
             relations: ['users']
         });
     }
-
 
     async update(id: number, data: Partial<Tenant>) {
         await this.repo.update(id, data);
@@ -37,7 +36,7 @@ class TenantRepository {
 
     // }
 
-    
+
 
 
 }

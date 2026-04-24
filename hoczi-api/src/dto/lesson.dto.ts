@@ -122,8 +122,8 @@ export class CreateTenantRequest {
     @IsOptional()
     logo_url?: string;
 
-    @IsOptional()
-    owner_user_id?: number;
+    @IsNotEmpty()
+    owner_user_id!: number;
 
     @IsOptional()
     code!: string;

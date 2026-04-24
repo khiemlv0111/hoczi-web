@@ -83,3 +83,18 @@ insert into categories(name, slug, description, is_active) values ('Language Art
 
 
 Language Art
+
+
+update subjects set name = 'Toán học - Mathematics' where code = 'mathematics';
+update subjects set name = 'Khoa học - Science' where code = 'science';
+update subjects set name = 'Tiếng anh - English' where code = 'english';
+update subjects set name = 'Địa lý - Geography' where code = 'geography';
+update subjects set name = 'Sinh học - Biology' where code = 'biology';
+update subjects set name = 'Hoá học - Chemistry' where code = 'chemistry';
+update subjects set name = 'Vật lý - Physics' where code = 'physics';
+update subjects set name = 'Khoa học máy tính - Computer Science' where code = 'computer';
+update subjects set name = 'Tiếng trung - Chinese' where code = 'chinese';
+
+insert into subjects(name, code, description, status) values ('Science', 'science-english', 'Science in English language', 'active');
+insert into subjects(name, code, description, status) values ('Math', 'mathematics', 'Mathematics in English', 'active');
+insert into subjects(name, code, description, status) values ('Language Art', 'language-art', 'Language Art in English', 'active');

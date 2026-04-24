@@ -9,7 +9,7 @@ class UserRepository {
     }
 
     async findById(id: number) {
-        return this.repo.findOne({ 
+        return this.repo.findOne({
             where: { id },
             relations: ['tenant']
         });
@@ -97,6 +97,24 @@ class UserRepository {
 
     async createInitUser(user: any) {
         return this.repo.save(user);
+    }
+
+    async findByTenantId(tenantId: number, keyword?: string) {
+
+        const where = keyword
+            ? [
+                { tenant_id: tenantId, name: ILike(`%${keyword}%`) },
+                { tenant_id: tenantId, email: ILike(`%${keyword}%`) },
+                { tenant_id: tenantId, username: ILike(`%${keyword}%`) },
+            ]
+            : { tenant_id: tenantId };
+
+        const users = await this.repo.find({
+            where,
+            relations: ['tenant']
+        });
+
+        return users;
     }
 
 

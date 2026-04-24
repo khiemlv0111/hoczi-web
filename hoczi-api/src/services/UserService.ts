@@ -135,7 +135,7 @@ export class UserService {
 
         const response = await userRepository.save(user);
         console.log('RESPONSE', response);
-        
+
 
         return response
     }
@@ -197,6 +197,24 @@ export class UserService {
         }
         const { password: _, ...userWithoutPassword } = user as any;
         return userWithoutPassword;
+    }
+
+    async getSameTenantUsers(userId: number, keyword?: string) {
+        // 1. Lấy tenant_id của user hiện tại
+        const currentUser = await userRepository.findById(userId);
+
+        if (!currentUser) {
+            throw new Error('User not found');
+        }
+
+        if (!currentUser.tenant_id) {
+            return [];  // User không thuộc tenant nào
+        }
+
+        // 2. Tìm tất cả users cùng tenant
+        const users = await userRepository.findByTenantId(currentUser.tenant_id, keyword);
+
+        return users;
     }
 
 

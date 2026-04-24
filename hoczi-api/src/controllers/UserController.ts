@@ -84,6 +84,16 @@ export class UserController {
         return res.json({ success: true, data: user });
     }
 
+
+    async getUserListSameTenant(req: Request, res: Response) {
+        const { id } = req.user;
+
+        const keyword = req.query.keyword ? String(req.query.keyword).trim() : undefined;
+
+        const response = await userService.getSameTenantUsers(Number(id), keyword);
+        return res.json(response);
+    }
+
     
 
 

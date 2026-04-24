@@ -45,6 +45,10 @@ userRoutes.put('/remove-user-from-tenant/:id', new UserController().removeUserFr
 userRoutes.get('/get-user-detail/:id', new UserController().getUserDetail);
 
 
+userRoutes.get('/user-list-same-tenant', new UserController().getUserListSameTenant);
+
+
+
 
 
 export default userRoutes;

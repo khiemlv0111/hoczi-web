@@ -152,6 +152,8 @@ export function SessionDetailPage({ sessionId }: any) {
 
     useEffect(() => {
         UserService.getSessionDetail(sessionId).then((res) => {
+            console.log('SESSION DATA', res.data);
+            
             setQuestions(res.data.questions);
             setSessionData(res.data.session);
         });
@@ -170,18 +172,29 @@ export function SessionDetailPage({ sessionId }: any) {
         <div className="min-h-screen bg-gray-50">
             {/* Header */}
             <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
-                <div className="max-w-4xl mx-auto px-6 py-4 flex items-center gap-4">
-                    <button
-                        onClick={() => router.back()}
-                        className="p-2 rounded-lg hover:bg-gray-100 text-gray-500 transition-colors"
-                    >
-                        <ArrowLeft size={18} />
-                    </button>
-                    <div className="flex-1 min-w-0">
-                        <h1 className="font-semibold text-gray-900 truncate">
-                            {sessionData.quiz?.title ?? "Quiz Review"}
-                        </h1>
-                        <p className="text-xs text-gray-400 mt-0.5">Session #{sessionData.id}</p>
+                <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+                    <div className="flex gap-2">
+                        <button
+                            onClick={() => router.back()}
+                            className="p-2 rounded-lg hover:bg-gray-100 text-gray-500 transition-colors"
+                        >
+                            <ArrowLeft size={18} />
+                        </button>
+                        <div className="flex-1 min-w-0">
+                            <h1 className="font-semibold text-gray-900 truncate">
+                                {sessionData.quiz?.title ?? "Quiz Review"}
+                            </h1>
+
+
+                            <p className="text-xs text-gray-400 mt-0.5">Session #{sessionData.id}</p>
+                        </div>
+
+                    </div>
+
+                    <div className="flex flex-col">
+                        <p className="font-semibold">{sessionData.user?.name}</p>
+                        <p>{sessionData.user?.email}</p>
+
                     </div>
                     <StatusBadge status={sessionData.status} />
                 </div>

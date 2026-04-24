@@ -49,7 +49,7 @@ function AssignmentModal({ assignment, onClose }: { assignment: any, onClose: ()
 
         console.log('assignment==', assignment);
         console.log('quizz assignment==', a);
-        LessonService.getQuizDetail(a.id).then((res) => {
+        LessonService.getQuizDetail(a.quiz_id).then((res) => {
             console.log('QUIZ DETAIL==', res);
             const quiz = res.data;
         })

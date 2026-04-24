@@ -77,5 +77,14 @@ export class UserController {
         return res.json(response);
     }
 
+    async getUserDetail(req: Request, res: Response) {
+        const userId = Number(req.params.id);
+
+        const user = await userService.getUserDetail(userId);
+        return res.json({ success: true, data: user });
+    }
+
+    
+
 
 }

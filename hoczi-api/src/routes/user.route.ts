@@ -42,6 +42,9 @@ userRoutes.get('/get-dashboard-result', new UserController().getDashboarResult);
 
 userRoutes.put('/remove-user-from-tenant/:id', new UserController().removeUserFromTenant);
 
+userRoutes.get('/get-user-detail/:id', new UserController().getUserDetail);
+
+
 
 
 export default userRoutes;

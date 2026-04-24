@@ -49,3 +49,37 @@ CREATE TABLE schedule_users (
 
     UNIQUE (schedule_id, user_id)
 );
+
+
+insert into grades(name, code, sort_order) values ('Tổng hợp', 'general', 13);
+update categories set name = 'Tiếng Anh - English' where slug = 'english';
+update categories set name = 'Tiếng Trung - Chinese' where slug = 'chinese';
+update categories set name = 'Lịch sử - History' where slug = 'history';
+
+update categories set name = 'Tổng hợp - General Knowledge' where slug = 'general-knowledge';
+
+update categories set name = 'Tài chính - Finance' where slug = 'finance';
+
+update categories set name = 'Địa lý - Geography' where slug = 'geography';
+
+update categories set name = 'Văn học - Literature' where slug = 'literature';
+
+update categories set name = 'Văn học - Literature' where slug = 'literature';
+
+
+
+update categories set name = 'Lập trình - Programming' where slug = 'programming';
+update categories set name = 'Khoa học máy tính - Computer Science' where slug = 'computer-science';
+update categories set name = 'Tư duy logic - Logical Thinking' where slug = 'logical-thinking';
+update categories set name = 'Phỏng vấn & Sự nghiệp - Interview & Career' where slug = 'interview-career';
+
+-- update categories set name = 'Toán học - Mathematics' where slug = 'mathematics';
+
+
+insert into categories(name, slug, description, is_active) values ('Math', 'math', 'Mathematics in English', true);
+insert into categories(name, slug, description, is_active) values ('Science', 'science-english', 'Science in English', true);
+
+insert into categories(name, slug, description, is_active) values ('Language Art', 'language-art', 'Language Art in English', true);
+
+
+Language Art

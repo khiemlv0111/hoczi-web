@@ -12,6 +12,13 @@ class UserRepository {
         return this.repo.findOne({ where: { id } });
     }
 
+    async findUserDetail(id: number) {
+        return this.repo.findOne({
+            where: { id },
+            relations: ['tenant', 'ownedTenant', 'schedule_users', 'quiz_sessions', 'quiz_sessions.user_answers']
+        });
+    }
+
     async findByEmail(email: string) {
         return this.repo.findOne({ where: { email } });
     }

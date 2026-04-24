@@ -190,4 +190,14 @@ export class UserService {
         }
     }
 
+    async getUserDetail(userId: number) {
+        const user = await userRepository.findUserDetail(userId);
+        if (!user) {
+            throw new Error('User not found');
+        }
+        const { password: _, ...userWithoutPassword } = user as any;
+        return userWithoutPassword;
+    }
+
+
 }

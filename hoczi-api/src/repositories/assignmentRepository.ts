@@ -18,7 +18,8 @@ class AssignmentRepository {
             lesson_id: data.lesson_id,
             due_at: data.due_date,
             assigned_by: userId,
-            assignment_type: data.assignment_type
+            assignment_type: data.assignment_type,
+            quiz_id: data.quizId
         });
         return this.repo.save(classRoom);
     }

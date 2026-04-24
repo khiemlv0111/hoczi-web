@@ -40,6 +40,8 @@ export default function HomePage() {
       getUserProfile().then((r) => {
         setLoading(false)
       })
+    } else {
+      setLoading(false)
     }
   }, [])
 
@@ -94,11 +96,6 @@ export default function HomePage() {
 
 
   }
-
-  // if(1==1){
-  //   return <FullScreenLoading />
-  // }
-
 
   return (
     <main className="relative min-h-screen flex items-center justify-center overflow-hidden">

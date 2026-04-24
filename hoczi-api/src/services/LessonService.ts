@@ -89,12 +89,7 @@ export class LessonService {
         }
         const quizSession = await quizSessionRepository.saveOne({ id: sessionId, user_id: studentId, status: 'assigned' });
 
-        console.log("quizzz session", quizSession);
-        
-
         const quizId = quizSession?.quiz_id!;
-
-
 
         let class_subject_id: number;
         if (classSubjects.length === 1) {

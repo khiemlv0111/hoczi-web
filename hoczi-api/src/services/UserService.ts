@@ -212,7 +212,8 @@ export class UserService {
         }
 
         // 2. Tìm tất cả users cùng tenant
-        const users = await userRepository.findByTenantId(currentUser.tenant_id, keyword);
+        const response = await userRepository.findByTenantId(currentUser.tenant_id, keyword);
+        const users = response.filter(u => u.id !== userId); // Loại bỏ chính user hiện tại khỏi danh sách
 
         return users;
     }

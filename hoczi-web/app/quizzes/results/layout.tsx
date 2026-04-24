@@ -182,7 +182,7 @@ export default function ResultLayout({
                 <div className="px-2 mb-2">
                     <p className="text-[11px] text-gray-400 uppercase tracking-wider px-2 mb-1">Main</p>
                     {navMain.filter(({ label }) => {
-                        if (label === 'Students') return user?.role === 'user';
+                        if (label === 'Students') return user?.role === 'user' || user?.role === 'student';
                         if (label === 'Teachers') return user?.role === 'teacher';
                         return true;
                     }).map(({ path, label, icon: Icon }) => {

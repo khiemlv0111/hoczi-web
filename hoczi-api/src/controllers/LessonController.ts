@@ -153,7 +153,7 @@ export class LessonController {
     }
 
     async getQuizDetail(req: Request, res: Response) {
-        // const { id } = req.user;
+        const userId = req.user.id;
 
         const id = Number(req.params.id);
 

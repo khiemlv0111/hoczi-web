@@ -92,7 +92,7 @@ export class LessonService {
         console.log("quizzz session", quizSession);
         
 
-        const quizId = quizSession.quiz_id!;
+        const quizId = quizSession?.quiz_id!;
 
 
 

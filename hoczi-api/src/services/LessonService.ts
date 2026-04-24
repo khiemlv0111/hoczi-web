@@ -225,7 +225,7 @@ export class LessonService {
 
     async createTenant(data: CreateTenantRequest) {
 
-        const response = await tenantRepository.createOne(data);
+        const newTenant = await tenantRepository.createOne(data);
 
         const ixisitingUser = await userRepository.findById(data.owner_user_id);
 
@@ -237,14 +237,14 @@ export class LessonService {
             throw new BadRequestError("User already belongs to a tenant");
         }
 
-        if (data.owner_user_id && response) {
+        if (data.owner_user_id && newTenant) {
             // const user = await userRepository.findById(data.owner_user_id);
             if (ixisitingUser) {
-                ixisitingUser.tenant_id = response.id;
+                ixisitingUser.tenant_id = newTenant.id;
                 await userRepository.save(ixisitingUser);
             }
         }
-        return tenantRepository.createOne(data);
+        return newTenant;
     }
 
     async getTenantList() {

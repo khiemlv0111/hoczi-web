@@ -54,7 +54,7 @@ class QuizSessionRepository {
     }
 
     async saveOne(payload: any) {
-        return this.repo.save(payload);
+        return await this.repo.save(payload);
     }
 
 

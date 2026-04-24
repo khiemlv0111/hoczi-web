@@ -14,6 +14,19 @@ function AssignmentModal({ assignment, onClose }: { assignment: any, onClose: ()
     const { handleGetMyAssignments } = useAppData()
     const a = assignment.assignment
 
+
+
+    useEffect(() => {
+        console.log('SELECTED ASSIGNMENT==', assignment);
+
+        if (assignment.assignment.assignment_type === "quiz") {
+            console.log('SELECTED ASSIGNMENT quizzzzz ==', assignment.assignment);
+
+        }
+
+    }, [])
+
+
     const submitFeedBack = () => {
 
         const payload = {
@@ -29,6 +42,17 @@ function AssignmentModal({ assignment, onClose }: { assignment: any, onClose: ()
         })
         setFeedback('')
 
+    }
+
+    const getQuizDetail = () => {
+        console.log('assignment==', assignment);
+
+        console.log('assignment==', assignment);
+        console.log('quizz assignment==', a);
+        LessonService.getQuizDetail(a.id).then((res) => {
+            console.log('QUIZ DETAIL==', res);
+            const quiz = res.data;
+        })
     }
 
     return (
@@ -122,6 +146,25 @@ function AssignmentModal({ assignment, onClose }: { assignment: any, onClose: ()
                     <button onClick={onClose} className="px-4 py-2 text-[13px] font-medium text-gray-500 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
                         Cancel
                     </button>
+                    {
+                        a.assignment_type === "quiz" && (
+                            <button
+                                onClick={() => {
+
+                                    getQuizDetail();
+                                }}
+
+                                className="px-4 py-2 text-[13px] font-medium text-white bg-green-500 rounded-lg hover:bg-green-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                            >
+                                Start do quiz
+
+                            </button>
+
+                        )
+
+                    }
+
+
                     <button
                         onClick={() => submitFeedBack()}
                         disabled={!feedback.trim()}
@@ -143,14 +186,14 @@ type Member = { id: number; class_id: number; status: string; student: { id: num
 function ClassesTab({ classes, loadingClasses }: { classes: ClassItem[]; loadingClasses: boolean }) {
     const [selectedClass, setSelectedClass] = useState<ClassItem | null>(null)
     const [members, setMembers] = useState<Member[]>([]);
-    const {classDetail, handleGetClassDetail} = useAppData();
+    const { classDetail, handleGetClassDetail } = useAppData();
 
     const selectClass = (cls: ClassItem) => {
         setSelectedClass(cls);
-         handleGetClassDetail(cls.id);
+        handleGetClassDetail(cls.id);
         setMembers((classDetail?.members as Member[]) ?? []);
 
-       
+
     }
 
     return (
@@ -277,7 +320,7 @@ export function StudentsdPage() {
     useEffect(() => {
         ClassService.getStudentClasses().then((res) => {
             setClasses(res.data);
-            
+
         }).finally(() => setLoadingClasses(false))
         let page = 1;
         let limit = 999;
@@ -304,8 +347,8 @@ export function StudentsdPage() {
                 <button
                     onClick={() => setActiveTab('assignments')}
                     className={`px-4 py-2 text-[13px] font-medium transition-colors border-b-2 -mb-px ${activeTab === 'assignments'
-                            ? 'border-blue-500 text-blue-600'
-                            : 'border-transparent text-gray-500 hover:text-gray-700'
+                        ? 'border-blue-500 text-blue-600'
+                        : 'border-transparent text-gray-500 hover:text-gray-700'
                         }`}
                 >
                     Assignments
@@ -313,8 +356,8 @@ export function StudentsdPage() {
                 <button
                     onClick={() => setActiveTab('student-list')}
                     className={`px-4 py-2 text-[13px] font-medium transition-colors border-b-2 -mb-px ${activeTab === 'student-list'
-                            ? 'border-blue-500 text-blue-600'
-                            : 'border-transparent text-gray-500 hover:text-gray-700'
+                        ? 'border-blue-500 text-blue-600'
+                        : 'border-transparent text-gray-500 hover:text-gray-700'
                         }`}
                 >
                     Student List
@@ -322,8 +365,8 @@ export function StudentsdPage() {
                 <button
                     onClick={() => setActiveTab('classes')}
                     className={`px-4 py-2 text-[13px] font-medium transition-colors border-b-2 -mb-px ${activeTab === 'classes'
-                            ? 'border-blue-500 text-blue-600'
-                            : 'border-transparent text-gray-500 hover:text-gray-700'
+                        ? 'border-blue-500 text-blue-600'
+                        : 'border-transparent text-gray-500 hover:text-gray-700'
                         }`}
                 >
                     Classes
@@ -350,7 +393,7 @@ export function StudentsdPage() {
                                             <p className={`text-[13px] font-semibold truncate ${done ? 'line-through text-gray-400' : 'text-gray-900'}`}>{a.assignment.title}</p>
                                             {a.assignment.description && (
                                                 <div className="text-[12px] text-gray-500 truncate" dangerouslySetInnerHTML={{ __html: a.assignment.description }} />
-                                
+
                                             )}
                                             {a.assignment.due_date && (
                                                 <p className="text-[11px] text-gray-400 mt-0.5">Due: {a.assignment.due_date}</p>
@@ -367,12 +410,12 @@ export function StudentsdPage() {
                                         <button
                                             onClick={() => {
                                                 console.log('ASSSIGME', a);
-                                                
+
                                                 toggleCompleted(id)
                                             }}
                                             className={`px-3 py-1.5 text-[12px] font-medium rounded-lg border transition-colors ${done
-                                                    ? 'bg-green-500 border-green-500 text-white hover:bg-green-600'
-                                                    : 'border-gray-200 text-gray-500 hover:border-green-400 hover:text-green-600'
+                                                ? 'bg-green-500 border-green-500 text-white hover:bg-green-600'
+                                                : 'border-gray-200 text-gray-500 hover:border-green-400 hover:text-green-600'
                                                 }`}
                                         >
                                             {/* {done ? 'Completed' : 'Mark done'}  */}

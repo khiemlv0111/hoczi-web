@@ -1,12 +1,11 @@
-// import { UsersPage } from "./UsersPage";
-
 import { UserDetailPage } from "./UserDetailPage";
 
-export default function Page(){
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
     return (
         <div>
-            <h1>User Page page</h1>
-            <UserDetailPage />
+            <UserDetailPage userId={Number(id)} />
         </div>
     )
 }
+

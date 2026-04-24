@@ -110,7 +110,21 @@ export class UserService {
     }
 
 
-   
+    static async getUserDetail(id: number) {
+
+        //  const response = await getServerRequest('/api/users/user-profile', true);
+
+        const response = await getRequest(`/api/users/get-user-detail/${id}`, true);
+
+        // const response = await getServerRequest(`/api/users/session-detail/${id}`, token, true);
+
+
+        return response.data
+    }
+
+
+
+
 
 
 }

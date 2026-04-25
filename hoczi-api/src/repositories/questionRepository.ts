@@ -53,9 +53,12 @@ class QuestionRepository {
 
         const qb = this.repo
             .createQueryBuilder('question')
-            .leftJoinAndSelect('question.answers', 'answers');
+            .leftJoinAndSelect('question.answers', 'answers')
+            .leftJoinAndSelect('question.grade', 'grade')
+            .leftJoinAndSelect('question.category', 'category')
+            .leftJoinAndSelect('question.topic', 'topic');
 
-    
+
         if (filter?.source === 'teacher') {
             qb.andWhere('question.created_by = :teacherId', {
                 teacherId: filter.teacherId,

@@ -280,6 +280,12 @@ function normalizeQuestions(raw: any[]): any[] {
   });
 }
 
+function formatTime(seconds: number): string {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
+
 export function QuizPage() {
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState<Record<number, string>>({});
@@ -287,6 +293,9 @@ export function QuizPage() {
   const [questions, setQuestions] = useState<any[]>([]);
   const { getUserProfile, user, quiz, quizSession, listQuestions } = useAppData();
   const router = useRouter();
+  const [timeLeft, setTimeLeft] = useState<number | null>(
+    quiz?.duration_minutes ? quiz.duration_minutes * 60 : null
+  );
 
 
   useEffect(() => {
@@ -305,6 +314,9 @@ export function QuizPage() {
 
   useEffect(() => {
 
+    console.log("quiz===", quiz);
+
+
     // call api to get questions here
     if (listQuestions) {
       console.log('Quest LIST====', listQuestions);
@@ -317,6 +329,16 @@ export function QuizPage() {
     }
 
   }, []);
+
+  useEffect(() => {
+    if (timeLeft === null || finished) return;
+    if (timeLeft <= 0) {
+      setFinished(true);
+      return;
+    }
+    const id = setTimeout(() => setTimeLeft((t) => (t !== null ? t - 1 : null)), 1000);
+    return () => clearTimeout(id);
+  }, [timeLeft, finished]);
 
   if (questions.length === 0) {
     return (
@@ -392,11 +414,22 @@ export function QuizPage() {
     <main className="relative min-h-screen flex flex-col overflow-hidden">
       <Background />
 
+      {timeLeft !== null && (
+        <div
+          className="fixed right-4 z-40 px-4 py-1.5 rounded-full text-sm font-mono font-semibold shadow-lg"
+          style={{
+            top: "calc(4rem + 10px)",
+            background: timeLeft <= 60 ? "rgba(220,38,38,0.9)" : "rgba(0,0,0,0.45)",
+            color: "#fff",
+            backdropFilter: "blur(6px)",
+          }}
+        >
+          {formatTime(timeLeft)}
+        </div>
+      )}
+
       {/* Content */}
       <div className="relative z-10 flex-1 flex flex-col justify-center px-6 py-12 max-w-2xl mx-auto w-full">
-        {/* <div>
-          {user?.name}
-        </div> */}
 
         {/* Question title */}
         <h2 className="text-white text-2xl font-semibold mb-5">

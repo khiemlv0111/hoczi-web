@@ -38,6 +38,7 @@ type Quiz = {
     correct_answers?: string,
     end_time?: string,
     user_id: number,
+    duration_minutes?: number,
 }
 
 type QuizSession = {

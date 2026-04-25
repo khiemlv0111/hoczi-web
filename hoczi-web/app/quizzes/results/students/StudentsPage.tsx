@@ -56,7 +56,12 @@ function AssignmentModal({ assignment, onClose }: { assignment: any, onClose: ()
             console.log('QUIZ DETAIL==', res);
             handleDoQuizAssignment(a.quiz_id).then((quizData) => {
                 console.log('quizData', quizData);
-                router.push(`/quizzes`);
+                if(quizData.success){
+                    router.push(`/quizzes`);
+                } else {
+                    alert('Failed to start quiz')
+                }
+                
                 // onClose();
             })
             // const quiz = res.data;

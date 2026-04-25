@@ -81,6 +81,11 @@ export class LessonService {
         if (!sessionId || !studentId || !teacherId) {
             throw new BadRequestError('sessionId, studentId, and teacherId are required');
         }
+        const quizSessionExists = await quizSessionRepository.findQuizSessionByIdAndUserId(sessionId, studentId);
+
+        if (quizSessionExists && quizSessionExists.length > 0) {
+            throw new BadRequestError('Session already assigned to student');
+        }
 
 
         const classSubjects = await classSubjectRepository.findByTeacherId(teacherId);

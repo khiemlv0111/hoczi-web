@@ -55,8 +55,7 @@ class QuestionRepository {
             .createQueryBuilder('question')
             .leftJoinAndSelect('question.answers', 'answers')
             .leftJoinAndSelect('question.grade', 'grade')
-            .leftJoinAndSelect('question.category', 'category')
-            .leftJoinAndSelect('question.topic', 'topic');
+            .leftJoinAndSelect('question.category', 'category');
 
 
         if (filter?.source === 'teacher') {

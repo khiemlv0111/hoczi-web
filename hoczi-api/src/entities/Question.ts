@@ -10,6 +10,8 @@ import {
 } from "typeorm";
 import { Answer } from "./Answer";
 import { Grade } from "./Grade";
+import { Category } from "./Category";
+import { Topic } from "./Topic";
 
 @Entity("questions")
 export class Question {
@@ -68,6 +70,12 @@ export class Question {
     })
     @JoinColumn({ name: "grade_id" })
     grade?: Grade;
+
+    @ManyToOne(() => Category, (category) => category.questions, {
+        onDelete: "SET NULL",
+    })
+    @JoinColumn({ name: "category_id" })
+    category?: Category;
 
     @UpdateDateColumn({ type: "timestamptz" })
     updated_at!: Date;

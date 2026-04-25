@@ -7,6 +7,7 @@ import {
   OneToMany,
 } from "typeorm";
 import { Topic } from "./Topic";
+import { Question } from "./Question";
 
 @Entity("categories")
 export class Category {
@@ -27,6 +28,9 @@ export class Category {
 
   @OneToMany(() => Topic, (topic) => topic.category)
   topics!: Topic[];
+
+  @OneToMany(() => Question, (question) => question.category)
+  questions!: Question[];
 
   @CreateDateColumn({ type: "timestamptz" })
   created_at!: Date;

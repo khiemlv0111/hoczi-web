@@ -75,7 +75,7 @@ export class LessonService {
     }
 
     async assignSessionToStudent(sessionId: number, studentId: number, teacherId: number, title?: string, due_at?: string) {
-       
+
 
         // Input validation
         if (!sessionId || !studentId || !teacherId) {
@@ -83,11 +83,8 @@ export class LessonService {
         }
 
 
-         const currentSession = await quizSessionRepository.findById(sessionId);
+        const currentSession = await quizSessionRepository.findById(sessionId);
 
-         console.log("quizId", currentSession);
-        console.log("StudentId", studentId);
-        console.log("Quizz", currentSession?.quiz);
         const currentQuizId = currentSession?.quiz_id;
         // console.log("quizSessionExists", quizSessionExists);
         if (!currentQuizId) {
@@ -101,8 +98,8 @@ export class LessonService {
         if (quizSessionExists && quizSessionExists.length > 0) {
             throw new BadRequestError('Session already assigned to student');
         }
-        
-        
+
+
 
 
         const classSubjects = await classSubjectRepository.findByTeacherId(teacherId);
@@ -113,7 +110,7 @@ export class LessonService {
 
         const quizId = quizSession?.quiz_id!;
 
-       
+
 
         let class_subject_id: number;
         if (classSubjects.length === 1) {
@@ -219,7 +216,7 @@ export class LessonService {
         let userAnswers;
 
         if (userAnswersPayload.length > 0) {
-           userAnswers = await userAnswerRepository.createMany(userAnswersPayload);
+            userAnswers = await userAnswerRepository.createMany(userAnswersPayload);
         }
 
 
@@ -253,11 +250,11 @@ export class LessonService {
 
         const ixisitingUser = await userRepository.findById(data.owner_user_id);
 
-        if(!ixisitingUser){
+        if (!ixisitingUser) {
             throw new BadRequestError("User not found");
         }
 
-        if(ixisitingUser?.tenant){
+        if (ixisitingUser?.tenant) {
             throw new BadRequestError("User already belongs to a tenant");
         }
 

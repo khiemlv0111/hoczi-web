@@ -186,14 +186,14 @@ export class QuestionService {
         }
 
         // check if time is over
-        if (userSession?.end_time && userSession?.end_time > new Date()) {
-            return {
-                success: false,
-                message: "Quiz time has expired",
-                quiz: null,
-                quizSession: null,
-            }
-        }
+        // if (userSession?.end_time && userSession?.end_time > new Date()) {
+        //     return {
+        //         success: false,
+        //         message: "Quiz time has expired",
+        //         quiz: null,
+        //         quizSession: null,
+        //     }
+        // }
 
         // const userSession = userSessions[0];
 

@@ -75,10 +75,7 @@ export class LessonService {
     }
 
     async assignSessionToStudent(sessionId: number, studentId: number, teacherId: number, title?: string, due_at?: string) {
-        console.log("SessionId", sessionId);
-        console.log("StudentId", studentId);
-        console.log("TeacherId", teacherId);
-
+       
 
         // Input validation
         if (!sessionId || !studentId || !teacherId) {
@@ -96,12 +93,16 @@ export class LessonService {
         const quizId = quizSession?.quiz_id!;
 
         const quizSessionExists = await quizSessionRepository.findQuizIdAndUserId(quizId, studentId);
+
+         console.log("quizId", quizId);
+        console.log("StudentId", studentId);
         console.log("quizSessionExists", quizSessionExists);
+
+
 
         if (quizSessionExists && quizSessionExists.length > 0) {
             throw new BadRequestError('Session already assigned to student');
         }
-
         
 
         let class_subject_id: number;

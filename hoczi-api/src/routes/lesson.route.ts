@@ -25,6 +25,9 @@ lessonRoutes.get('/get-assignments', new LessonController().getAllAssignments);
 
 lessonRoutes.post('/assign-student-assignment', new LessonController().assignStudentAssignment);
 
+lessonRoutes.post('/mark-assignment-complete/:id', new LessonController().markAssignmentComplete);
+
+
 
 // lessonRoutes.post('/add-member', new ClassController().addMember);
 

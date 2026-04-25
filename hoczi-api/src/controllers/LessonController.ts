@@ -68,8 +68,13 @@ export class LessonController {
         const response = await lessonService.assignStudentAssignment(input);
         return res.json(response);
     }
+    async markAssignmentComplete(req: Request, res: Response) {
 
+        const id = Number(req.params.id);
 
+        const response = await lessonService.markAssignmentComplete(id);
+        return res.json(response);
+    }
 
 
     async getAllSubjects(req: Request, res: Response) {

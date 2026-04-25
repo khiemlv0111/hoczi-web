@@ -100,8 +100,6 @@ export class LessonService {
         }
 
 
-
-
         const classSubjects = await classSubjectRepository.findByTeacherId(teacherId);
         if (!classSubjects) {
             return { success: false, message: 'No class subjects found' };

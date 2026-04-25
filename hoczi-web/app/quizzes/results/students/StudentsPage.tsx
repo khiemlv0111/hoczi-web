@@ -336,13 +336,15 @@ export function StudentsdPage() {
     const [loadingClasses, setLoadingClasses] = useState(true)
     const { myAssignments, handleGetMyAssignments } = useAppData();
 
-    const toggleCompleted = (id: number) => {
+    const toggleCompleted = (a: any) => {
         setCompletedIds(prev => {
             const next = new Set(prev)
-            next.has(id) ? next.delete(id) : next.add(id)
+            next.has(a.id) ? next.delete(a.id) : next.add(a.id)
             return next
         });
-        LessonService.updateAssignmentStudent(id, completedIds.has(id) ? 'completed' : 'pending');
+        const status = a.status === 'completed' ? 'pending' : 'completed';
+        
+        LessonService.updateAssignmentStudent(a.id, status);
     }
 
     useEffect(() => {
@@ -439,7 +441,7 @@ export function StudentsdPage() {
                                             onClick={() => {
                                                 console.log('ASSSIGME', a);
 
-                                                toggleCompleted(id)
+                                                toggleCompleted(a)
                                             }}
                                             className={`px-3 py-1.5 text-[12px] font-medium rounded-lg border transition-colors ${done
                                                 ? 'bg-green-500 border-green-500 text-white hover:bg-green-600'

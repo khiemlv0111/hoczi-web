@@ -262,9 +262,9 @@ export class QuestionService {
         quizSession.status = "completed";
         quizSession.end_time = new Date();
 
-        quiz.status = "completed";
+        // quiz.status = "completed";
 
-        await quizRepository.saveOne(quiz);
+        // await quizRepository.saveOne(quiz);
         await quizSessionRepository.saveOne(quizSession);
 
         // create user_answers

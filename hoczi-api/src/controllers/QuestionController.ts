@@ -133,6 +133,18 @@ export class QuestionController {
         return res.json(response);
     }
 
+    
+
+    async markQuizAsCompleted(req: Request, res: Response) {
+
+        const quizId = Number(req.params.id);
+
+        const { id } = req.user;
+
+        const response = await questionService.markQuizAsCompleted(Number(id), quizId);
+        return res.json(response);
+    }
+
 
     async submitQuizSession(req: Request, res: Response) {
         const { id } = req.user;

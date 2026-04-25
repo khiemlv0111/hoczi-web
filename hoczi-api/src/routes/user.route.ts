@@ -50,6 +50,8 @@ userRoutes.get('/user-list-same-tenant', new UserController().getUserListSameTen
 
 userRoutes.post('/start-quiz-assignment/:id', new QuestionController().startQuizAssignment);
 
+userRoutes.post('/mark-quiz-as-completed/:id', new QuestionController().markQuizAsCompleted);
+
 
 
 

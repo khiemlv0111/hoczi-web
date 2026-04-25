@@ -181,7 +181,7 @@ export class QuestionService {
 
         const userSession = allSessions.find(s => s.user_id === userId);
 
-        if(!userSession){
+        if (!userSession) {
             throw new BadRequestError("Session not found");
         }
 
@@ -291,6 +291,23 @@ export class QuestionService {
         return quizSession;
 
 
+    }
+
+    async markQuizAsCompleted(userId: number, quizId: number) {
+        const quiz = await quizRepository.findById(quizId);
+
+        if (!quiz) {
+            throw new BadRequestError("Quiz not found");
+        }
+
+
+        await quizRepository.updateStatus(quizId);
+
+        return {
+            message: "Quiz marked as completed",
+            success: true,
+            quiz: quiz,
+        }
     }
 
     async myQuizSessions(userId: number, type?: 'free' | 'assignment') {

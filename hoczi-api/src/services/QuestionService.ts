@@ -169,7 +169,12 @@ export class QuestionService {
         }
 
         if (quiz.status === "completed") {
-            throw new BadRequestError("Quiz is completed");
+            return {
+                success: false,
+                message: "Quiz already completed",
+                quiz: null,
+                quizSession: null,
+            }
         }
 
         const allSessions = await quizSessionRepository.findByQuizId(quizId);

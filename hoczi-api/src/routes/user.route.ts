@@ -48,7 +48,7 @@ userRoutes.get('/get-user-detail/:id', new UserController().getUserDetail);
 userRoutes.get('/user-list-same-tenant', new UserController().getUserListSameTenant);
 
 
-userRoutes.post('/start-quiz-assignment/:id', new QuestionController().startRetry);
+userRoutes.post('/start-quiz-assignment/:id', new QuestionController().startQuizAssignment);
 
 
 

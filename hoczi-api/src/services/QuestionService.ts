@@ -162,6 +162,72 @@ export class QuestionService {
     }
 
 
+    async startQuizAssignment(userId: number, quizId: number) {
+        const quiz = await quizRepository.findById(quizId);
+        if (!quiz) {
+            throw new BadRequestError("Quiz not found");
+        }
+
+        const allSessions = await quizSessionRepository.findByQuizId(quizId);
+
+        const userSession = allSessions.find(s => s.user_id === userId);
+
+        if(!userSession){
+            throw new BadRequestError("Session not found");
+        }
+
+
+
+        // const userSession = userSessions[0];
+
+
+        const previousAnswers = userSession?.user_answers ?? [];
+
+        const newQuizSession = await quizSessionRepository.findById(userSession.id);
+
+        let questionList: any[] = [];
+
+        let message = '';
+
+        if (previousAnswers.length > 0) {
+            // const questionIds = previousAnswers.map((q) => q.question_id);
+
+            message = 'Questions Có sẵn trong quiz'
+
+            const questionIds = previousAnswers
+                .map((q) => q.question_id)
+                .filter((id): id is number => id !== null);
+            // const questionIds = previousAnswers.map((q) => q.question_id);
+
+            // questionList = await questionRepository.findByIds(questionIds);
+            questionList = await questionRepository.findByIds(questionIds);
+
+        } else {
+
+            message = 'Tạo questions mới'
+
+            const filter = {
+                gradeId: quiz.grade_id,
+                categoryId: quiz.category_id,
+                topicId: quiz.topic_id,
+            };
+
+            questionList = await questionRepository.findAll(filter, this.QUIZ_QUESTION_LIMIT);
+
+        }
+
+        return {
+            message: message,
+            success: true,
+            quiz: quiz,
+            quizSession: newQuizSession,
+            userAnswers: previousAnswers,
+            questions: questionList
+        }
+
+    }
+
+
     async submitQuizSession(userId: number, payload: SubmitQuizSessionRequest) {
 
         const quizSession = await quizSessionRepository.findById(payload.quiz_session_id);

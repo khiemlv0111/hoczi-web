@@ -10,6 +10,7 @@ import { CreateQuizRequest, SubmitQuizSessionRequest } from "../dto/user.dto";
 import { BadRequestError } from "../errors/api-erros";
 import { userAnswerRepository } from "../repositories/userAnswerRepository";
 import { quizRepository } from "../repositories/quizRepository";
+import dayjs from "dayjs";
 
 
 
@@ -186,14 +187,15 @@ export class QuestionService {
         }
 
         // check if time is over
-        // if (userSession?.end_time && userSession?.end_time > new Date()) {
-        //     return {
-        //         success: false,
-        //         message: "Quiz time has expired",
-        //         quiz: null,
-        //         quizSession: null,
-        //     }
-        // }
+        if (userSession?.due_at && dayjs().isAfter(userSession.due_at)) {
+            // hết hạn
+            return {
+                success: false,
+                message: "Quiz time has expired",
+                quiz: null,
+                quizSession: null,
+            }
+        }
 
         // const userSession = userSessions[0];
 

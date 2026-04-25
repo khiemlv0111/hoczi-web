@@ -28,7 +28,7 @@ class UserAnswerRepository {
     async createMany(payload: {
         session_id: number;
         question_id: number;
-        answer_id: number|null;
+        answer_id?: number|null;
         is_correct: boolean;
     }[]) {
         return await this.repo

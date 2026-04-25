@@ -168,6 +168,10 @@ export class QuestionService {
             throw new BadRequestError("Quiz not found");
         }
 
+        if (quiz.status === "completed") {
+            throw new BadRequestError("Quiz is completed");
+        }
+
         const allSessions = await quizSessionRepository.findByQuizId(quizId);
 
         const userSession = allSessions.find(s => s.user_id === userId);

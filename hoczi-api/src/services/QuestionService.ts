@@ -218,8 +218,8 @@ export class QuestionService {
 
     }
 
-    async myQuizSessions(userId: number) {
-        const quizSessions = await quizSessionRepository.findByUserId(userId);
+    async myQuizSessions(userId: number, type?: 'free' | 'assignment') {
+        const quizSessions = await quizSessionRepository.findByUserId(userId, type);
         return {
             message: "get quiz success",
             success: true,

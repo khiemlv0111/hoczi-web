@@ -24,11 +24,11 @@ class QuizSessionRepository {
         });
     }
 
-    async findByUserId(userId: number) {
+    async findByUserId(userId: number, type?: 'free' | 'assignment') {
         return this.repo.find({
             where: { 
                 user_id: userId,
-                // quiz: { quiz_type: 'free' }
+                quiz: { quiz_type: type }
             },
             relations: ['quiz', 'user_answers']
         });

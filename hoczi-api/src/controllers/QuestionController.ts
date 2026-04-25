@@ -141,8 +141,10 @@ export class QuestionController {
     async myQuizSessions(req: Request, res: Response) {
         const { id } = req.user;
 
+         const type = req.query.type as 'free' | 'assignment'| undefined;
 
-        const response = await questionService.myQuizSessions(Number(id));
+
+        const response = await questionService.myQuizSessions(Number(id), type);
         return res.json(response);
     }
 

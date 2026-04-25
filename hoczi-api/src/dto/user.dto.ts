@@ -36,8 +36,9 @@ export class QuizSessionDto {
     @IsNumber()
     question_id!: number;
 
+    @IsOptional()
     @IsNumber()
-    answer_id!: number;
+    answer_id?: number| null;
 
 }
 

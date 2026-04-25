@@ -186,6 +186,16 @@ export class QuestionService {
             throw new BadRequestError("Session not found");
         }
 
+
+        if (userSession.status === "completed") {
+            return {
+                success: false,
+                message: "Quiz session already submitted",
+                quiz: null,
+                quizSession: null,
+            }
+        }
+
         // check if time is over
         if (userSession?.due_at && dayjs().isAfter(userSession.due_at)) {
             // hết hạn

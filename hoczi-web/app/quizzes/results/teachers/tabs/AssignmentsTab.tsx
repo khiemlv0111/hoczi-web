@@ -177,7 +177,7 @@ function CreateAssignmentModal({ classes, onClose, onCreate }: {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
             <div className="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 p-6 max-h-[90vh] overflow-y-auto">
                 <div className="flex items-center justify-between mb-5">
-                    <h3 className="text-[15px] font-semibold text-gray-900">New Assignment -!</h3>
+                    <h3 className="text-[15px] font-semibold text-gray-900">New Assignment</h3>
                     <button onClick={onClose} className="p-1 rounded hover:bg-gray-100"><X size={15} className="text-gray-400" /></button>
                 </div>
                 <div className="space-y-3">

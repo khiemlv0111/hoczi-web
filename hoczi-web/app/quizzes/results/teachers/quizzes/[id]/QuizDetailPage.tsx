@@ -128,7 +128,7 @@ function CreateAssignmentModal({ quizId, onClose, onCreated }: {
             <div className="bg-white rounded-xl shadow-xl w-full max-w-lg mx-4 flex flex-col max-h-[90vh]">
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100">
-                    <h3 className="text-[15px] font-semibold text-gray-900">Create Assignment !!!</h3>
+                    <h3 className="text-[15px] font-semibold text-gray-900">Create Assignment</h3>
                     <button onClick={onClose} className="p-1 rounded hover:bg-gray-100">
                         <X size={15} className="text-gray-400" />
                     </button>

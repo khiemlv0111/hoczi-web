@@ -88,9 +88,9 @@ class QuizSessionRepository {
         if (!updated) throw new Error(`QuizSession ${id} not found after update`);
         return updated;
     }
-    async findQuizSessionByIdAndUserId(id: number, userId: number) {
+    async findQuizIdAndUserId(quizId: number, userId: number) {
         return this.repo.find({
-            where: { id: id, user_id: userId }
+            where: { quiz_id: quizId, user_id: userId }
         });
     }
 

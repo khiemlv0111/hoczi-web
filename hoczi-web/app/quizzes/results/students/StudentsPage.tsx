@@ -5,13 +5,16 @@ import { useAppData } from "@/app/context/AppContext"
 import { ClassService, ClassItem } from "@/data/services/class.service"
 import { LessonService } from "@/data/services/lesson.service"
 import { BookOpen, ChevronRight, Hash, School, Users, X } from "lucide-react"
+import QuizSessionTable from "@/app/quizzes/results/QuizSessionTable"
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
-type Tab = 'assignments' | 'student-list' | 'classes'
+type Tab = 'assignments' | 'quiz-results' | 'classes'
 
 function AssignmentModal({ assignment, onClose }: { assignment: any, onClose: () => void }) {
     const [feedback, setFeedback] = useState('')
-    const { handleGetMyAssignments } = useAppData()
+    const { handleGetMyAssignments, handleDoQuizAssignment } = useAppData();
+    const router = useRouter();
     const a = assignment.assignment
 
 
@@ -51,7 +54,12 @@ function AssignmentModal({ assignment, onClose }: { assignment: any, onClose: ()
         console.log('quizz assignment==', a);
         LessonService.getQuizDetail(a.quiz_id).then((res) => {
             console.log('QUIZ DETAIL==', res);
-            const quiz = res.data;
+            handleDoQuizAssignment(a.quiz_id).then((quizData) => {
+                console.log('quizData', quizData);
+                router.push(`/quizzes`);
+                // onClose();
+            })
+            // const quiz = res.data;
         })
     }
 
@@ -179,6 +187,18 @@ function AssignmentModal({ assignment, onClose }: { assignment: any, onClose: ()
     )
 }
 
+// ── View-only Quiz Results Tab ──────────────────────────────────────────────────
+
+function QuizResultsTab() {
+    const { handleGetQuizSessions } = useAppData();
+
+    useEffect(() => {
+        handleGetQuizSessions('assignment');
+    }, []);
+
+    return <QuizSessionTable />;
+}
+
 // ── View-only Classes Tab ──────────────────────────────────────────────────
 
 type Member = { id: number; class_id: number; status: string; student: { id: number; name: string; email: string } }
@@ -188,12 +208,15 @@ function ClassesTab({ classes, loadingClasses }: { classes: ClassItem[]; loading
     const [members, setMembers] = useState<Member[]>([]);
     const { classDetail, handleGetClassDetail } = useAppData();
 
+    useEffect(() => {
+        if (classDetail) {
+            setMembers((classDetail.members as Member[]) ?? []);
+        }
+    }, [classDetail]);
+
     const selectClass = (cls: ClassItem) => {
         setSelectedClass(cls);
         handleGetClassDetail(cls.id);
-        setMembers((classDetail?.members as Member[]) ?? []);
-
-
     }
 
     return (
@@ -354,13 +377,13 @@ export function StudentsdPage() {
                     Assignments
                 </button>
                 <button
-                    onClick={() => setActiveTab('student-list')}
-                    className={`px-4 py-2 text-[13px] font-medium transition-colors border-b-2 -mb-px ${activeTab === 'student-list'
+                    onClick={() => setActiveTab('quiz-results')}
+                    className={`px-4 py-2 text-[13px] font-medium transition-colors border-b-2 -mb-px ${activeTab === 'quiz-results'
                         ? 'border-blue-500 text-blue-600'
                         : 'border-transparent text-gray-500 hover:text-gray-700'
                         }`}
                 >
-                    Student List
+                    Quiz Results
                 </button>
                 <button
                     onClick={() => setActiveTab('classes')}
@@ -429,9 +452,9 @@ export function StudentsdPage() {
                 </div>
             )}
 
-            {activeTab === 'student-list' && (
-                <div className="bg-white border border-gray-200 rounded-xl p-4">
-                    <span className="text-[13px] font-medium text-gray-900">Student List</span>
+            {activeTab === 'quiz-results' && (
+                <div className="h-[calc(100vh-160px)] overflow-hidden">
+                    <QuizResultsTab />
                 </div>
             )}
 

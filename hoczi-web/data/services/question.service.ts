@@ -99,8 +99,13 @@ export class QuestionService {
         return response
     }
 
-    static async getQuizSessions() {
-        const response = await getRequest('/api/users/my-quiz-sessions', true);
+    static async doQuizAssignment(quizId: number) {
+        const response = await postRequest(`/api/users/start-quiz-assignment/${quizId}`, {}, true);
+        return response
+    }
+
+    static async getQuizSessions(type?: 'free' | 'assignment') {
+        const response = await getRequest(`/api/users/my-quiz-sessions?type=${type}`, true);
         return response.data
     }
 

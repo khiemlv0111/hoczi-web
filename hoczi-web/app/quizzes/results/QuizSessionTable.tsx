@@ -75,7 +75,11 @@ export default function QuizSessionTable() {
   const { quizSessions, handleRetryQuiz } = useAppData();
   const router = useRouter()
 
-  const sessions: QuizSession[] = quizSessions ?? [];
+  const EXCLUDED_STATUSES = ['assigned', 'draft'] as const;
+
+  const sessions: QuizSession[] = (quizSessions ?? []).filter(
+    (session) => !EXCLUDED_STATUSES.includes(session.status)
+  );
 
   const filtered =
     filterStatus === "all"
@@ -91,7 +95,7 @@ export default function QuizSessionTable() {
       handleRetryQuiz(quizId).then((res) => {
         console.log("QUESTION LIST", res.questions);
         router.push(`/quizzes`);
-        
+
 
       })
     }
@@ -111,7 +115,7 @@ export default function QuizSessionTable() {
   }
 
   return (
-    <div className="flex flex-col md:flex-row h-screen bg-gray-50 font-sans overflow-hidden">
+    <div className="flex flex-col md:flex-row h-full bg-gray-50 font-sans overflow-hidden">
       {/* Main table */}
       <div className="flex flex-col flex-1 min-w-0 transition-all duration-200">
         {/* Toolbar */}
@@ -133,8 +137,8 @@ export default function QuizSessionTable() {
                 key={s}
                 onClick={() => { setFilterStatus(s); setSelected(null); }}
                 className={`text-xs px-2.5 py-1.5 rounded-lg transition-colors ${filterStatus === s
-                    ? "bg-indigo-600 text-white"
-                    : "text-gray-500 hover:bg-gray-100"
+                  ? "bg-indigo-600 text-white"
+                  : "text-gray-500 hover:bg-gray-100"
                   }`}
               >
                 {s === "all" ? "All" : s === "in_progress" ? "In Progress" : s.charAt(0).toUpperCase() + s.slice(1)}
@@ -166,8 +170,8 @@ export default function QuizSessionTable() {
                     key={session.id}
                     onClick={() => setSelected(selected === session.id ? null : session.id)}
                     className={`border-b border-gray-100 cursor-pointer transition-colors ${selected === session.id
-                        ? "bg-indigo-50 border-l-2 border-l-indigo-500"
-                        : "hover:bg-gray-50"
+                      ? "bg-indigo-50 border-l-2 border-l-indigo-500"
+                      : "hover:bg-gray-50"
                       }`}
                   >
                     <td className="hidden sm:table-cell px-6 py-3 text-gray-400 text-xs">{session.id}</td>

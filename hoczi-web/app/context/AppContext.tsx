@@ -97,8 +97,9 @@ type AppContextType = {
     handleStartQuiz: (data?: any) => Promise<any>;
 
     getUserProfile: () => Promise<any>;
-    handleGetQuizSessions: () => void;
+    handleGetQuizSessions: (type?: 'free' | 'assignment') => void;
     handleRetryQuiz: (quizId: number) => Promise<any>;
+    handleDoQuizAssignment: (quizId: number) => Promise<any>;
     handleGetQuestionList: (payload: any) => Promise<any>;
     handleGetUsers: ({ page, limit }: PaginationPayload) => Promise<any>;
     handleGetMyAssignments: (page: number, limit: number) => void;
@@ -190,8 +191,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
     }
 
     // get my quiz session results
-    const handleGetQuizSessions = () => {
-        QuestionService.getQuizSessions().then((res) => {
+    const handleGetQuizSessions = (type?: 'free' | 'assignment') => {
+        QuestionService.getQuizSessions(type).then((res) => {
             setQuizSessions(res);
         })
     }
@@ -232,6 +233,21 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
     const handleRetryQuiz = async (quizId: number) => {
         const quizData = await QuestionService.retryQuiz(quizId);
+        // setQuiz(quizData.quiz);
+        // setQuizSession(quizData.quizSession);
+        console.log('quizData', quizData);
+
+        setQuiz(quizData.quiz);
+        setQuizSession(quizData.quizSession);
+
+        setListQuestions(quizData.questions);
+
+        return quizData
+
+    }
+
+    const handleDoQuizAssignment = async (quizId: number) => {
+        const quizData = await QuestionService.doQuizAssignment(quizId);
         // setQuiz(quizData.quiz);
         // setQuizSession(quizData.quizSession);
         console.log('quizData', quizData);
@@ -295,7 +311,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
             handleGetUsers,
             handleGetMyAssignments,
             handleGetClassDetail,
-            handleSetMessages
+            handleSetMessages,
+            handleDoQuizAssignment
         }}>
             {children}
         </AppContext.Provider>

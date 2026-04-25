@@ -10,14 +10,13 @@ export function ResultPage(){
     const { handleGetQuizSessions, user } = useAppData();
 
     useEffect(() => {
-        handleGetQuizSessions();
-        console.log('USER INFO', user);
+        handleGetQuizSessions('free');
         
     },[])
 
 
     return (
-        <div>
+        <div className="h-[calc(100vh-105px)] overflow-hidden">
             <QuizSessionTable />
         </div>
     )

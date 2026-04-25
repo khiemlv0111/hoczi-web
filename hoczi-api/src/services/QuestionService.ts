@@ -185,7 +185,15 @@ export class QuestionService {
             throw new BadRequestError("Session not found");
         }
 
-
+        // check if time is over
+        if (userSession?.end_time && userSession?.end_time > new Date()) {
+            return {
+                success: false,
+                message: "Quiz time has expired",
+                quiz: null,
+                quizSession: null,
+            }
+        }
 
         // const userSession = userSessions[0];
 

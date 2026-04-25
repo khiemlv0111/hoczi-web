@@ -52,6 +52,12 @@ export class QuizSession {
 
     @Column({
         type: "timestamptz",
+        nullable: true,
+    })
+    due_at!: Date | null;
+
+    @Column({
+        type: "timestamptz",
         default: () => "CURRENT_TIMESTAMP",
     })
     created_at!: Date;

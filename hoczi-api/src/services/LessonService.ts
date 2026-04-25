@@ -81,6 +81,21 @@ export class LessonService {
         if (!sessionId || !studentId || !teacherId) {
             throw new BadRequestError('sessionId, studentId, and teacherId are required');
         }
+
+
+         const currentSession = await quizSessionRepository.findById(sessionId);
+
+         console.log("quizId", currentSession);
+        console.log("StudentId", studentId);
+        console.log("Quizz", currentSession?.quiz);
+        // console.log("quizSessionExists", quizSessionExists);
+
+
+
+        // if (quizSessionExists && quizSessionExists) {
+        //     throw new BadRequestError('Session already assigned to student');
+        // }
+        
         
 
 
@@ -92,18 +107,7 @@ export class LessonService {
 
         const quizId = quizSession?.quiz_id!;
 
-        const quizSessionExists = await quizSessionRepository.findQuizIdAndUserId(quizId, studentId);
-
-         console.log("quizId", quizId);
-        console.log("StudentId", studentId);
-        console.log("quizSessionExists", quizSessionExists);
-
-
-
-        if (quizSessionExists && quizSessionExists.length > 0) {
-            throw new BadRequestError('Session already assigned to student');
-        }
-        
+       
 
         let class_subject_id: number;
         if (classSubjects.length === 1) {

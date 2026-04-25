@@ -5,13 +5,14 @@ import { useRouter } from "next/navigation"
 import { ClassItem } from "@/data/services/class.service"
 import { QuestionService } from "@/data/services/question.service"
 import { LessonService } from "@/data/services/lesson.service"
-import { Plus, X, HelpCircle, Loader2, CheckCircle2, Circle } from "lucide-react"
+import { Plus, X, HelpCircle, Loader2, CheckCircle2, Circle, List } from "lucide-react"
 import { CommonModal } from "@/app/components/modal/CommonModal"
 import { CreateQuestionForm } from "@/app/admin/questions/CreateQuestionForm"
 import { Field, INPUT, Quiz } from "./shared"
 import { useAppData } from "@/app/context/AppContext"
 import { SystemRoles } from "@/data/config/constants"
 import { QuizAssignment } from "@/data/services/payload_type"
+import Link from "next/link"
 
 const DIFFICULTIES = ['easy', 'medium', 'hard']
 
@@ -239,6 +240,7 @@ export function QuizzesTab({ classes }: { classes: ClassItem[] }) {
     const [showQuestionModal, setShowQuestionModal] = useState(false)
     const [selected, setSelected] = useState<Quiz | null>(null)
     const [filterClass, setFilterClass] = useState<number | 'all'>('all');
+
     const { user } = useAppData();
 
     useEffect(() => {
@@ -270,6 +272,9 @@ export function QuizzesTab({ classes }: { classes: ClassItem[] }) {
                     </select>
                 </div>
                 <div className="flex items-center gap-2">
+                    <Link href="/quizzes/results/teachers/questions/list" className="flex items-center gap-1.5 px-3 py-1.5 bg-green-600 text-white rounded-lg text-[12px] font-medium hover:bg-green-500">
+                        <List size={12}/> Question List
+                    </Link>
                     <button onClick={() => setShowQuestionModal(true)} className="flex items-center gap-1.5 px-3 py-1.5 bg-violet-600 text-white rounded-lg text-[12px] font-medium hover:bg-violet-500">
                         <Plus size={12} /> New Question
                     </button>

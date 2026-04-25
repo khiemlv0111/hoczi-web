@@ -45,9 +45,6 @@ export class LessonService {
     async assignStudentAssignment(data: AssignStudentAssignmentRequest) {
         return assignmentStudentRepository.createOne(data);
     }
-    async markAssignmentComplete(assignmentStudentId: number) {
-        return assignmentStudentRepository.updateStatus(assignmentStudentId, 'completed');
-    }
 
     async getMyAssignments(userId: number, page: number, limit: number) {
         return assignmentStudentRepository.findByUserId(userId, page, limit);

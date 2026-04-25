@@ -104,7 +104,7 @@ export class LessonService {
         if (!classSubjects) {
             return { success: false, message: 'No class subjects found' };
         }
-        const quizSession = await quizSessionRepository.saveOne({ id: sessionId, user_id: studentId, status: 'assigned' });
+        const quizSession = await quizSessionRepository.saveOne({ id: sessionId, user_id: studentId, status: 'assigned', due_at: due_at});
 
         const quizId = quizSession?.quiz_id!;
 

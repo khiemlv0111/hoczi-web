@@ -88,13 +88,19 @@ export class LessonService {
          console.log("quizId", currentSession);
         console.log("StudentId", studentId);
         console.log("Quizz", currentSession?.quiz);
+        const currentQuizId = currentSession?.quiz_id;
         // console.log("quizSessionExists", quizSessionExists);
+        if (!currentQuizId) {
+            throw new BadRequestError('Session already assigned to student');
+        }
+
+        const quizSessionExists = await quizSessionRepository.findQuizIdAndUserId(currentQuizId, studentId);
 
 
 
-        // if (quizSessionExists && quizSessionExists) {
-        //     throw new BadRequestError('Session already assigned to student');
-        // }
+        if (quizSessionExists && quizSessionExists.length > 0) {
+            throw new BadRequestError('Session already assigned to student');
+        }
         
         
 

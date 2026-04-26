@@ -90,10 +90,11 @@ function AddMemberModal({ tenantId, onClose, onAdded }: { tenantId: number; onCl
                         onChange={(e) => setRole(e.target.value)}
                         className="w-full border border-gray-200 rounded-lg px-3 py-2 text-[12px] focus:outline-none focus:ring-2 focus:ring-blue-100"
                     >
-                        <option value="owner">Owner</option>
-                        <option value="admin">Admin</option>
+                        {/* <option value="owner">Owner</option> */}
+                        {/* <option value="admin">Admin</option> */}
                         <option value="teacher">Teacher</option>
                         <option value="student">Student</option>
+                        <option value="user">User</option>
                     </select>
                 </div>
 

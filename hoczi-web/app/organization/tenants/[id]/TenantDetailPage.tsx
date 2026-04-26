@@ -122,6 +122,9 @@ export function TenantDetailPage({ id }: { id: number }) {
     const [removingUserId, setRemovingUserId] = useState<number | null>(null);
     const [confirmRemoveId, setConfirmRemoveId] = useState<number | null>(null);
 
+    console.log('TENANT', tenant);
+    
+
     async function handleRemoveMember(userId: number) {
         console.log('USER ID', userId);
         
@@ -296,7 +299,7 @@ export function TenantDetailPage({ id }: { id: number }) {
                                             <td className="py-2 pr-4 text-gray-400 text-[12px]">{user.username ?? '—'}</td>
                                             <td className="py-2 pr-4 text-[12px]">
                                                 <span className="text-[11px] px-2 py-0.5 rounded-full bg-blue-50 text-blue-700">
-                                                    {m.role ?? 'member'}
+                                                    {m.role ?? 'member'}{tenant.owner_user_id === user.id && '- owner'}
                                                 </span>
                                             </td>
                                             <td className="py-2 text-right">

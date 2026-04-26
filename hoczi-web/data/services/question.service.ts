@@ -119,4 +119,17 @@ export class QuestionService {
         const response = await getRequest(`/api/users/all-teacher-questions${query}`, true);
         return response
     }
+
+    static async getAllQuestionsForQuizAssignment(payload: PaginationPayload & { categoryId?: number, topicId?: number, gradeId?: number }) {
+        const params = new URLSearchParams();
+        if (payload.page) params.append('page', String(payload.page));
+        if (payload.limit) params.append('limit', String(payload.limit));
+        if (payload.categoryId) params.append('categoryId', String(payload.categoryId));
+        if (payload.topicId) params.append('topicId', String(payload.topicId));
+        if (payload.gradeId) params.append('gradeId', String(payload.gradeId));
+
+        const query = params.toString() ? `?${params.toString()}` : '';
+        const response = await getRequest(`/api/users/all-teacher-questions${query}`, true);
+        return response
+    }
 }

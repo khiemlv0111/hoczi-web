@@ -46,6 +46,7 @@ const navSettings = [
     { path: '/quizzes/results/teachers', label: "Account preferences", icon: Settings },
     { path: '/organization/tenants', label: "Company Management", icon: Monitor },
     { path: '/quizzes/results/teachers', label: "Notifications", icon: Bell },
+    { path: '/quizzes/results/user-guide', label: "User Guide", icon: FileText },
 ];
 
 export default function ResultLayout({

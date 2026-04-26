@@ -33,6 +33,8 @@ interface QuizDetail {
     created_at: string;
     grade?: Grade;
     topic?: Topic;
+    topic_id?: number;
+    grade_id?: number;
     quiz_sessions: QuizSession[];
     category?: any;
     difficulty?: string;
@@ -70,7 +72,8 @@ const SOURCE_LABELS: Record<QuestionSource, string> = {
     all: 'Organization',
 };
 
-function CreateAssignmentModal({ quizId, onClose, onCreated }: {
+function CreateAssignmentModal({quiz, quizId, onClose, onCreated }: {
+    quiz: QuizDetail;
     quizId: number;
     onClose: () => void;
     onCreated: () => void;
@@ -87,7 +90,12 @@ function CreateAssignmentModal({ quizId, onClose, onCreated }: {
     useEffect(() => {
         setLoadingQ(true);
         setSelectedIds(new Set());
-        QuestionService.getAllTeacherQuestions({ page: 1, limit: 100, source })
+        const categoryId = quiz?.category_id;
+        const gradeId = quiz?.grade_id;
+        const topicId = quiz?.topic_id;
+        console.log("QUIZZZZZ", quiz);
+        
+        QuestionService.getAllQuestionsForQuizAssignment({gradeId: gradeId, categoryId: categoryId, topicId: topicId, page: 1, limit: 100 })
             .then(res => setQuestions(res?.data ?? res ?? []))
             .catch(() => setError('Failed to load questions'))
             .finally(() => setLoadingQ(false));
@@ -505,6 +513,8 @@ export function QuizDetailPage({ id }: { id: number }) {
 
     const fetchDetail = () => {
         LessonService.getQuizDetail(id).then((res) => {
+            console.log('Quizz detail', res);
+            
             setQuizDetail(res?.data ?? res);
         });
     };
@@ -674,6 +684,7 @@ export function QuizDetailPage({ id }: { id: number }) {
             {showAssignModal && (
                 <CreateAssignmentModal
                     quizId={id}
+                    quiz={quizDetail}
                     onClose={() => setShowAssignModal(false)}
                     onCreated={fetchDetail}
                 />

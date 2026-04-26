@@ -10,6 +10,7 @@ import { SubmitQuizSessionRequest } from "../dto/user.dto";
 import { userAnswerRepository } from "../repositories/userAnswerRepository";
 import { assignmentStudentRepository } from "../repositories/assignmentStudentRepository";
 import { classMemberRepository } from "../repositories/classMemberRepository";
+import { sendEmail } from "../utils/send_email";
 
 
 
@@ -216,6 +217,14 @@ export class UserService {
         const users = response.filter(u => u.id !== userId); // Loại bỏ chính user hiện tại khỏi danh sách
 
         return users;
+    }
+
+    async sendEmail(name: string, email: string, content: string) {
+        await sendEmail(email, name, content);
+        return {
+            success: true,
+            message: "Send email success",
+        }
     }
 
 

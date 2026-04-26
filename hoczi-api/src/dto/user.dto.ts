@@ -254,3 +254,21 @@ export class UpdateUserRequest {
     role!: string;
 
 }
+
+
+export class SendEmailRequest {
+
+
+    @IsString()
+    @IsNotEmpty()
+    email!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    name!: string;
+
+
+    @IsString()
+    @IsNotEmpty()
+    content!: string;
+}

@@ -50,11 +50,10 @@ function AssignmentDetailModal({ assignment, classes, onClose }: {
                     <button onClick={onClose} className="p-1 rounded hover:bg-gray-100"><X size={15} className="text-gray-400" /></button>
                 </div>
 
-                {a.description && (
-                    <div dangerouslySetInnerHTML={{ __html: a.description }} />
-                )}
-
                 <div className="flex-1 overflow-y-auto">
+                    {a.description && (
+                        <div className="mb-4" dangerouslySetInnerHTML={{ __html: a.description }} />
+                    )}
                     <p className="text-[12px] font-semibold text-gray-500 uppercase tracking-wide mb-3">
                         Students ({students.length})
                     </p>

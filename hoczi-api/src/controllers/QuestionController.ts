@@ -203,8 +203,14 @@ export class QuestionController {
         const page = req.query.page ? Number(req.query.page) : 1;
         const limit = req.query.limit ? Number(req.query.limit) : 30;
         const source = req.query.source as 'teacher' | 'system' | 'all' | undefined;
+        const categoryId = req.query.categoryId ? Number(req.query.categoryId) : undefined;
+        const gradeId = req.query.gradeId ? Number(req.query.gradeId) : undefined;
 
-        const response = await questionService.getAllTeacherQuestions(Number(id), page, limit, source);
+        const topicId = req.query.topicId ? Number(req.query.topicId) : undefined;
+
+
+
+        const response = await questionService.getAllTeacherQuestions(Number(id),categoryId, gradeId, topicId, page, limit, source);
         return res.json(response);
 
     }

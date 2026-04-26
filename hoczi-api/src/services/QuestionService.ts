@@ -401,9 +401,12 @@ export class QuestionService {
     }
 
 
-    async getAllTeacherQuestions(userId: number, page: number, limit: number, source?: 'teacher' | 'system' | 'all') {
+    async getAllTeacherQuestions(userId: number, categoryId?: number, gradeId?: number, topicId?: number, page: number = 1, limit: number = 30, source?: 'teacher' | 'system' | 'all') {
         const response = await questionRepository.filterQuestions({
             teacherId: userId,
+            categoryId,
+            gradeId,
+            topicId,
             source: source ?? 'teacher',
             page,
             perPage: limit,

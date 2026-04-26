@@ -25,6 +25,7 @@ import {
     Menu,
     Mail,
     CalendarCheck,
+    Send,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
@@ -47,6 +48,7 @@ const navSettings = [
     { path: '/organization/tenants', label: "Company Management", icon: Monitor },
     { path: '/quizzes/results/teachers', label: "Notifications", icon: Bell },
     { path: '/quizzes/results/user-guide', label: "User Guide", icon: FileText },
+    { path: '/quizzes/results/register-service', label: "Register Service", icon: Send },
 ];
 
 export default function ResultLayout({

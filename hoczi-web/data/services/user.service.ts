@@ -133,6 +133,13 @@ export class UserService {
     }
 
 
+    static async registerService(payload: { name: string, email: string, content: string }) {
+        // const user = localStorage.getItem('')
+        const response = await postRequest('/api/admin/send-email', payload);
+        return response
+    }
+
+
 
 
 

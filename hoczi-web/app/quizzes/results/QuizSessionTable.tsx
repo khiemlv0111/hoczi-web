@@ -28,6 +28,7 @@ interface QuizSession {
     id: number;
     title?: string;
     duration_minutes?: number;
+    quiz_type?: string;
   };
 }
 
@@ -312,9 +313,16 @@ export default function QuizSessionTable() {
             <button onClick={handleViewSession} className="flex-1 flex items-center justify-center gap-1.5 py-2 text-sm text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
               <Eye size={14} /> Review
             </button>
-            <button onClick={handleRetry} className="flex-1 cursor-pointer flex items-center justify-center gap-1.5 py-2 text-sm text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors">
+
+            {
+
+              detail&& detail?.quiz?.quiz_type === 'free' &&
+
+              <button onClick={handleRetry} className="flex-1 flex items-center justify-center gap-1.5 py-2 text-sm text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors">
               <RotateCcw size={14} /> Retry
             </button>
+
+            }
           </div>
         </div>
       )}

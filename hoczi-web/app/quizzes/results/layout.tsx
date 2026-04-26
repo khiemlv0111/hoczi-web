@@ -264,7 +264,7 @@ export default function ResultLayout({
                                         </Link>
                                     )}
 
-                                    {user?.role !== 'user' && (
+                                    {user?.role === 'teacher' && (
                                         <Link
                                             href="/quizzes/results/teachers"
                                             className="w-full flex items-center gap-2 px-4 py-2 text-[13px] text-gray-700 hover:bg-gray-50 transition-colors"

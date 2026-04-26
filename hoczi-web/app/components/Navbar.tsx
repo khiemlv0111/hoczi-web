@@ -33,9 +33,10 @@ export const Navbar = () => {
 
     }
 
+    const currentLocale = getLocaleFromCookie();
+
     const handleChangeLocale = (lang: string) => {
 
-        const currentLocale = getLocaleFromCookie();
         if (lang != currentLocale) {
             setLocaleCookie(`${lang}`);
             window.location.reload();
@@ -64,14 +65,14 @@ export const Navbar = () => {
                         <div className="flex items-center rounded-full border border-white/20 overflow-hidden">
                             <button
                                 onClick={() => handleChangeLocale('en')}
-                                className={`px-3 py-1 text-xs font-semibold ${textColor} hover:bg-white/20 transition-colors cursor-pointer`}
+                                className={`px-3 py-1 text-xs font-semibold ${textColor} hover:bg-white/20 transition-colors cursor-pointer ${currentLocale === 'en' ? 'bg-white/30' : ''}`}
                             >
                                 EN
                             </button>
                             <span className="w-px h-4 bg-white/20" />
                             <button
                                 onClick={() => handleChangeLocale('vi')}
-                                className={`px-3 py-1 text-xs font-semibold ${textColor} hover:bg-white/20 transition-colors cursor-pointer`}
+                                className={`px-3 py-1 text-xs font-semibold ${textColor} hover:bg-white/20 transition-colors cursor-pointer ${currentLocale === 'vi' ? 'bg-white/30' : ''}`}
                             >
                                 VI
                             </button>

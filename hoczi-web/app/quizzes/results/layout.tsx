@@ -31,25 +31,11 @@ import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import { QuestionService } from "@/data/services/question.service";
+import { t } from "@/messages/locale";
 
-const navMain = [
-    { path: '/quizzes/results/dashboard', label: "Dashboard", icon: LayoutDashboard },
-    { path: '/quizzes/results', label: "Quizzes", icon: Clock },
-    { path: '/quizzes/results/students', label: "Students", icon: Users },
-    { path: '/quizzes/results/teachers', label: "Teachers", icon: BookPlus },
-    { path: '/quizzes/results/games', label: "Games", icon: ChessKing },
-    { path: '/quizzes/results/schedules', label: "Schedules", icon: CalendarCheck },
-    { path: '/quizzes/results/ai-learn', label: "AI Learn", icon: Brain },
-    { path: '/quizzes/results/inbox', label: "Inbox", icon: Mail },
-];
 
-const navSettings = [
-    { path: '/quizzes/results/teachers', label: "Account preferences", icon: Settings },
-    { path: '/organization/tenants', label: "Company Management", icon: Monitor },
-    { path: '/quizzes/results/teachers', label: "Notifications", icon: Bell },
-    { path: '/quizzes/results/user-guide', label: "User Guide", icon: FileText },
-    { path: '/quizzes/results/register-service', label: "Register Service", icon: Send },
-];
+
+
 
 export default function ResultLayout({
     children,
@@ -62,7 +48,7 @@ export default function ResultLayout({
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
-    const { handleStartQuiz, getUserProfile, user, handleGetQuestionList } = useAppData();
+    const { handleStartQuiz, messages, user, handleGetQuestionList } = useAppData();
 
     // Quiz modal state
     const [modalOpen, setModalOpen] = useState(false);
@@ -74,6 +60,28 @@ export default function ResultLayout({
     const [selectedGrade, setSelectedGrade] = useState<number | null>(null);
     const [selectedDifficulty, setSelectedDifficulty] = useState<string>('');
     const [quizLoading, setQuizLoading] = useState(false);
+
+    //   const { handleStartQuiz, getUserProfile, user, handleGetQuestionList, messages } = useAppData();
+
+
+    const navMain = [
+        { path: '/quizzes/results/dashboard', label: "Dashboard", icon: LayoutDashboard, text: "Dashboard" },
+        { path: '/quizzes/results', label: "Quizzes", icon: Clock, text: "Quizzes" },
+        { path: '/quizzes/results/students', label: "Students", icon: Users, text: t(messages, 'common.students') },
+        { path: '/quizzes/results/teachers', label: "Teachers", icon: BookPlus, text: t(messages, 'common.teachers') },
+        { path: '/quizzes/results/games', label: "Games", icon: ChessKing, text: "Games" },
+        { path: '/quizzes/results/schedules', label: "Schedules", icon: CalendarCheck, text: "Schedules" },
+        { path: '/quizzes/results/ai-learn', label: "AI Learn", icon: Brain, text: "AI Learn" },
+        { path: '/quizzes/results/inbox', label: "Inbox", icon: Mail, text: "Inbox" },
+    ];
+
+    const navSettings = [
+        { path: '/quizzes/results/teachers', label: "Account preferences", icon: Settings, text: t(messages, 'common.account_preferences') },
+        { path: '/organization/tenants', label: "Company Management", icon: Monitor, text: t(messages, 'common.company_management') },
+        { path: '/quizzes/results/teachers', label: "Notifications", icon: Bell, text: t(messages, 'common.notifications') },
+        { path: '/quizzes/results/user-guide', label: "User Guide", icon: FileText, text: t(messages, 'common.user_guide') },
+        { path: '/quizzes/results/register-service', label: "Register Service", icon: Send, text: t(messages, 'common.register_service') },
+    ];
 
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
@@ -188,7 +196,7 @@ export default function ResultLayout({
                         if (label === 'Students') return user?.role === 'user' || user?.role === 'student';
                         if (label === 'Teachers') return user?.role === 'teacher';
                         return true;
-                    }).map(({ path, label, icon: Icon }) => {
+                    }).map(({ path, label, icon: Icon, text }) => {
                         const isActive = path === '/quizzes/results'
                             ? pathname === path
                             : pathname.startsWith(path);
@@ -204,7 +212,7 @@ export default function ResultLayout({
                                             }`}
                                     >
                                         <Icon size={15} />
-                                        {label}
+                                        {text}
                                     </button>
                                 }
 
@@ -216,14 +224,14 @@ export default function ResultLayout({
                 {/* Settings nav */}
                 <div className="px-2 mt-3">
                     <p className="text-[11px] text-gray-400 uppercase tracking-wider px-2 mb-1">Settings</p>
-                    {navSettings.map(({ path, label, icon: Icon }) => (
+                    {navSettings.map(({ path, label,text, icon: Icon }) => (
                         <button
                             key={label}
                             onClick={() => handleNavigate({ path, label, icon: Icon })}
                             className="w-full flex items-center gap-2 px-3 py-2 rounded-md text-[13px] text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors"
                         >
                             <Icon size={15} />
-                            {label}
+                            {text}
                         </button>
                     ))}
                 </div>

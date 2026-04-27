@@ -13,6 +13,7 @@
     "start_as_anonymous": "Làm bài test ẩn danh",
     "teacher": "Giáo viên",
     "teachers": "Giáo viên",
+    "students": "Học sinh",
     "games": "Trò chơi",
     "ai_learn": "Học AI",
     "category": "Danh mục",
@@ -52,7 +53,13 @@
     "introduction_or_details": "Introduction or details",
     "search_by_name_or_email": "Search by name or email",
     "no_members_yet_add_some": "No members yet — add some!",
-    "select_to_do_quiz": "Lựa chọn để làm bài test"
+    "select_to_do_quiz": "Lựa chọn để làm bài test",
+    "company_management": "Quản lý công ty",
+    "account_preferences": "Tùy chọn tài khoản",
+    "user_guide": "Hướng dẫn người dùng",
+    "notifications": "Thông báo",
+    "register_service": "Đăng ký dịch vụ"
+
 
   },
   "teacher": {

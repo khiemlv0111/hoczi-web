@@ -13,6 +13,7 @@
     "start_as_anonymous": "Start as Anonymous",
     "teacher": "Teacher",
     "teachers": "Teachers",
+    "students": "Students",
     "games": "Games",
     "ai_learn": "AI learn",
     "category": "Category",
@@ -52,7 +53,12 @@
     "introduction_or_details": "Introduction or details",
     "search_by_name_or_email": "Search by name or email",
     "no_members_yet_add_some": "No members yet — add some!",
-    "select_to_do_quiz": "Select to do quiz"
+    "select_to_do_quiz": "Select to do quiz",
+    "company_management": "Company Management",
+    "account_preferences": "Account preferences",
+    "user_guide": "User Guide",
+    "notifications": "Notifications",
+    "register_service": "Register Service"
   },
   "teacher": {
     "dashboard": "Teacher Dashboard",

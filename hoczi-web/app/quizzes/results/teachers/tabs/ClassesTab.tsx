@@ -470,7 +470,7 @@ export function ClassesTab({ classes, allUsers, loadingClasses, teacherId, setCl
                                                 <span className="text-[12px] font-semibold text-blue-500">{member.student.name?.charAt(0)?.toUpperCase() ?? '?'}</span>
                                             </div>
                                             <div className="flex-1 min-w-0">
-                                                <p className="text-[13px] font-medium text-gray-900 truncate">{member.student.name}</p>
+                                                <p className="text-[13px] font-medium text-gray-900 truncate">{member.student.name} - {member.student.role}</p>
                                                 <p className="text-[11px] text-gray-400 truncate">{member.student.email}</p>
                                             </div>
                                             <button onClick={() => setAssignStudentTarget({ classId: selectedClass.id, studentId: member.student.id, studentName: member.student.name })}

@@ -41,4 +41,7 @@ export class ClassMember {
 
   @Column({ type: 'varchar', length: 50, default: 'active' })
   status!: string;
+
+  @Column({ type: 'varchar', length: 50, default: 'student' })
+  role?: string;
 }

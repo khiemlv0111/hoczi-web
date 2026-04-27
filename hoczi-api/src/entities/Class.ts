@@ -59,6 +59,9 @@ export class Class {
     @OneToMany(() => ClassMember, (member) => member.class)
     members!: ClassMember[];
 
+    @Column({ type: "bigint", nullable: true })
+    created_by?: number;
+
     @CreateDateColumn()
     created_at!: Date;
 

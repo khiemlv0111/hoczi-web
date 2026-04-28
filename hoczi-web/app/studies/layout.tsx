@@ -1,0 +1,46 @@
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+// import "./globals.css";
+import Link from "next/link";
+import { cookies } from "next/headers";
+import { APP_ACCESS_TOKEN_KEY } from "@/data/http";
+import { UserService } from "@/data/services/user.service";
+import { AppProvider } from "../context/AppContext";
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "Ứng dụng học & luyện quiz thông minh",
+  description: "Hoczi.com là một nền tảng học tập trực tuyến tập trung vào làm bài quiz, giúp người học, luyện tập kiến thức nhanh kiểm tra hiểu biết theo từng chủ đề",
+};
+
+export default async function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get(APP_ACCESS_TOKEN_KEY)?.value ?? '';
+
+  return (
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+    >
+      <body suppressHydrationWarning className="min-h-full flex flex-col">
+        <AppProvider>
+          {/* <Navbar /> */}
+          
+          {children}
+        </AppProvider>
+      </body>
+    </html>
+  );
+}

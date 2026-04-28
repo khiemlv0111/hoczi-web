@@ -26,6 +26,7 @@ import {
     Mail,
     CalendarCheck,
     Send,
+    BookOpen,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
@@ -78,7 +79,7 @@ export default function ResultLayout({
     const navSettings = [
         { path: '/quizzes/results/teachers', label: "Account preferences", icon: Settings, text: t(messages, 'common.account_preferences') },
         { path: '/organization/tenants', label: "Company Management", icon: Monitor, text: t(messages, 'common.company_management') },
-        { path: '/quizzes/results/teachers', label: "Notifications", icon: Bell, text: t(messages, 'common.notifications') },
+        { path: '/studies', label: "Studies", icon: BookOpen, text: t(messages, 'common.studies') },
         { path: '/quizzes/results/user-guide', label: "User Guide", icon: FileText, text: t(messages, 'common.user_guide') },
         { path: '/quizzes/results/register-service', label: "Register Service", icon: Send, text: t(messages, 'common.register_service') },
     ];

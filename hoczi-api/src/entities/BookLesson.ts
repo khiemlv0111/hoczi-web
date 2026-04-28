@@ -72,6 +72,9 @@ export class BookLesson {
     @Column({ type: 'integer', nullable: true })
     estimated_minutes?: number;
 
+    @Column({ type: 'jsonb', nullable: true })
+    metadata?: Record<string, any>;
+
     @CreateDateColumn()
     created_at!: Date;
 

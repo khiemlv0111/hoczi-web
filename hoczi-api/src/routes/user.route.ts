@@ -52,6 +52,11 @@ userRoutes.post('/start-quiz-assignment/:id', new QuestionController().startQuiz
 
 userRoutes.post('/mark-quiz-as-completed/:id', new QuestionController().markQuizAsCompleted);
 
+// Page routes 
+userRoutes.post('/create-page', new UserController().createPage);
+userRoutes.get('/get-page-detail/:id', new UserController().getPageDetail);
+
+
 
 
 

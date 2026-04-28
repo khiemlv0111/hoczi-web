@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { RequestValidator } from '../dto/requestValidator';
-import { UpdateUserRequest } from '../dto/user.dto';
+import { CreatePageRequest, UpdateUserRequest } from '../dto/user.dto';
 
 import { UserService } from '../services/UserService';
 import { isAdmin } from '../utils/string_utils';
@@ -92,6 +92,22 @@ export class UserController {
 
         const response = await userService.getSameTenantUsers(Number(id), keyword);
         return res.json(response);
+    }
+
+
+    async createPage(req: Request, res: Response) {
+        // Implementation for creating a new page
+        const { id } = req.user;
+        const { errors, input } = await RequestValidator(CreatePageRequest, req.body);
+
+        const page = await userService.createPage(Number(id), input);
+        return res.json({ success: true, data: page });
+    }
+
+    async getPageDetail(req: Request, res: Response) {
+        const slug = req.params.slug as string;
+        const page = await userService.getPageDetail(slug);
+        return res.json({ success: true, data: page });
     }
 
     

@@ -272,3 +272,26 @@ export class SendEmailRequest {
     @IsNotEmpty()
     content!: string;
 }
+
+
+export class CreatePageRequest {
+
+    @IsString()
+    @IsNotEmpty()
+    title!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    slug!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    content!: string;
+
+    @IsOptional()
+    meta_title?: string;
+
+    @IsOptional()
+    meta_description?: string;
+
+}

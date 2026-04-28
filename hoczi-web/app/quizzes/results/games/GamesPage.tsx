@@ -12,6 +12,7 @@ const GAMES = [
     { id: 'dice',     label: 'Dice',            description: 'Roll to match the target number', emoji: '🎲' },
     { id: 'guessing', label: 'Guessing',         description: 'Name the image before time runs out', emoji: '🖼️' },
     { id: 'challenge', label: 'Challenge Friend', description: 'Choose a friend to challenge', emoji: '👤' },
+    { id: 'chess', label: 'Chess', description: 'Play chess against a friend or the computer', emoji: '♟️' },
     // add more games here
 ] as const;
 
@@ -32,6 +33,9 @@ export function GamesPage() {
     }
     if (active === 'challenge') {
         router.push(`/quizzes/results/games/challenge`)
+    }
+    if (active === 'chess') {
+        router.push(`/quizzes/results/games/chess`)
     }
 
     return (

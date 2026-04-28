@@ -98,3 +98,65 @@ update subjects set name = 'Tiếng trung - Chinese' where code = 'chinese';
 insert into subjects(name, code, description, status) values ('Science', 'science-english', 'Science in English language', 'active');
 insert into subjects(name, code, description, status) values ('Math', 'mathematics', 'Mathematics in English', 'active');
 insert into subjects(name, code, description, status) values ('Language Art', 'language-art', 'Language Art in English', 'active');
+
+
+CREATE TABLE books (
+    id SERIAL PRIMARY KEY,
+
+    title VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) UNIQUE NOT NULL,
+
+    description TEXT,
+    cover_image_url TEXT,
+
+    status VARCHAR(50) NOT NULL DEFAULT 'draft',
+    -- draft / published / archived
+
+    is_public BOOLEAN NOT NULL DEFAULT true,
+
+    created_by INTEGER REFERENCES users(id),
+
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+
+CREATE TABLE book_lessons (
+    id SERIAL PRIMARY KEY,
+
+    book_id INTEGER NOT NULL REFERENCES books(id) ON DELETE CASCADE,
+    category_id INTEGER REFERENCES book_categories(id),
+
+    title VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) NOT NULL,
+
+    content TEXT,
+
+    lesson_type VARCHAR(50) NOT NULL DEFAULT 'text',
+    -- text / video / quiz / assignment / file
+
+    media_url TEXT,
+
+    order_index INTEGER NOT NULL DEFAULT 0,
+
+    is_free_preview BOOLEAN NOT NULL DEFAULT false,
+
+    estimated_minutes INTEGER,
+
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
+
+    UNIQUE(book_id, slug)
+);
+
+CREATE TABLE book_categories (
+    id SERIAL PRIMARY KEY,
+
+    name VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) UNIQUE NOT NULL,
+
+    description TEXT,
+
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);

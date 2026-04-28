@@ -9,6 +9,7 @@ import { authMiddleware } from '../middlewares/authMiddleware';
 import userRoutes from './user.route';
 import classRoutes from './class.route';
 import lessonRoutes from './lesson.route';
+import chessRoutes from './chess.route';
 
 
 
@@ -26,6 +27,7 @@ routes.use(authMiddleware);
 routes.use('/api/users', userRoutes);
 routes.use('/api/classes', classRoutes);
 routes.use('/api/lessons', lessonRoutes);
+routes.use('/api/chess', chessRoutes);
 
 
 

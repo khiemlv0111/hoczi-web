@@ -45,7 +45,7 @@ export class CreateQuestionRequest {
     explanation?: string;
 
     @IsOptional()
-    tenantId?: number;
+    tenantId?: number | null;
 }
 
 

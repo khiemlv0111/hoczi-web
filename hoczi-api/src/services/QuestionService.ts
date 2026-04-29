@@ -11,6 +11,7 @@ import { BadRequestError } from "../errors/api-erros";
 import { userAnswerRepository } from "../repositories/userAnswerRepository";
 import { quizRepository } from "../repositories/quizRepository";
 import dayjs from "dayjs";
+import { userRepository } from "../repositories/userRepository";
 
 
 
@@ -64,7 +65,7 @@ export class QuestionService {
 
 
     async createQuestion(userId: number, dto: CreateQuestionRequest) {
-        const user = await questionRepository.findById(userId);
+        const user = await userRepository.findById(userId);
         if (!user) {
             throw new BadRequestError("User not found");
         }

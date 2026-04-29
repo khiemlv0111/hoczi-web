@@ -178,7 +178,7 @@ class QuestionRepository {
             topic_id: data.topicId,
             explanation: data.explanation,
             created_by: userId,
-            tenant_id: data.tenantId,
+            tenant_id: data.tenantId || undefined,
         });
         return this.repo.save(question);
     }

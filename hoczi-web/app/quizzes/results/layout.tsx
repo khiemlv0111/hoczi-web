@@ -77,7 +77,7 @@ export default function ResultLayout({
     ];
 
     const navSettings = [
-        { path: '/quizzes/results/teachers', label: "Account preferences", icon: Settings, text: t(messages, 'common.account_preferences') },
+        { path: '/quizzes/results', label: "Account preferences", icon: Settings, text: t(messages, 'common.account_preferences') },
         { path: '/organization/tenants', label: "Company Management", icon: Monitor, text: t(messages, 'common.company_management') },
         // { path: '/studies', label: "Studies", icon: BookOpen, text: t(messages, 'common.studies') },
         { path: '/quizzes/results/user-guide', label: "User Guide", icon: FileText, text: t(messages, 'common.user_guide') },

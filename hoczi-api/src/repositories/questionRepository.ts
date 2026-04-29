@@ -50,7 +50,9 @@ class QuestionRepository {
     }
 
     async filterQuestions(filter?: TeacherFilterQuestionDto) {
-        const source = filter?.source || 'all';
+
+        console.log("filter", filter);
+        
 
         const qb = this.repo
             .createQueryBuilder('question')

@@ -46,6 +46,9 @@ export class CreateQuestionRequest {
 
     @IsOptional()
     tenantId?: number | null;
+
+    @IsOptional()
+    is_system?: boolean | null;
 }
 
 

@@ -77,6 +77,7 @@ export class QuestionService {
         const creaeteQuestionDto = {
             ...dto,
             tenantId: tenantId,
+            is_system: user.role === 'admin' ? true : false,
         }
 
         return questionRepository.create(userId, creaeteQuestionDto);

@@ -176,6 +176,7 @@ class QuestionRepository {
             explanation: data.explanation,
             created_by: userId,
             tenant_id: data.tenantId || undefined,
+            is_system: data.is_system || false,
         });
         return this.repo.save(question);
     }

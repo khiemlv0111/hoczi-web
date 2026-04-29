@@ -58,6 +58,11 @@ userRoutes.get('/get-page-detail/:id', new UserController().getPageDetail);
 
 
 
+userRoutes.post('/claude-chat', new QuestionController().claudeChat);
+
+
+
+
 
 
 

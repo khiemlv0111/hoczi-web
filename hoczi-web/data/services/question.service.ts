@@ -1,6 +1,6 @@
 
 import { deleteRequest, getAccessToken, getRequest, getRequestPublic, postRequest } from "../http";
-import { PaginationPayload } from "../types";
+import { FetchAssignmentQuestionPayload, PaginationPayload } from "../types";
 
 // import { getAccessToken, getRequest, getRequestPublic, postRequest } from "../http";
 
@@ -120,13 +120,14 @@ export class QuestionService {
         return response
     }
 
-    static async getAllQuestionsForQuizAssignment(payload: PaginationPayload & { categoryId?: number, topicId?: number, gradeId?: number }) {
+    static async getAllQuestionsForQuizAssignment(payload: FetchAssignmentQuestionPayload & { categoryId?: number, topicId?: number, gradeId?: number }) {
         const params = new URLSearchParams();
         if (payload.page) params.append('page', String(payload.page));
         if (payload.limit) params.append('limit', String(payload.limit));
         if (payload.categoryId) params.append('categoryId', String(payload.categoryId));
         if (payload.topicId) params.append('topicId', String(payload.topicId));
         if (payload.gradeId) params.append('gradeId', String(payload.gradeId));
+        if (payload.source) params.append('source', payload.source);
 
         const query = params.toString() ? `?${params.toString()}` : '';
         const response = await getRequest(`/api/users/all-teacher-questions${query}`, true);

@@ -93,9 +93,8 @@ function CreateAssignmentModal({quiz, quizId, onClose, onCreated }: {
         const categoryId = quiz?.category_id;
         const gradeId = quiz?.grade_id;
         const topicId = quiz?.topic_id;
-        console.log("QUIZZZZZ", quiz);
         
-        QuestionService.getAllQuestionsForQuizAssignment({gradeId: gradeId, categoryId: categoryId, topicId: topicId, page: 1, limit: 100 })
+        QuestionService.getAllQuestionsForQuizAssignment({gradeId: gradeId, categoryId: categoryId, topicId: topicId, source: source, page: 1, limit: 100 })
             .then(res => setQuestions(res?.data ?? res ?? []))
             .catch(() => setError('Failed to load questions'))
             .finally(() => setLoadingQ(false));
@@ -121,7 +120,9 @@ function CreateAssignmentModal({quiz, quizId, onClose, onCreated }: {
         if (finalIds.length === 0) { setError('Select at least one question'); return; }
         setSaving(true); setError('');
         try {
-            await LessonService.createQuizSession({ quiz_id: quizId, question_ids: finalIds });
+            console.log({quiz_id: quizId, question_ids: finalIds});
+            
+            // await LessonService.createQuizSession({ quiz_id: quizId, question_ids: finalIds });
             onCreated();
             onClose();
         } catch {
@@ -136,7 +137,7 @@ function CreateAssignmentModal({quiz, quizId, onClose, onCreated }: {
             <div className="bg-white rounded-xl shadow-xl w-full max-w-lg mx-4 flex flex-col max-h-[90vh]">
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100">
-                    <h3 className="text-[15px] font-semibold text-gray-900">Create Assignment</h3>
+                    <h3 className="text-[15px] font-semibold text-gray-900">Create Assignment !!</h3>
                     <button onClick={onClose} className="p-1 rounded hover:bg-gray-100">
                         <X size={15} className="text-gray-400" />
                     </button>

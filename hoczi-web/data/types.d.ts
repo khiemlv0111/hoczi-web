@@ -124,6 +124,14 @@ export type PaginationPayload = {
     page?: number;
     limit?: number;
     keyword?: string;
+    so?: string;
+}
+
+export type FetchAssignmentQuestionPayload = {
+    page?: number;
+    limit?: number;
+    keyword?: string;
+    source?: string;
 }
 
 export type Lesson = {

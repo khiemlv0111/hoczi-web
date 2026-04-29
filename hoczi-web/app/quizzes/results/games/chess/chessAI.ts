@@ -12,8 +12,9 @@ const PIECE_VALUES: Record<PieceType, number> = {
     pawn: 100, knight: 320, bishop: 330, rook: 500, queen: 900, king: 20000,
 };
 
-// Piece-square tables from black's perspective (row 0 = black's back rank)
-const PST: Partial<Record<PieceType, number[][]>> = {
+// Piece-square tables from black's perspective (row 0 = black's back rank).
+// Values mirror standard chess engine PSTs (Tomasz Michniewski's simplified eval).
+const PST: Record<PieceType, number[][]> = {
     pawn: [
         [ 0,  0,  0,  0,  0,  0,  0,  0],
         [50, 50, 50, 50, 50, 50, 50, 50],
@@ -44,6 +45,37 @@ const PST: Partial<Record<PieceType, number[][]>> = {
         [-10,  5,  0,  0,  0,  0,  5,-10],
         [-20,-10,-10,-10,-10,-10,-10,-20],
     ],
+    rook: [
+        [ 0,  0,  0,  0,  0,  0,  0,  0],
+        [ 5, 10, 10, 10, 10, 10, 10,  5],
+        [-5,  0,  0,  0,  0,  0,  0, -5],
+        [-5,  0,  0,  0,  0,  0,  0, -5],
+        [-5,  0,  0,  0,  0,  0,  0, -5],
+        [-5,  0,  0,  0,  0,  0,  0, -5],
+        [-5,  0,  0,  0,  0,  0,  0, -5],
+        [ 0,  0,  0,  5,  5,  0,  0,  0],
+    ],
+    queen: [
+        [-20,-10,-10, -5, -5,-10,-10,-20],
+        [-10,  0,  0,  0,  0,  0,  0,-10],
+        [-10,  0,  5,  5,  5,  5,  0,-10],
+        [ -5,  0,  5,  5,  5,  5,  0, -5],
+        [  0,  0,  5,  5,  5,  5,  0, -5],
+        [-10,  5,  5,  5,  5,  5,  0,-10],
+        [-10,  0,  5,  0,  0,  0,  0,-10],
+        [-20,-10,-10, -5, -5,-10,-10,-20],
+    ],
+    // King mid-game: reward staying tucked on back rank near corners (castled), penalize centre.
+    king: [
+        [-30,-40,-40,-50,-50,-40,-40,-30],
+        [-30,-40,-40,-50,-50,-40,-40,-30],
+        [-30,-40,-40,-50,-50,-40,-40,-30],
+        [-30,-40,-40,-50,-50,-40,-40,-30],
+        [-20,-30,-30,-40,-40,-30,-30,-20],
+        [-10,-20,-20,-20,-20,-20,-20,-10],
+        [ 20, 20,  0,  0,  0,  0, 20, 20],
+        [ 20, 30, 10,  0,  0, 10, 30, 20],
+    ],
 };
 
 function evaluate(board: Board): number {
@@ -53,11 +85,10 @@ function evaluate(board: Board): number {
             const p = board[r][c];
             if (!p) continue;
             const base = PIECE_VALUES[p.type];
-            const pst = PST[p.type];
             // For black: row 0 is their back rank (use table as-is)
             // For white: row 7 is their back rank (flip table vertically)
             const tableRow = p.color === 'black' ? r : 7 - r;
-            const positional = pst ? pst[tableRow][c] : 0;
+            const positional = PST[p.type][tableRow][c];
             score += p.color === 'black' ? (base + positional) : -(base + positional);
         }
     }
@@ -69,6 +100,7 @@ function applyMoveLight(state: SearchState, from: Pos, to: Pos): SearchState {
     const [fr, fc] = from;
     const [tr, tc] = to;
     const piece = board[fr][fc]!;
+    const captured = board[tr][tc];
     let newEP: Pos | null = null;
     const newCastling: CastlingRights = {
         white: { ...state.castling.white },
@@ -87,6 +119,13 @@ function applyMoveLight(state: SearchState, from: Pos, to: Pos): SearchState {
     if (piece.type === 'rook') {
         if (piece.color === 'white') { if (fc === 7) newCastling.white.kingside = false; if (fc === 0) newCastling.white.queenside = false; }
         else                        { if (fc === 7) newCastling.black.kingside = false; if (fc === 0) newCastling.black.queenside = false; }
+    }
+    // Captured rook on its starting square also removes castling right for that side.
+    if (captured?.type === 'rook') {
+        if (tr === 7 && tc === 7) newCastling.white.kingside = false;
+        if (tr === 7 && tc === 0) newCastling.white.queenside = false;
+        if (tr === 0 && tc === 7) newCastling.black.kingside = false;
+        if (tr === 0 && tc === 0) newCastling.black.queenside = false;
     }
 
     board[tr][tc] = piece;
@@ -153,16 +192,19 @@ export function getBestMove(
     }
 
     const depth = difficulty === 'medium' ? 2 : 3;
-    let bestMove: [Pos, Pos] | null = null;
+    // Collect all moves tied for best score, then randomize to keep games varied.
     let bestVal = -Infinity;
+    let bestMoves: [Pos, Pos][] = [];
 
     for (const [from, to] of moves) {
         const val = minimax(applyMoveLight(state, from, to), depth - 1, -Infinity, Infinity, false);
         if (val > bestVal) {
             bestVal = val;
-            bestMove = [from, to];
+            bestMoves = [[from, to]];
+        } else if (val === bestVal) {
+            bestMoves.push([from, to]);
         }
     }
 
-    return bestMove;
+    return bestMoves[Math.floor(Math.random() * bestMoves.length)];
 }

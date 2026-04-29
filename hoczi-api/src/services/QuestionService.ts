@@ -416,7 +416,13 @@ export class QuestionService {
     }
 
 
-    async getAllTeacherQuestions(userId: number, categoryId?: number, gradeId?: number, topicId?: number, page: number = 1, limit: number = 30, source?: 'teacher' | 'system' | 'all', tenantId?: number) {
+    async getAllTeacherQuestions(userId: number, categoryId?: number, gradeId?: number, topicId?: number, page: number = 1, limit: number = 30, source?: 'teacher' | 'system' | 'all') {
+        const user = await userRepository.findById(userId);
+        if (!user) {    
+            throw new BadRequestError("User not found");
+        }
+
+        const tenantId = user.tenant_id || undefined;
 
         const response = await questionRepository.filterQuestions({
             teacherId: userId,

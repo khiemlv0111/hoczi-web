@@ -199,7 +199,7 @@ export class QuestionController {
 
     async getAllTeacherQuestions(req: Request, res: Response) {
 
-        const { id, tenant_id } = req.user;
+        const { id } = req.user;
         const page = req.query.page ? Number(req.query.page) : 1;
         const limit = req.query.limit ? Number(req.query.limit) : 30;
         const source = req.query.source as 'teacher' | 'system' | 'all' | undefined;
@@ -210,7 +210,7 @@ export class QuestionController {
 
 
 
-        const response = await questionService.getAllTeacherQuestions(Number(id), categoryId, gradeId, topicId, page, limit, source, tenant_id ?? undefined);
+        const response = await questionService.getAllTeacherQuestions(Number(id), categoryId, gradeId, topicId, page, limit, source);
         return res.json(response);
 
     }

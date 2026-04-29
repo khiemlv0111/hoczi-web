@@ -422,7 +422,7 @@ export function StudentsdPage() {
                                         <div className="min-w-0">
                                             <p className={`text-[13px] font-semibold truncate ${done ? 'line-through text-gray-400' : 'text-gray-900'}`}>{a.assignment.title}</p>
                                             {a.assignment.description && (
-                                                <div className="text-[12px] text-gray-500 truncate" dangerouslySetInnerHTML={{ __html: a.assignment.description }} />
+                                                <div className="text-[12px] text-gray-500 truncate line-clamp-2" dangerouslySetInnerHTML={{ __html: a.assignment.description }} />
 
                                             )}
                                             {a.assignment.due_date && (

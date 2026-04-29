@@ -160,3 +160,6 @@ CREATE TABLE book_categories (
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
+
+-- user_id = 29;
+update questions set tenant_id = 6 where created_by = 29;

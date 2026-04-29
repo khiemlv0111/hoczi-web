@@ -70,6 +70,9 @@ class QuestionRepository {
                 '(question.created_by = :teacherId OR question.is_system = true)',
                 { teacherId: filter?.teacherId }
             );
+            if (filter?.tenantId) {
+                qb.andWhere('question.tenant_id = :tenantId', { tenantId: filter.tenantId });
+            }
         }
 
         if (filter?.categoryId) {

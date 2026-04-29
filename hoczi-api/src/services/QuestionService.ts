@@ -416,7 +416,7 @@ export class QuestionService {
     }
 
 
-    async getAllTeacherQuestions(userId: number, categoryId?: number, gradeId?: number, topicId?: number, page: number = 1, limit: number = 30, source?: 'teacher' | 'system' | 'all') {
+    async getAllTeacherQuestions(userId: number, categoryId?: number, gradeId?: number, topicId?: number, page: number = 1, limit: number = 30, source?: 'teacher' | 'system' | 'all', tenantId?: number) {
 
         const response = await questionRepository.filterQuestions({
             teacherId: userId,
@@ -426,6 +426,7 @@ export class QuestionService {
             source: source ?? 'teacher',
             page,
             perPage: limit,
+            tenantId: source === 'all' ? tenantId : undefined,
         });
         return {
             message: "get questions success",

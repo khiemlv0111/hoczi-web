@@ -75,6 +75,7 @@ export interface TeacherFilterQuestionDto {
     topicId?: number;
     gradeId?: number;
     teacherId?: number;
+    tenantId?: number;
     difficulty?: 'easy' | 'medium' | 'hard';
     keyword?: string;
     quizId?: number;

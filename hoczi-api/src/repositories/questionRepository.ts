@@ -50,6 +50,7 @@ class QuestionRepository {
     }
 
     async filterQuestions(filter?: TeacherFilterQuestionDto) {
+        const source = filter?.source || 'all';
 
         const qb = this.repo
             .createQueryBuilder('question')
@@ -177,6 +178,7 @@ class QuestionRepository {
             topic_id: data.topicId,
             explanation: data.explanation,
             created_by: userId,
+            tenant_id: data.tenantId,
         });
         return this.repo.save(question);
     }

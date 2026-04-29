@@ -64,7 +64,19 @@ export class QuestionService {
 
 
     async createQuestion(userId: number, dto: CreateQuestionRequest) {
-        return questionRepository.create(userId, dto);
+        const user = await questionRepository.findById(userId);
+        if (!user) {
+            throw new BadRequestError("User not found");
+        }
+
+        const tenantId = user.tenant_id;
+
+        const creaeteQuestionDto = {
+            ...dto,
+            tenantId: tenantId,
+        }
+
+        return questionRepository.create(userId, creaeteQuestionDto);
     }
 
     async createAnswer(dto: CreateAnswerRequest) {
@@ -402,6 +414,7 @@ export class QuestionService {
 
 
     async getAllTeacherQuestions(userId: number, categoryId?: number, gradeId?: number, topicId?: number, page: number = 1, limit: number = 30, source?: 'teacher' | 'system' | 'all') {
+
         const response = await questionRepository.filterQuestions({
             teacherId: userId,
             categoryId,

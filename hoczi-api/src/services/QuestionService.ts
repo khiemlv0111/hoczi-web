@@ -70,8 +70,10 @@ export class QuestionService {
             throw new BadRequestError("User not found");
         }
 
-        const tenantId = user.tenant_id;
-
+        let tenantId = null;
+        if(user.role !== 'admin') {
+            tenantId = user.tenant_id;
+        }
         const creaeteQuestionDto = {
             ...dto,
             tenantId: tenantId,

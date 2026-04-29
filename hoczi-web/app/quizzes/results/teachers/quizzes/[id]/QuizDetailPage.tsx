@@ -93,7 +93,7 @@ function CreateAssignmentModal({quiz, quizId, onClose, onCreated }: {
         const categoryId = quiz?.category_id;
         const gradeId = quiz?.grade_id;
         const topicId = quiz?.topic_id;
-        
+
         QuestionService.getAllQuestionsForQuizAssignment({gradeId: gradeId, categoryId: categoryId, topicId: topicId, source: source, page: 1, limit: 100 })
             .then(res => setQuestions(res?.data ?? res ?? []))
             .catch(() => setError('Failed to load questions'))
@@ -122,7 +122,7 @@ function CreateAssignmentModal({quiz, quizId, onClose, onCreated }: {
         try {
             console.log({quiz_id: quizId, question_ids: finalIds});
             
-            // await LessonService.createQuizSession({ quiz_id: quizId, question_ids: finalIds });
+            await LessonService.createQuizSession({ quiz_id: quizId, question_ids: finalIds });
             onCreated();
             onClose();
         } catch {

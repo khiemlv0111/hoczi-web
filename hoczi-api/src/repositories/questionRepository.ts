@@ -51,8 +51,6 @@ class QuestionRepository {
 
     async filterQuestions(filter?: TeacherFilterQuestionDto) {
 
-        console.log("filter", filter);
-        
 
         const qb = this.repo
             .createQueryBuilder('question')
@@ -65,16 +63,10 @@ class QuestionRepository {
             qb.andWhere('question.created_by = :teacherId', {
                 teacherId: filter.teacherId,
             });
+        } else if (filter?.source === 'all') {
+            qb.andWhere('question.tenant_id = :tenantId', { tenantId: filter.tenantId });
         } else if (filter?.source === 'system') {
             qb.andWhere('question.is_system = true');
-        } else {
-            qb.andWhere(
-                '(question.created_by = :teacherId OR question.is_system = true)',
-                { teacherId: filter?.teacherId }
-            );
-            if (filter?.tenantId) {
-                qb.andWhere('question.tenant_id = :tenantId', { tenantId: filter.tenantId });
-            }
         }
 
         if (filter?.categoryId) {

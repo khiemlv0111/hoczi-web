@@ -422,7 +422,7 @@ export class QuestionService {
             throw new BadRequestError("User not found");
         }
 
-        const tenantId = user.tenant_id || undefined;
+        const tenantId = Number(user.tenant_id) || undefined;
 
         const response = await questionRepository.filterQuestions({
             teacherId: userId,
@@ -432,7 +432,7 @@ export class QuestionService {
             source: source ?? 'teacher',
             page,
             perPage: limit,
-            tenantId: source === 'all' ? tenantId : undefined,
+            tenantId: tenantId,
         });
         return {
             message: "get questions success",

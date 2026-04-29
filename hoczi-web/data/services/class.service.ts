@@ -46,7 +46,7 @@ export class ClassService {
 
     static async getStudentClasses() {
         const response = await getRequest('/api/classes/get-my-classes', true);
-        return response;
+        return response.data as ClassItem[];
     }
 
     static async createClass(payload: { name: string; code: string; description?: string; teacher_id: number; school_name?: string; tenant_id?: number; grade_id?: number }) {

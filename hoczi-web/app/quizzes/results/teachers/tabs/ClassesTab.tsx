@@ -322,20 +322,32 @@ export function ClassesTab({ classes, allUsers, loadingClasses, teacherId, setCl
     const [assignTarget, setAssignTarget] = useState<AssignTarget | null>(null)
     const [assignStudentTarget, setAssignStudentTarget] = useState<{ classId: number; studentId: number; studentName: string } | null>(null);
     const [sameTenantUsers, setSameTenantUsers] = useState<User[]>([])
+    const { classDetail, handleGetClassDetail } = useAppData();
+
 
     useEffect(() => {
         ///
-        UserService.getUsersSameTenant({ keyword: ''}).then(res => {
+        UserService.getUsersSameTenant({ keyword: '' }).then(res => {
             setSameTenantUsers(res)
-        }).catch(() => { })  
+        }).catch(() => { })
     }, [])
+
+    useEffect(() => {
+        if (classDetail) {
+            setMembers((classDetail.members as Member[]) ?? []);
+        }
+    }, [classDetail]);
 
     const selectClass = (cls: ClassItem) => {
         setSelectedClass(cls)
-        setMembers((cls.members as Member[]) ?? [])
+        if (cls.members && cls.members.length > 0) {
+            setMembers((cls.members as Member[]) ?? []);
 
-        console.log('ClassItem', cls);
-        
+        } else {
+            handleGetClassDetail(cls.id)
+
+        }
+
     }
 
     const handleClassCreated = (cls: ClassItem) => {

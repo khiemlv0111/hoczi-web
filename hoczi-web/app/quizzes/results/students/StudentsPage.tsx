@@ -349,7 +349,7 @@ export function StudentsdPage() {
 
     useEffect(() => {
         ClassService.getStudentClasses().then((res) => {
-            setClasses(res.data);
+            setClasses(res);
 
         }).finally(() => setLoadingClasses(false))
         let page = 1;

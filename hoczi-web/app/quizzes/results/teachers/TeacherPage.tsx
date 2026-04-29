@@ -20,10 +20,29 @@ export function TeacherPage() {
     const [loadingClasses, setLoadingClasses] = useState(true)
 
     useEffect(() => {
-        ClassService.getClassList()
-            .then(setClasses)
-            .catch(() => { })
-            .finally(() => setLoadingClasses(false))
+        // ClassService.getClassList()
+        //     .then(setClasses)
+        //     .catch(() => { })
+        //     .finally(() => setLoadingClasses(false))
+
+
+
+        Promise.all([
+            ClassService.getClassList().catch(() => []),
+            ClassService.getStudentClasses().catch(() => []),
+        ])
+            .then(([teacherClasses, studentClasses]) => {
+                // Merge và dedupe theo id
+                const merged = [...teacherClasses, ...studentClasses];
+                const unique = Array.from(
+                    new Map(merged.map(c => [c.id, c])).values()
+                );
+                setClasses(unique);
+            })
+            .finally(() => setLoadingClasses(false));
+
+
+
         handleGetUsers({ page: 1, limit: 999 })
             .then(res => setAllUsers(res?.users ?? []))
             .catch(() => { })

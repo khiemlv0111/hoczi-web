@@ -59,7 +59,14 @@
     "user_guide": "User Guide",
     "notifications": "Notifications",
     "studies": "Studies",
-    "register_service": "Register Service"
+    "register_service": "Register Service",
+    "topic": "Topic",
+    "any_topic": "Any topic",
+    "topics": "Topics",
+    "any_subject": "Any subject",
+    "any_category": "Any category",
+    "any_grade": "Any grade",
+    "any_difficulty": "Any difficulty"
   },
   "teacher": {
     "dashboard": "Teacher Dashboard",

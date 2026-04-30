@@ -12,12 +12,7 @@ import { CommonModal } from "./components/modal/CommonModal";
 import Image from "next/image";
 import { t } from "@/messages/locale";
 
-const DIFFICULTY_OPTIONS = [
-  { value: '', label: 'Any difficulty' },
-  { value: 'easy', label: 'Easy' },
-  { value: 'medium', label: 'Medium' },
-  { value: 'hard', label: 'Hard' },
-];
+
 
 export default function HomePage() {
   const { handleStartQuiz, getUserProfile, user, handleGetQuestionList, messages } = useAppData();
@@ -33,6 +28,13 @@ export default function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedTopic, setSelectedTopic] = useState('');
   const [selectedDifficulty, setSelectedDifficulty] = useState('');
+
+  const DIFFICULTY_OPTIONS = [
+  { value: '', label: t(messages, 'common.any_difficulty') },
+  { value: 'easy', label: t(messages, 'common.easy') },
+  { value: 'medium', label: t(messages, 'common.medium') },
+  { value: 'hard', label: t(messages, 'common.hard') },
+];
 
   useEffect(() => {
     const token = Cookies.get(APP_ACCESS_TOKEN_KEY);
@@ -189,13 +191,13 @@ export default function HomePage() {
 
           {/* Grade */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">Grade</label>
+            <label className="text-sm font-medium text-gray-700">{t(messages, 'common.grade')}</label>
             <select
               value={selectedGrade}
               onChange={(e) => setSelectedGrade(e.target.value)}
               className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="">Any grade</option>
+              <option value="">{t(messages, 'common.any_grade')}</option>
               {gradeList.map((g) => (
                 <option key={g.id} value={g.id}>{g.name}</option>
               ))}
@@ -204,13 +206,13 @@ export default function HomePage() {
 
           {/* Category */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">Category</label>
+            <label className="text-sm font-medium text-gray-700">{t(messages, 'common.category')}</label>
             <select
               value={selectedCategory}
               onChange={(e) => handleCategoryChange(e.target.value)}
               className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="">Any category</option>
+              <option value="">{t(messages, 'common.any_category')}</option>
               {categoryList.map((c) => (
                 <option key={c.id} value={c.id}>{c.name}</option>
               ))}
@@ -219,14 +221,14 @@ export default function HomePage() {
 
           {/* Topic */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">Topic</label>
+            <label className="text-sm font-medium text-gray-700">{t(messages, 'common.topic')}</label>
             <select
               value={selectedTopic}
               onChange={(e) => setSelectedTopic(e.target.value)}
               disabled={!selectedCategory}
               className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:text-gray-400"
             >
-              <option value="">Any topic</option>
+              <option value="">{t(messages, 'common.any_topic')}</option>
               {topicList.map((t) => (
                 <option key={t.id} value={t.id}>{t.name}</option>
               ))}
@@ -235,14 +237,14 @@ export default function HomePage() {
 
           {/* Difficulty */}
           <div className="flex flex-col gap-1">
-            <label className="text-sm font-medium text-gray-700">Difficulty</label>
+            <label className="text-sm font-medium text-gray-700">{t(messages, 'common.difficulty')}</label>
             <select
               value={selectedDifficulty}
               onChange={(e) => setSelectedDifficulty(e.target.value)}
               className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               {DIFFICULTY_OPTIONS.map((d) => (
-                <option key={d.value} value={d.value}>{d.label}</option>
+                <option key={d.value} value={d.value}>{t(messages, d.label)}</option>
               ))}
             </select>
           </div>
@@ -251,7 +253,7 @@ export default function HomePage() {
             onClick={() => startQuiz()}
             className="mt-2 py-3 bg-blue-600 text-white rounded-xl font-medium text-base hover:bg-blue-500 active:scale-95 transition-all duration-150"
           >
-            Start Quiz
+            {t(messages, 'common.start_quiz')}
           </button>
 
         </div>

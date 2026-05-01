@@ -91,8 +91,9 @@ class UserRepository {
     }
 
     async save(user: User) {
-
-        return this.repo.save(user);
+        const saved = await this.repo.save(user);
+        const { password, ...rest } = saved;
+        return rest;
     }
 
     async createInitUser(user: any) {

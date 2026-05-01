@@ -1,52 +1,100 @@
 'use client';
 
-import { useAppData } from "@/app/context/AppContext";
-import { UserService } from "@/data/services/user.service";
-import { CheckCircle, Loader2, Mail, MessageSquare, Send, User } from "lucide-react";
+import { useAppData, User } from "@/app/context/AppContext";
+import { TenantService } from "@/data/services/tenant.service";
+import { CheckCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export function RegisterServicePage() {
-    const { user } = useAppData();
+const PLAN_TYPES = ['free', 'basic', 'pro', 'enterprise'];
 
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [content, setContent] = useState('');
-    const [loading, setLoading] = useState(false);
+type CreateForm = {
+    name: string;
+    code: string;
+    description: string;
+    domain: string;
+    logo_url: string;
+    owner_user_id: string;
+    plan_type: string;
+    max_users: string;
+};
+
+const emptyCreate: CreateForm = {
+    name: '', code: '', description: '', domain: '',
+    logo_url: '', owner_user_id: '', plan_type: 'free', max_users: '',
+};
+
+export function RegisterServicePage() {
+    const { user, handleGetUsers } = useAppData();
+    const router = useRouter();
+
+    const [createForm, setCreateForm] = useState<CreateForm>(emptyCreate);
+    const [creating, setCreating] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState('');
 
+    const [formUsers, setFormUsers] = useState<User[]>([]);
+    const [formUsersLoading, setFormUsersLoading] = useState(false);
+
     useEffect(() => {
         if (user) {
-            setName(user.name ?? '');
-            setEmail(user.email ?? '');
+            setCreateForm((f) => ({
+                ...f,
+                owner_user_id: user.id ? String(user.id) : '',
+            }));
         }
     }, [user]);
 
-    const registerService = async (e: React.FormEvent<HTMLFormElement>) => {
+    useEffect(() => {
+        setFormUsersLoading(true);
+        handleGetUsers({ page: 1, limit: 500 })
+            .then((res) => setFormUsers(Array.isArray(res?.users) ? res.users : []))
+            .catch(() => { })
+            .finally(() => setFormUsersLoading(false));
+    }, []);
+
+    function setCreate(field: keyof CreateForm, value: string) {
+        setCreateForm((f) => ({ ...f, [field]: value }));
+    }
+
+    async function handleCreate(e: React.SyntheticEvent<HTMLFormElement>) {
         e.preventDefault();
         setError('');
-        setLoading(true);
-
+        setCreating(true);
         try {
-            await UserService.registerService({ name, email, content });
+            const res = await TenantService.createTenant({
+                name: createForm.name,
+                code: createForm.code,
+                description: createForm.description || undefined,
+                domain: createForm.domain || undefined,
+                logo_url: createForm.logo_url || undefined,
+                owner_user_id: createForm.owner_user_id ? Number(createForm.owner_user_id) : undefined,
+                plan_type: createForm.plan_type || undefined,
+                max_users: createForm.max_users ? Number(createForm.max_users) : undefined,
+            });
+            const newId = res?.data?.id ?? res?.id ?? res?.tenant?.id;
+            setCreateForm(emptyCreate);
+            if (newId) {
+                router.push(`/organization/tenants/${newId}`);
+                return;
+            }
             setSuccess(true);
-            setContent('');
         } catch {
             setError('There was an error sending your request. Please try again later.');
         } finally {
-            setLoading(false);
+            setCreating(false);
         }
-    };
+    }
 
     if (success) {
         return (
-            <div className="max-w-lg mx-auto mt-12 bg-white border border-gray-200 rounded-xl p-8 flex flex-col items-center gap-4 text-center">
+            <div className="max-w-2xl mx-auto mt-12 bg-white border border-gray-200 rounded-xl p-8 flex flex-col items-center gap-4 text-center">
                 <div className="w-14 h-14 rounded-full bg-green-50 flex items-center justify-center">
                     <CheckCircle size={28} className="text-green-500" />
                 </div>
                 <h2 className="text-[16px] font-semibold text-gray-900">Request sent!</h2>
                 <p className="text-[13px] text-gray-500">
-                    We've received your request and will get back to you at <span className="font-medium text-gray-700">{email}</span> shortly.
+                    We've received your request and will get back to you shortly.
                 </p>
                 <button
                     onClick={() => setSuccess(false)}
@@ -59,71 +107,72 @@ export function RegisterServicePage() {
     }
 
     return (
-        <div className="max-w-lg mx-auto">
-            <div className="bg-white border border-gray-200 rounded-xl p-6">
-                <div className="flex items-center gap-3 mb-6">
-                    <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
-                        <Send size={18} className="text-blue-600" />
-                    </div>
-                    <div>
-                        <h1 className="text-[15px] font-semibold text-gray-900">Register Service</h1>
-                        <p className="text-[12px] text-gray-400">Fill in your details and we'll be in touch</p>
-                    </div>
+        <div className="max-w-2xl mx-auto">
+            <div className="bg-white border border-gray-200 rounded-xl p-4">
+                <div className="flex items-center justify-between mb-4">
+                    <span className="text-[13px] font-medium text-gray-900">Register Service</span>
                 </div>
 
-                <form onSubmit={registerService} className="space-y-4">
-                    <div>
-                        <label className="block text-[12px] font-medium text-gray-600 mb-1.5">
-                            Name
-                        </label>
-                        <div className="relative">
-                            <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                            <input
-                                type="text"
-                                name="name"
-                                value={name}
-                                onChange={e => setName(e.target.value)}
-                                required
-                                placeholder="Your full name"
-                                className="w-full pl-9 pr-3 py-2.5 text-[13px] border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition"
-                            />
+                <form onSubmit={handleCreate} className="flex flex-col gap-3 mt-4">
+                    <div className="grid grid-cols-2 gap-3">
+                        <div>
+                            <label className="block text-[12px] font-medium text-gray-700 mb-1">Name <span className="text-red-500">*</span></label>
+                            <input required type="text" value={createForm.name}
+                                onChange={(e) => setCreate('name', e.target.value)}
+                                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                placeholder="Acme Corp" />
+                        </div>
+                        <div>
+                            <label className="block text-[12px] font-medium text-gray-700 mb-1">Code <span className="text-red-500">*</span></label>
+                            <input required type="text" value={createForm.code}
+                                onChange={(e) => setCreate('code', e.target.value)}
+                                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                placeholder="ACME" />
+                        </div>
+                        <div>
+                            <label className="block text-[12px] font-medium text-gray-700 mb-1">Domain</label>
+                            <input type="text" value={createForm.domain}
+                                onChange={(e) => setCreate('domain', e.target.value)}
+                                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                placeholder="acme.example.com" />
+                        </div>
+                        <div>
+                            <label className="block text-[12px] font-medium text-gray-700 mb-1">Logo URL</label>
+                            <input type="text" value={createForm.logo_url}
+                                onChange={(e) => setCreate('logo_url', e.target.value)}
+                                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                placeholder="https://..." />
+                        </div>
+                        <div>
+                            <label className="block text-[12px] font-medium text-gray-700 mb-1">Owner</label>
+                            <select value={createForm.owner_user_id} onChange={(e) => setCreate('owner_user_id', e.target.value)}
+                                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+                                <option value="">{formUsersLoading ? 'Loading...' : 'Select owner...'}</option>
+                                {formUsers.map((u) => (
+                                    <option key={u.id} value={u.id}>{u.name} ({u.email})</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div>
+                            <label className="block text-[12px] font-medium text-gray-700 mb-1">Plan Type</label>
+                            <select value={createForm.plan_type} onChange={(e) => setCreate('plan_type', e.target.value)}
+                                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400">
+                                {PLAN_TYPES.map((p) => <option key={p} value={p}>{p.charAt(0).toUpperCase() + p.slice(1)}</option>)}
+                            </select>
+                        </div>
+                        <div>
+                            <label className="block text-[12px] font-medium text-gray-700 mb-1">Max Users</label>
+                            <input type="number" min={1} value={createForm.max_users}
+                                onChange={(e) => setCreate('max_users', e.target.value)}
+                                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                placeholder="100" />
                         </div>
                     </div>
-
                     <div>
-                        <label className="block text-[12px] font-medium text-gray-600 mb-1.5">
-                            Email
-                        </label>
-                        <div className="relative">
-                            <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                            <input
-                                type="email"
-                                name="email"
-                                value={email}
-                                onChange={e => setEmail(e.target.value)}
-                                required
-                                placeholder="you@example.com"
-                                className="w-full pl-9 pr-3 py-2.5 text-[13px] border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition"
-                            />
-                        </div>
-                    </div>
-
-                    <div>
-                        <label className="block text-[12px] font-medium text-gray-600 mb-1.5">
-                            Message
-                        </label>
-                        <div className="relative">
-                            <MessageSquare size={14} className="absolute left-3 top-3.5 text-gray-400" />
-                            <textarea
-                                name="content"
-                                value={content}
-                                onChange={e => setContent(e.target.value)}
-                                required
-                                rows={5}
-                                placeholder="Fill in the details of Company name, website and other information about the service you need..."
-                                className="w-full pl-9 pr-3 py-2.5 text-[13px] border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-400 transition resize-none"
-                            />
-                        </div>
+                        <label className="block text-[12px] font-medium text-gray-700 mb-1">Description</label>
+                        <textarea value={createForm.description} onChange={(e) => setCreate('description', e.target.value)}
+                            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none"
+                            rows={2} placeholder="Optional description" />
                     </div>
 
                     {error && (
@@ -132,23 +181,16 @@ export function RegisterServicePage() {
                         </p>
                     )}
 
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white text-[13px] font-medium py-2.5 rounded-lg transition"
-                    >
-                        {loading ? (
-                            <>
-                                <Loader2 size={14} className="animate-spin" />
-                                Sending…
-                            </>
-                        ) : (
-                            <>
-                                <Send size={14} />
-                                Send Request
-                            </>
-                        )}
-                    </button>
+                    <div className="flex justify-end gap-2 mt-1">
+                        <button type="button" onClick={() => setCreateForm(emptyCreate)}
+                            className="px-4 py-1.5 text-sm rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50">
+                            Reset
+                        </button>
+                        <button type="submit" disabled={creating}
+                            className="px-4 py-1.5 text-sm rounded-lg bg-blue-500 text-white hover:bg-blue-600 disabled:opacity-60">
+                            {creating ? 'Creating...' : 'Create'}
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

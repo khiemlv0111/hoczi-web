@@ -20,6 +20,14 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Ứng dụng học & luyện quiz thông minh",
   description: "Hoczi.com là một nền tảng học tập trực tuyến tập trung vào làm bài quiz, giúp người học, luyện tập kiến thức nhanh kiểm tra hiểu biết theo từng chủ đề",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
 };
 
 export default async function RootLayout({

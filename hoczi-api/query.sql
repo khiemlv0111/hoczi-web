@@ -165,3 +165,5 @@ CREATE TABLE book_categories (
 update questions set tenant_id = 6 where created_by = 29;
 
 update questions set is_system = true where created_by in (1, 24);
+
+

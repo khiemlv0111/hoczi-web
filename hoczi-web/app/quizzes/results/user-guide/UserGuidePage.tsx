@@ -209,7 +209,7 @@ export default function UserGuidePage() {
         <div className="max-w-2xl mx-auto space-y-5">
             {/* Header */}
             <div>
-                <h1 className="text-[17px] font-semibold text-gray-900">How to use hoczi.com</h1>
+                <h1 className="text-[17px] font-semibold text-gray-900">Hướng dẫn sử dụng nền tảng hoczi.com</h1>
                 <p className="text-[13px] text-gray-500 mt-0.5">
                     A quick reference for every feature. Click a section to expand the steps.
                 </p>

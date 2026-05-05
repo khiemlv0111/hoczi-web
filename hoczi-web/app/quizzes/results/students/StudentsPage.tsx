@@ -13,21 +13,9 @@ type Tab = 'assignments' | 'quiz-results' | 'classes'
 
 function AssignmentModal({ assignment, onClose }: { assignment: any, onClose: () => void }) {
     const [feedback, setFeedback] = useState('')
-    const { handleGetMyAssignments, handleDoQuizAssignment } = useAppData();
+    const { handleGetMyAssignments, user, handleDoQuizAssignment } = useAppData();
     const router = useRouter();
     const a = assignment.assignment
-
-
-
-    useEffect(() => {
-        console.log('SELECTED ASSIGNMENT==', assignment);
-
-        if (assignment.assignment.assignment_type === "quiz") {
-            console.log('SELECTED ASSIGNMENT quizzzzz ==', assignment.assignment);
-
-        }
-
-    }, [])
 
 
     const submitFeedBack = () => {
@@ -48,22 +36,31 @@ function AssignmentModal({ assignment, onClose }: { assignment: any, onClose: ()
     }
 
     const getQuizDetail = () => {
-        console.log('assignment==', assignment);
 
-        console.log('assignment==', assignment);
-        console.log('quizz assignment==', a);
         LessonService.getQuizDetail(a.quiz_id).then((res) => {
-            console.log('QUIZ DETAIL==', res);
-            handleDoQuizAssignment(a.quiz_id).then((quizData) => {
-                console.log('quizData', quizData);
-                if(quizData.success){
-                    router.push(`/quizzes`);
-                } else {
-                    alert('Failed to start quiz')
-                }
+            if (assignment.status === 'completed') {
+                // console.log('QUIZ DETAIL==', res.quiz_sessions.filter((q: any) => q.user_id == user?.id));
+                const session = res.quiz_sessions.filter((q: any) => q.user_id == user?.id);
+
+                const sessionId = session[0].id;
                 
-                // onClose();
-            })
+                router.push(`/quizzes/results/sessions/${sessionId}`)
+
+            } else {
+
+                handleDoQuizAssignment(a.quiz_id).then((quizData) => {
+                 
+                    if (quizData.success) {
+                        router.push(`/quizzes`);
+                    } else {
+                        alert('Failed to start quiz')
+                    }
+
+                    // onClose();
+                })
+
+            }
+
             // const quiz = res.data;
         })
     }
@@ -159,6 +156,7 @@ function AssignmentModal({ assignment, onClose }: { assignment: any, onClose: ()
                     <button onClick={onClose} className="px-4 py-2 text-[13px] font-medium text-gray-500 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
                         Cancel
                     </button>
+
                     {
                         a.assignment_type === "quiz" && (
                             <button
@@ -169,7 +167,7 @@ function AssignmentModal({ assignment, onClose }: { assignment: any, onClose: ()
 
                                 className="px-4 py-2 text-[13px] font-medium text-white bg-green-500 rounded-lg hover:bg-green-600 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                             >
-                                Start do quiz
+                                {assignment.status == 'completed' ? 'View' : 'Start do quiz'}
 
                             </button>
 
@@ -343,7 +341,7 @@ export function StudentsdPage() {
             return next
         });
         const status = a.status === 'completed' ? 'pending' : 'completed';
-        
+
         LessonService.updateAssignmentStudent(a.id, status);
     }
 
@@ -438,6 +436,7 @@ export function StudentsdPage() {
                                             View
                                         </button>
                                         <button
+                                            disabled={a.status == 'completed'}
                                             onClick={() => {
                                                 console.log('ASSSIGME', a);
 

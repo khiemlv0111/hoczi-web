@@ -167,3 +167,16 @@ update questions set tenant_id = 6 where created_by = 29;
 update questions set is_system = true where created_by in (1, 24);
 
 
+insert into categories(name, slug, description, is_active) values ('ESL', 'esl', 'English as second language', true);
+insert into topics(category_id, name, slug, description, is_active) values (18, 'Grammar', 'grammar','Gramma in ESL', true);
+insert into topics(category_id, name, slug, description, is_active) values (18, 'Grammar', 'grammar','Gramma in ESL', true);
+insert into topics(category_id, name, slug, description, is_active) values (18, 'Vocabulary', 'vocabulary','Vocabulary in ESL', true);
+
+
+insert into topics(category_id, name, slug, description, is_active) values (4, 'Ôn thi Đại học', 'on-thi-dai-hoc-van','Ôn thi đại học môn Văn', true);
+insert into topics(category_id, name, slug, description, is_active) values (5, 'Ôn thi Đại học', 'on-thi-dai-hoc-lich-su','Ôn thi đại học môn Lịch sử', true);
+
+
+insert into topics(category_id, name, slug, description, is_active) values (19, 'Ôn thi Đại học', 'on-thi-dai-hoc-vat-ly','Ôn thi đại học môn Vat ly', true);
+insert into topics(category_id, name, slug, description, is_active) values (20, 'Ôn thi Đại học', 'on-thi-dai-hoc-hoa-hoc','Ôn thi đại học môn Hoa hoc', true);
+

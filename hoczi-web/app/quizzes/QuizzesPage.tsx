@@ -436,6 +436,13 @@ export function QuizPage() {
           {q.id}. {q.question}
         </h2>
 
+        {/* Question image */}
+        {q.image_url && (
+          <div className="mb-4">
+            <img src={q.image_url} alt="question image" className="max-h-64 rounded-xl object-contain" />
+          </div>
+        )}
+
         {/* Code block */}
         <CodeBlock code={q.code?.code} />
 

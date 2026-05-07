@@ -1,16 +1,20 @@
 'use client'
 
 import { QuestionService } from "@/data/services/question.service";
+import { UserService } from "@/data/services/user.service";
 import { Category, Grade, Question, Topic } from "@/data/types";
 import { useEffect, useRef, useState } from "react";
 
 
-const EMPTY_FORM = { content: '', explanation: '', code: '', status: 'active', type: 'mcq', difficulty: 'easy', gradeId: '', categoryId: '', topicId: '' };
+const EMPTY_FORM = { content: '', explanation: '', code: '', image_url: '', status: 'active', type: 'mcq', difficulty: 'easy', gradeId: '', categoryId: '', topicId: '' };
 
 export function CreateQuestionForm({ onSuccess }: { onSuccess?: (id: number) => void }) {
   
     const [error, setError] = useState('');
     const [submitting, setSubmitting] = useState(false);
+    const [uploading, setUploading] = useState(false);
+    const [image_urlPreview, setImagePreview] = useState('');
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const [categories, setCategories] = useState<Category[]>([]);
     const [topics, setTopics] = useState<Topic[]>([]);
@@ -31,6 +35,22 @@ export function CreateQuestionForm({ onSuccess }: { onSuccess?: (id: number) => 
         });
     }, []);
 
+
+    async function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        setImagePreview(URL.createObjectURL(file));
+        setUploading(true);
+        try {
+            const res = await UserService.uploadFile(file);
+            const url = res?.data?.url ?? res?.url ?? '';
+            setForm((f) => ({ ...f, image_url: url }));
+        } catch {
+            setError('Image upload failed.');
+        } finally {
+            setUploading(false);
+        }
+    }
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -97,6 +117,37 @@ export function CreateQuestionForm({ onSuccess }: { onSuccess?: (id: number) => 
                         rows={3}
                         placeholder="Code snippet (optional)"
                     />
+                </div>
+
+                <div>
+                    <label className="block text-[12px] font-medium text-gray-700 mb-1">Image</label>
+                    <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image_url/*"
+                        onChange={handleImageChange}
+                        className="hidden"
+                    />
+                    <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={uploading}
+                        className="px-3 py-1.5 text-sm rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-60"
+                    >
+                        {uploading ? 'Uploading...' : 'Choose image_url'}
+                    </button>
+                    {image_urlPreview && (
+                        <div className="mt-2 relative inline-block">
+                            <img src={image_urlPreview} alt="preview" className="max-h-40 rounded-lg border border-gray-200 object-contain" />
+                            <button
+                                type="button"
+                                onClick={() => { setImagePreview(''); setForm((f) => ({ ...f, image_url: '' })); if (fileInputRef.current) fileInputRef.current.value = ''; }}
+                                className="absolute -top-1.5 -right-1.5 bg-white border border-gray-200 rounded-full w-5 h-5 flex items-center justify-center text-gray-500 hover:text-red-500 text-xs leading-none"
+                            >
+                                ×
+                            </button>
+                        </div>
+                    )}
                 </div>
 
                 <div className="grid grid-cols-3 gap-3">

@@ -49,8 +49,9 @@ export const getRequest = async (url: string, isPrivate: boolean) => {
 
 export const postRequest = async (url: string, data: any, isPrivate: boolean = true) => {
     const accessToken = getAccessToken();
-    const headers: Record<string, string> = {
-        'Content-Type': 'application/json',
+    const headers: Record<string, string> = {};
+    if (!(data instanceof FormData)) {
+        headers['Content-Type'] = 'application/json';
     }
     if (isPrivate && accessToken) {
         headers['Authorization'] = `Bearer ${accessToken}`;

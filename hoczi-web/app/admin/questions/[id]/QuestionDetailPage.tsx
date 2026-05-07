@@ -61,6 +61,11 @@ export function QuestionDetailPage({ id }: any) {
                             <div>
                                 {question.code?.code}
                             </div>
+                            {question.image_url && (
+                                <div className="mt-2">
+                                    <img src={question.image_url as string} alt="question image" className="max-h-60 rounded-lg border border-gray-200 object-contain" />
+                                </div>
+                            )}
 
                         </div>
 

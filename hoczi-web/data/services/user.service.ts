@@ -139,9 +139,12 @@ export class UserService {
         return response
     }
 
-
-
-
+    static async uploadFile(file: File) {
+        const formData = new FormData();
+        formData.append("file", file);
+        const response = await postRequest('/api/users/upload-file', formData, true);
+        return response;
+    }
 
 
 }

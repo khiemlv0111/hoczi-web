@@ -5,6 +5,7 @@ import { QuestionController } from '../controllers/QuestionController';
 // import { upload } from '../helpers/aws_s3';
 
 import { UserController } from '../controllers/UserController';
+import { upload } from '../utils/aws_s3';
 
 
 
@@ -59,6 +60,10 @@ userRoutes.get('/get-page-detail/:id', new UserController().getPageDetail);
 
 
 userRoutes.post('/claude-chat', new QuestionController().claudeChat);
+
+
+userRoutes.post('/upload-file', upload.single('file') as any, new UserController().uploadFile);
+
 
 
 

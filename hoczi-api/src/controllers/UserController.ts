@@ -1,9 +1,12 @@
 import { Request, Response } from 'express'
 import { RequestValidator } from '../dto/requestValidator';
 import { CreatePageRequest, UpdateUserRequest } from '../dto/user.dto';
+import { PutObjectCommand } from '@aws-sdk/client-s3'
+import { v4 as uuidv4 } from 'uuid';
 
 import { UserService } from '../services/UserService';
 import { isAdmin } from '../utils/string_utils';
+import { s3Client } from '../utils/s3';
 
 const userService = new UserService();
 
@@ -109,6 +112,34 @@ export class UserController {
         const page = await userService.getPageDetail(slug);
         return res.json({ success: true, data: page });
     }
+
+    async uploadFile(req: Request, res: Response) {
+
+		// console.log('Bucket:', process.env.AWS_S3_BUCKET_NAME);
+		try {
+			const file = req.file;
+			if (!file) return res.status(400).json({ message: 'No file uploaded' });
+
+			const fileKey = `${uuidv4()}-${file.originalname}`;
+
+			const command = new PutObjectCommand({
+				Bucket: process.env.AWS_S3_BUCKET_NAME!,
+				Key: fileKey,
+				Body: file.buffer,
+				ContentType: file.mimetype,
+			});
+
+			await s3Client.send(command);
+
+			const fileUrl = `https://d1y3v0ou093g3m.cloudfront.net/${fileKey}`;
+
+			res.json({ message: 'File uploaded successfully', url: fileUrl });
+		} catch (err) {
+			console.error('Error uploading:', err);
+			res.status(500).json({ message: 'Upload failed', error: err });
+		}
+
+	}
 
     
 

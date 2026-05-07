@@ -39,6 +39,9 @@ export class CreateQuestionRequest {
     @IsOptional()
     code!: string;
 
+    @IsOptional()
+    image_url?: string;
+
 
     @IsString()
     @IsOptional()

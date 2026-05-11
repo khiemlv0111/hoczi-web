@@ -267,5 +267,4 @@ export class LessonController {
         return res.json(response);
     }
 
-
 }

@@ -84,13 +84,4 @@ lessonRoutes.put('/update-assignment-status/:id', new LessonController().updateA
 
 
 
-
-
-
-
-
-
-
-
-
 export default lessonRoutes;

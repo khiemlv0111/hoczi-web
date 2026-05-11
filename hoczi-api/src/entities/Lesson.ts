@@ -6,11 +6,13 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { Subject } from './Subject';
 import { Topic } from './Topic';
 import { Grade } from './Grade';
 import { User } from './User';
+import { LearningActivity } from './LearningActivity';
 
 @Entity('lessons')
 export class Lesson {
@@ -77,4 +79,7 @@ export class Lesson {
 
   @UpdateDateColumn({ type: 'timestamptz' })
   updated_at!: Date;
+
+  @OneToMany(() => LearningActivity, (activity) => activity.lesson)
+  learning_activities!: LearningActivity[];
 }

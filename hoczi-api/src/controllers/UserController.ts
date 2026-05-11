@@ -141,6 +141,12 @@ export class UserController {
 
 	}
 
+    async importQuestions(req: Request, res: Response) {
+        const { id } = req.user;
+        const { errors, input } = await RequestValidator(CreatePageRequest, req.body);
+
+    }
+
     
 
 

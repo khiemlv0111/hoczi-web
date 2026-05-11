@@ -71,7 +71,7 @@ export class QuestionService {
         }
 
         let tenantId = null;
-        if(user.role !== 'admin') {
+        if (user.role !== 'admin') {
             tenantId = user.tenant_id;
         }
         const creaeteQuestionDto = {
@@ -419,7 +419,7 @@ export class QuestionService {
 
     async getAllTeacherQuestions(userId: number, categoryId?: number, gradeId?: number, topicId?: number, page: number = 1, limit: number = 30, source?: 'teacher' | 'system' | 'all') {
         const user = await userRepository.findById(userId);
-        if (!user) {    
+        if (!user) {
             throw new BadRequestError("User not found");
         }
 

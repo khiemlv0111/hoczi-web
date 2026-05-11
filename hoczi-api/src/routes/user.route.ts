@@ -66,10 +66,4 @@ userRoutes.post('/upload-file', upload.single('file') as any, new UserController
 
 
 
-
-
-
-
-
-
 export default userRoutes;

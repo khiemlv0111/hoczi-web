@@ -19,7 +19,7 @@ function buildWords(content: string): Word[] {
     return content.trim().split(/\s+/).map((text, i) => ({ id: `w-${i}-${text}`, text }));
 }
 
-export function LearnByTopicDetailPage() {
+export function LearnByActivityDetailPage() {
     const [current, setCurrent] = useState(0);
 
     const q = STATIC_QUESTIONS[current];

@@ -27,6 +27,8 @@ import {
     CalendarCheck,
     Send,
     BookOpen,
+    PersonStanding,
+    HandCoins,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
@@ -74,7 +76,7 @@ export default function ResultLayout({
         { path: '/quizzes/results/schedules', label: "Schedules", icon: CalendarCheck, text: "Schedules" },
         { path: '/quizzes/results/ai-learn', label: "AI Learn", icon: Brain, text: "AI Learn" },
         { path: '/quizzes/results/inbox', label: "Inbox", icon: Mail, text: "Inbox" },
-        { path: '/quizzes/results/learn-by-topics', label: "Learn by topics", icon: Mail, text: "Learn by topics" },
+        { path: '/quizzes/results/learn-by-activities', label: "Learn by activities", icon: HandCoins, text: "Learn by activities" },
     ];
 
     const navSettings = [

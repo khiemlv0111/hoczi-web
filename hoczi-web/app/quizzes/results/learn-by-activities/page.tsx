@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { LearnByTopicPage } from "./LearnByTopicsPage";
+import { LearnByActivitiesPage } from "./LearnByActivitiesPage";
 
 export default function Page(){
     return (
         <div>
-            <LearnByTopicPage />
+            <LearnByActivitiesPage />
         </div>
     )
 }

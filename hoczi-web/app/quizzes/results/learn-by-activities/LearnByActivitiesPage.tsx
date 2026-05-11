@@ -24,12 +24,12 @@ const topics = [
     },
 ];
 
-export function LearnByTopicPage() {
+export function LearnByActivitiesPage() {
     return (
         <div className="max-w-3xl mx-auto">
             {/* Header */}
             <div className="mb-8">
-                <h1 className="text-2xl font-bold text-gray-900 mb-1">Learn by Topics</h1>
+                <h1 className="text-2xl font-bold text-gray-900 mb-1">Learn by Activities</h1>
                 <p className="text-sm text-gray-500">Pick a topic and practice building sentences with drag-and-drop exercises.</p>
             </div>
 

@@ -24,7 +24,7 @@ class LearningActivityRepository {
     async createOne(data: any) {
         const activity = this.repo.create({
             lesson_id: data.lesson_id,
-            activity_type: data.activityType,
+            activity_type: data.activity_type,
             instruction: data.instruction,
             config: data.config,
         });

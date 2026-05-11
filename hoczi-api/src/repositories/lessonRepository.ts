@@ -55,12 +55,19 @@ class LessonRepository {
         return { data, total };
     }
 
+    async findByTopicId(topicId: number) {
+        return this.repo.find({
+            where: {
+                topic_id: topicId
+            },
+            relations: ['topic', 'grade']
+        });
+    }
 
     async findSubjects() {
        return this.repo.find();
     }
     
-
 
 }
 

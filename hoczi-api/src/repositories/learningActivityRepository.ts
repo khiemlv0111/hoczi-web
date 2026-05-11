@@ -35,6 +35,7 @@ class LearningActivityRepository {
         return this.repo.find({ where: {lesson_id: lessonId  } });
     }
 
+    
 }
 
 export const learningActivityRepository = new LearningActivityRepository();

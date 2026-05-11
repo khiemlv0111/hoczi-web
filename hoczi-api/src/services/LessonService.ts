@@ -309,4 +309,8 @@ export class LessonService {
         return learningActivityRepository.findByLessonId(lessonId);
     }
 
+    async getLessonsByTopic(topicId: number) {
+        return lessonRepository.findByTopicId(topicId);
+    }
+
 }

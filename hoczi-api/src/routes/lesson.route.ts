@@ -91,7 +91,7 @@ lessonRoutes.post('/create-learning-activity', new LessonController().createLear
 
 lessonRoutes.get('/get-activities-by-lesson/:id', new LessonController().getActivitiesByLesson);
 
-
+lessonRoutes.get('/get-lessons-by-topic/:topicId', new LessonController().getLessonsByTopic);
 
 
 export default lessonRoutes;

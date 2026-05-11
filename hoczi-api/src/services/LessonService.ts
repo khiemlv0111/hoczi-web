@@ -14,6 +14,8 @@ import { userAnswerRepository } from "../repositories/userAnswerRepository";
 import { tenantRepository } from "../repositories/tenantRepository";
 import { userRepository } from "../repositories/userRepository";
 
+import { learningActivityRepository } from "../repositories/learningActivityRepository";
+
 export class LessonService {
 
     private readonly QUESTION_LIMIT = 30;
@@ -296,6 +298,11 @@ export class LessonService {
         const users = await userRepository.findAdminUsers();
         const ids = users.map((x) => x.id);
         return lessonRepository.findSystemLessons(ids, page, limit);
+    }
+
+    async createNewActivity(data: any) {
+
+        return learningActivityRepository.createOne(data);
     }
 
 }

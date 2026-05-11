@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { RequestValidator } from '../dto/requestValidator';
 import { LessonService } from '../services/LessonService';
 import { AddSubjectToClassRequest } from '../dto/class.dto';
-import { AssignStudentAssignmentRequest, AssignUserToTenantRequest, CommentOnAssignmentRequest, CreateAssignmentRequest, CreateLessonRequest, CreateTenantRequest } from '../dto/lesson.dto';
+import { AssignStudentAssignmentRequest, AssignUserToTenantRequest, CommentOnAssignmentRequest, CreateAssignmentRequest, CreateLearningActivityRequest, CreateLessonRequest, CreateTenantRequest } from '../dto/lesson.dto';
 import { CreateQuizRequest, TeacherCreateQuizSessionRequest } from '../dto/user.dto';
 
 
@@ -276,6 +276,24 @@ export class LessonController {
 
 
         const response = await lessonService.getSystemLessons(page, limit);
+        return res.json(response);
+    }
+
+
+        async createLearningActivity(req: Request, res: Response) {
+
+        const { id } = req.user;
+
+        if (!id) {
+            return res.status(400).json({ success: false, message: "errors" })
+        }
+
+        const { errors, input } = await RequestValidator(CreateLearningActivityRequest, req.body);
+        if (errors) {
+            return res.status(400).json({ success: false, message: errors })
+        }
+
+        const response = await lessonService.createNewActivity(input);
         return res.json(response);
     }
 

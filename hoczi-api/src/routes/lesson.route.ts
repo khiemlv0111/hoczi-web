@@ -86,6 +86,11 @@ lessonRoutes.get('/get-system-lessons', new LessonController().getSystemLessons)
 
 
 
+lessonRoutes.post('/create-learning-activity', new LessonController().createLearningActivity);
+
+
+
+
 
 
 export default lessonRoutes;

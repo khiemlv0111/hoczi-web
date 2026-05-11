@@ -156,3 +156,18 @@ export class AssignUserToTenantRequest {
     role!: string;
 
 }
+
+
+
+export class CreateLearningActivityRequest {
+
+    @IsNotEmpty()
+    instruction!: string;
+
+    @IsOptional()
+    activityType!: string;
+
+    @IsNotEmpty()
+    config!: any;
+
+}

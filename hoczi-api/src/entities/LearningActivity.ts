@@ -24,10 +24,10 @@ export enum LearningActivityType {
 @Entity('learning_activities')
 export class LearningActivity {
   @PrimaryGeneratedColumn('increment', { type: 'bigint' })
-  id!: string;
+  id!: number;
 
   @Column({ type: 'bigint' })
-  lesson_id!: string;
+  lesson_id!: number;
 
   @ManyToOne(() => Lesson, (lesson) => lesson.learning_activities, {
     onDelete: 'CASCADE',

@@ -55,10 +55,10 @@ class LessonRepository {
         return { data, total };
     }
 
-    async findByTopicId(topicId: number) {
+    async findByTopicIds(topicIds: number[]) {
         return this.repo.find({
             where: {
-                topic_id: topicId
+                topic_id: In(topicIds)
             },
             relations: ['topic', 'grade']
         });

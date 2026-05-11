@@ -85,13 +85,12 @@ lessonRoutes.put('/update-assignment-status/:id', new LessonController().updateA
 lessonRoutes.get('/get-system-lessons', new LessonController().getSystemLessons);
 
 
-
 lessonRoutes.post('/create-learning-activity', new LessonController().createLearningActivity);
 
 
 lessonRoutes.get('/get-activities-by-lesson/:id', new LessonController().getActivitiesByLesson);
 
-lessonRoutes.get('/get-lessons-by-topic/:topicId', new LessonController().getLessonsByTopic);
+lessonRoutes.get('/get-lessons-by-category/:categoryId', new LessonController().getLessonsByCategory);
 
 
 export default lessonRoutes;

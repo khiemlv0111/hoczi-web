@@ -305,11 +305,11 @@ export class LessonController {
         return res.json(response);
     }
 
-    async getLessonsByTopic(req: Request, res: Response) {
+    async getLessonsByCategory(req: Request, res: Response) {
 
-        const { topicId } = req.params;
+        const { categoryId } = req.params;
 
-        const response = await lessonService.getLessonsByTopic(Number(topicId));
+        const response = await lessonService.getLessonsByCategory(Number(categoryId));
         return res.json(response);
     }
 

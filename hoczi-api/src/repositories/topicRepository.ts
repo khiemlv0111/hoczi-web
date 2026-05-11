@@ -34,6 +34,10 @@ class TopicRepository {
         });
     }
 
+    async findByCategoryId(categoryId: number) {
+        return await this.repo.find({ where: { category_id: categoryId } });
+    }
+
     async update(id: number, data: Partial<Question>) {
         await this.repo.update(id, data);
         return this.findById(id);

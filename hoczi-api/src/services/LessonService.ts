@@ -15,6 +15,8 @@ import { tenantRepository } from "../repositories/tenantRepository";
 import { userRepository } from "../repositories/userRepository";
 
 import { learningActivityRepository } from "../repositories/learningActivityRepository";
+import { categoryRepository } from "../repositories/categoryRepository";
+import { topicRepository } from "../repositories/topicRepository";
 
 export class LessonService {
 
@@ -309,8 +311,10 @@ export class LessonService {
         return learningActivityRepository.findByLessonId(lessonId);
     }
 
-    async getLessonsByTopic(topicId: number) {
-        return lessonRepository.findByTopicId(topicId);
+    async getLessonsByCategory(categoryId: number) {
+        const topics = await topicRepository.findByCategoryId(categoryId);
+        const topicIds = topics.map((t) => t.id);
+        return lessonRepository.findByTopicIds(topicIds);
     }
 
 }

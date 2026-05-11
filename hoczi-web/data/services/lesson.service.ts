@@ -8,6 +8,11 @@ export class LessonService {
         return response;
     }
 
+    static async getSystemLessonsList() {
+        const response = await getRequest('/api/lessons/get-system-lessons', true);
+        return response;
+    }
+
     static async createLesson(payload: Lesson) {
         const response = await postRequest('/api/lessons/create-lesson', payload, true);
         return response;
@@ -117,6 +122,22 @@ export class LessonService {
 
     static async updateAssignmentStudent(assignmentStudentId: number, status: string) {
         const response = await putRequest(`/api/lessons/update-assignment-status/${assignmentStudentId}`, { status }, true);
+        return response;
+    }
+
+    static async createLearningActivity(payload: any) {
+        const response = await postRequest('/api/lessons/create-learning-activity', payload, true);
+        return response;
+    }
+
+
+    static async getLessonsByCategoryId(categoryId: number) {
+        const response = await getRequest(`/api/lessons/get-lessons-by-category/${categoryId}`, true);
+        return response;
+    }
+
+    static async getActivitiesByLessonId(lessonId: number) {
+        const response = await getRequest(`/api/lessons/get-activities-by-lesson/${lessonId}`, true);
         return response;
     }
 

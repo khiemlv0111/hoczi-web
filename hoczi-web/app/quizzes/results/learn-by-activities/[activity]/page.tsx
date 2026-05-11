@@ -1,9 +1,10 @@
 import { LearnByActivityDetailPage } from "./LearnByActivityDetailPage";
 
-export default function Page(){
+export default async function Page({ params }: { params: Promise<{ activity: string }> }){
+    const { activity } = await params;
     return (
         <>
-            <LearnByActivityDetailPage />
+            <LearnByActivityDetailPage activity={activity}/>
         </>
     );
 }

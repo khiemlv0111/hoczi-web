@@ -1,22 +1,18 @@
 'use client'
-// hoczi.com - Admin Dashboard
-// Stack: Next.js + Tailwind CSS + Lucide React
 
 import {
     LayoutDashboard,
-    FileText,
     Clock,
     Users,
     Monitor,
     Bell,
     Settings,
     Plus,
-    TrendingUp,
-    TrendingDown,
     User,
     Star,
     LogOut,
-    Building2
+    Building2,
+    HandCoins
 } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAppData } from "../context/AppContext";
@@ -25,26 +21,6 @@ import Link from "next/link";
 import { CommonModal } from "../components/modal/CommonModal";
 import { CreateQuestionForm } from "./questions/CreateQuestionForm";
 
-const posts = [
-    { title: "Introduction to JavaScript", date: "Apr 10, 2026", status: "published" },
-    { title: "CSS Grid vs Flexbox", date: "Apr 8, 2026", status: "published" },
-    { title: "React Hooks deep dive", date: "Apr 6, 2026", status: "draft" },
-    { title: "TypeScript for beginners", date: "Apr 4, 2026", status: "draft" },
-];
-
-const quizzes = [
-    { name: "JS Fundamentals", attempts: 320, score: 81 },
-    { name: "CSS Basics", attempts: 214, score: 76 },
-    { name: "React Essentials", attempts: 189, score: 69 },
-    { name: "TypeScript Intro", attempts: 97, score: 63 },
-];
-
-const stats = [
-    { label: "Total Posts", value: "48", delta: "+4 this week", positive: true },
-    { label: "Active Quizzes", value: "12", delta: "+2 this week", positive: true },
-    { label: "Students", value: "1,204", delta: "+87 this week", positive: true },
-    { label: "Avg. Quiz Score", value: "73%", delta: "-2% vs last week", positive: false },
-];
 
 const navMain = [
     { path: '/admin', label: "Dashboard", icon: LayoutDashboard, active: true },
@@ -52,6 +28,7 @@ const navMain = [
     { path: '/admin/quizzes', label: "Quizzes", icon: Clock },
     { path: '/admin/questions', label: "Questions", icon: Star },
     { path: '/admin/users', label: "Users", icon: Users },
+    { path: '/admin/activities', label: "Activities", icon: HandCoins },
 ];
 
 const navSettings = [
@@ -102,8 +79,6 @@ export default function AdminLayout({
     useEffect(() => {
         // console.log('USERS', user)
         if (user) {
-            console.log('USERS===', user);
-            
 
             if (user.role !== 'admin') {
                 router.push(`/`)

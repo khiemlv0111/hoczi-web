@@ -89,6 +89,7 @@ lessonRoutes.get('/get-system-lessons', new LessonController().getSystemLessons)
 lessonRoutes.post('/create-learning-activity', new LessonController().createLearningActivity);
 
 
+lessonRoutes.get('/get-activities-by-lesson/:id', new LessonController().getActivitiesByLesson);
 
 
 

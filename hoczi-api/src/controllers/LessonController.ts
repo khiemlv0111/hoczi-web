@@ -170,7 +170,7 @@ export class LessonController {
 
     async assignSessionToStudent(req: Request, res: Response) {
         const { session_id, student_id, title, due_at } = req.body;
-        
+
         if (!session_id || !student_id) {
             return res.status(400).json({ success: false, message: 'session_id and student_id are required' });
         }
@@ -280,7 +280,7 @@ export class LessonController {
     }
 
 
-        async createLearningActivity(req: Request, res: Response) {
+    async createLearningActivity(req: Request, res: Response) {
 
         const { id } = req.user;
 
@@ -294,6 +294,14 @@ export class LessonController {
         }
 
         const response = await lessonService.createNewActivity(input);
+        return res.json(response);
+    }
+
+    async getActivitiesByLesson(req: Request, res: Response) {
+
+        const { id } = req.params;
+
+        const response = await lessonService.getActivitiesByLesson(Number(id));
         return res.json(response);
     }
 

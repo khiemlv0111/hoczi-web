@@ -167,6 +167,9 @@ export class CreateLearningActivityRequest {
     @IsOptional()
     activityType!: string;
 
+    @IsOptional()
+    lesson_id!: number;
+
     @IsNotEmpty()
     config!: any;
 

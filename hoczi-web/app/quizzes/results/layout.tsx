@@ -74,6 +74,7 @@ export default function ResultLayout({
         { path: '/quizzes/results/schedules', label: "Schedules", icon: CalendarCheck, text: "Schedules" },
         { path: '/quizzes/results/ai-learn', label: "AI Learn", icon: Brain, text: "AI Learn" },
         { path: '/quizzes/results/inbox', label: "Inbox", icon: Mail, text: "Inbox" },
+        { path: '/quizzes/results/learn-by-topics', label: "Learn by topics", icon: Mail, text: "Learn by topics" },
     ];
 
     const navSettings = [

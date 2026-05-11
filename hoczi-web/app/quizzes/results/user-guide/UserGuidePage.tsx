@@ -27,7 +27,7 @@ const sections = [
         title: "Getting Started",
         summary: "Create your account and set up your profile",
         steps: [
-            { title: "Sign up", desc: "Go to hoczi.com and click Sign Up. Fill in your name, email, and password." },
+            { title: "Sign up", desc: "Truy cap http://hoczi.com/signiup" },
             { title: "Choose your role", desc: "Select Student, Teacher, or Organization during onboarding. Your role determines which features are visible in the sidebar." },
             { title: "Complete your profile", desc: "Open the user menu (top-right avatar) → Profile to add a display name and preferences." },
             { title: "Explore the sidebar", desc: "All main features — Quizzes, Dashboard, Games, AI Learn, Schedules, and Inbox — are one click away in the left sidebar." },
@@ -194,7 +194,7 @@ function SectionCard({ section }: { section: typeof sections[number] }) {
                             </div>
                             <div>
                                 <p className="text-[13px] font-medium text-gray-900">{step.title}</p>
-                                <p className="text-[12px] text-gray-500 mt-0.5 leading-relaxed">{step.desc}</p>
+                                <div className="text-[12px] text-gray-500 mt-0.5 leading-relaxed" dangerouslySetInnerHTML={{ __html: step.desc }} />
                             </div>
                         </div>
                     ))}

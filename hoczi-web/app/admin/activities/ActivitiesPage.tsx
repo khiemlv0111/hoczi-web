@@ -19,6 +19,10 @@ export function ActivitiesPage() {
     const [topics, setTopics] = useState<Topic[]>([]);
     const [lessons, setLessons] = useState<any[]>([]);
     const [lessonsLoading, setLessonsLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [total, setTotal] = useState(0);
+    const LIMIT = 20;
+    const totalPages = Math.max(1, Math.ceil(total / LIMIT));
 
     const EMPTY_ACTIVITY = { lesson_id: '', activity_type: 'sentence_order', instruction: '', sentence: '', correct_order: '', words: '', explanation: '', media_url: '' };
     const [activityModalOpen, setActivityModalOpen] = useState(false);
@@ -54,6 +58,16 @@ export function ActivitiesPage() {
         setActivityModalOpen(false);
     }
 
+    function fetchLessons(p: number) {
+        setLessonsLoading(true);
+        LessonService.getSystemLessonsList(p, LIMIT)
+            .then((res) => {
+                setLessons(res?.data ?? res ?? []);
+                setTotal(res?.total ?? 0);
+            })
+            .finally(() => setLessonsLoading(false));
+    }
+
     useEffect(() => {
         Promise.all([
             QuestionService.getCategoryList(),
@@ -62,11 +76,11 @@ export function ActivitiesPage() {
             setCategories(cats);
             setGrades(grs);
         });
-
-        LessonService.getSystemLessonsList()
-            .then((res) => setLessons(res?.data ?? res ?? []))
-            .finally(() => setLessonsLoading(false));
     }, []);
+
+    useEffect(() => {
+        fetchLessons(page);
+    }, [page]);
 
     function openModal() {
         setForm(EMPTY_FORM);
@@ -110,7 +124,7 @@ export function ActivitiesPage() {
 
             await LessonService.createLesson(lessonPayload);
             setModalOpen(false);
-            LessonService.getSystemLessonsList().then((res) => setLessons(res?.data ?? res ?? []));
+            fetchLessons(page);
         } catch {
             setError('Failed to create lesson. Please try again.');
         } finally {
@@ -178,6 +192,50 @@ export function ActivitiesPage() {
                             ))}
                         </tbody>
                     </table>
+
+                    {/* Pagination */}
+                    <div className="flex items-center justify-between px-4 py-3 border-t border-gray-100">
+                        <span className="text-[12px] text-gray-400">
+                            Page {page} of {totalPages} &middot; {total} total
+                        </span>
+                        <div className="flex items-center gap-1">
+                            <button
+                                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                                disabled={page <= 1}
+                                className="px-3 py-1 text-[12px] rounded-md border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                            >
+                                Previous
+                            </button>
+                            {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
+                                const pageNum = totalPages <= 7
+                                    ? i + 1
+                                    : page <= 4
+                                        ? i + 1
+                                        : page >= totalPages - 3
+                                            ? totalPages - 6 + i
+                                            : page - 3 + i;
+                                return (
+                                    <button
+                                        key={pageNum}
+                                        onClick={() => setPage(pageNum)}
+                                        className={`w-7 h-7 text-[12px] rounded-md border transition-colors ${page === pageNum
+                                            ? 'bg-blue-500 border-blue-500 text-white'
+                                            : 'border-gray-200 text-gray-600 hover:bg-gray-50'
+                                        }`}
+                                    >
+                                        {pageNum}
+                                    </button>
+                                );
+                            })}
+                            <button
+                                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                                disabled={page >= totalPages}
+                                className="px-3 py-1 text-[12px] rounded-md border border-gray-200 text-gray-600 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </div>
                 </div>
             )}
 

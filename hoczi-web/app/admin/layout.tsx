@@ -123,9 +123,9 @@ export default function AdminLayout({
                 <div className="px-2 mb-2">
                     <p className="text-[11px] text-gray-400 uppercase tracking-wider px-2 mb-1">Main</p>
                     {navMain.map(({ path, label, icon: Icon }) => {
-                        const isActive = label === 'Quizzes'
-                            ? pathname === '/admin/quizzes'
-                            : pathname === path;
+                        const isActive = path === '/admin'
+                            ? pathname === '/admin'
+                            : pathname.startsWith(path);
                         return (
                         <button
                             key={label}

@@ -8,8 +8,13 @@ export class LessonService {
         return response;
     }
 
-    static async getSystemLessonsList() {
-        const response = await getRequest('/api/lessons/get-system-lessons', true);
+    static async getSystemLessonsList(page: number, limit: number) {
+        const params = new URLSearchParams();
+        if (page) params.append('page', String(page));
+        if (limit) params.append('limit', String(limit));
+
+        const query = params.toString() ? `?${params.toString()}` : '';
+        const response = await getRequest(`/api/lessons/get-system-lessons/${query}`, true);
         return response;
     }
 

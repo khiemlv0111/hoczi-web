@@ -108,13 +108,9 @@ export function ActivitiesPage() {
                 estimated_minutes: 15,
             }
 
-            LessonService.createLesson(lessonPayload).then((res) => {
-                console.log('CREATED', res);
-                
-            })
-
-
+            await LessonService.createLesson(lessonPayload);
             setModalOpen(false);
+            LessonService.getSystemLessonsList().then((res) => setLessons(res?.data ?? res ?? []));
         } catch {
             setError('Failed to create lesson. Please try again.');
         } finally {

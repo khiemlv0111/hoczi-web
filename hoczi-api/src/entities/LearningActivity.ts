@@ -10,6 +10,17 @@ import {
 import { Lesson } from './Lesson';
 // import { Lesson } from './lesson.entity';
 
+
+export enum LearningActivityType {
+    MULTIPLE_CHOICE = 'multiple_choice',
+    REORDER_SENTENCE = 'reorder_sentence',
+    FILL_BLANK = 'fill_blank',
+    MATCHING = 'matching',
+    LISTENING = 'listening',
+    SPEAKING = 'speaking',
+}
+
+
 @Entity('learning_activities')
 export class LearningActivity {
   @PrimaryGeneratedColumn('increment', { type: 'bigint' })
@@ -25,7 +36,7 @@ export class LearningActivity {
   lesson!: Lesson;
 
   @Column({ type: 'varchar', length: 50 })
-  activity_type!: string;
+  activity_type!: LearningActivityType;
 
   @Column({ type: 'text' })
   instruction!: string;

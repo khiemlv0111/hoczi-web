@@ -82,6 +82,10 @@ lessonRoutes.get('/get-tenant-detail/:id', new LessonController().getTenantDetai
 lessonRoutes.put('/update-assignment-status/:id', new LessonController().updateAssignmentStatus);
 
 
+lessonRoutes.get('/get-system-lessons', new LessonController().getSystemLessons);
+
+
+
 
 
 export default lessonRoutes;

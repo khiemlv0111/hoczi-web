@@ -1,3 +1,4 @@
+import { In } from 'typeorm';
 import { AppDataSource } from '../data-source';
 import { Lesson } from '../entities/Lesson';
 // import { UserProfile } from '../entities/UserProfile';
@@ -39,6 +40,21 @@ class LessonRepository {
 
         return { data, total };
     }
+
+    async findSystemLessons(ids: number[], page: number, limit: number) {
+        const offset = (page - 1) * limit;
+
+        const [data, total] = await this.repo.findAndCount({
+            where: { created_by: In(ids) },
+            relations: ["grade", "subject", "topic"],
+            order: { id: "DESC" },
+            take: limit,
+            skip: offset,
+        });
+
+        return { data, total };
+    }
+
 
     async findSubjects() {
        return this.repo.find();

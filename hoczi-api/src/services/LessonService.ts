@@ -292,4 +292,10 @@ export class LessonService {
         return assignmentStudentRepository.updateStatus(id, status);
     }
 
+    async getSystemLessons(page: number, limit: number) {
+        const users = await userRepository.findAdminUsers();
+        const ids = users.map((x) => x.id);
+        return lessonRepository.findSystemLessons(ids, page, limit);
+    }
+
 }

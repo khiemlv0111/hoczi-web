@@ -267,4 +267,16 @@ export class LessonController {
         return res.json(response);
     }
 
+
+    async getSystemLessons(req: Request, res: Response) {
+
+
+        const page = req.query.page ? Number(req.query.page) : 1;
+        const limit = req.query.limit ? Number(req.query.limit) : 30;
+
+
+        const response = await lessonService.getSystemLessons(page, limit);
+        return res.json(response);
+    }
+
 }

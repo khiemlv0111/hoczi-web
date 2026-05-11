@@ -26,6 +26,10 @@ class UserRepository {
         return this.repo.findOne({ where: { email } });
     }
 
+    async findAdminUsers() {
+        return this.repo.find({ where: { role: 'admin' } });
+    }
+
     async findByUsername(username: string) {
         return this.repo.findOne({ where: { username } });
     }

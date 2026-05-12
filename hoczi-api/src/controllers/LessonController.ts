@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { RequestValidator } from '../dto/requestValidator';
-import { LessonService } from '../services/LessonService';
+import { ActivityType, LessonService } from '../services/LessonService';
 import { AddSubjectToClassRequest } from '../dto/class.dto';
 import { AssignStudentAssignmentRequest, AssignUserToTenantRequest, CommentOnAssignmentRequest, CreateAssignmentRequest, CreateLearningActivityRequest, CreateLessonRequest, CreateTenantRequest } from '../dto/lesson.dto';
 import { CreateQuizRequest, TeacherCreateQuizSessionRequest } from '../dto/user.dto';
@@ -309,11 +309,11 @@ export class LessonController {
 
         const { categoryId } = req.params;
 
-        const activityType = req.query.activity_type as string;
+        const activityType = req.query.activity_type as ActivityType;
 
 
 
-        const response = await lessonService.getLessonsByCategory(Number(categoryId));
+        const response = await lessonService.getLessonsByCategory(Number(categoryId), activityType);
         return res.json(response);
     }
 

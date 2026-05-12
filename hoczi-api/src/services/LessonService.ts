@@ -18,6 +18,7 @@ import { learningActivityRepository } from "../repositories/learningActivityRepo
 import { categoryRepository } from "../repositories/categoryRepository";
 import { topicRepository } from "../repositories/topicRepository";
 
+export type ActivityType = 'sentence_order' | 'fill_the_blank' | 'multiple_choice' | 'matching'
 export class LessonService {
 
     private readonly QUESTION_LIMIT = 30;
@@ -311,10 +312,15 @@ export class LessonService {
         return learningActivityRepository.findByLessonId(lessonId);
     }
 
-    async getLessonsByCategory(categoryId: number) {
+    async getLessonsByCategory(categoryId: number, activityType?: ActivityType) {
         const topics = await topicRepository.findByCategoryId(categoryId);
         const topicIds = topics.map((t) => t.id);
-        return lessonRepository.findByTopicIds(topicIds);
+        const lessons = await lessonRepository.findByTopicIds(topicIds);
+
+        if (!activityType) return lessons;
+        return lessons.filter((lesson) =>
+            lesson.learning_activities?.some((a) => a.activity_type === activityType)
+        );
     }
 
     async deleteLesson(id: number) {

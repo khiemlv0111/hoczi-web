@@ -92,5 +92,10 @@ lessonRoutes.get('/get-activities-by-lesson/:id', new LessonController().getActi
 
 lessonRoutes.get('/get-lessons-by-category/:categoryId', new LessonController().getLessonsByCategory);
 
+lessonRoutes.delete('/delete-lesson/:id', new LessonController().deleteLesson);
+
+lessonRoutes.delete('/delete-learning-activity/:id', new LessonController().deleteActivity);
+
+
 
 export default lessonRoutes;

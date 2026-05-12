@@ -313,4 +313,20 @@ export class LessonController {
         return res.json(response);
     }
 
+    async deleteLesson(req: Request, res: Response) {
+
+        const lessonId = Number(req.params.id);
+
+        const response = await lessonService.deleteLesson(lessonId);
+        return res.json(response);
+    }
+
+    async deleteActivity(req: Request, res: Response) {
+
+        const activityId = Number(req.params.id);
+
+        const response = await lessonService.deleteActivity(activityId);
+        return res.json(response);
+    }
+
 }

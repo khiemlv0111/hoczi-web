@@ -67,6 +67,10 @@ class LessonRepository {
     async findSubjects() {
        return this.repo.find();
     }
+
+    async deleteLesson(id: number) {
+       return this.repo.delete(id);
+    }
     
 
 }

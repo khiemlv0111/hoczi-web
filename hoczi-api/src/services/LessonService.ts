@@ -317,4 +317,15 @@ export class LessonService {
         return lessonRepository.findByTopicIds(topicIds);
     }
 
+    async deleteLesson(id: number) {
+        const learningActivities = await learningActivityRepository.findByLessonId(id);
+        const activityIds = learningActivities.map((l) => l.id);
+        await learningActivityRepository.deleteByIds(activityIds);
+        return await lessonRepository.deleteLesson(id);
+    }
+
+    async deleteActivity(id: number) {
+        return await learningActivityRepository.deleteOne(id);
+    }
+
 }

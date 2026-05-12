@@ -1,3 +1,4 @@
+import { In } from 'typeorm';
 import { AppDataSource } from '../data-source';
 import { LearningActivity } from '../entities/LearningActivity';
 
@@ -21,6 +22,7 @@ class LearningActivityRepository {
     }
 
 
+
     async createOne(data: any) {
         const activity = this.repo.create({
             lesson_id: data.lesson_id,
@@ -33,6 +35,15 @@ class LearningActivityRepository {
 
     async findByLessonId(lessonId: number) {
         return this.repo.find({ where: {lesson_id: lessonId  } });
+    }
+
+
+    async deleteByIds(ids: number[]) {
+        return this.repo.delete({ id: In(ids) });
+    }
+
+    async deleteOne(id: number) {
+        return this.repo.delete({ id: id });
     }
 
     

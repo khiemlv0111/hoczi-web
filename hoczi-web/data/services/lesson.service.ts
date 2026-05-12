@@ -136,8 +136,11 @@ export class LessonService {
     }
 
 
-    static async getLessonsByCategoryId(categoryId: number) {
-        const response = await getRequest(`/api/lessons/get-lessons-by-category/${categoryId}`, true);
+    static async getLessonsByCategoryId(categoryId: number, activityType?: string) {
+        const params = new URLSearchParams();
+        if (activityType) params.append('activity_type', String(activityType));
+        const query = params.toString() ? `?${params.toString()}` : '';
+        const response = await getRequest(`/api/lessons/get-lessons-by-category/${categoryId}${query}`, true);
         return response;
     }
 

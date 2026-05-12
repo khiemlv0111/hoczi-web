@@ -24,7 +24,17 @@ export function ActivitiesPage() {
     const LIMIT = 20;
     const totalPages = Math.max(1, Math.ceil(total / LIMIT));
 
-    const EMPTY_ACTIVITY = { lesson_id: '', activity_type: 'sentence_order', instruction: '', sentence: '', correct_order: '', words: '', explanation: '', media_url: '' };
+    const EMPTY_ACTIVITY = {
+        lesson_id: '', activity_type: 'sentence_order', instruction: '', explanation: '', media_url: '',
+        // sentence_order
+        sentence: '', correct_order: '', words: '',
+        // fill_blank
+        blank_sentence: '', answer: '', distractors: '',
+        // multiple_choice
+        question: '', choices: '', correct_choice: '',
+        // matching
+        left_items: '', right_items: '',
+    };
     const [activityModalOpen, setActivityModalOpen] = useState(false);
     const [activityForm, setActivityForm] = useState(EMPTY_ACTIVITY);
 
@@ -51,6 +61,8 @@ export function ActivitiesPage() {
 
             }
         }
+        console.log('ACTIVITY Payload');
+        
         LessonService.createLearningActivity(payload).then((res) => {
             console.log("created activity", res);
             
@@ -121,6 +133,9 @@ export function ActivitiesPage() {
                 media_url: '',
                 estimated_minutes: 15,
             }
+
+            console.log('PAYLOAD', lessonPayload);
+            
 
             await LessonService.createLesson(lessonPayload);
             setModalOpen(false);
@@ -386,55 +401,156 @@ export function ActivitiesPage() {
                                 </select>
                             </div>
 
-                            {/* Instruction */}
+                            {/* Instruction — common */}
                             <div>
                                 <label className="block text-[12px] font-medium text-gray-700 mb-1">Instruction</label>
                                 <input
                                     type="text"
                                     value={activityForm.instruction}
                                     onChange={(e) => setActivityForm({ ...activityForm, instruction: e.target.value })}
-                                    placeholder="e.g. Drag the words to form a correct sentence."
+                                    placeholder={
+                                        activityForm.activity_type === 'sentence_order'  ? 'e.g. Drag the words to form a correct sentence.' :
+                                        activityForm.activity_type === 'fill_blank'       ? 'e.g. Fill in the missing word.' :
+                                        activityForm.activity_type === 'multiple_choice'  ? 'e.g. Choose the correct answer.' :
+                                        'e.g. Match each word with its meaning.'
+                                    }
                                     className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
                                 />
                             </div>
 
-                            {/* Sentence */}
-                            <div>
-                                <label className="block text-[12px] font-medium text-gray-700 mb-1">Sentence</label>
-                                <input
-                                    type="text"
-                                    value={activityForm.sentence}
-                                    onChange={(e) => setActivityForm({ ...activityForm, sentence: e.target.value })}
-                                    placeholder="e.g. The cat sat on the mat."
-                                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
-                                />
-                            </div>
-
-                            {/* Correct order + Words side by side */}
-                            <div className="grid grid-cols-2 gap-3">
+                            {/* ── Sentence Order ── */}
+                            {activityForm.activity_type === 'sentence_order' && (<>
                                 <div>
-                                    <label className="block text-[12px] font-medium text-gray-700 mb-1">Correct Order <span className="text-gray-400 font-normal">(comma-separated)</span></label>
+                                    <label className="block text-[12px] font-medium text-gray-700 mb-1">Sentence</label>
+                                    <input
+                                        type="text"
+                                        value={activityForm.sentence}
+                                        onChange={(e) => setActivityForm({ ...activityForm, sentence: e.target.value })}
+                                        placeholder="e.g. The cat sat on the mat."
+                                        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
+                                    />
+                                </div>
+                                <div className="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label className="block text-[12px] font-medium text-gray-700 mb-1">Correct Order <span className="text-gray-400 font-normal">(comma-sep)</span></label>
+                                        <textarea
+                                            value={activityForm.correct_order}
+                                            onChange={(e) => setActivityForm({ ...activityForm, correct_order: e.target.value })}
+                                            placeholder="The, cat, sat, on, the, mat."
+                                            rows={3}
+                                            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 resize-none"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-[12px] font-medium text-gray-700 mb-1">Words (shuffled) <span className="text-gray-400 font-normal">(comma-sep)</span></label>
+                                        <textarea
+                                            value={activityForm.words}
+                                            onChange={(e) => setActivityForm({ ...activityForm, words: e.target.value })}
+                                            placeholder="sat, mat., The, on, the, cat"
+                                            rows={3}
+                                            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 resize-none"
+                                        />
+                                    </div>
+                                </div>
+                            </>)}
+
+                            {/* ── Fill the Blank ── */}
+                            {activityForm.activity_type === 'fill_blank' && (<>
+                                <div>
+                                    <label className="block text-[12px] font-medium text-gray-700 mb-1">Sentence <span className="text-gray-400 font-normal">(use ___ for blank)</span></label>
+                                    <input
+                                        type="text"
+                                        value={activityForm.blank_sentence}
+                                        onChange={(e) => setActivityForm({ ...activityForm, blank_sentence: e.target.value })}
+                                        placeholder="e.g. The cat ___ on the mat."
+                                        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
+                                    />
+                                </div>
+                                <div className="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label className="block text-[12px] font-medium text-gray-700 mb-1">Correct Answer</label>
+                                        <input
+                                            type="text"
+                                            value={activityForm.answer}
+                                            onChange={(e) => setActivityForm({ ...activityForm, answer: e.target.value })}
+                                            placeholder="e.g. sat"
+                                            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-[12px] font-medium text-gray-700 mb-1">Distractors <span className="text-gray-400 font-normal">(comma-sep)</span></label>
+                                        <input
+                                            type="text"
+                                            value={activityForm.distractors}
+                                            onChange={(e) => setActivityForm({ ...activityForm, distractors: e.target.value })}
+                                            placeholder="e.g. ran, slept, jumped"
+                                            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
+                                        />
+                                    </div>
+                                </div>
+                            </>)}
+
+                            {/* ── Multiple Choice ── */}
+                            {activityForm.activity_type === 'multiple_choice' && (<>
+                                <div>
+                                    <label className="block text-[12px] font-medium text-gray-700 mb-1">Question</label>
+                                    <input
+                                        type="text"
+                                        value={activityForm.question}
+                                        onChange={(e) => setActivityForm({ ...activityForm, question: e.target.value })}
+                                        placeholder="e.g. What is the capital of France?"
+                                        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-[12px] font-medium text-gray-700 mb-1">Choices <span className="text-gray-400 font-normal">(comma-sep, e.g. Paris, London, Berlin, Rome)</span></label>
                                     <textarea
-                                        value={activityForm.correct_order}
-                                        onChange={(e) => setActivityForm({ ...activityForm, correct_order: e.target.value })}
-                                        placeholder="The, cat, sat, on, the, mat."
-                                        rows={3}
+                                        value={activityForm.choices}
+                                        onChange={(e) => setActivityForm({ ...activityForm, choices: e.target.value })}
+                                        placeholder="Paris, London, Berlin, Rome"
+                                        rows={2}
                                         className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 resize-none"
                                     />
                                 </div>
                                 <div>
-                                    <label className="block text-[12px] font-medium text-gray-700 mb-1">Words <span className="text-gray-400 font-normal">(comma-separated)</span></label>
-                                    <textarea
-                                        value={activityForm.words}
-                                        onChange={(e) => setActivityForm({ ...activityForm, words: e.target.value })}
-                                        placeholder="sat, mat., The, on, the, cat"
-                                        rows={3}
-                                        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 resize-none"
+                                    <label className="block text-[12px] font-medium text-gray-700 mb-1">Correct Choice</label>
+                                    <input
+                                        type="text"
+                                        value={activityForm.correct_choice}
+                                        onChange={(e) => setActivityForm({ ...activityForm, correct_choice: e.target.value })}
+                                        placeholder="e.g. Paris"
+                                        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400"
                                     />
                                 </div>
-                            </div>
+                            </>)}
 
-                            {/* Explanation */}
+                            {/* ── Matching ── */}
+                            {activityForm.activity_type === 'matching' && (<>
+                                <div className="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label className="block text-[12px] font-medium text-gray-700 mb-1">Left Items <span className="text-gray-400 font-normal">(comma-sep)</span></label>
+                                        <textarea
+                                            value={activityForm.left_items}
+                                            onChange={(e) => setActivityForm({ ...activityForm, left_items: e.target.value })}
+                                            placeholder="cat, dog, bird"
+                                            rows={4}
+                                            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 resize-none"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-[12px] font-medium text-gray-700 mb-1">Right Items <span className="text-gray-400 font-normal">(matching order)</span></label>
+                                        <textarea
+                                            value={activityForm.right_items}
+                                            onChange={(e) => setActivityForm({ ...activityForm, right_items: e.target.value })}
+                                            placeholder="mèo, chó, chim"
+                                            rows={4}
+                                            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-400 resize-none"
+                                        />
+                                    </div>
+                                </div>
+                            </>)}
+
+                            {/* Explanation — common */}
                             <div>
                                 <label className="block text-[12px] font-medium text-gray-700 mb-1">Explanation</label>
                                 <textarea
@@ -446,7 +562,7 @@ export function ActivitiesPage() {
                                 />
                             </div>
 
-                            {/* Media URL */}
+                            {/* Media URL — common */}
                             <div>
                                 <label className="block text-[12px] font-medium text-gray-700 mb-1">Media URL</label>
                                 <input

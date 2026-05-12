@@ -60,7 +60,7 @@ class LessonRepository {
             where: {
                 topic_id: In(topicIds)
             },
-            relations: ['topic', 'grade']
+            relations: ['topic', 'grade', 'learning_activities']
         });
     }
 

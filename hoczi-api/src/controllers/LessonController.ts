@@ -309,6 +309,10 @@ export class LessonController {
 
         const { categoryId } = req.params;
 
+        const activityType = req.query.activity_type as string;
+
+
+
         const response = await lessonService.getLessonsByCategory(Number(categoryId));
         return res.json(response);
     }

@@ -71,6 +71,13 @@ class LessonRepository {
     async deleteLesson(id: number) {
        return this.repo.delete(id);
     }
+
+    async findOne(id: number) {
+       return this.repo.findOne({
+        where: {id: id},
+        relations: ['learning_activities']
+       });
+    }
     
 
 }

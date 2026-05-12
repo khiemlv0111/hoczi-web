@@ -304,6 +304,11 @@ export class LessonService {
     }
 
     async createNewActivity(data: any) {
+        const lessonID = data.lesson_id;
+        const lesson = await lessonRepository.findOne(lessonID);
+        if (lesson?.learning_activities?.some((l) => l.activity_type !== data.activity_type)) {
+            throw new BadRequestError(`Activity type ${data.activity_type} is not allowed in this lesson`);
+        }
 
         return learningActivityRepository.createOne(data);
     }

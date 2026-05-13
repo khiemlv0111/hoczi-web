@@ -10,7 +10,6 @@ import {
     Unique,
 } from 'typeorm';
 import { Book } from './Book';
-import { BookCategory } from './BookCategory';
 
 export enum BookLessonType {
     TEXT = 'text',
@@ -34,15 +33,6 @@ export class BookLesson {
     })
     @JoinColumn({ name: 'book_id' })
     book!: Book;
-
-    @Column({ type: 'integer', nullable: true })
-    category_id?: number;
-
-    @ManyToOne(() => BookCategory, (category) => category.lessons, {
-        nullable: true,
-    })
-    @JoinColumn({ name: 'category_id' })
-    category?: BookCategory;
 
     @Column({ type: 'varchar', length: 255 })
     title!: string;

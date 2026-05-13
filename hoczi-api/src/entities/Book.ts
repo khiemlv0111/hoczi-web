@@ -9,7 +9,6 @@ import {
     OneToMany,
     JoinColumn,
 } from 'typeorm';
-import { BookCategory } from './BookCategory';
 import { User } from './User';
 import { BookLesson } from './BookLesson';
 import { BookTopic } from './BookTopic';
@@ -24,15 +23,6 @@ export enum BookStatus {
 export class Book {
     @PrimaryGeneratedColumn()
     id!: number;
-
-    @Column({ type: 'integer', nullable: true })
-    category_id?: number;
-
-    @ManyToOne(() => BookCategory, (category) => category.books, {
-        nullable: true,
-    })
-    @JoinColumn({ name: 'category_id' })
-    category?: BookCategory;
 
     @Column({ type: 'varchar', length: 255 })
     title!: string;

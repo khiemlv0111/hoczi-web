@@ -22,6 +22,8 @@ class BookRepository {
         return await this.repo
             .createQueryBuilder('book')
             .innerJoin('book.book_topics', 'bt', 'bt.topic_id IN (:...topicIds)', { topicIds })
+            .leftJoinAndSelect('book.book_topics', 'book_topic')
+            .leftJoinAndSelect('book_topic.topic', 'topic')
             .getMany();
     }
 

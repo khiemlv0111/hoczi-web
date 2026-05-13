@@ -12,7 +12,8 @@ import {
     Star,
     LogOut,
     Building2,
-    HandCoins
+    HandCoins,
+    Book
 } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAppData } from "../context/AppContext";
@@ -29,6 +30,7 @@ const navMain = [
     { path: '/admin/questions', label: "Questions", icon: Star },
     { path: '/admin/users', label: "Users", icon: Users },
     { path: '/admin/activities', label: "Activities", icon: HandCoins },
+    { path: '/admin/books', label: "Books", icon: Book },
 ];
 
 const navSettings = [

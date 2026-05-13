@@ -37,3 +37,42 @@ i have LessonService.deleteLesson and LessonService.deleteLearningActivity let i
 at SentenceOrderContent app/quizzes/results/learn-by-activities/lessons/[id]/content/SentenceOrderContent.tsx line 167
 - when user drag word and drop to blank box, sometimes it not the right place and it failed to drop
 - so let highlight the box item if it is right to drop
+
+
+bookDetailPage is empty at app/quizzes/results/books/[id]/BookDetailPage.tsx
+- base on image, let create this page
+- i can turn to next page, or previous page
+- can also zoom in, zoom out
+
+it is not what i want,
+- i want the high of page is full, so user dont need to scroll down when they want to turn the page
+
+for now we have 2 scroll bar, 1 for book content and 1 for page content
+- let the page content fit the browser/screen, so user dont need to scroll when turn page
+- if the book content is higher than the screen then scroll inside
+
+can you have make function that collapse book then user can select 1 sepecific page
+
+
+let implement book category page at app/quizzes/results/books/BookPage.tsx
+- we have api categories, let show each category by cards
+- click to each card, go to BookByCategorypage app/quizzes/results/books/books-by-category/[id]/page.tsx
+
+
+AdminBookPage at app/admin/books/AdminBookPage.tsx is empty
+- let display list of categories with category list api
+- when click to each item, redirect to /books/books-by-category/[categoryId]
+
+
+
+page list books by category at app/admin/books/books-by-category/[categoryId]/AdminBooksByCategory.tsx
+- we have api get books by category with categorId
+- display books group by topic
+- data response as the image
+
+each topic add a button, 
+- when admin click button open modal to create book corespondense to that category and topic
+
+books by category for users also at app/quizzes/results/books/books-by-category/[id]/BookByCategoryPage.tsx is empty
+- let implement to show the list
+- click to each book redirect to app/quizzes/results/books/[id]/BookDetailPage.tsx

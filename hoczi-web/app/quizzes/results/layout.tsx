@@ -29,6 +29,7 @@ import {
     BookOpen,
     PersonStanding,
     HandCoins,
+    BookCheck,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
@@ -77,6 +78,7 @@ export default function ResultLayout({
         { path: '/quizzes/results/ai-learn', label: "AI Learn", icon: Brain, text: "AI Learn" },
         { path: '/quizzes/results/inbox', label: "Inbox", icon: Mail, text: "Inbox" },
         { path: '/quizzes/results/learn-by-activities', label: "Learn by activities", icon: HandCoins, text: "Learn by activities" },
+        { path: '/quizzes/results/books', label: "Books", icon: BookCheck, text: "Books" },
     ];
 
     const navSettings = [
@@ -310,7 +312,7 @@ export default function ResultLayout({
                 </header>
 
                 {/* Content */}
-                <main className="flex-1 p-6 overflow-y-auto">
+                <main className="main-quiz flex-1 p-6 overflow-y-auto">
 
                     {children}
 

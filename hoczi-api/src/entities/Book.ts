@@ -12,6 +12,7 @@ import {
 import { BookCategory } from './BookCategory';
 import { User } from './User';
 import { BookLesson } from './BookLesson';
+import { BookTopic } from './BookTopic';
 
 export enum BookStatus {
     DRAFT = 'draft',
@@ -72,4 +73,7 @@ export class Book {
 
     @UpdateDateColumn()
     updated_at!: Date;
+
+    @OneToMany(() => BookTopic, (bt) => bt.book)
+    book_topics!: BookTopic[]
 }

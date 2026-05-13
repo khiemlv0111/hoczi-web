@@ -6,8 +6,10 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from "typeorm";
 import { Category } from "./Category";
+import { BookTopic } from "./BookTopic";
 
 @Entity("topics")
 export class Topic {
@@ -40,4 +42,7 @@ export class Topic {
 
   @UpdateDateColumn({ type: "timestamptz" })
   updated_at!: Date;
+
+  @OneToMany(() => BookTopic, (bt) => bt.topic)
+  book_topics!: BookTopic[]
 }

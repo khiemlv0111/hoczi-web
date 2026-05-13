@@ -32,3 +32,8 @@ for lesson detail content at app/quizzes/results/learn-by-activities/lessons/[id
 
 <!-- delete lesson and learning activity -->
 i have LessonService.deleteLesson and LessonService.deleteLearningActivity let implement these function in LessonDetailPage
+
+
+at SentenceOrderContent app/quizzes/results/learn-by-activities/lessons/[id]/content/SentenceOrderContent.tsx line 167
+- when user drag word and drop to blank box, sometimes it not the right place and it failed to drop
+- so let highlight the box item if it is right to drop

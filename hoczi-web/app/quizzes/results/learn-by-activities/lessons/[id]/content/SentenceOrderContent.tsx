@@ -49,6 +49,7 @@ export function SentenceOrderContent({ activities }: ContentProps) {
     const [checked, setChecked] = useState(false);
     const [correct, setCorrect] = useState(false);
     const [speaking, setSpeaking] = useState(false);
+    const [dragOverSlot, setDragOverSlot] = useState<number | null>(null);
     const dragSource = useRef<{ from: 'bank' | 'slot'; index: number } | null>(null);
 
     function initBank(q: Question): Word[] {
@@ -173,11 +174,16 @@ export function SentenceOrderContent({ activities }: ContentProps) {
                         key={i}
                         draggable={!!word}
                         onDragStart={() => word && onDragStartSlot(i)}
-                        onDragOver={(e) => e.preventDefault()}
-                        onDrop={(e) => { e.stopPropagation(); onDropSlot(i); }}
+                        onDragOver={(e) => { e.preventDefault(); setDragOverSlot(i); }}
+                        onDragLeave={() => setDragOverSlot(null)}
+                        onDrop={(e) => { e.stopPropagation(); onDropSlot(i); setDragOverSlot(null); }}
                         className={[
                             'h-10 min-w-[80px] px-3 flex items-center justify-center rounded-lg border-2 border-dashed text-sm font-medium transition-colors',
-                            word ? 'bg-white border-gray-400 text-gray-800 cursor-grab shadow-sm' : 'bg-gray-50 border-gray-200 text-transparent',
+                            dragOverSlot === i && !checked
+                                ? 'border-blue-400 bg-blue-50 text-blue-800 scale-105'
+                                : word
+                                    ? 'bg-white border-gray-400 text-gray-800 cursor-grab shadow-sm'
+                                    : 'bg-gray-50 border-gray-200 text-transparent',
                             checked && word ? (correct ? 'border-green-400 bg-green-50 text-green-800' : 'border-red-400 bg-red-50 text-red-800') : '',
                         ].join(' ')}
                     >

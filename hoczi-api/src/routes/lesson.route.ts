@@ -96,6 +96,8 @@ lessonRoutes.delete('/delete-lesson/:id', new LessonController().deleteLesson);
 
 lessonRoutes.delete('/delete-learning-activity/:id', new LessonController().deleteActivity);
 
+lessonRoutes.get('/get-lesson-detail/:id', new LessonController().getLessonDetail);
+
 
 
 export default lessonRoutes;

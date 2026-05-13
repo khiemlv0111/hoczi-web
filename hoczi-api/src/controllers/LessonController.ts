@@ -333,4 +333,13 @@ export class LessonController {
         return res.json(response);
     }
 
+    async getLessonDetail(req: Request, res: Response) {
+        // const userId = req.user.id;
+
+        const id = Number(req.params.id);
+
+        const response = await lessonService.getLessonDetail(Number(id));
+        return res.json(response);
+    }
+
 }

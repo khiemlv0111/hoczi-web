@@ -339,4 +339,8 @@ export class LessonService {
         return await learningActivityRepository.deleteOne(id);
     }
 
+    async getLessonDetail(id: number) {
+        return lessonRepository.findOne(id);
+    }
+
 }

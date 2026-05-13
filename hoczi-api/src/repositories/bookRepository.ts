@@ -9,12 +9,24 @@ class BookRepository {
 
 
     async createBook(userId: number, data: Partial<Book>) {
-       return await this.repo.save({ ...data, created_by: userId });
-  
+        return await this.repo.save({ ...data, created_by: userId });
+
     }
 
     async pageDetail(slug: string) {
         return this.repo.findOne({ where: { slug } });
+    }
+
+    async findByTopicIds(topicIds: number[]) {
+        if (!topicIds.length) return [];
+        return await this.repo
+            .createQueryBuilder('book')
+            .innerJoin('book.book_topics', 'bt', 'bt.topic_id IN (:...topicIds)', { topicIds })
+            .getMany();
+    }
+
+    async findById(id: number) {
+        return this.repo.findOne({ where: { id }, relations: ['book_topics', 'book_topics.topic'] });
     }
 
 
@@ -27,8 +39,8 @@ class BookTopicRepository {
 
 
     async saveBookTopic(data: Partial<BookTopic>) {
-       return await this.repo.save({ ...data});
-  
+        return await this.repo.save({ ...data });
+
     }
 
     // async pageDetail(slug: string) {

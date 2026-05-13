@@ -10,6 +10,7 @@ import userRoutes from './user.route';
 import classRoutes from './class.route';
 import lessonRoutes from './lesson.route';
 import chessRoutes from './chess.route';
+import bookRoutes from './book.route';
 
 
 
@@ -28,6 +29,9 @@ routes.use('/api/users', userRoutes);
 routes.use('/api/classes', classRoutes);
 routes.use('/api/lessons', lessonRoutes);
 routes.use('/api/chess', chessRoutes);
+
+routes.use('/api/books', bookRoutes);
+
 
 
 

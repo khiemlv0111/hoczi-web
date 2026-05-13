@@ -21,8 +21,20 @@ export class BookController {
     }
 
     async getBooksByCategory(req: Request, res: Response) {
+        const categoryId = Number(req.params.id);
 
-        return res.json({ success: true, message: "Home Page", })
+        const response = await bookService.getBooksByCategory(categoryId);
+
+        return res.json(response);
+    }
+
+
+    async getBookDetail(req: Request, res: Response) {
+        const bookId = Number(req.params.id);
+
+        const response = await bookService.getBookDetail(bookId);
+
+        return res.json(response);
     }
 
 

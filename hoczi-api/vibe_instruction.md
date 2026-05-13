@@ -9,3 +9,6 @@ app/quizzes/results/learn-by-activities/[activity]/LearnByActivityDetailPage.tsx
 
 create activityModal app/admin/activities/ActivitiesPage.tsx line 355 is UI for create Sentence Order only,
 - let fix that if use choose fill_the_blank, multiple_choice, match, the UI will change coressponse to each activity_type
+
+
+let continue findByTopicIds src/repositories/bookRepository.ts line 20

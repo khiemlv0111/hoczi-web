@@ -30,6 +30,9 @@ export class Book {
     @Column({ type: 'varchar', length: 255, unique: true })
     slug!: string;
 
+    @Column({ type: 'varchar', length: 255, nullable: true})
+    book_url!: string;
+
     @Column({ type: 'text', nullable: true })
     description?: string;
 

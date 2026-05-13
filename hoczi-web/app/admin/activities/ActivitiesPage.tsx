@@ -4,6 +4,7 @@ import { LessonService } from "@/data/services/lesson.service";
 import { QuestionService } from "@/data/services/question.service";
 import { Category, Grade, Topic } from "@/data/types";
 import { X } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const EMPTY_FORM = { gradeId: '', categoryId: '', topicId: '', title: '', description: '',  content: '',};
@@ -190,7 +191,10 @@ export function ActivitiesPage() {
                         <tbody>
                             {lessons.map((lesson: any) => (
                                 <tr key={lesson.id} className="border-b border-gray-50 last:border-0 hover:bg-gray-50 transition-colors">
-                                    <td className="px-4 py-3 font-medium text-gray-900">{lesson.title ?? '—'}</td>
+                                    <td className="px-4 py-3 font-medium text-gray-900">
+                                        <Link href={`/admin/lessons/${lesson.id}`}>{lesson.title ?? '—'}</Link>
+                                        
+                                    </td>
                                     <td className="px-4 py-3 text-gray-500 max-w-xs truncate">{lesson.content ?? '—'}</td>
                                     <td className="px-4 py-3 text-gray-500">{lesson.grade?.name ?? '—'}</td>
                                     <td className="px-4 py-3 text-gray-500">{lesson.category?.name ?? '—'}</td>

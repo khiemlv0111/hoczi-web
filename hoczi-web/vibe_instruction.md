@@ -24,3 +24,11 @@ for lesson detail content at app/quizzes/results/learn-by-activities/lessons/[id
  - i want to seperate content for each activity_type
  - we have already SentenceOrderContent
  - you let seperate these component and create another 3 components left
+
+
+<!-- get lesson detail -->
+ Lesson detail at path app/admin/lessons/[id]/LessonDetailPage.tsx is empty, let implement this page
+
+
+<!-- delete lesson and learning activity -->
+i have LessonService.deleteLesson and LessonService.deleteLearningActivity let implement these function in LessonDetailPage

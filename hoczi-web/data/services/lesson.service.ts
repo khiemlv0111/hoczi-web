@@ -149,4 +149,19 @@ export class LessonService {
         return response;
     }
 
+    static async getLessonDetail(lessonId: number) {
+        const response = await getRequest(`/api/lessons/get-lesson-detail/${lessonId}`, true);
+        return response;
+    }
+
+    static async deleteLesson(lessonId: number) {
+        const response = await deleteRequest(`/api/lessons/delete-lesson/${lessonId}`, true);
+        return response;
+    }
+
+    static async deleteLearningActivity(id: number) {
+        const response = await deleteRequest(`/api/lessons/delete-learning-activity/${id}`, true);
+        return response;
+    }
+
 }

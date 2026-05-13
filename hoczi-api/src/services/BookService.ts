@@ -16,7 +16,7 @@ export class BookService {
 
         await bookTopicRepository.saveBookTopic({
             book_id: newBook.id,
-            topic_id: data.topicId,
+            topic_id: data.topic_id,
 
         });
         return newBook

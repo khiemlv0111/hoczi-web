@@ -35,7 +35,7 @@ class TopicRepository {
     }
 
     async findByCategoryId(categoryId: number) {
-        return await this.repo.find({ where: { category_id: categoryId } });
+        return await this.repo.find({ where: { category_id: categoryId }, relations: ['category'] });
     }
 
     async update(id: number, data: Partial<Question>) {

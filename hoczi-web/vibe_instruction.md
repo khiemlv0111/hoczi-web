@@ -76,3 +76,6 @@ each topic add a button,
 books by category for users also at app/quizzes/results/books/books-by-category/[id]/BookByCategoryPage.tsx is empty
 - let implement to show the list
 - click to each book redirect to app/quizzes/results/books/[id]/BookDetailPage.tsx
+
+create book at app/admin/books/books-by-category/[categoryId]/AdminBooksByCategory.tsx
+- book_url is accept link now, let admin upload pdf file

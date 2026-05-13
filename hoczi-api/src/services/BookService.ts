@@ -2,11 +2,17 @@ import { bookRepository } from "../repositories/bookRepository";
 import { bookTopicRepository } from "../repositories/bookRepository";
 
 import { topicRepository } from "../repositories/topicRepository";
+import slugify from 'slugify';
 
 export class BookService {
     async createBook(userId: number, data: any) {
+        const slug = `${slugify(data.title)}-${Date.now()}`;
+        const dto = {
+            ...data,
+            slug: slug
+        }
 
-        const newBook = await bookRepository.createBook(userId, data);
+        const newBook = await bookRepository.createBook(userId, dto);
 
         await bookTopicRepository.saveBookTopic({
             book_id: newBook.id,

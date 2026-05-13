@@ -5,9 +5,6 @@ export class CreateBookRequest {
     @IsNotEmpty()
     title!: string;
 
-    @IsNotEmpty()
-    slug!: string;
-
     @IsOptional()
     description!: string;
 

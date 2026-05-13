@@ -48,6 +48,7 @@
     "multer": "^2.0.2",
     "node-cron": "^4.2.1",
     "pg": "^8.18.0",
+    "slugify": "^1.6.9",
     "typeorm": "^0.3.28",
     "ua-parser-js": "^2.0.9"
   }

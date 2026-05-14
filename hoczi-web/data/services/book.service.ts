@@ -21,4 +21,9 @@ export class BookService {
         return response;
     }
 
+    static async getBookDetail(boodId: number) {
+        const response = await getRequest(`/api/books/get-book-detail/${boodId}`, true);
+        return response;
+    }
+
 }

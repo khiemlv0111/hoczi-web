@@ -1,9 +1,9 @@
 'use client'
 
+import { BookService } from "@/data/services/book.service";
 import { useEffect, useRef, useState } from "react";
 
 const PDFJS_VERSION = '3.11.174';
-const PDF_SRC = '/han-3.pdf';
 
 declare global {
     interface Window { pdfjsLib: any; }
@@ -46,7 +46,11 @@ function PageCanvas({ pdf, pageNum, scale }: { pdf: any; pageNum: number; scale:
     );
 }
 
-export function BookDetailPage() {
+type Book = { title: string; book_url: string; cover_image_url?: string };
+
+export function BookDetailPage({id}: {id: number}) {
+    const [book, setBook] = useState<Book | null>(null);
+    const [bookUrl, setBookUrl] = useState('');
     const [pdf, setPdf] = useState<any>(null);
     const [numPages, setNumPages] = useState(0);
     const [pageNum, setPageNum] = useState(1);
@@ -69,25 +73,38 @@ export function BookDetailPage() {
         return () => window.removeEventListener('resize', update);
     }, []);
 
-    // load PDF.js from CDN then load the document
+    // fetch book detail then kick off PDF load
     useEffect(() => {
+        BookService.getBookDetail(id)
+            .then((res) => {
+                const data = res?.data ?? res;
+                setBook({ title: data.title, book_url: data.book_url, cover_image_url: data.cover_image_url });
+                setBookUrl(data.book_url);
+            })
+            .catch(() => { setError('Failed to load book.'); setLoading(false); });
+    }, []);
+
+    // load PDF.js then load the document once bookUrl is ready
+    useEffect(() => {
+        if (!bookUrl) return;
+
         const existing = document.getElementById('pdfjs-script');
-        if (existing) { loadPdf(); return; }
+        if (existing && window.pdfjsLib) { loadPdf(bookUrl); return; }
 
         const script = document.createElement('script');
         script.id = 'pdfjs-script';
         script.src = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/pdf.min.js`;
-        script.onload = loadPdf;
-        script.onerror = () => setError('Failed to load PDF viewer.');
+        script.onload = () => loadPdf(bookUrl);
+        script.onerror = () => { setError('Failed to load PDF viewer.'); setLoading(false); };
         document.head.appendChild(script);
-    }, []);
+    }, [bookUrl]);
 
-    function loadPdf() {
+    function loadPdf(url: string) {
         const lib = window.pdfjsLib;
-        if (!lib) { setError('PDF library unavailable.'); return; }
+        if (!lib) { setError('PDF library unavailable.'); setLoading(false); return; }
         lib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/pdf.worker.min.js`;
 
-        lib.getDocument(PDF_SRC).promise
+        lib.getDocument({ url }).promise
             .then((doc: any) => {
                 setPdf(doc);
                 setNumPages(doc.numPages);
@@ -111,8 +128,11 @@ export function BookDetailPage() {
         <div className="book-detail-page flex flex-col bg-gray-700 overflow-hidden" style={{ height: '92dvh' }}>
             {/* Toolbar */}
             <div className="flex-shrink-0 flex items-center justify-between gap-3 bg-gray-800 px-4 py-2 text-white text-sm">
-                {/* Left: page info + picker toggle */}
+                {/* Left: title + page info + picker toggle */}
                 <div className="flex items-center gap-2 text-gray-300 text-xs min-w-[90px]">
+                    {book?.title && (
+                        <span className="hidden sm:block text-gray-400 text-[11px] truncate max-w-[160px]" title={book.title}>{book.title}</span>
+                    )}
                     <button
                         onClick={() => setPickerOpen((v) => !v)}
                         disabled={loading}

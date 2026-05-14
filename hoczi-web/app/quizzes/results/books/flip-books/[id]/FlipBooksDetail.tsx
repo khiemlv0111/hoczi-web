@@ -164,7 +164,7 @@ export function FlipBookDetailPage({id}: {id: number}) {
             {/* ── Book area ── */}
             {!loading && !error && pages.length > 0 && (
                 <>
-                    <div className="flip-book-wrapper flex-1 overflow-auto flex items-center justify-center">
+                    <div className="flip-book-wrapper lg:pt-[160px] flex-1 overflow-auto flex items-center justify-center">
                         <div className="flip-book-container" style={{ paddingTop: '30px', transform: `scale(${zoom})`, transformOrigin: 'center center', transition: 'transform 0.2s', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                             <HTMLFlipBook
                                 ref={flipRef}

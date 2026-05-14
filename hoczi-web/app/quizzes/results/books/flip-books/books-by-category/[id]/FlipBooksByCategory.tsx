@@ -48,7 +48,7 @@ function BookCard({ book, colorIndex }: { book: Book; colorIndex: number }) {
 
     return (
         <Link
-            href={`/quizzes/results/books/${book.id}`}
+            href={`/quizzes/results/books/flip-books/${book.id}`}
             className="group flex flex-col rounded-2xl overflow-hidden bg-white border border-gray-200 hover:shadow-lg hover:-translate-y-1 transition-all duration-200"
         >
             {/* Cover */}
@@ -103,7 +103,7 @@ function SkeletonCard() {
     );
 }
 
-export function BookByCategoryPage({ categoryId }: { categoryId: number }) {
+export function FlipBookByCategoryPage({ categoryId }: { categoryId: number }) {
     const [groups, setGroups] = useState<TopicGroup[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -122,7 +122,7 @@ export function BookByCategoryPage({ categoryId }: { categoryId: number }) {
             <div className="mb-10">
                 <h1 className="text-2xl font-bold text-gray-900 mb-1">Books</h1>
                 <p className="text-sm text-gray-500">Pick a book and start reading.</p>
-                <Link href={`/quizzes/results/books/flip-books/books-by-category/${categoryId}`}>Read Flip book</Link>
+                <Link href={`/quizzes/results/books/flip-books`}>Flip book</Link>
             </div>
 
             {/* Skeleton */}

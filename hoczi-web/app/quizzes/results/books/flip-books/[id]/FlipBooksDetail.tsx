@@ -92,7 +92,7 @@ export function FlipBookDetailPage({id}: {id: number}) {
     const canNext = currentPage < pages.length - 1;
 
     return (
-        <div className="book-detail-page flex flex-col bg-gray-900" style={{ height: '92dvh' }}>
+        <div className="book-detail-page flex flex-col bg-gray-900" style={{ height: '100dvh' }}>
 
             {/* ── Toolbar ── */}
             <div className="flex-shrink-0 flex items-center justify-between gap-3 bg-gray-800 px-4 py-2 text-white text-sm">

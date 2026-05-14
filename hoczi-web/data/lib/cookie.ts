@@ -2,14 +2,15 @@ import { parse, serialize } from "cookie";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export function setLocaleCookie(locale: string) {
-  document.cookie = `locale=${locale}; path=/; max-age=31536000`; // 1 năm
+  if (typeof document === 'undefined') return;
+  document.cookie = `locale=${locale}; path=/; max-age=31536000`;
 }
 
-export function getLocaleFromCookie() {
+export function getLocaleFromCookie(): string {
+  if (typeof document === 'undefined') return 'vi';
   const match = document.cookie
     .split('; ')
     .find((row) => row.startsWith('locale='));
-
   return match ? match.split('=')[1] : 'vi';
 }
 

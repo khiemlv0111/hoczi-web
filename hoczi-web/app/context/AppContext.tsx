@@ -130,6 +130,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     const [messages, setMessages] = useState<any>(undefined);
 
     const handleSetMessages = () => {
+        if (typeof document === 'undefined') return;
         const locale =
             document.cookie
                 .split('; ')
@@ -137,8 +138,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
                 ?.split('=')[1] || 'vi';
 
         const msg = getMessages(locale);
-        setMessages(msg)
-
+        setMessages(msg);
     }
 
 

@@ -85,3 +85,17 @@ upload pdf file at app/admin/books/books-by-category/[categoryId]/AdminBooksByCa
 - i have created new hook and api at: data/hooks/useFileUpload.ts
 - api at: app/api/files/presign.ts
 - could you check and replace current upload api
+
+
+current add book modal at app/admin/books/books-by-category/[categoryId]/AdminBooksByCategory.tsx
+- category and topic is selected, but if there is no book in a topic, then cannt create new book
+- so let give use to choose and change topic
+
+i have install react-pageflip and have page at app/quizzes/results/books/flip-books/FlipBooksPage.tsx
+- base on API bookDetail called line 22
+- implement flip book page
+
+
+it seem get book detail is error
+i have book_url at app/quizzes/results/books/flip-books/FlipBooksPage.tsx line 13
+- use this url for pdf content to make flib book

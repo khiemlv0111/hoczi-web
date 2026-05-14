@@ -122,6 +122,7 @@ export function BookByCategoryPage({ categoryId }: { categoryId: number }) {
             <div className="mb-10">
                 <h1 className="text-2xl font-bold text-gray-900 mb-1">Books</h1>
                 <p className="text-sm text-gray-500">Pick a book and start reading.</p>
+                <Link href={`/quizzes/results/books/flip-books`}>Flip book</Link>
             </div>
 
             {/* Skeleton */}

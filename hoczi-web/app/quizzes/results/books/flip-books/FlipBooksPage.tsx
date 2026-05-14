@@ -14,6 +14,8 @@ export function FlipBooksPage() {
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
     const [renderProgress, setRenderProgress] = useState(0);
+    const [zoom, setZoom] = useState(1.0);
+    const [pageInput, setPageInput] = useState('');
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const flipRef = useRef<any>(null);
@@ -60,13 +62,66 @@ export function FlipBooksPage() {
         }
     }
 
+    function zoomIn() { setZoom((z) => Math.min(2.0, +(z + 0.1).toFixed(1))); }
+    function zoomOut() { setZoom((z) => Math.max(0.5, +(z - 0.1).toFixed(1))); }
+
+    function handlePageJump(e: React.KeyboardEvent<HTMLInputElement>) {
+        if (e.key !== 'Enter') return;
+        const p = parseInt(pageInput) - 1;
+        if (!isNaN(p) && p >= 0 && p < pages.length) {
+            flipRef.current?.pageFlip().flip(p);
+        }
+        setPageInput('');
+    }
+
     const canPrev = currentPage > 0;
     const canNext = currentPage < pages.length - 1;
 
     return (
-        <div className="book-detail-page flex flex-col bg-gray-900" style={{ height: '100dvh' }}>
+        <div className="book-detail-page flex flex-col bg-gray-900" style={{ height: '92dvh' }}>
 
-            {/* Loading state */}
+            {/* ── Toolbar ── */}
+            <div className="flex-shrink-0 flex items-center justify-between gap-3 bg-gray-800 px-4 py-2 text-white text-sm">
+                {/* Left: zoom */}
+                <div className="flex items-center gap-1">
+                    <button onClick={zoomOut} disabled={zoom <= 0.5}
+                        className="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-700 disabled:opacity-30 font-bold text-base transition-colors">
+                        −
+                    </button>
+                    <span className="text-xs text-gray-300 w-10 text-center">{Math.round(zoom * 100)}%</span>
+                    <button onClick={zoomIn} disabled={zoom >= 2.0}
+                        className="w-8 h-8 flex items-center justify-center rounded hover:bg-gray-700 disabled:opacity-30 font-bold text-base transition-colors">
+                        +
+                    </button>
+                </div>
+
+                {/* Center: page jump */}
+                {!loading && pages.length > 0 && (
+                    <div className="flex items-center gap-2 text-xs text-gray-300">
+                        <span>Page</span>
+                        <input
+                            type="number"
+                            min={1}
+                            max={pages.length}
+                            value={pageInput}
+                            onChange={(e) => setPageInput(e.target.value)}
+                            onKeyDown={handlePageJump}
+                            placeholder={String(currentPage + 1)}
+                            className="w-14 px-2 py-1 rounded bg-gray-700 text-white text-xs text-center focus:outline-none focus:ring-1 focus:ring-blue-400 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                        />
+                        <span>/ {pages.length}</span>
+                    </div>
+                )}
+
+                {/* Right: page counter */}
+                <div className="text-xs text-gray-400 min-w-[90px] text-right">
+                    {!loading && pages.length > 0 && (
+                        <span>{currentPage + 1}–{Math.min(currentPage + 2, pages.length)} of {pages.length}</span>
+                    )}
+                </div>
+            </div>
+
+            {/* ── Loading ── */}
             {loading && (
                 <div className="flex flex-1 flex-col items-center justify-center gap-4">
                     <p className="text-gray-400 text-sm">
@@ -85,58 +140,59 @@ export function FlipBooksPage() {
                 </div>
             )}
 
-            {/* Error state */}
+            {/* ── Error ── */}
             {error && (
                 <div className="flex flex-1 items-center justify-center">
                     <p className="text-red-400 text-sm">{error}</p>
                 </div>
             )}
 
-            {/* Flip book */}
+            {/* ── Book area ── */}
             {!loading && !error && pages.length > 0 && (
                 <>
-                    {/* Book area fills remaining height */}
-                    <div className="flex-1 flex items-center justify-center overflow-hidden">
-                        <HTMLFlipBook
-                            ref={flipRef}
-                            width={550}
-                            height={733}
-                            size="stretch"
-                            minWidth={300}
-                            maxWidth={900}
-                            minHeight={400}
-                            maxHeight={1200}
-                            startPage={0}
-                            drawShadow={true}
-                            flippingTime={700}
-                            usePortrait={false}
-                            startZIndex={0}
-                            autoSize={true}
-                            maxShadowOpacity={0.5}
-                            showCover={true}
-                            mobileScrollSupport={false}
-                            clickEventForward={true}
-                            useMouseEvents={true}
-                            swipeDistance={20}
-                            showPageCorners={true}
-                            disableFlipByClick={false}
-                            className=""
-                            style={{}}
-                            onFlip={(e: any) => setCurrentPage(e.data)}
-                        >
-                            {pages.map((src, i) => (
-                                <div key={i} style={{ background: '#fff', width: '100%', height: '100%' }}>
-                                    <img
-                                        src={src}
-                                        alt={`Page ${i + 1}`}
-                                        style={{ width: '100%', height: '100%', objectFit: 'fill', display: 'block' }}
-                                    />
-                                </div>
-                            ))}
-                        </HTMLFlipBook>
+                    <div className="flex-1 overflow-auto flex items-center justify-center">
+                        <div style={{ transform: `scale(${zoom})`, transformOrigin: 'center center', transition: 'transform 0.2s', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <HTMLFlipBook
+                                ref={flipRef}
+                                width={550}
+                                height={733}
+                                size="stretch"
+                                minWidth={300}
+                                maxWidth={900}
+                                minHeight={400}
+                                maxHeight={1200}
+                                startPage={0}
+                                drawShadow={true}
+                                flippingTime={700}
+                                usePortrait={false}
+                                startZIndex={0}
+                                autoSize={true}
+                                maxShadowOpacity={0.5}
+                                showCover={true}
+                                mobileScrollSupport={false}
+                                clickEventForward={true}
+                                useMouseEvents={true}
+                                swipeDistance={20}
+                                showPageCorners={true}
+                                disableFlipByClick={false}
+                                className=""
+                                style={{}}
+                                onFlip={(e: any) => setCurrentPage(e.data)}
+                            >
+                                {pages.map((src, i) => (
+                                    <div key={i} style={{ background: '#fff', width: '100%', height: '100%' }}>
+                                        <img
+                                            src={src}
+                                            alt={`Page ${i + 1}`}
+                                            style={{ width: '100%', height: '100%', objectFit: 'fill', display: 'block' }}
+                                        />
+                                    </div>
+                                ))}
+                            </HTMLFlipBook>
+                        </div>
                     </div>
 
-                    {/* Bottom nav bar */}
+                    {/* ── Bottom nav ── */}
                     <div className="flex-shrink-0 flex items-center justify-center gap-4 bg-gray-800 py-2">
                         <button
                             onClick={() => flipRef.current?.pageFlip().flipPrev()}
@@ -145,9 +201,6 @@ export function FlipBooksPage() {
                         >
                             ← Prev
                         </button>
-                        <span className="text-gray-400 text-sm min-w-[90px] text-center">
-                            {currentPage + 1}–{Math.min(currentPage + 2, pages.length)} / {pages.length}
-                        </span>
                         <button
                             onClick={() => flipRef.current?.pageFlip().flipNext()}
                             disabled={!canNext}

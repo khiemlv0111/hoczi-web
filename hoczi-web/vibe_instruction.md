@@ -99,3 +99,8 @@ i have install react-pageflip and have page at app/quizzes/results/books/flip-bo
 it seem get book detail is error
 i have book_url at app/quizzes/results/books/flip-books/FlipBooksPage.tsx line 13
 - use this url for pdf content to make flib book
+
+the image is current UI status, let fix these points
+- there is also header, so user can zoomin and zoomout
+- there is an option so user can also select specific page
+- high is full screen, so let scroll inside page content, dont scroll to hide header or footer

@@ -104,3 +104,7 @@ the image is current UI status, let fix these points
 - there is also header, so user can zoomin and zoomout
 - there is an option so user can also select specific page
 - high is full screen, so let scroll inside page content, dont scroll to hide header or footer
+
+FlipBookDetail at app/quizzes/results/books/flip-books/[id]/FlipBooksDetail.tsx is hardcode BOOK_URL
+- let make it dynamic book_url similar to page: app/quizzes/results/books/[id]/BookDetailPage.tsx
+- Read flip book button at: app/quizzes/results/books/books-by-category/[id]/BookByCategoryPage.tsx line 125 is no style, let style it nicer

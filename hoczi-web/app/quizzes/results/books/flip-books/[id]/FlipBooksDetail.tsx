@@ -1,15 +1,16 @@
 'use client'
 
+import { BookService } from "@/data/services/book.service";
 import HTMLFlipBook from "react-pageflip";
 import { useEffect, useRef, useState } from "react";
 
 const PDFJS_VERSION = '3.11.174';
 const RENDER_SCALE = 1.5;
-const BOOK_URL = 'https://d1y3v0ou093g3m.cloudfront.net/books/f9bb002f-42a9-4009-9f13-3df9e75181cf.pdf';
 
 declare global { interface Window { pdfjsLib: any } }
 
 export function FlipBookDetailPage({id}: {id: number}) {
+    const [bookUrl, setBookUrl] = useState('');
     const [pages, setPages] = useState<string[]>([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
@@ -20,25 +21,38 @@ export function FlipBookDetailPage({id}: {id: number}) {
     const [error, setError] = useState('');
     const flipRef = useRef<any>(null);
 
+    // Step 1: fetch book detail to get book_url
     useEffect(() => {
+        BookService.getBookDetail(id)
+            .then((res) => {
+                const data = res?.data ?? res;
+                setBookUrl(data.book_url);
+            })
+            .catch(() => { setError('Failed to load book.'); setLoading(false); });
+    }, []);
+
+    // Step 2: once bookUrl is ready, load PDF.js then render pages
+    useEffect(() => {
+        if (!bookUrl) return;
+
         const existing = document.getElementById('pdfjs-script');
-        if (existing && window.pdfjsLib) { renderPdf(); return; }
+        if (existing && window.pdfjsLib) { renderPdf(bookUrl); return; }
 
         const script = document.createElement('script');
         script.id = 'pdfjs-script';
         script.src = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/pdf.min.js`;
-        script.onload = () => renderPdf();
+        script.onload = () => renderPdf(bookUrl);
         script.onerror = () => { setError('Failed to load PDF viewer.'); setLoading(false); };
         document.head.appendChild(script);
-    }, []);
+    }, [bookUrl]);
 
-    async function renderPdf() {
+    async function renderPdf(url: string) {
         const lib = window.pdfjsLib;
         if (!lib) { setError('PDF library unavailable.'); setLoading(false); return; }
         lib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/pdf.worker.min.js`;
 
         try {
-            const doc = await lib.getDocument({ url: BOOK_URL }).promise;
+            const doc = await lib.getDocument({ url }).promise;
             const count: number = doc.numPages;
             setTotalPages(count);
 

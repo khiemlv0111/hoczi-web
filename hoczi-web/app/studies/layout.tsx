@@ -1,10 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 // import "./globals.css";
-import Link from "next/link";
-import { cookies } from "next/headers";
-import { APP_ACCESS_TOKEN_KEY } from "@/data/http";
-import { UserService } from "@/data/services/user.service";
 import { AppProvider } from "../context/AppContext";
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,14 +25,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookieStore = await cookies();
-  const token = cookieStore.get(APP_ACCESS_TOKEN_KEY)?.value ?? '';
-
   return (
     <html
       lang="en"

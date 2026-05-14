@@ -1,5 +1,6 @@
 'use client'
 
+import { useFileUpload } from "@/data/hooks/useFileUpload";
 import { BookService } from "@/data/services/book.service";
 import { UserService } from "@/data/services/user.service";
 import { X } from "lucide-react";
@@ -124,27 +125,20 @@ export function AdminBooksByCategory({ categoryId }: { categoryId: number }) {
     const [modalTopic, setModalTopic] = useState<Topic | null>(null);
     const [form, setForm] = useState(EMPTY_FORM);
     const [submitting, setSubmitting] = useState(false);
-    const [uploading, setUploading] = useState(false);
     const [uploadingCover, setUploadingCover] = useState(false);
     const [error, setError] = useState('');
+    const { upload: uploadPdf, uploading, progress: pdfProgress } = useFileUpload();
     const pdfRef = useRef<HTMLInputElement>(null);
     const coverRef = useRef<HTMLInputElement>(null);
 
     async function handlePdfUpload(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];
         if (!file) return;
-        setUploading(true);
         try {
-            const fd = new FormData();
-            fd.append('file', file);
-            const res = await fetch('/api/upload-book', { method: 'POST', body: fd });
-            const json = await res.json();
-            if (!res.ok) throw new Error(json.error ?? 'Upload failed.');
-            setForm((f) => ({ ...f, book_url: json.url }));
+            const { publicUrl } = await uploadPdf(file);
+            setForm((f) => ({ ...f, book_url: publicUrl }));
         } catch (err: any) {
             setError(err.message ?? 'PDF upload failed.');
-        } finally {
-            setUploading(false);
         }
     }
 
@@ -324,7 +318,7 @@ export function AdminBooksByCategory({ categoryId }: { categoryId: number }) {
                                     {uploading ? (
                                         <>
                                             <span className="animate-spin">⏳</span>
-                                            <span>Uploading…</span>
+                                            <span>Uploading… {Math.round(pdfProgress)}%</span>
                                         </>
                                     ) : form.book_url ? (
                                         <>

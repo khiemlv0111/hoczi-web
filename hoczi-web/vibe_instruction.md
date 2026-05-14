@@ -79,3 +79,9 @@ books by category for users also at app/quizzes/results/books/books-by-category/
 
 create book at app/admin/books/books-by-category/[categoryId]/AdminBooksByCategory.tsx
 - book_url is accept link now, let admin upload pdf file
+
+
+upload pdf file at app/admin/books/books-by-category/[categoryId]/AdminBooksByCategory.tsx 
+- i have created new hook and api at: data/hooks/useFileUpload.ts
+- api at: app/api/files/presign.ts
+- could you check and replace current upload api

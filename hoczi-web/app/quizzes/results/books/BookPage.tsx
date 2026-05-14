@@ -65,7 +65,7 @@ export function BookPage() {
                         return (
                             <Link
                                 key={cat.id}
-                                href={`/quizzes/results/books/books-by-category/${cat.id}`}
+                                href={`/quizzes/results/books/flip-books/books-by-category/${cat.id}`}
                                 className="group bg-white border border-gray-200 rounded-2xl overflow-hidden hover:shadow-md hover:-translate-y-0.5 transition-all duration-200"
                             >
                                 {/* Gradient strip */}

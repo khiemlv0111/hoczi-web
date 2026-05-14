@@ -122,7 +122,16 @@ export function FlipBookByCategoryPage({ categoryId }: { categoryId: number }) {
             <div className="mb-10">
                 <h1 className="text-2xl font-bold text-gray-900 mb-1">Books</h1>
                 <p className="text-sm text-gray-500">Pick a book and start reading.</p>
-                <Link href={`/quizzes/results/books/flip-books`}>Flip book</Link>
+
+                <Link
+                    href={`/quizzes/results/books/books-by-category/${categoryId}`}
+                    className="inline-flex items-center gap-2 mt-3 px-4 py-2 rounded-xl bg-gradient-to-r from-violet-500 to-indigo-500 text-white text-sm font-semibold shadow-md hover:from-violet-600 hover:to-indigo-600 hover:shadow-lg transition-all duration-200"
+                >
+                    <span>📖</span>
+                    <span>Read Book Normal</span>
+                </Link>
+
+
             </div>
 
             {/* Skeleton */}

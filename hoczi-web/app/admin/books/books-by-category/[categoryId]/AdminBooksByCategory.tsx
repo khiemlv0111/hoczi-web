@@ -2,6 +2,7 @@
 
 import { useFileUpload } from "@/data/hooks/useFileUpload";
 import { BookService } from "@/data/services/book.service";
+import { QuestionService } from "@/data/services/question.service";
 import { UserService } from "@/data/services/user.service";
 import { X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -115,14 +116,15 @@ function BookRow({ book }: { book: Book }) {
     );
 }
 
-const EMPTY_FORM = { title: '', description: '', book_url: '', cover_image_url: '', status: 'draft', is_public: false };
+const EMPTY_FORM = { title: '', description: '', book_url: '', cover_image_url: '', status: 'draft', is_public: false, topic_id: 0 };
 
 export function AdminBooksByCategory({ categoryId }: { categoryId: number }) {
     const [groups, setGroups] = useState<TopicGroup[]>([]);
+    const [topics, setTopics] = useState<Topic[]>([]);
     const [loading, setLoading] = useState(true);
     const [total, setTotal] = useState(0);
 
-    const [modalTopic, setModalTopic] = useState<Topic | null>(null);
+    const [modalOpen, setModalOpen] = useState(false);
     const [form, setForm] = useState(EMPTY_FORM);
     const [submitting, setSubmitting] = useState(false);
     const [uploadingCover, setUploadingCover] = useState(false);
@@ -158,6 +160,7 @@ export function AdminBooksByCategory({ categoryId }: { categoryId: number }) {
     }
 
     useEffect(() => {
+        QuestionService.getTopicList(categoryId).then((data) => setTopics(data ?? []));
         BookService.getBooksByCategory(categoryId)
             .then((res) => {
                 const books: Book[] = res?.data ?? res ?? [];
@@ -167,31 +170,35 @@ export function AdminBooksByCategory({ categoryId }: { categoryId: number }) {
             .finally(() => setLoading(false));
     }, []);
 
-    function openModal(topic: Topic) {
-        setModalTopic(topic);
-        setForm(EMPTY_FORM);
+    async function refreshBooks() {
+        const res = await BookService.getBooksByCategory(categoryId);
+        const books: Book[] = res?.data ?? res ?? [];
+        setTotal(books.length);
+        setGroups(groupByTopic(books));
+    }
+
+    function openModal(topic?: Topic) {
+        setModalOpen(true);
+        setForm({ ...EMPTY_FORM, topic_id: topic?.id ?? 0 });
         setError('');
     }
 
-    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    function closeModal() {
+        setModalOpen(false);
+        setError('');
+    }
+
+    async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         if (!form.title.trim()) { setError('Title is required.'); return; }
         if (!form.book_url.trim()) { setError('Book URL is required.'); return; }
-        if (!modalTopic) return;
+        if (!form.topic_id) { setError('Please select a topic.'); return; }
         setSubmitting(true);
         setError('');
         try {
-            await BookService.createBook({
-                ...form,
-                category_id: categoryId,
-                topic_id: modalTopic.id,
-            });
-            setModalTopic(null);
-            // refresh list
-            const res = await BookService.getBooksByCategory(categoryId);
-            const books: Book[] = res?.data ?? res ?? [];
-            setTotal(books.length);
-            setGroups(groupByTopic(books));
+            await BookService.createBook({ ...form, category_id: categoryId });
+            closeModal();
+            await refreshBooks();
         } catch {
             setError('Failed to create book. Please try again.');
         } finally {
@@ -211,6 +218,12 @@ export function AdminBooksByCategory({ categoryId }: { categoryId: number }) {
                         </p>
                     )}
                 </div>
+                <button
+                    onClick={() => openModal()}
+                    className="text-sm font-medium px-3 py-1.5 rounded-lg bg-blue-500 text-white hover:bg-blue-600 transition-colors"
+                >
+                    + Add Book
+                </button>
             </div>
 
             {/* Skeleton */}
@@ -256,14 +269,12 @@ export function AdminBooksByCategory({ categoryId }: { categoryId: number }) {
                                     <span className="text-[11px] text-gray-400">— {group.topic.description}</span>
                                 )}
                                 <span className="text-[11px] text-gray-400">{group.books.length} book{group.books.length !== 1 ? 's' : ''}</span>
-                                {group.topic && (
-                                    <button
-                                        onClick={() => openModal(group.topic!)}
-                                        className="ml-auto text-[11px] font-medium px-2.5 py-1 rounded-lg bg-blue-50 text-blue-600 border border-blue-200 hover:bg-blue-100 transition-colors"
-                                    >
-                                        + Add Book
-                                    </button>
-                                )}
+                                <button
+                                    onClick={() => openModal(group.topic ?? undefined)}
+                                    className="ml-auto text-[11px] font-medium px-2.5 py-1 rounded-lg bg-blue-50 text-blue-600 border border-blue-200 hover:bg-blue-100 transition-colors"
+                                >
+                                    + Add Book
+                                </button>
                             </div>
 
                             {/* Books */}
@@ -276,20 +287,31 @@ export function AdminBooksByCategory({ categoryId }: { categoryId: number }) {
             )}
 
             {/* Create book modal */}
-            {modalTopic && (
+            {modalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
                     <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg max-h-[90vh] flex flex-col">
                         <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-100 flex-shrink-0">
-                            <div>
-                                <h2 className="text-[15px] font-semibold text-gray-900">Add Book</h2>
-                                <p className="text-[11px] text-gray-400 mt-0.5">Topic: {modalTopic.name}</p>
-                            </div>
-                            <button onClick={() => setModalTopic(null)} className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors">
+                            <h2 className="text-[15px] font-semibold text-gray-900">Add Book</h2>
+                            <button onClick={closeModal} className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors">
                                 <X size={16} className="text-gray-500" />
                             </button>
                         </div>
 
                         <form onSubmit={handleSubmit} className="px-6 py-5 flex flex-col gap-4 overflow-y-auto">
+                            <div>
+                                <label className="block text-[12px] font-medium text-gray-700 mb-1">Topic <span className="text-red-500">*</span></label>
+                                <select
+                                    value={form.topic_id}
+                                    onChange={(e) => setForm({ ...form, topic_id: Number(e.target.value) })}
+                                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+                                >
+                                    <option value={0}>— Select a topic —</option>
+                                    {topics.map((t) => (
+                                        <option key={t.id} value={t.id}>{t.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+
                             <div>
                                 <label className="block text-[12px] font-medium text-gray-700 mb-1">Title <span className="text-red-500">*</span></label>
                                 <input type="text" value={form.title}
@@ -410,7 +432,7 @@ export function AdminBooksByCategory({ categoryId }: { categoryId: number }) {
                             {error && <p className="text-xs text-red-500">{error}</p>}
 
                             <div className="flex justify-end gap-2 pt-1 flex-shrink-0">
-                                <button type="button" onClick={() => setModalTopic(null)}
+                                <button type="button" onClick={closeModal}
                                     className="px-4 py-2 text-sm rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors">
                                     Cancel
                                 </button>

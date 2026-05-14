@@ -15,6 +15,10 @@ const BUCKET = process.env.AWS_S3_BUCKET ?? 'tefibit-assets';
 const CLOUDFRONT_URL = process.env.CLOUDFRONT_URL ?? 'https://d1y3v0ou093g3m.cloudfront.net';
 
 export async function POST(request: NextRequest) {
+  if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY) {
+    return NextResponse.json({ error: 'AWS credentials not configured' }, { status: 500 });
+  }
+
   try {
     const { file_name, content_type } = await request.json();
 
@@ -38,8 +42,11 @@ export async function POST(request: NextRequest) {
       file_key: fileKey,
       public_url: `${CLOUDFRONT_URL}/${fileKey}`,
     });
-  } catch (err) {
+  } catch (err: any) {
     console.error('presign error', err);
-    return NextResponse.json({ error: 'Failed to generate presigned URL' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to generate presigned URL', detail: err?.message ?? String(err) },
+      { status: 500 },
+    );
   }
 }

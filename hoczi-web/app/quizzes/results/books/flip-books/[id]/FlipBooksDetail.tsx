@@ -17,9 +17,17 @@ export function FlipBookDetailPage({id}: {id: number}) {
     const [renderProgress, setRenderProgress] = useState(0);
     const [zoom, setZoom] = useState(1.0);
     const [pageInput, setPageInput] = useState('');
+    const [isMobile, setIsMobile] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const flipRef = useRef<any>(null);
+
+    useEffect(() => {
+        function check() { setIsMobile(window.innerWidth < 768); }
+        check();
+        window.addEventListener('resize', check);
+        return () => window.removeEventListener('resize', check);
+    }, []);
 
     // Step 1: fetch book detail to get book_url
     useEffect(() => {
@@ -178,7 +186,7 @@ export function FlipBookDetailPage({id}: {id: number}) {
                                 startPage={0}
                                 drawShadow={true}
                                 flippingTime={700}
-                                usePortrait={false}
+                                usePortrait={isMobile}
                                 startZIndex={0}
                                 autoSize={true}
                                 maxShadowOpacity={0.5}

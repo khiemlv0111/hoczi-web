@@ -1,10 +1,4 @@
-export function FlipBooksDetail({id}: {id: number}){
-    return (
-        <>
-        flip book
-        </>
-    )
-}'use client'
+'use client'
 
 import HTMLFlipBook from "react-pageflip";
 import { useEffect, useRef, useState } from "react";

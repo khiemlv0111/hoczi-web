@@ -1,11 +1,11 @@
-import { FlipBooksDetail } from "./FlipBooksDetail";
+import { FlipBookDetailPage } from "./FlipBooksDetail";
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
 
     return (
         <>
-            <FlipBooksDetail id={Number(id)} />
+            <FlipBookDetailPage id={Number(id)} />
         </>
     )
 }

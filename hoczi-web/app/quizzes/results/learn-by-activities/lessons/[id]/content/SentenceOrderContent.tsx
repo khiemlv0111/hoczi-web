@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Activity, ContentProps } from "./types";
 
 type Word = { id: string; text: string };
@@ -13,6 +13,7 @@ type Question = {
     words?: string[];
     correct_order?: string[];
 };
+type Selected = { from: 'bank' | 'slot'; index: number } | null;
 
 function shuffle<T>(arr: T[]): T[] {
     return [...arr].sort(() => Math.random() - 0.5);
@@ -49,8 +50,19 @@ export function SentenceOrderContent({ activities }: ContentProps) {
     const [checked, setChecked] = useState(false);
     const [correct, setCorrect] = useState(false);
     const [speaking, setSpeaking] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+    const [selected, setSelected] = useState<Selected>(null);
+
+    // drag state (desktop only)
     const [dragOverSlot, setDragOverSlot] = useState<number | null>(null);
     const dragSource = useRef<{ from: 'bank' | 'slot'; index: number } | null>(null);
+
+    useEffect(() => {
+        const check = () => setIsMobile('ontouchstart' in window || window.innerWidth < 768);
+        check();
+        window.addEventListener('resize', check);
+        return () => window.removeEventListener('resize', check);
+    }, []);
 
     function initBank(q: Question): Word[] {
         const texts = q.words && q.words.length > 0 ? q.words : buildWords(q.content).map((w) => w.text);
@@ -71,6 +83,7 @@ export function SentenceOrderContent({ activities }: ContentProps) {
         setSlots(initSlots(q));
         setChecked(false);
         setCorrect(false);
+        setSelected(null);
     }
 
     function goTo(index: number) {
@@ -88,6 +101,7 @@ export function SentenceOrderContent({ activities }: ContentProps) {
         window.speechSynthesis.speak(utt);
     }
 
+    // ── Desktop drag handlers ──────────────────────────────────────
     function onDragStartBank(index: number) { dragSource.current = { from: 'bank', index }; }
     function onDragStartSlot(index: number) { dragSource.current = { from: 'slot', index }; }
 
@@ -127,6 +141,55 @@ export function SentenceOrderContent({ activities }: ContentProps) {
         setChecked(false);
     }
 
+    // ── Mobile tap handlers ────────────────────────────────────────
+    function handleBankTap(index: number) {
+        if (checked) return;
+        if (selected?.from === 'bank' && selected.index === index) {
+            setSelected(null);
+            return;
+        }
+        setSelected({ from: 'bank', index });
+    }
+
+    function handleSlotTap(slotIndex: number) {
+        if (checked) return;
+        if (!selected) {
+            if (slots[slotIndex]) setSelected({ from: 'slot', index: slotIndex });
+            return;
+        }
+        if (selected.from === 'bank') {
+            const word = bank[selected.index];
+            const displaced = slots[slotIndex];
+            const newBank = bank.filter((_, i) => i !== selected.index);
+            if (displaced) newBank.push(displaced);
+            const newSlots = [...slots];
+            newSlots[slotIndex] = word;
+            setBank(newBank);
+            setSlots(newSlots);
+        } else {
+            if (selected.index === slotIndex) {
+                // return to bank
+                const word = slots[slotIndex];
+                if (word) {
+                    const newSlots = [...slots];
+                    newSlots[slotIndex] = null;
+                    setBank((b) => [...b, word]);
+                    setSlots(newSlots);
+                }
+            } else {
+                // swap slots
+                const newSlots = [...slots];
+                const tmp = newSlots[slotIndex];
+                newSlots[slotIndex] = newSlots[selected.index];
+                newSlots[selected.index] = tmp;
+                setSlots(newSlots);
+            }
+        }
+        setSelected(null);
+        setChecked(false);
+    }
+
+    // ── Check ─────────────────────────────────────────────────────
     function handleCheck() {
         const q = questions[current];
         const expected = q.correct_order && q.correct_order.length > 0
@@ -134,6 +197,7 @@ export function SentenceOrderContent({ activities }: ContentProps) {
             : buildWords(q.content).map((w) => w.text);
         setCorrect(expected.every((word, i) => slots[i]?.text === word));
         setChecked(true);
+        setSelected(null);
     }
 
     const q = questions[current];
@@ -147,7 +211,9 @@ export function SentenceOrderContent({ activities }: ContentProps) {
                     {current + 1}
                 </span>
                 <p className="flex-1 text-gray-800 font-medium text-sm leading-snug pt-0.5">
-                    {q.instruction || 'Drag and drop the words into the correct order to make a sentence.'}
+                    {q.instruction || (isMobile
+                        ? 'Tap a word to select it, then tap a box to place it.'
+                        : 'Drag and drop the words into the correct order to make a sentence.')}
                 </p>
                 <button
                     onClick={() => speak(q.content)}
@@ -163,47 +229,80 @@ export function SentenceOrderContent({ activities }: ContentProps) {
                 </div>
             )}
 
+            {/* Selected hint (mobile) */}
+            {isMobile && selected && (
+                <p className="text-xs text-blue-600 font-medium mb-2 text-center animate-pulse">
+                    {selected.from === 'bank'
+                        ? `"${bank[selected.index]?.text}" selected — tap a box to place it`
+                        : `"${slots[selected.index]?.text}" selected — tap another box to swap, or tap it again to remove`}
+                </p>
+            )}
+
             {/* Drop slots */}
             <div
                 className="flex flex-wrap gap-2 border-2 border-dashed border-gray-300 rounded-xl p-4 mb-6 min-h-[72px]"
-                onDragOver={(e) => e.preventDefault()}
-                onDrop={onDropBank}
+                onDragOver={!isMobile ? (e) => e.preventDefault() : undefined}
+                onDrop={!isMobile ? onDropBank : undefined}
             >
-                {slots.map((word, i) => (
-                    <div
-                        key={i}
-                        draggable={!!word}
-                        onDragStart={() => word && onDragStartSlot(i)}
-                        onDragOver={(e) => { e.preventDefault(); setDragOverSlot(i); }}
-                        onDragLeave={() => setDragOverSlot(null)}
-                        onDrop={(e) => { e.stopPropagation(); onDropSlot(i); setDragOverSlot(null); }}
-                        className={[
-                            'h-10 min-w-[80px] px-3 flex items-center justify-center rounded-lg border-2 border-dashed text-sm font-medium transition-colors',
-                            dragOverSlot === i && !checked
+                {slots.map((word, i) => {
+                    const isSelectedSlot = selected?.from === 'slot' && selected.index === i;
+                    const slotState = checked && word
+                        ? (correct ? 'border-green-400 bg-green-50 text-green-800' : 'border-red-400 bg-red-50 text-red-800')
+                        : isSelectedSlot
+                            ? 'border-blue-500 bg-blue-50 text-blue-800 ring-2 ring-blue-300 scale-105'
+                            : dragOverSlot === i && !checked
                                 ? 'border-blue-400 bg-blue-50 text-blue-800 scale-105'
                                 : word
-                                    ? 'bg-white border-gray-400 text-gray-800 cursor-grab shadow-sm'
-                                    : 'bg-gray-50 border-gray-200 text-transparent',
-                            checked && word ? (correct ? 'border-green-400 bg-green-50 text-green-800' : 'border-red-400 bg-red-50 text-red-800') : '',
-                        ].join(' ')}
-                    >
-                        {word?.text ?? ' '}
-                    </div>
-                ))}
+                                    ? 'bg-white border-gray-400 text-gray-800 shadow-sm'
+                                    : 'bg-gray-50 border-gray-200 text-transparent';
+
+                    return (
+                        <div
+                            key={i}
+                            draggable={!isMobile && !!word}
+                            onDragStart={!isMobile ? () => word && onDragStartSlot(i) : undefined}
+                            onDragOver={!isMobile ? (e) => { e.preventDefault(); setDragOverSlot(i); } : undefined}
+                            onDragLeave={!isMobile ? () => setDragOverSlot(null) : undefined}
+                            onDrop={!isMobile ? (e) => { e.stopPropagation(); onDropSlot(i); setDragOverSlot(null); } : undefined}
+                            onClick={isMobile ? () => handleSlotTap(i) : undefined}
+                            className={[
+                                'h-10 min-w-[80px] px-3 flex items-center justify-center rounded-lg border-2 border-dashed text-sm font-medium transition-all',
+                                slotState,
+                                isMobile && !checked ? 'cursor-pointer active:scale-95' : !isMobile && word ? 'cursor-grab' : '',
+                            ].join(' ')}
+                        >
+                            {word?.text ?? ' '}
+                        </div>
+                    );
+                })}
             </div>
 
             {/* Word bank */}
-            <div className="flex flex-wrap gap-2 mb-8" onDragOver={(e) => e.preventDefault()} onDrop={onDropBank}>
-                {bank.map((word, i) => (
-                    <div
-                        key={word.id}
-                        draggable
-                        onDragStart={() => onDragStartBank(i)}
-                        className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-lg text-sm font-medium cursor-grab shadow-sm transition-colors"
-                    >
-                        {word.text}
-                    </div>
-                ))}
+            <div
+                className="flex flex-wrap gap-2 mb-8"
+                onDragOver={!isMobile ? (e) => e.preventDefault() : undefined}
+                onDrop={!isMobile ? onDropBank : undefined}
+            >
+                {bank.map((word, i) => {
+                    const isSelectedBank = selected?.from === 'bank' && selected.index === i;
+                    return (
+                        <div
+                            key={word.id}
+                            draggable={!isMobile}
+                            onDragStart={!isMobile ? () => onDragStartBank(i) : undefined}
+                            onClick={isMobile ? () => handleBankTap(i) : undefined}
+                            className={[
+                                'px-4 py-2 rounded-lg text-sm font-medium shadow-sm transition-all',
+                                isSelectedBank
+                                    ? 'bg-blue-500 text-white ring-2 ring-blue-300 scale-105'
+                                    : 'bg-gray-100 hover:bg-gray-200 text-gray-800',
+                                isMobile ? 'cursor-pointer active:scale-95' : 'cursor-grab',
+                            ].join(' ')}
+                        >
+                            {word.text}
+                        </div>
+                    );
+                })}
             </div>
 
             {checked && (

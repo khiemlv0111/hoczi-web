@@ -108,3 +108,4 @@ the image is current UI status, let fix these points
 FlipBookDetail at app/quizzes/results/books/flip-books/[id]/FlipBooksDetail.tsx is hardcode BOOK_URL
 - let make it dynamic book_url similar to page: app/quizzes/results/books/[id]/BookDetailPage.tsx
 - Read flip book button at: app/quizzes/results/books/books-by-category/[id]/BookByCategoryPage.tsx line 125 is no style, let style it nicer
+

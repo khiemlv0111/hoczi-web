@@ -1,7 +1,7 @@
 'use client'
 
 import { LessonService } from "@/data/services/lesson.service";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FillBlankContent } from "./content/FillBlankContent";
 import { MatchingContent } from "./content/MatchingContent";
@@ -17,6 +17,7 @@ const CONTENT_MAP: Record<string, React.ComponentType<{ activities: Activity[] }
 };
 
 export function LessonDetailPage({ id }: { id: number }) {
+    const router = useRouter();
     const searchParams = useSearchParams();
     const activityType = searchParams.get('activity_type') ?? 'sentence_order';
 
@@ -53,5 +54,17 @@ export function LessonDetailPage({ id }: { id: number }) {
 
     const ContentComponent = CONTENT_MAP[activityType] ?? SentenceOrderContent;
 
-    return <ContentComponent activities={activities} />;
+    return (
+        <div>
+            <div className="max-w-3xl mx-auto px-4 pt-4">
+                <button
+                    onClick={() => router.back()}
+                    className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors"
+                >
+                    ← Back
+                </button>
+            </div>
+            <ContentComponent activities={activities} />
+        </div>
+    );
 }

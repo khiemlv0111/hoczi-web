@@ -52,6 +52,16 @@ const topics = [
         badge: "Beginner friendly",
         badgeColor: "bg-amber-100 text-amber-700",
     },
+    {
+        id: 6,
+        label: "Programming Language",
+        description: "Learn Programming language activities.",
+        path: '/quizzes/results/learn-by-activities/programming',
+        emoji: "🖥️",
+        gradient: "from-amber-400 to-orange-500",
+        badge: "Intermediate",
+        badgeColor: "bg-amber-100 text-amber-700",
+    },
 ];
 
 export function LearnByActivitiesPage() {

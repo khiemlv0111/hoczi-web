@@ -14,6 +14,7 @@ const CATEGORIES = [
     { id: 14, slug: 'math',    name: 'Math',         emoji: '📐', gradient: 'from-emerald-400 to-green-600' },
     { id: 16, slug: 'science', name: 'Science',      emoji: '🧪', gradient: 'from-violet-500 to-purple-700' },
     { id: 18, slug: 'ESL',     name: 'ESL',          emoji: '🗣️', gradient: 'from-amber-400 to-orange-500' },
+    { id: 7, slug: 'programming', name: 'Lập trình - Programming', emoji: '🖥️', gradient: 'from-amber-400 to-orange-500' },
 ];
 
 const TABS = [

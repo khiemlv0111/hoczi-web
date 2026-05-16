@@ -109,3 +109,18 @@ FlipBookDetail at app/quizzes/results/books/flip-books/[id]/FlipBooksDetail.tsx 
 - let make it dynamic book_url similar to page: app/quizzes/results/books/[id]/BookDetailPage.tsx
 - Read flip book button at: app/quizzes/results/books/books-by-category/[id]/BookByCategoryPage.tsx line 125 is no style, let style it nicer
 
+quizzes/results/learn-by-activities/lessons/11?activity_type=sentence_order with SentenceOrderContent there is an issue on mobile view 
+- on mobile view it is impossible to drag and drop, so user cannt do any thing
+- so on mobile change to click word then click the answer box
+
+Hi Vinay,
+
+2. Match the words
+老师, 学生, 医生, 工人
+Giáo viên, Học sinh, Bác sĩ, Công nhân
+
+1. Matching the words 
+teacher, student, homework, classroom, subject, answer, question, lesson, practice, test
+giáo viên, học sinh, bài tập về nhà, lớp học, môn học, câu trả lời, câu hỏi, bài học, luyện tập, bài kiểm tra
+
+

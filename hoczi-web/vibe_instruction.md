@@ -124,3 +124,6 @@ teacher, student, homework, classroom, subject, answer, question, lesson, practi
 giáo viên, học sinh, bài tập về nhà, lớp học, môn học, câu trả lời, câu hỏi, bài học, luyện tập, bài kiểm tra
 
 
+Do quiz lesson detail: at app/quizzes/results/learn-by-activities/[activity]/do-quizzes/lessons/[id]/content/SentenceOrderContent.tsx
+- Implement count down 10 seconds
+- when finished 10 seconds if user didnt choose, display wrong and display next button

@@ -1,13 +1,28 @@
 'use client'
+// export function DoQuizzesPage({activity}: {activity: string}){
+//     return (
+//         <div>
+//             do quiz page {activity}
+//         </div>
+//     )
+// }
+
+
+
 
 import { LessonService } from "@/data/services/lesson.service";
 import { useEffect, useState } from "react";
-import { FillTheBlankTab } from "./tabs/FillTheBlankTab";
-import { MatchingTab } from "./tabs/MatchingTab";
-import { MultipleChoiceTab } from "./tabs/MultipleChoiceTab";
-import { SentenceOrderTab } from "./tabs/SentenceOrderTab";
-import { Lesson } from "./tabs/types";
+// import { FillTheBlankTab } from "./tabs/FillTheBlankTab";
+// import { MatchingTab } from "./tabs/MatchingTab";
+// import { MultipleChoiceTab } from "./tabs/MultipleChoiceTab";
+// import { SentenceOrderTab } from "./tabs/SentenceOrderTab";
+// import { Lesson } from "./tabs/types";
 import Link from "next/link";
+import { Lesson } from "../tabs/types";
+import { SentenceOrderTab } from "./tabs/SentenceOrderTab";
+import { FillTheBlankTab } from "./tabs/FillTheBlankTab";
+import { MultipleChoiceTab } from "./tabs/MultipleChoiceTab";
+import { MatchingTab } from "./tabs/MatchingTab";
 
 const CATEGORIES = [
     { id: 13, slug: 'chinese', name: 'Tiếng Trung', emoji: '🀄', gradient: 'from-rose-500 to-red-600' },
@@ -25,7 +40,7 @@ const TABS = [
     { key: 'matching', label: 'Matching', emoji: '🔗', component: MatchingTab },
 ];
 
-export function LearnByActivityDetailPage({ activity }: { activity: string }) {
+export function DoQuizzesPage({ activity }: { activity: string }) {
     const category = CATEGORIES.find((c) => c.slug === activity);
 
     const [lessons, setLessons] = useState<Lesson[]>([]);
@@ -59,15 +74,14 @@ export function LearnByActivityDetailPage({ activity }: { activity: string }) {
                         {category.emoji}
                     </div>
                     <div>
-                        <h1 className="text-xl font-bold text-gray-900">{category.name}</h1>
+                        <div className="flex items-center"><h1 className="text-xl font-bold text-gray-900">{category.name} -  </h1> <p className="ml-3">{'Do Quizzes'}</p></div>
                         <p className="text-xs text-gray-500 mt-0.5">
                             {loading ? 'Loading…' : `${lessons.length} lesson${lessons.length !== 1 ? 's' : ''} available`}
                         </p>
                     </div>
                 </div>
                 <div>
-                    <Link className="primary-btn border border-blue-400 rounded-lg text-gray-600 px-4 py-2" 
-                        href={`/quizzes/results/learn-by-activities/${activity}/do-quizzes`}>Quiz to learn</Link>
+                    <Link className="primary-btn border border-blue-400 rounded-lg text-gray-600 px-4 py-2" href={`/quizzes/results/learn-by-activities/${activity}`}>Go back</Link>
                 </div>
             </div>
 
@@ -90,7 +104,7 @@ export function LearnByActivityDetailPage({ activity }: { activity: string }) {
             </div>
 
             {/* Active tab content */}
-            <ActiveTabComponent lessons={lessons} loading={loading} />
+            <ActiveTabComponent activity={activity} lessons={lessons} loading={loading} />
         </div>
     );
 }

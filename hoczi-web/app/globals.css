@@ -34,3 +34,6 @@ body {
 .flex-1:has(.book-detail-page) .quiz-header {
     display: none;
 }
+.primary-btn {
+  border: 'red'
+}

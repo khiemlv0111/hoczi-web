@@ -43,6 +43,105 @@ function mapToQuestion(a: Activity, index: number): Question {
 
 const COUNTDOWN = 20;
 
+function ResultsScreen({ scores, questions, userAnswers, emoji, pct, totalCorrect, onRestart }: {
+    scores: boolean[];
+    questions: Question[];
+    userAnswers: string[][];
+    emoji: string;
+    pct: number;
+    totalCorrect: number;
+    onRestart: () => void;
+}) {
+    const [reviewIdx, setReviewIdx] = useState<number | null>(null);
+
+    const reviewQ = reviewIdx !== null ? questions[reviewIdx] : null;
+    const reviewAnswer = reviewIdx !== null ? (userAnswers[reviewIdx] ?? []) : [];
+    const correctAnswer = reviewQ
+        ? (reviewQ.correct_order && reviewQ.correct_order.length > 0
+            ? reviewQ.correct_order
+            : buildWords(reviewQ.content).map((w) => w.text))
+        : [];
+
+    return (
+        <div className="max-w-md mx-auto px-4 py-16 flex flex-col items-center text-center">
+            <div className="text-6xl mb-4">{emoji}</div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-1">Quiz Complete!</h2>
+            <p className="text-sm text-gray-500 mb-8">{questions.length} question{questions.length !== 1 ? 's' : ''} finished</p>
+
+            <div className="w-36 h-36 rounded-full border-4 border-blue-500 flex flex-col items-center justify-center mb-6">
+                <span className="text-4xl font-extrabold text-blue-600">{pct}%</span>
+                <span className="text-xs text-gray-400 mt-0.5">{totalCorrect} / {questions.length} correct</span>
+            </div>
+
+            <p className="text-xs text-gray-400 mb-3">Tap a question to review your answer</p>
+            <div className="flex justify-center gap-2 mb-10 flex-wrap">
+                {scores.map((s, i) => (
+                    <button key={i}
+                        onClick={() => setReviewIdx(i)}
+                        className={`w-9 h-9 rounded-full text-xs font-bold flex items-center justify-center text-white transition-transform hover:scale-110 active:scale-95 ${s ? 'bg-green-500 hover:bg-green-600' : 'bg-red-400 hover:bg-red-500'}`}>
+                        {i + 1}
+                    </button>
+                ))}
+            </div>
+
+            <button onClick={onRestart}
+                className="flex items-center gap-2 px-8 py-3 bg-blue-500 text-white font-semibold rounded-xl hover:bg-blue-600 transition-colors text-sm">
+                🔄 Redo Quiz
+            </button>
+
+            {/* Review modal */}
+            {reviewIdx !== null && reviewQ && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
+                    onClick={() => setReviewIdx(null)}>
+                    <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 text-left"
+                        onClick={(e) => e.stopPropagation()}>
+                        <div className="flex items-center justify-between mb-5">
+                            <h3 className="font-bold text-gray-900 text-base">Question {reviewIdx + 1} Review</h3>
+                            <button onClick={() => setReviewIdx(null)}
+                                className="w-7 h-7 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400 hover:text-gray-600 text-lg">
+                                ×
+                            </button>
+                        </div>
+
+                        <div className="mb-5">
+                            <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-2">Correct Answer</p>
+                            <div className="flex flex-wrap gap-2">
+                                {correctAnswer.map((word, i) => (
+                                    <span key={i} className="px-3 py-1.5 bg-green-100 text-green-800 rounded-lg text-sm font-medium">
+                                        {word}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div>
+                            <p className="text-[11px] font-semibold text-gray-400 uppercase tracking-wide mb-2">Your Answer</p>
+                            {reviewAnswer.every((w) => !w) ? (
+                                <p className="text-sm text-gray-400 italic">No answer given — time ran out</p>
+                            ) : (
+                                <div className="flex flex-wrap gap-2">
+                                    {reviewAnswer.map((word, i) => {
+                                        const ok = word && word === correctAnswer[i];
+                                        return (
+                                            <span key={i} className={`px-3 py-1.5 rounded-lg text-sm font-medium ${
+                                                !word ? 'bg-gray-100 text-gray-400 italic'
+                                                    : ok ? 'bg-green-100 text-green-800'
+                                                    : 'bg-red-100 text-red-800'
+                                            }`}>
+                                                {word || '(empty)'}
+                                            </span>
+                                        );
+                                    })}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
+
 export function SentenceOrderContent({ activities }: ContentProps) {
     const questions = activities.map(mapToQuestion);
 
@@ -56,12 +155,16 @@ export function SentenceOrderContent({ activities }: ContentProps) {
     const [selected, setSelected] = useState<Selected>(null);
     const [timeLeft, setTimeLeft] = useState(COUNTDOWN);
     const [scores, setScores] = useState<boolean[]>([]);
+    const [userAnswers, setUserAnswers] = useState<string[][]>([]);
     const [done, setDone] = useState(false);
 
     // drag state (desktop only)
     const [dragOverSlot, setDragOverSlot] = useState<number | null>(null);
     const dragSource = useRef<{ from: 'bank' | 'slot'; index: number } | null>(null);
     const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    const slotsRef = useRef(slots);
+
+    useEffect(() => { slotsRef.current = slots; }, [slots]);
 
     useEffect(() => {
         const check = () => setIsMobile('ontouchstart' in window || window.innerWidth < 768);
@@ -82,6 +185,7 @@ export function SentenceOrderContent({ activities }: ContentProps) {
                     setCorrect(false);
                     setSelected(null);
                     setScores((s) => [...s, false]);
+                    setUserAnswers((ua) => [...ua, slotsRef.current.map((s) => s?.text ?? '')]);
                     return 0;
                 }
                 return t - 1;
@@ -240,10 +344,12 @@ export function SentenceOrderContent({ activities }: ContentProps) {
         setChecked(true);
         setSelected(null);
         setScores((s) => [...s, isCorrect]);
+        setUserAnswers((ua) => [...ua, slots.map((s) => s?.text ?? '')]);
     }
 
     function restartQuiz() {
         setScores([]);
+        setUserAnswers([]);
         setDone(false);
         setCurrent(0);
         initWithQuestion(questions[0]);
@@ -257,33 +363,15 @@ export function SentenceOrderContent({ activities }: ContentProps) {
         const totalCorrect = scores.filter(Boolean).length;
         const pct = Math.round((totalCorrect / questions.length) * 100);
         const emoji = pct === 100 ? '🏆' : pct >= 80 ? '🎉' : pct >= 50 ? '👍' : '💪';
-        return (
-            <div className="max-w-md mx-auto px-4 py-16 flex flex-col items-center text-center">
-                <div className="text-6xl mb-4">{emoji}</div>
-                <h2 className="text-2xl font-bold text-gray-900 mb-1">Quiz Complete!</h2>
-                <p className="text-sm text-gray-500 mb-8">{questions.length} question{questions.length !== 1 ? 's' : ''} finished</p>
-
-                <div className="w-36 h-36 rounded-full border-4 border-blue-500 flex flex-col items-center justify-center mb-6">
-                    <span className="text-4xl font-extrabold text-blue-600">{pct}%</span>
-                    <span className="text-xs text-gray-400 mt-0.5">{totalCorrect} / {questions.length} correct</span>
-                </div>
-
-                <div className="flex justify-center gap-2 mb-10 flex-wrap">
-                    {scores.map((s, i) => (
-                        <div key={i} className={`w-9 h-9 rounded-full text-xs font-bold flex items-center justify-center text-white ${s ? 'bg-green-500' : 'bg-red-400'}`}>
-                            {i + 1}
-                        </div>
-                    ))}
-                </div>
-
-                <button
-                    onClick={restartQuiz}
-                    className="flex items-center gap-2 px-8 py-3 bg-blue-500 text-white font-semibold rounded-xl hover:bg-blue-600 transition-colors text-sm"
-                >
-                    🔄 Redo Quiz
-                </button>
-            </div>
-        );
+        return <ResultsScreen
+            scores={scores}
+            questions={questions}
+            userAnswers={userAnswers}
+            emoji={emoji}
+            pct={pct}
+            totalCorrect={totalCorrect}
+            onRestart={restartQuiz}
+        />;
     }
 
     const pct = (timeLeft / COUNTDOWN) * 100;

@@ -127,3 +127,6 @@ giáo viên, học sinh, bài tập về nhà, lớp học, môn học, câu tr�
 Do quiz lesson detail: at app/quizzes/results/learn-by-activities/[activity]/do-quizzes/lessons/[id]/content/SentenceOrderContent.tsx
 - Implement count down 10 seconds
 - when finished 10 seconds if user didnt choose, display wrong and display next button
+
+the image is result component with Correct and incorrect question
+- let implement function that if use click to a result question, open the modal and show the correct answer, also the user's answer

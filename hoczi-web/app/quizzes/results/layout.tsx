@@ -79,6 +79,7 @@ export default function ResultLayout({
         { path: '/quizzes/results/inbox', label: "Inbox", icon: Mail, text: "Inbox" },
         { path: '/quizzes/results/learn-by-activities', label: "Learn by activities", icon: HandCoins, text: "Learn by activities" },
         { path: '/quizzes/results/books', label: "Books", icon: BookCheck, text: "Books" },
+        { path: '/studies', label: "Studies", icon: BookOpen, text: "Studies" },
     ];
 
     const navSettings = [

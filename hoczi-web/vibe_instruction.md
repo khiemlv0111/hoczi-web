@@ -130,3 +130,12 @@ Do quiz lesson detail: at app/quizzes/results/learn-by-activities/[activity]/do-
 
 the image is result component with Correct and incorrect question
 - let implement function that if use click to a result question, open the modal and show the correct answer, also the user's answer
+
+sentence: They are playing in the park
+correct order: They,are,playing,in,the,park
+shuffle: playing,they,park,are,the,in
+
+
+admin lesson detail at app/admin/lessons/[id]/LessonDetailPage.tsx
+- let add 'create activity' button to create new learning activity 
+- when user click to create activity button, open modal similar to modat at: app/admin/activities/ActivitiesPage.tsx line 374

@@ -10,7 +10,7 @@ type FillBlankQuestion = {
     answer: string;
     options: string[];
     explanation: string;
-    image_url?: string;
+    media_url?: string;
 };
 
 function shuffle<T>(arr: T[]): T[] {
@@ -20,6 +20,10 @@ function shuffle<T>(arr: T[]): T[] {
 function splitCSV(val: string | undefined): string[] {
     if (!val) return [];
     return val.split(',').map((s) => s.trim()).filter(Boolean);
+}
+
+function isImageUrl(url: string): boolean {
+    return /\.(jpe?g|png|gif|webp|svg|bmp)(\?.*)?$/i.test(url);
 }
 
 function mapToQuestion(a: Activity, index: number): FillBlankQuestion {
@@ -32,7 +36,7 @@ function mapToQuestion(a: Activity, index: number): FillBlankQuestion {
         answer: cfg.answer ?? '',
         options: shuffle([cfg.answer, ...distractors].filter(Boolean)),
         explanation: cfg.explanation ?? '',
-        image_url: cfg.media_url || undefined,
+        media_url: cfg.media_url || undefined,
     };
 }
 
@@ -76,6 +80,14 @@ function QuestionView({
     const correct = selected === q.answer;
 
     function speak() {
+        if (q.media_url) {
+            const audio = new Audio(q.media_url);
+            audio.onplay = () => setSpeaking(true);
+            audio.onended = () => setSpeaking(false);
+            audio.onerror = () => setSpeaking(false);
+            audio.play();
+            return;
+        }
         if (!window.speechSynthesis || !q.blank_sentence) return;
         window.speechSynthesis.cancel();
         const full = q.blank_sentence.replace('__', q.answer);
@@ -110,9 +122,9 @@ function QuestionView({
             </div>
 
             {/* Image */}
-            {q.image_url && (
+            {q.media_url && isImageUrl(q.media_url) && (
                 <div className="flex justify-center mb-6">
-                    <img src={q.image_url} alt="question" className="max-h-48 object-contain rounded-xl" />
+                    <img src={q.media_url} alt="question" className="max-h-48 object-contain rounded-xl" />
                 </div>
             )}
 

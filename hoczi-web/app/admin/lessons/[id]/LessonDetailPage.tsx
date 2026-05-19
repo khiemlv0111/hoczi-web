@@ -1,9 +1,11 @@
 'use client'
 
 import { LessonService } from "@/data/services/lesson.service";
+import { useFileUpload } from "@/data/hooks/useFileUpload";
+import { Mic, Square } from "lucide-react";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Lesson = {
     id: number;
@@ -124,6 +126,44 @@ export function LessonDetailPage({ id }: { id: number }) {
     const [deletingLesson, setDeletingLesson] = useState(false);
     const [activityModalOpen, setActivityModalOpen] = useState(false);
     const [activityForm, setActivityForm] = useState(EMPTY_ACTIVITY);
+    const [recording, setRecording] = useState(false);
+    const [recordingSeconds, setRecordingSeconds] = useState(0);
+    const [uploadingAudio, setUploadingAudio] = useState(false);
+    const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+    const chunksRef = useRef<Blob[]>([]);
+    const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+    const { upload } = useFileUpload();
+
+    async function startRecording() {
+        chunksRef.current = [];
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const mr = new MediaRecorder(stream);
+        mediaRecorderRef.current = mr;
+        mr.ondataavailable = (e) => { if (e.data.size > 0) chunksRef.current.push(e.data); };
+        mr.onstop = async () => {
+            stream.getTracks().forEach((t) => t.stop());
+            if (timerRef.current) clearInterval(timerRef.current);
+            const blob = new Blob(chunksRef.current, { type: 'audio/webm' });
+            const file = new File([blob], `voice-${Date.now()}.webm`, { type: 'audio/webm' });
+            setUploadingAudio(true);
+            try {
+                const { publicUrl } = await upload(file);
+                setActivityForm((f) => ({ ...f, media_url: publicUrl }));
+            } finally {
+                setUploadingAudio(false);
+                setRecording(false);
+                setRecordingSeconds(0);
+            }
+        };
+        mr.start();
+        setRecording(true);
+        setRecordingSeconds(0);
+        timerRef.current = setInterval(() => setRecordingSeconds((s) => s + 1), 1000);
+    }
+
+    function stopRecording() {
+        mediaRecorderRef.current?.stop();
+    }
 
     function openActivityModal() {
         const defaultType = activities[0]?.activity_type ?? EMPTY_ACTIVITY.activity_type;
@@ -483,7 +523,30 @@ export function LessonDetailPage({ id }: { id: number }) {
                             </div>
 
                             <div>
-                                <label className="block text-[12px] font-medium text-gray-700 mb-1">Media URL</label>
+                                <div className="flex items-center justify-between mb-1">
+                                    <label className="block text-[12px] font-medium text-gray-700">Media URL</label>
+                                    {uploadingAudio ? (
+                                        <span className="text-[11px] text-violet-500 animate-pulse">Uploading…</span>
+                                    ) : recording ? (
+                                        <button
+                                            type="button"
+                                            onClick={stopRecording}
+                                            className="flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-full bg-red-50 text-red-600 border border-red-200 hover:bg-red-100 transition-colors"
+                                        >
+                                            <Square size={10} className="fill-red-600" />
+                                            Stop · {recordingSeconds}s
+                                        </button>
+                                    ) : (
+                                        <button
+                                            type="button"
+                                            onClick={startRecording}
+                                            className="flex items-center gap-1 text-[11px] font-medium px-2.5 py-1 rounded-full bg-violet-50 text-violet-600 border border-violet-200 hover:bg-violet-100 transition-colors"
+                                        >
+                                            <Mic size={11} />
+                                            Record Voice
+                                        </button>
+                                    )}
+                                </div>
                                 <input
                                     type="text"
                                     value={activityForm.media_url}

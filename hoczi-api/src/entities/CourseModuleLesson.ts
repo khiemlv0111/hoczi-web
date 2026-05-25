@@ -15,15 +15,15 @@ import { Lesson } from './Lesson';
 @Unique('course_module_lessons_unique', ['courseModuleId', 'lessonId'])
 export class CourseModuleLesson {
   @PrimaryGeneratedColumn('increment', { type: 'bigint' })
-  id!: string;
+  id!: number;
 
   @Index()
   @Column({ name: 'course_module_id', type: 'bigint' })
-  courseModuleId!: string;
+  courseModuleId!: number;
 
   @Index()
   @Column({ name: 'lesson_id', type: 'bigint' })
-  lessonId!: string;
+  lessonId!: number;
 
   @ManyToOne(() => CourseModule, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'course_module_id' })

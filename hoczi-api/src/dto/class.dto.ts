@@ -13,10 +13,10 @@ export class CreateClassRequest {
     code!: string;
 
     @IsOptional()
-    description!: number;
+    description!: string;
 
     @IsOptional()
-    school_name?: number;
+    school_name?: string;
 
     @IsOptional()
     teacher_id?: number;

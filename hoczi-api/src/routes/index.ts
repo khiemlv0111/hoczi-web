@@ -11,6 +11,8 @@ import classRoutes from './class.route';
 import lessonRoutes from './lesson.route';
 import chessRoutes from './chess.route';
 import bookRoutes from './book.route';
+import courseRoutes from './course.route';
+import vocabularyRoutes from './vocabulary.route';
 
 
 
@@ -31,6 +33,8 @@ routes.use('/api/lessons', lessonRoutes);
 routes.use('/api/chess', chessRoutes);
 
 routes.use('/api/books', bookRoutes);
+routes.use('/api/courses', courseRoutes);
+routes.use('/api/vocabularies', vocabularyRoutes);
 
 
 

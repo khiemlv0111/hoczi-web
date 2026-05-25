@@ -2,6 +2,16 @@
 
 import Link from "next/link";
 
+export enum SubjectCourse {
+    MATH = 'math',
+    LITERATURE = 'literature',
+    CHEMISTRY = 'chemistry',
+    SCIENCE = 'science',
+    IT = 'it',
+    ENGLISH = 'english',
+    CHINESE = 'chinese',
+}
+
 
 export function StudyPage() {
 
@@ -12,7 +22,7 @@ export function StudyPage() {
       id: 1,
       slug: "english",
       key: "english",
-      label: "English Books",
+      label: "Learn English",
       description: "Vocabulary, grammar, reading & writing",
       emoji: "🇬🇧",
       gradient: "from-blue-500 to-indigo-600",
@@ -23,7 +33,7 @@ export function StudyPage() {
       id: 2,
       slug: "chinese",
       key: "chinese",
-      label: "Chinese Books",
+      label: "Learn Chinese",
       description: "Characters, pinyin, tones & conversation",
       emoji: "🇨🇳",
       gradient: "from-red-500 to-orange-500",

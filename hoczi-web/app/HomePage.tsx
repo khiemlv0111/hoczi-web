@@ -90,7 +90,6 @@ export default function HomePage() {
     } else {
       handleStartQuiz(quizOptions).then(() => {
         handleGetQuestionList(quizOptions).then((res) => {
-          console.log('RESSSSSS============', res)
           router.push(`/quizzes`);
         });
       });

@@ -139,3 +139,14 @@ shuffle: playing,they,park,are,the,in
 admin lesson detail at app/admin/lessons/[id]/LessonDetailPage.tsx
 - let add 'create activity' button to create new learning activity 
 - when user click to create activity button, open modal similar to modat at: app/admin/activities/ActivitiesPage.tsx line 374
+
+
+AdminStudiesPage at app/admin/studies/AdminStudiesPage.tsx, let create this page as description
+- 2 tabs, course tab, vocabulary tab
+- courses devide by subject_code
+- vocabulary devide by Chinese and English
+
+
+
+Create AdminCourseDetailPage at path app/admin/studies/courses/[id]/AdminCourseDetailPage.tsx
+- courses have course_modules, course_module_lessons

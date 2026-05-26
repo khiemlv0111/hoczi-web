@@ -164,4 +164,10 @@ export class LessonService {
         return response;
     }
 
+
+    static async searchLessons(keyword: string) {
+        const response = await getRequest(`/api/lessons/search-lessons?keyword=${encodeURIComponent(keyword)}`, true);
+        return response;
+    }
+
 }

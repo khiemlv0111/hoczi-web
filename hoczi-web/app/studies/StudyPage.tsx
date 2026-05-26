@@ -4,6 +4,7 @@ import Link from "next/link";
 
 export enum SubjectCourse {
     MATH = 'math',
+    MATHEMATIC = 'mathematic',
     LITERATURE = 'literature',
     CHEMISTRY = 'chemistry',
     SCIENCE = 'science',

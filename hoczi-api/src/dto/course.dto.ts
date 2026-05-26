@@ -1,4 +1,4 @@
-import {IsNotEmpty, IsOptional } from "class-validator";
+import { IsNotEmpty, IsOptional } from "class-validator";
 
 export class CreateCourseRequest {
 
@@ -19,5 +19,33 @@ export class CreateCourseRequest {
 
     @IsNotEmpty()
     description!: string;
+
+}
+
+export class CreateVocabularyRequest {
+
+    @IsNotEmpty()
+    word!: string;
+
+    @IsOptional()
+    pinyin!: string;
+
+    @IsOptional()
+    hanViet!: string;
+
+    @IsOptional()
+    meaningVi!: string;
+
+    @IsOptional()
+    meaningEn!: string;
+
+    @IsOptional()
+    exampleSentence!: string;
+
+    @IsOptional()
+    audioUrl!: string;
+
+    @IsOptional()
+    metadata?: Record<string, any>;
 
 }

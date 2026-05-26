@@ -180,3 +180,20 @@ insert into topics(category_id, name, slug, description, is_active) values (5, '
 insert into topics(category_id, name, slug, description, is_active) values (19, 'Ôn thi Đại học', 'on-thi-dai-hoc-vat-ly','Ôn thi đại học môn Vat ly', true);
 insert into topics(category_id, name, slug, description, is_active) values (20, 'Ôn thi Đại học', 'on-thi-dai-hoc-hoa-hoc','Ôn thi đại học môn Hoa hoc', true);
 
+
+
+insert into course_modules(course_id, title, slug) values(9, 'Basic IT Vocabulary', 'basic-it-vocabulary');
+insert into course_modules(course_id, title, slug) values(9, 'Reading Comprehension', 'reading-comprehension');
+insert into course_modules(course_id, title, slug) values(9, 'Listening Comprehension', 'listening-comprehension');
+insert into course_modules(course_id, title, slug) values(9, 'Speaking Practice', 'speaking-practice');
+
+insert into lessons(title, description, content, created_by) values('Basic IT Vocabulary - Lesson 1','Description for Basic IT Vocabulary - Lesson 1', 'Content for Basic IT Vocabulary - Lesson 1', 1);
+insert into lessons(title, description, content, created_by) values('Basic IT Vocabulary - Lesson 2','Description for Basic IT Vocabulary - Lesson 2', 'Content for Basic IT Vocabulary - Lesson 2', 1);
+insert into lessons(title, description, content, created_by) values('Basic IT Vocabulary - Lesson 3','Description for Basic IT Vocabulary - Lesson 3', 'Content for Basic IT Vocabulary - Lesson 3', 1);
+insert into lessons(title, description, content, created_by) values('Basic IT Vocabulary - Lesson 4','Description for Basic IT Vocabulary - Lesson 4', 'Content for Basic IT Vocabulary - Lesson 4', 1);
+insert into lessons(title, description, content, created_by) values('Basic IT Vocabulary - Lesson 5','Description for Basic IT Vocabulary - Lesson 5', 'Content for Basic IT Vocabulary - Lesson 5', 1);
+insert into lessons(title, description, content, created_by) values('Basic IT Vocabulary - Lesson 6','Description for Basic IT Vocabulary - Lesson 6', 'Content for Basic IT Vocabulary - Lesson 6', 1);
+insert into lessons(title, description, content, created_by) values('Basic IT Vocabulary - Lesson 7','Description for Basic IT Vocabulary - Lesson 7', 'Content for Basic IT Vocabulary - Lesson 7', 1);
+
+
+insert into course_module_lessons(course_module_id, lesson_id) values(1, 80);

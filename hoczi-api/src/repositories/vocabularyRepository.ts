@@ -8,13 +8,12 @@ class VocabularyRepository {
     }
 
 
-    async createVocabulary(userId: number, data: Partial<Vocabulary>) {
-        return await this.repo.save({ ...data, user_id: userId });
-
+    async createVocabulary(data: Partial<Vocabulary>) {
+        return await this.repo.save(data);
     }
 
-    async vocabularyDetail(id: number) {
-        return this.repo.findOne({ where: { id } });
+    async vocabulariesByLessonId(lessonId: number) {
+        return this.repo.find({ where: { id: lessonId } });
     }
 
 

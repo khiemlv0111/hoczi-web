@@ -1,4 +1,5 @@
 import { courseRepository } from "../repositories/courseRepository";
+import { courseModuleRepository } from "../repositories/courseModuleRepository";
 
 
 export class CourseService {
@@ -9,6 +10,9 @@ export class CourseService {
 
     async createCourse(userId: number, data: any) {
         return courseRepository.createCourse(userId, data);
+    }
+    async createCourseModule(userId: number, data: any) {
+        return courseModuleRepository.createCourseModule(userId, data);
     }
 
     async getCourseDetail(courseId: number) {

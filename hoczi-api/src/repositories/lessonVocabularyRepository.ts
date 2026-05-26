@@ -8,13 +8,21 @@ class LessonVocabularyRepository {
     }
 
 
-    async createLessonVocabulary(userId: number, data: Partial<LessonVocabulary>) {
-        return await this.repo.save({ ...data, user_id: userId });
-
+    async createLessonVocabulary(lessonId: number, vocabularyId: number) {
+        return await this.repo.save({ lessonId: lessonId, vocabularyId: vocabularyId });
     }
 
     async lessonVocabularyDetail(id: number) {
         return this.repo.findOne({ where: { id } });
+    }
+
+    async getVocabulariesByLessonId(lessonId: number) {
+        const rows = await this.repo.find({
+            where: { lessonId },
+            relations: ['vocabulary'],
+            order: { orderIndex: 'ASC' },
+        });
+        return rows.map(row => row.vocabulary);
     }
 
 

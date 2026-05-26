@@ -17,6 +17,9 @@ class CourseModuleLessonRepository {
         return this.repo.findOne({ where: { id } });
     }
 
+    async addLessonToCourseModule(data: Partial<CourseModuleLesson>) {
+        return await this.repo.save({ ...data });
+    }
 
 }
 

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { CourseService } from '../services/CourseService';
 import { RequestValidator } from '../dto/requestValidator';
-import { CreateCourseRequest } from '../dto/course.dto';
+import { AddLessonToModuleRequest, CreateCourseRequest } from '../dto/course.dto';
 
 const courseService = new CourseService();
 
@@ -48,6 +48,24 @@ export class CourseController {
         const response = await courseService.createCourseModule(userId, input);
         return res.json(response);
     }
+
+    async addLessonToCourseModule(req: Request, res: Response) {
+        const userId = req.user.id;
+        if (!userId) {
+            return res.status(401).json({ success: false, message: 'Unauthorized' });
+        }
+
+
+        const { errors, input } = await RequestValidator(AddLessonToModuleRequest, req.body);
+        if (errors) {
+            return res.status(400).json({ success: false, message: errors })
+        }
+
+        const response = await courseService.addLessonToCourseModule(input);
+        return res.json(response);
+    }
+
+    
 
 
 

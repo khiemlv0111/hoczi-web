@@ -1,5 +1,6 @@
 import { courseRepository } from "../repositories/courseRepository";
 import { courseModuleRepository } from "../repositories/courseModuleRepository";
+import { courseModuleLessonRepository } from "../repositories/courseModuleLessonRepository";
 
 
 export class CourseService {
@@ -17,5 +18,9 @@ export class CourseService {
 
     async getCourseDetail(courseId: number) {
         return courseRepository.courseDetail(courseId);
+    }
+
+    async addLessonToCourseModule(data: any) {
+        return courseModuleLessonRepository.addLessonToCourseModule(data);
     }
 }

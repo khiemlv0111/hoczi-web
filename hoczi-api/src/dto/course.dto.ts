@@ -49,3 +49,15 @@ export class CreateVocabularyRequest {
     metadata?: Record<string, any>;
 
 }
+
+
+export class AddLessonToModuleRequest {
+
+    @IsNotEmpty()
+    lessonId!: number;
+
+    @IsNotEmpty()
+    courseModuleId!: number;
+
+
+}

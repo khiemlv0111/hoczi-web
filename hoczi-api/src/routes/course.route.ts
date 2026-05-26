@@ -12,12 +12,10 @@ courseRoutes.get('/get-course-detail/:id', new CourseController().getCourseDetai
 
 courseRoutes.post('/create-course', new CourseController().createCourse);
 
-courseRoutes.post('/add-member', new CourseController().homePage);
+courseRoutes.post('/create-course-module', new CourseController().createCourseModule);
 
-courseRoutes.delete('/remove-member/:classId/:userId', new CourseController().homePage);
+courseRoutes.post('/add-lesson-to-course-module', new CourseController().addLessonToCourseModule);
 
-
-courseRoutes.get('/get-my-courses', new CourseController().homePage);
 
 
 

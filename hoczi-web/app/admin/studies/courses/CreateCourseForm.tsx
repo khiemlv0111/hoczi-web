@@ -6,11 +6,11 @@ import slugify from "slugify";
 
 const SUBJECTS = [
     { code: 'math', label: 'Mathematics' },
-    { code: 'mathematic', label: 'Mathematic' },
+    { code: 'mathematic', label: 'Toán học' },
     { code: 'science', label: 'Science' },
     { code: 'chemistry', label: 'Chemistry' },
-    { code: 'history', label: 'History' },
-    { code: 'literature', label: 'Literature' },
+    { code: 'history', label: 'Lịch sử' },
+    { code: 'literature', label: 'Văn học' },
     { code: 'computer_science', label: 'Computer Science' },
     { code: 'it', label: 'IT' },
     { code: 'english', label: 'English' },

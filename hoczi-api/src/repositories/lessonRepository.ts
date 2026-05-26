@@ -1,4 +1,4 @@
-import { In } from 'typeorm';
+import { In, Like } from 'typeorm';
 import { AppDataSource } from '../data-source';
 import { Lesson } from '../entities/Lesson';
 // import { UserProfile } from '../entities/UserProfile';
@@ -77,6 +77,15 @@ class LessonRepository {
         where: {id: id},
         relations: ['learning_activities']
        });
+    }
+
+    async search(keyword: string) {
+
+        return this.repo.find({
+            where: {
+                title: Like(`%${keyword}%`)
+            }
+        });
     }
     
 

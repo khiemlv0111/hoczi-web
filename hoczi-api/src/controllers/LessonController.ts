@@ -342,4 +342,14 @@ export class LessonController {
         return res.json(response);
     }
 
+    async searchLessons(req: Request, res: Response) {
+
+
+        const keyword = req.query.keyword as string;
+
+
+        const response = await lessonService.searchLessons(keyword);
+        return res.json(response);
+    }
+
 }

@@ -343,4 +343,8 @@ export class LessonService {
         return lessonRepository.findOne(id);
     }
 
+    async searchLessons(keyword: string) {
+        return lessonRepository.search(keyword);
+    }
+
 }

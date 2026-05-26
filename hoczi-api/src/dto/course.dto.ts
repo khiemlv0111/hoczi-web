@@ -22,6 +22,23 @@ export class CreateCourseRequest {
 
 }
 
+export class CreateCourseModuleRequest {
+
+    @IsNotEmpty()
+    title!: string;
+
+    @IsOptional()
+    slug!: string;
+
+    @IsNotEmpty()
+    courseId!: number;
+
+    @IsOptional()
+    description!: string;
+
+
+}
+
 export class CreateVocabularyRequest {
 
     @IsNotEmpty()

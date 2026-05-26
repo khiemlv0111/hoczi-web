@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { CourseService } from '../services/CourseService';
 import { RequestValidator } from '../dto/requestValidator';
-import { AddLessonToModuleRequest, CreateCourseRequest } from '../dto/course.dto';
+import { AddLessonToModuleRequest, CreateCourseModuleRequest, CreateCourseRequest } from '../dto/course.dto';
 
 const courseService = new CourseService();
 
@@ -40,7 +40,7 @@ export class CourseController {
         }
 
 
-        const { errors, input } = await RequestValidator(CreateCourseRequest, req.body);
+        const { errors, input } = await RequestValidator(CreateCourseModuleRequest, req.body);
         if (errors) {
             return res.status(400).json({ success: false, message: errors })
         }

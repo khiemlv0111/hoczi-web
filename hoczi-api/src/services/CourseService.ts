@@ -10,4 +10,8 @@ export class CourseService {
     async createCourse(userId: number, data: any) {
         return courseRepository.createCourse(userId, data);
     }
+
+    async getCourseDetail(courseId: number) {
+        return courseRepository.courseDetail(courseId);
+    }
 }

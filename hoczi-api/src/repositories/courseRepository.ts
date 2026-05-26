@@ -16,8 +16,11 @@ class CourseRepository {
         return this.repo.find({ where: { subjectCode: subjectCode } });
     }
 
-    async courseDetail(slug: string) {
-        return this.repo.findOne({ where: { slug } });
+    async courseDetail(courseId: number) {
+        return this.repo.findOne({
+            where: { id: courseId },
+            relations: ['modules', 'modules.courseModuleLessons', 'modules.courseModuleLessons.lesson']
+        });
     }
 
 

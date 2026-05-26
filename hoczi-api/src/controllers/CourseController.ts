@@ -35,6 +35,7 @@ export class CourseController {
 
 
 
+
     async homePage(req: Request, res: Response) {
 
         return courseService.createCourse(1, {
@@ -44,5 +45,20 @@ export class CourseController {
             slug: 'khoa-hoc-lap-trinh-co-ban'
         });
     }
+
+    async getCourseDetail(req: Request, res: Response) {
+            // const studentId = req.user.id;
+    
+            const courseId = Number(req.params.id);
+    
+            const data = await courseService.getCourseDetail(Number(courseId));
+    
+            return res.json({
+                success: true,
+                message: "get class detail success",
+                data,
+            });
+        }
+    
 
 }

@@ -3,6 +3,7 @@ import {
   PrimaryGeneratedColumn,
   Column,
   ManyToOne,
+  OneToMany,
   JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
@@ -11,6 +12,7 @@ import {
   Unique,
 } from 'typeorm';
 import { Course } from './Course';
+import { CourseModuleLesson } from './CourseModuleLesson';
 // import { Course } from './course.entity';
 
 export enum CourseModuleStatus {
@@ -34,6 +36,9 @@ export class CourseModule {
   })
   @JoinColumn({ name: 'course_id' })
   course!: Course;
+
+  @OneToMany(() => CourseModuleLesson, (cml) => cml.courseModule)
+  courseModuleLessons!: CourseModuleLesson[];
 
   @Column({ type: 'varchar', length: 255 })
   title!: string;

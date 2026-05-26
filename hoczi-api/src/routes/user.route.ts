@@ -1,0 +1,69 @@
+import { Router } from 'express'
+// import { UserController } from '../controllers/UserController';
+import { AuthController } from '../controllers/AuthController';
+import { QuestionController } from '../controllers/QuestionController';
+// import { upload } from '../helpers/aws_s3';
+
+import { UserController } from '../controllers/UserController';
+import { upload } from '../utils/aws_s3';
+
+
+
+const userRoutes = Router();
+
+
+userRoutes.get('/user-profile', new AuthController().userProfile);
+
+userRoutes.get('/user-list', new UserController().getUserList);
+
+userRoutes.get('/user-tenant-list', new UserController().getUserTenantList);
+
+userRoutes.post('/start-quiz', new QuestionController().startQuiz);
+
+userRoutes.post('/submit-quiz-session', new QuestionController().submitQuizSession);
+
+userRoutes.get('/my-quiz-sessions', new QuestionController().myQuizSessions);
+
+userRoutes.get('/my-quizzes', new QuestionController().myQuizzes);
+
+userRoutes.get('/get-quiz-session-detail/:id', new QuestionController().getQuizSessionDetail);
+
+
+userRoutes.get('/session-detail/:id', new QuestionController().getSessionDetail);
+
+userRoutes.post('/start-retry/:id', new QuestionController().startRetry);
+
+userRoutes.put('/update-user/:id', new UserController().updateUser);
+
+userRoutes.get('/all-teacher-questions', new QuestionController().getAllTeacherQuestions);
+
+userRoutes.post('/create-question', new QuestionController().createQuestion);
+
+userRoutes.get('/get-dashboard-result', new UserController().getDashboarResult);
+
+userRoutes.put('/remove-user-from-tenant/:id', new UserController().removeUserFromTenant);
+
+userRoutes.get('/get-user-detail/:id', new UserController().getUserDetail);
+
+
+userRoutes.get('/user-list-same-tenant', new UserController().getUserListSameTenant);
+
+
+userRoutes.post('/start-quiz-assignment/:id', new QuestionController().startQuizAssignment);
+
+userRoutes.post('/mark-quiz-as-completed/:id', new QuestionController().markQuizAsCompleted);
+
+// Page routes 
+userRoutes.post('/create-page', new UserController().createPage);
+userRoutes.get('/get-page-detail/:id', new UserController().getPageDetail);
+
+
+
+userRoutes.post('/claude-chat', new QuestionController().claudeChat);
+
+
+userRoutes.post('/upload-file', upload.single('file') as any, new UserController().uploadFile);
+
+
+
+export default userRoutes;

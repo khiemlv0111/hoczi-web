@@ -1,0 +1,221 @@
+'use client'
+
+import {
+    LayoutDashboard,
+    Clock,
+    Users,
+    Monitor,
+    Bell,
+    Settings,
+    Plus,
+    User,
+    Star,
+    LogOut,
+    Building2,
+    HandCoins,
+    Book
+} from "lucide-react";
+import { useRouter, usePathname } from "next/navigation";
+import { useAppData } from "../context/AppContext";
+import { useEffect, useState, useRef } from "react";
+import Link from "next/link";
+import { CommonModal } from "../components/modal/CommonModal";
+import { CreateQuestionForm } from "./questions/CreateQuestionForm";
+
+
+const navMain = [
+    { path: '/admin', label: "Dashboard", icon: LayoutDashboard, active: true },
+    { path: '/admin/tenants', label: "Tenants", icon: Building2  },
+    { path: '/admin/quizzes', label: "Quizzes", icon: Clock },
+    { path: '/admin/questions', label: "Questions", icon: Star },
+    { path: '/admin/users', label: "Users", icon: Users },
+    { path: '/admin/activities', label: "Activities", icon: HandCoins },
+    { path: '/admin/books', label: "Books", icon: Book },
+];
+
+const navSettings = [
+    { label: "Account preferences", icon: Settings },
+    { label: "Advertising data", icon: Monitor },
+    { label: "Notifications", icon: Bell },
+];
+
+export default function AdminLayout({
+    children,
+}: Readonly<{
+    children: React.ReactNode;
+}>) {
+    const router = useRouter();
+    const pathname = usePathname();
+    const { user, getUserProfile } = useAppData();
+
+    const [open, setOpen] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        getUserProfile().then((res) => {
+            if(!res){
+                router.push(`/`)
+            }
+            
+        })
+    }, []);
+
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+                setDropdownOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.clear();
+        window.location.reload();
+
+    };
+
+    useEffect(() => {
+        // console.log('USERS', user)
+        if (user) {
+
+            if (user.role !== 'admin') {
+                router.push(`/`)
+            }
+
+        }
+
+    }, [user])
+    const handleNavigate = (item: any) => {
+        const { path, label, icon: Icon, active } = item;
+        router.push(`${path}`);
+        setSidebarOpen(false);
+    }
+    return (
+        <div className="flex h-screen bg-gray-100 font-sans text-sm">
+            {/* Mobile overlay */}
+            {sidebarOpen && (
+                <div
+                    className="fixed inset-0 z-20 bg-black/40 md:hidden"
+                    onClick={() => setSidebarOpen(false)}
+                />
+            )}
+
+            {/* Sidebar */}
+            <aside className={`
+                fixed inset-y-0 left-0 z-30 w-56 bg-white border-r border-gray-200 flex flex-col py-2 transition-transform duration-200
+                md:static md:translate-x-0 md:shrink-0
+                ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+            `}>
+                {/* Logo */}
+                <div className="flex items-center gap-2 px-4 pb-4 border-b border-gray-200 mb-3">
+                    <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white text-xs font-medium">
+                        <Link href={`/`}>
+                            Te
+                        </Link>
+
+                    </div>
+                    <span className="font-medium text-gray-900">hoczi</span>
+                </div>
+
+                {/* Main nav */}
+                <div className="px-2 mb-2">
+                    <p className="text-[11px] text-gray-400 uppercase tracking-wider px-2 mb-1">Main</p>
+                    {navMain.map(({ path, label, icon: Icon }) => {
+                        const isActive = path === '/admin'
+                            ? pathname === '/admin'
+                            : pathname.startsWith(path);
+                        return (
+                        <button
+                            key={label}
+                            onClick={() => handleNavigate({ path, label, icon: Icon })}
+                            className={`w-full flex items-center gap-2 px-3 py-2 rounded-md text-[13px] transition-colors ${isActive
+                                ? "bg-blue-50 text-blue-700"
+                                : "text-gray-500 hover:bg-gray-100 hover:text-gray-900"
+                                }`}
+                        >
+                            <Icon size={15} />
+                            {label}
+                        </button>
+                        );
+                    })}
+                </div>
+
+                {/* Settings nav */}
+                <div className="px-2 mt-3">
+                    <p className="text-[11px] text-gray-400 uppercase tracking-wider px-2 mb-1">Settings</p>
+                    {navSettings.map(({ label, icon: Icon }) => (
+                        <button
+                            key={label}
+                            className="w-full flex items-center gap-2 px-3 py-2 rounded-md text-[13px] text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+                        >
+                            <Icon size={15} />
+                            {label}
+                        </button>
+                    ))}
+                </div>
+            </aside>
+
+            {/* Main content */}
+            <div className="flex-1 flex flex-col overflow-hidden">
+                {/* Topbar */}
+                <header className="bg-white border-b border-gray-200 px-4 md:px-6 py-3 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                        <button
+                            className="md:hidden p-1.5 rounded-md hover:bg-gray-100 transition-colors"
+                            onClick={() => setSidebarOpen(true)}
+                            aria-label="Open menu"
+                        >
+                            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+                                <line x1="2" y1="5" x2="16" y2="5"/><line x1="2" y1="9" x2="16" y2="9"/><line x1="2" y1="13" x2="16" y2="13"/>
+                            </svg>
+                        </button>
+                        <span className="font-medium text-gray-900 text-[15px]">Admin Dashboard</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                        <button onClick={() => { setOpen(true) }} className="flex items-center gap-1.5 px-3 py-1.5 border border-gray-300 rounded-md text-[13px] hover:bg-gray-50 transition-colors">
+                            <Plus size={13} />
+                            <span className="hidden sm:inline">Create a question</span>
+                        </button>
+                        <div className="relative" ref={dropdownRef}>
+                            <button
+                                onClick={() => setDropdownOpen((prev) => !prev)}
+                                className="w-8 h-8 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center hover:bg-gray-200 transition-colors"
+                            >
+                                <User size={15} className="text-gray-500" />
+                            </button>
+                            {dropdownOpen && (
+                                <div className="absolute right-0 mt-2 w-44 bg-white border border-gray-200 rounded-md shadow-lg z-50 py-1">
+                                    <button
+                                        onClick={handleLogout}
+                                        className="w-full flex items-center gap-2 px-4 py-2 text-[13px] text-red-600 hover:bg-gray-50 transition-colors"
+                                    >
+                                        <LogOut size={14} />
+                                        Logout
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </header>
+
+                {/* Content */}
+                <main className="flex-1 p-6 overflow-y-auto">
+
+                    {children}
+
+                </main>
+            </div>
+
+            <CommonModal open={open} onClose={() => { setOpen(v => !v) }}>
+                <div>
+                    {/* <h1>Common modal</h1> */}
+                    <CreateQuestionForm onSuccess={(id) => { setOpen(false); router.push(`/admin/questions/${id}`); }} />
+                </div>
+            </CommonModal>
+        </div>
+    );
+}

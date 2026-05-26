@@ -1,0 +1,345 @@
+import { Request, Response } from 'express'
+import { RequestValidator } from '../dto/requestValidator';
+import { ActivityType, LessonService } from '../services/LessonService';
+import { AddSubjectToClassRequest } from '../dto/class.dto';
+import { AssignStudentAssignmentRequest, AssignUserToTenantRequest, CommentOnAssignmentRequest, CreateAssignmentRequest, CreateLearningActivityRequest, CreateLessonRequest, CreateTenantRequest } from '../dto/lesson.dto';
+import { CreateQuizRequest, TeacherCreateQuizSessionRequest } from '../dto/user.dto';
+
+
+const lessonService = new LessonService();
+
+export class LessonController {
+
+
+    async getMyLessons(req: Request, res: Response) {
+        // const { id } = req.user;
+
+
+        const { id } = req.user;
+
+        const page = req.query.page ? Number(req.query.page) : 1;
+        const limit = req.query.limit ? Number(req.query.limit) : 30;
+
+
+        const response = await lessonService.getMyLessons(Number(id), page, limit);
+        return res.json(response);
+    }
+
+    async createLesson(req: Request, res: Response) {
+
+        const { id } = req.user;
+
+        if (!id) {
+            return res.status(400).json({ success: false, message: "errors" })
+        }
+
+        const { errors, input } = await RequestValidator(CreateLessonRequest, req.body);
+        if (errors) {
+            return res.status(400).json({ success: false, message: errors })
+        }
+
+
+        const response = await lessonService.createLesson(Number(id), input);
+        return res.json(response);
+    }
+
+    async createAssignment(req: Request, res: Response) {
+
+        const { id } = req.user;
+
+        const { errors, input } = await RequestValidator(CreateAssignmentRequest, req.body);
+        if (errors) {
+            return res.status(400).json({ success: false, message: errors })
+        }
+
+        const response = await lessonService.createAssignment(Number(id), input);
+        return res.json(response);
+    }
+
+    async assignStudentAssignment(req: Request, res: Response) {
+
+        const { id } = req.user;
+
+        const { errors, input } = await RequestValidator(AssignStudentAssignmentRequest, req.body);
+        if (errors) {
+            return res.status(400).json({ success: false, message: errors })
+        }
+
+        const response = await lessonService.assignStudentAssignment(input);
+        return res.json(response);
+    }
+
+    async getAllSubjects(req: Request, res: Response) {
+
+        const response = await lessonService.getAllSubjects();
+        return res.json(response);
+    }
+
+    async getAllAssignments(req: Request, res: Response) {
+        const { id } = req.user;
+        const page = req.query.page ? Number(req.query.page) : 1;
+        const limit = req.query.limit ? Number(req.query.limit) : 30;
+
+
+        const response = await lessonService.getAllAssignments(Number(id), page, limit);
+        return res.json(response);
+    }
+
+    async getMyAssignments(req: Request, res: Response) {
+        const { id } = req.user;
+        const page = req.query.page ? Number(req.query.page) : 1;
+        const limit = req.query.limit ? Number(req.query.limit) : 30;
+
+
+        const response = await lessonService.getMyAssignments(Number(id), page, limit);
+        return res.json(response);
+    }
+
+
+
+    async addSubjectToClass(req: Request, res: Response) {
+
+        const { id } = req.user;
+
+        if (!id) {
+            return res.status(400).json({ success: false, message: "errors" })
+        }
+
+        const { errors, input } = await RequestValidator(AddSubjectToClassRequest, req.body);
+        if (errors) {
+            return res.status(400).json({ success: false, message: errors })
+        }
+
+
+        const response = await lessonService.addSubjectToClass(input.class_id, input.subject_id, id);
+        return res.json(response);
+    }
+
+
+    async commentOnAssignment(req: Request, res: Response) {
+
+        const { id } = req.user;
+
+        const { errors, input } = await RequestValidator(CommentOnAssignmentRequest, req.body);
+        if (errors) {
+            return res.status(400).json({ success: false, message: errors })
+        }
+
+        const response = await lessonService.commentOnAssignment(Number(id), input);
+        return res.json(response);
+    }
+
+    async createNewQuiz(req: Request, res: Response) {
+
+        const { id } = req.user;
+
+        const { errors, input } = await RequestValidator(CreateQuizRequest, req.body);
+        if (errors) {
+            return res.status(400).json({ success: false, message: errors });
+        }
+
+        const response = await lessonService.createNewQuiz(Number(id), input);
+        return res.json(response);
+    }
+
+    async getMyQuizzes(req: Request, res: Response) {
+        const { id } = req.user;
+
+        const response = await lessonService.getMyQuizzes(Number(id));
+        return res.json(response);
+    }
+
+    async getQuizDetail(req: Request, res: Response) {
+        const userId = req.user.id;
+
+        const id = Number(req.params.id);
+
+        const response = await lessonService.getQuizDetail(Number(id));
+        return res.json(response);
+    }
+
+
+    async markQuizComplete(req: Request, res: Response) {
+
+        const id = Number(req.params.id);
+
+        const response = await lessonService.markQuizComplete(Number(id));
+        return res.json(response);
+    }
+
+
+    async assignSessionToStudent(req: Request, res: Response) {
+        const { session_id, student_id, title, due_at } = req.body;
+
+        if (!session_id || !student_id) {
+            return res.status(400).json({ success: false, message: 'session_id and student_id are required' });
+        }
+        const teacherId = req.user.id;
+        if (!teacherId) {
+            return res.status(400).json({ success: false, message: "No teacher ID found" });
+        }
+        const response = await lessonService.assignSessionToStudent(Number(session_id), Number(student_id), teacherId, title, due_at);
+        return res.json(response);
+    }
+
+    async assignQuizToStudents(req: Request, res: Response) {
+        const { quiz_id, student_ids } = req.body;
+        if (!quiz_id || !Array.isArray(student_ids) || student_ids.length === 0) {
+            return res.status(400).json({ success: false, message: 'quiz_id and student_ids are required' });
+        }
+        const response = await lessonService.assignQuizToStudents(Number(quiz_id), student_ids.map(Number));
+        return res.json(response);
+    }
+
+    async createNewQuizSessionForAssignment(req: Request, res: Response) {
+
+        const { id } = req.user;
+
+        const { errors, input } = await RequestValidator(TeacherCreateQuizSessionRequest, req.body);
+        if (errors) {
+            return res.status(400).json({ success: false, message: errors });
+        }
+
+        const response = await lessonService.createNewQuizSessionAssignment(Number(id), Number(input.quiz_id), input.question_ids ?? []);
+        return res.json(response);
+    }
+
+
+    async teacherGetAssignmentStudentDetail(req: Request, res: Response) {
+        const { id } = req.user;
+
+        const assignmentStudentId = Number(req.params.assignmentStudentId);
+
+
+        const response = await lessonService.getAssignmentStudentDetail(assignmentStudentId);
+
+        return res.json(response);
+    }
+
+
+    async createTenant(req: Request, res: Response) {
+
+        const { id } = req.user;
+
+        const { errors, input } = await RequestValidator(CreateTenantRequest, req.body);
+        if (errors) {
+            return res.status(400).json({ success: false, message: errors })
+        }
+
+        const response = await lessonService.createTenant(input);
+        return res.json(response);
+    }
+
+    async getTenantList(req: Request, res: Response) {
+        const response = await lessonService.getTenantList();
+        return res.json(response);
+    }
+
+    async assignUserToTenant(req: Request, res: Response) {
+        const { id } = req.user;
+
+        const { errors, input } = await RequestValidator(AssignUserToTenantRequest, req.body);
+        if (errors) {
+            return res.status(400).json({ success: false, message: errors })
+        }
+
+
+        const response = await lessonService.assignUserToTenant(Number(id), input);
+        return res.json(response);
+    }
+
+    async getTenantDetail(req: Request, res: Response) {
+
+        const tenantId = Number(req.params.id);
+
+        const response = await lessonService.getTenantDetail(tenantId);
+        return res.json(response);
+    }
+
+
+    async updateAssignmentStatus(req: Request, res: Response) {
+        const { id } = req.params;
+        const { status } = req.body;
+        if (!status) {
+            return res.status(400).json({ success: false, message: 'status is required' });
+        }
+        const response = await lessonService.updateAssignmentStatus(Number(id), status);
+        return res.json(response);
+    }
+
+
+    async getSystemLessons(req: Request, res: Response) {
+
+
+        const page = req.query.page ? Number(req.query.page) : 1;
+        const limit = req.query.limit ? Number(req.query.limit) : 30;
+
+
+        const response = await lessonService.getSystemLessons(page, limit);
+        return res.json(response);
+    }
+
+
+    async createLearningActivity(req: Request, res: Response) {
+
+        const { id } = req.user;
+
+        if (!id) {
+            return res.status(400).json({ success: false, message: "errors" })
+        }
+
+        const { errors, input } = await RequestValidator(CreateLearningActivityRequest, req.body);
+        if (errors) {
+            return res.status(400).json({ success: false, message: errors })
+        }
+
+        const response = await lessonService.createNewActivity(input);
+        return res.json(response);
+    }
+
+    async getActivitiesByLesson(req: Request, res: Response) {
+
+        const { id } = req.params;
+
+        const response = await lessonService.getActivitiesByLesson(Number(id));
+        return res.json(response);
+    }
+
+    async getLessonsByCategory(req: Request, res: Response) {
+
+        const { categoryId } = req.params;
+
+        const activityType = req.query.activity_type as ActivityType;
+
+
+
+        const response = await lessonService.getLessonsByCategory(Number(categoryId), activityType);
+        return res.json(response);
+    }
+
+    async deleteLesson(req: Request, res: Response) {
+
+        const lessonId = Number(req.params.id);
+
+        const response = await lessonService.deleteLesson(lessonId);
+        return res.json(response);
+    }
+
+    async deleteActivity(req: Request, res: Response) {
+
+        const activityId = Number(req.params.id);
+
+        const response = await lessonService.deleteActivity(activityId);
+        return res.json(response);
+    }
+
+    async getLessonDetail(req: Request, res: Response) {
+        // const userId = req.user.id;
+
+        const id = Number(req.params.id);
+
+        const response = await lessonService.getLessonDetail(Number(id));
+        return res.json(response);
+    }
+
+}

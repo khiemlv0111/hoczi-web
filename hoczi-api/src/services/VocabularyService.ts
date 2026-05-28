@@ -1,5 +1,6 @@
 import { vocabularyRepository } from "../repositories/vocabularyRepository";
 import { lessonVocabularyRepository } from "../repositories/lessonVocabularyRepository";
+import { lessonRepository } from "../repositories/lessonRepository";
 
 
 export class VocabularyService {
@@ -19,9 +20,14 @@ export class VocabularyService {
     }
 
     async addVocabularyToLesson(data: { lessonId: number, vocabularyId: number }) {
-       
-       return await lessonVocabularyRepository.createLessonVocabulary(data.lessonId, data.vocabularyId);
-
+        const lesson = await lessonRepository.findOne(data.lessonId);
+        if (!lesson) {
+            throw new Error('Lesson not found');
+        }
+        if (lesson.lesson_type == 'quiz') {
+            throw new Error('Lesson is not possible to add vocabulary');
+        }
+        return await lessonVocabularyRepository.createLessonVocabulary(data.lessonId, data.vocabularyId);
     }
 
 }

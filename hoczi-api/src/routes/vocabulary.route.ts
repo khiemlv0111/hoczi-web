@@ -11,5 +11,7 @@ vocabularyRoutes.get('/get-vocabularies', new VocabularyController().getVocabula
 
 vocabularyRoutes.post('/create-vocabulary/:lessonId', new VocabularyController().createVocabulary);
 
+vocabularyRoutes.post('/add-vocabulary-to-lesson', new VocabularyController().addVocabularyToLesson);
+
 
 export default vocabularyRoutes;

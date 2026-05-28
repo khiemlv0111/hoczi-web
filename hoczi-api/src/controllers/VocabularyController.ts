@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { VocabularyService } from '../services/VocabularyService';
 import { RequestValidator } from '../dto/requestValidator';
-import { CreateCourseRequest, CreateVocabularyRequest } from '../dto/course.dto';
+import { AddVocabularyToLessonRequest, CreateCourseRequest, CreateVocabularyRequest } from '../dto/course.dto';
 
 const vocabularyService = new VocabularyService();
 
@@ -38,6 +38,21 @@ export class VocabularyController {
 
 
         const response = await vocabularyService.getVocabularies();
+        return res.json(response);
+    }
+
+    async addVocabularyToLesson(req: Request, res: Response) {
+        const userId = req.user.id;
+        if (!userId) {
+            return res.status(401).json({ success: false, message: 'Unauthorized' });
+        }
+
+        const { errors, input } = await RequestValidator(AddVocabularyToLessonRequest, req.body);
+        if (errors) {
+            return res.status(400).json({ success: false, message: errors })
+        }
+
+        const response = await vocabularyService.addVocabularyToLesson(input);
         return res.json(response);
     }
 

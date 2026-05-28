@@ -18,4 +18,10 @@ export class VocabularyService {
         return vocabularyRepository.findVocabularies();
     }
 
+    async addVocabularyToLesson(data: { lessonId: number, vocabularyId: number }) {
+       
+       return await lessonVocabularyRepository.createLessonVocabulary(data.lessonId, data.vocabularyId);
+
+    }
+
 }

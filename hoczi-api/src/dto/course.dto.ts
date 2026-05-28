@@ -78,3 +78,16 @@ export class AddLessonToModuleRequest {
 
 
 }
+
+
+
+export class AddVocabularyToLessonRequest {
+
+    @IsNotEmpty()
+    lessonId!: number;
+
+    @IsNotEmpty()
+    vocabularyId!: number;
+
+
+}

@@ -39,3 +39,8 @@ body {
 .primary-btn {
   border: 'red'
 }
+
+
+.studies-layout > .header-navigation {
+  background-color: #09a942;
+}

@@ -17,7 +17,7 @@ export function ChineseBookDetailPage({ slug }: Props) {
 
   return (
     <main
-      className="min-h-screen px-6 pt-[80px]"
+      className="min-h-screen px-6 pt-[80px] chinese-detail-page"
       style={{}}
     >
       <div className="min-h-screen border border-gray-200 container mx-auto">

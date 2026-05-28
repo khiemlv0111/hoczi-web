@@ -3,8 +3,10 @@ import {
     PrimaryGeneratedColumn,
     Column,
     CreateDateColumn,
+    OneToMany,
     Index,
 } from 'typeorm';
+import { LessonVocabulary } from './LessonVocabulary';
 
 @Entity('vocabularies')
 export class Vocabulary {
@@ -38,6 +40,9 @@ export class Vocabulary {
 
     @Column({ type: 'jsonb', nullable: true })
     metadata?: Record<string, any>;
+
+    @OneToMany(() => LessonVocabulary, (lv) => lv.vocabulary)
+    lessonVocabularies!: LessonVocabulary[];
 
     @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
     createdAt!: Date;

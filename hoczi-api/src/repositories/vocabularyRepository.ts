@@ -16,6 +16,12 @@ class VocabularyRepository {
         return this.repo.find({ where: { id: lessonId } });
     }
 
+    async findVocabularies() {
+        return this.repo.find({
+            relations: ['lessonVocabularies', 'lessonVocabularies.lesson'],
+        });
+    }
+
 
 }
 

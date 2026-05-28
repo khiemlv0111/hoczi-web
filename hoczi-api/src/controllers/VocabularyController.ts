@@ -34,6 +34,13 @@ export class VocabularyController {
         return res.json(response);
     }
 
+    async getVocabularies(req: Request, res: Response) {
+
+
+        const response = await vocabularyService.getVocabularies();
+        return res.json(response);
+    }
+
    
 }
 

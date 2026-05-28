@@ -14,4 +14,8 @@ export class VocabularyService {
         return lessonVocabularyRepository.getVocabulariesByLessonId(lessonId);
     }
 
+    async getVocabularies() {
+        return vocabularyRepository.findVocabularies();
+    }
+
 }

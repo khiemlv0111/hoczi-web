@@ -36,6 +36,4 @@ export class LessonVocabulary {
   @Column({ name: 'order_index', type: 'int', default: 0 })
   orderIndex!: number;
 
-  @CreateDateColumn({ name: 'created_at', type: 'timestamptz' })
-  createdAt!: Date;
 }

@@ -7,6 +7,16 @@ export class VocabularyService {
 
     async createVocabulary(lessonId: number, data: any) {
         const vocabulary = await vocabularyRepository.createVocabulary(data);
+
+        const lesson = await lessonRepository.findOne(lessonId);
+        if (!lesson) {
+            throw new Error('Lesson not found');
+        }
+        if (lesson.lesson_type == 'quiz' || lesson.lesson_type == 'assignment') {
+            throw new Error('Lesson is not possible to add vocabulary');
+        }
+
+
         await lessonVocabularyRepository.createLessonVocabulary(lessonId, vocabulary.id);
         return vocabulary;
     }

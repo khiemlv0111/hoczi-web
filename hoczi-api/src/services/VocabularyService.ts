@@ -24,7 +24,7 @@ export class VocabularyService {
         if (!lesson) {
             throw new Error('Lesson not found');
         }
-        if (lesson.lesson_type == 'quiz') {
+        if (lesson.lesson_type == 'quiz' || lesson.lesson_type == 'assignment') {
             throw new Error('Lesson is not possible to add vocabulary');
         }
         return await lessonVocabularyRepository.createLessonVocabulary(data.lessonId, data.vocabularyId);

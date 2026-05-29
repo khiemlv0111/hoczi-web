@@ -13,6 +13,7 @@ import { Topic } from './Topic';
 import { Grade } from './Grade';
 import { User } from './User';
 import { LearningActivity } from './LearningActivity';
+import { LessonVocabulary } from './LessonVocabulary';
 
 @Entity('lessons')
 export class Lesson {
@@ -82,4 +83,7 @@ export class Lesson {
 
   @OneToMany(() => LearningActivity, (activity) => activity.lesson)
   learning_activities!: LearningActivity[];
+
+  @OneToMany(() => LessonVocabulary, (lv) => lv.lesson)
+  lessonVocabularies!: LessonVocabulary[];
 }

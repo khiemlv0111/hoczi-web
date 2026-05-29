@@ -23,4 +23,8 @@ export class CourseService {
     async addLessonToCourseModule(data: any) {
         return courseModuleLessonRepository.addLessonToCourseModule(data);
     }
+
+    async getCourseLessonDetail(lessonId: number) {
+        return courseModuleLessonRepository.getCourseLessonDetail(lessonId);
+    }
 }

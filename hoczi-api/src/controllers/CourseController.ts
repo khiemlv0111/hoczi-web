@@ -65,7 +65,7 @@ export class CourseController {
         return res.json(response);
     }
 
-    
+
 
 
 
@@ -81,18 +81,31 @@ export class CourseController {
     }
 
     async getCourseDetail(req: Request, res: Response) {
-            // const studentId = req.user.id;
-    
-            const courseId = Number(req.params.id);
-    
-            const data = await courseService.getCourseDetail(Number(courseId));
-    
-            return res.json({
-                success: true,
-                message: "get class detail success",
-                data,
-            });
-        }
-    
+        // const studentId = req.user.id;
+
+        const courseId = Number(req.params.id);
+
+        const data = await courseService.getCourseDetail(Number(courseId));
+
+        return res.json({
+            success: true,
+            message: "get class detail success",
+            data,
+        });
+    }
+
+    async getCourseLessonDetail(req: Request, res: Response) {
+        // const studentId = req.user.id;
+
+        const lessonId = Number(req.params.id);
+
+        const data = await courseService.getCourseLessonDetail(lessonId);
+
+        return res.json({
+            success: true,
+            message: "get class detail success",
+            data,
+        });
+    }
 
 }

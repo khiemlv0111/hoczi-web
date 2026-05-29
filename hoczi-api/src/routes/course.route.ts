@@ -17,6 +17,10 @@ courseRoutes.post('/create-course-module', new CourseController().createCourseMo
 courseRoutes.post('/add-lesson-to-course-module', new CourseController().addLessonToCourseModule);
 
 
+courseRoutes.get('/get-course-lesson-detail/:id', new CourseController().getCourseLessonDetail);
+
+
+
 
 
 

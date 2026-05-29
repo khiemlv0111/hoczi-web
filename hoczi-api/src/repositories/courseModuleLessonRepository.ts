@@ -21,6 +21,20 @@ class CourseModuleLessonRepository {
         return await this.repo.save({ ...data });
     }
 
+    async getCourseLessonDetail(lessonId: number) {
+        return this.repo.findOne({
+            where: { lessonId },
+            relations: [
+                'lesson',
+                'lesson.lessonVocabularies',
+                'lesson.lessonVocabularies.vocabulary',
+                'courseModule',
+                'courseModule.course',
+                'courseModule.course.modules',
+            ],
+        });
+    }
+
 }
 
 export const courseModuleLessonRepository = new CourseModuleLessonRepository();

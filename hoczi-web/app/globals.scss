@@ -49,4 +49,10 @@ body {
   a, p, span, button {
     color: #000;
   }
+  &.home-page {
+    // background-color: red;
+    a, p, span, button {
+    color: #ffffff;
+  }
+  }
 }

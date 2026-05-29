@@ -1,140 +1,113 @@
 'use client'
 
+import { CourseService, CourseItem } from "@/data/services/course.service";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
-const BOOKS = [
-  {
-    slug: "english-for-beginners",
-    title: "English for Beginners",
-    author: "Core English",
-    level: "Beginner",
-    cover: "📝",
-    description: "Essential vocabulary and phrases to start communicating in English.",
-    lessons: 14,
-    color: "from-blue-500 to-indigo-500",
-  },
-  {
-    slug: "everyday-grammar",
-    title: "Everyday Grammar",
-    author: "Grammar Guide",
-    level: "Elementary",
-    cover: "📚",
-    description: "Tenses, articles, prepositions and common grammar rules explained simply.",
-    lessons: 20,
-    color: "from-indigo-500 to-purple-500",
-  },
-  {
-    slug: "reading-comprehension",
-    title: "Reading Comprehension",
-    author: "Read & Understand",
-    level: "Intermediate",
-    cover: "👁️",
-    description: "Short texts with exercises to sharpen your reading and inference skills.",
-    lessons: 18,
-    color: "from-sky-500 to-blue-400",
-  },
-  {
-    slug: "writing-skills",
-    title: "Writing Skills",
-    author: "Write Well",
-    level: "Intermediate",
-    cover: "✍️",
-    description: "Paragraphs, essays, emails — learn to write clearly and confidently.",
-    lessons: 16,
-    color: "from-violet-500 to-fuchsia-500",
-  },
-  {
-    slug: "spoken-english",
-    title: "Spoken English",
-    author: "Speak Up",
-    level: "Elementary",
-    cover: "🎙️",
-    description: "Pronunciation, intonation, and real-life conversation practice.",
-    lessons: 12,
-    color: "from-cyan-500 to-teal-400",
-  },
-  {
-    slug: "advanced-vocabulary",
-    title: "Advanced Vocabulary",
-    author: "Word Power",
-    level: "Advanced",
-    cover: "🔠",
-    description: "Idioms, collocations, and academic word lists for fluent expression.",
-    lessons: 22,
-    color: "from-blue-600 to-cyan-500",
-  },
+const GRADIENTS = [
+  "from-blue-500 to-indigo-500",
+  "from-indigo-500 to-purple-500",
+  "from-sky-500 to-blue-400",
+  "from-violet-500 to-fuchsia-500",
+  "from-cyan-500 to-teal-400",
+  "from-blue-600 to-cyan-500",
 ];
 
-const LEVEL_BADGE: Record<string, string> = {
-  Beginner: "bg-green-100 text-green-700",
-  Elementary: "bg-yellow-100 text-yellow-700",
-  Intermediate: "bg-orange-100 text-orange-700",
-  Advanced: "bg-red-100 text-red-700",
+const STATUS_BADGE: Record<string, string> = {
+  published: "bg-green-100 text-green-700",
+  draft:     "bg-yellow-100 text-yellow-700",
+  archived:  "bg-gray-100 text-gray-500",
 };
 
 export function EnglishPage() {
   const router = useRouter();
+  const [courses, setCourses] = useState<CourseItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    CourseService.getCoursesBySubjectCode('english')
+      .then(res => setCourses(res?.data ?? res ?? []))
+      .catch(() => setCourses([]))
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
-    <main
-      className="min-h-screen px-6 py-14 flex flex-col items-center"
-      style={{
-        background:
-          "radial-gradient(ellipse at 20% 50%, #3D0E5E 0%, #8B1A6A 40%, #C0382A 70%, #D4561C 100%)",
-      }}
-    >
+    <main className="min-h-screen px-6 py-14 flex flex-col items-center bg-gray-50">
       <div className="w-full max-w-5xl">
         <button
           onClick={() => router.back()}
-          className="text-white/60 hover:text-white text-sm mb-8 flex items-center gap-1 transition-colors"
+          className="text-gray-400 hover:text-gray-700 text-sm mb-8 flex items-center gap-1 transition-colors"
         >
           ← Back
         </button>
 
-        <h1 className="text-4xl font-semibold text-white mb-2 tracking-tight">
+        <h1 className="text-4xl font-semibold text-gray-900 mb-2 tracking-tight">
           🇬🇧 English
         </h1>
-        <p className="text-white/60 text-base mb-10">
-          {BOOKS.length} books available — choose one to start learning
+        <p className="text-gray-500 text-base mb-10">
+          {loading ? 'Loading courses…' : `${courses.length} course${courses.length !== 1 ? 's' : ''} available — choose one to start learning`}
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {BOOKS.map((book) => (
-            <button
-              key={book.slug}
-              onClick={() => router.push(`/studies/english/${book.slug}`)}
-              className="text-left bg-white/10 hover:bg-white/15 backdrop-blur-sm border border-white/10 rounded-2xl overflow-hidden active:scale-95 transition-all duration-150 flex flex-col"
-            >
-              <div
-                className={`bg-gradient-to-r ${book.color} h-24 flex items-center justify-center text-5xl`}
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[1, 2, 3, 4, 5, 6].map(i => (
+              <div key={i} className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm animate-pulse">
+                <div className="h-24 bg-gray-100" />
+                <div className="p-4 space-y-2">
+                  <div className="h-4 bg-gray-100 rounded w-3/4" />
+                  <div className="h-3 bg-gray-100 rounded w-full" />
+                  <div className="h-3 bg-gray-100 rounded w-2/3" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : courses.length === 0 ? (
+          <div className="text-center py-20 text-gray-400">No courses found.</div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {courses.map((course, idx) => (
+              <button
+                key={course.id}
+                onClick={() => router.push(`/studies/english/${course.id}`)}
+                className="text-left bg-white hover:bg-gray-50 border border-gray-200 rounded-2xl overflow-hidden active:scale-95 transition-all duration-150 flex flex-col shadow-sm hover:shadow-md"
               >
-                {book.cover}
-              </div>
+                {course.cover_image_url ? (
+                  <img
+                    src={course.cover_image_url}
+                    alt={course.title}
+                    className="h-24 w-full object-cover"
+                  />
+                ) : (
+                  <div className={`bg-gradient-to-r ${GRADIENTS[idx % GRADIENTS.length]} h-24 flex items-center justify-center text-4xl`}>
+                    📘
+                  </div>
+                )}
 
-              <div className="p-4 flex flex-col gap-2 flex-1">
-                <div className="flex items-start justify-between gap-2">
-                  <h2 className="text-white font-semibold text-base leading-snug">
-                    {book.title}
-                  </h2>
-                  <span
-                    className={`shrink-0 text-xs font-medium px-2 py-0.5 rounded-full ${LEVEL_BADGE[book.level] ?? "bg-gray-100 text-gray-600"}`}
-                  >
-                    {book.level}
-                  </span>
+                <div className="p-4 flex flex-col gap-2 flex-1">
+                  <div className="flex items-start justify-between gap-2">
+                    <h2 className="text-gray-900 font-semibold text-base leading-snug">
+                      {course.title}
+                    </h2>
+                    <span className={`shrink-0 text-xs font-medium px-2 py-0.5 rounded-full ${STATUS_BADGE[course.status] ?? "bg-gray-100 text-gray-500"}`}>
+                      {course.status}
+                    </span>
+                  </div>
+
+                  {course.description && (
+                    <p className="text-gray-500 text-sm leading-relaxed line-clamp-2">
+                      {course.description}
+                    </p>
+                  )}
+
+                  <div className="mt-auto pt-3 flex items-center justify-between text-gray-400 text-xs">
+                    <span>{course.is_public ? 'Public' : 'Private'}</span>
+                    <span>#{course.id}</span>
+                  </div>
                 </div>
-
-                <p className="text-white/55 text-sm leading-relaxed">
-                  {book.description}
-                </p>
-
-                <div className="mt-auto pt-3 flex items-center justify-between text-white/40 text-xs">
-                  <span>{book.author}</span>
-                  <span>{book.lessons} lessons</span>
-                </div>
-              </div>
-            </button>
-          ))}
-        </div>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </main>
   );

@@ -30,6 +30,7 @@
     "react-dom": "19.2.4",
     "react-pageflip": "^2.0.3",
     "reflect-metadata": "^0.2.2",
+    "sass": "^1.100.0",
     "slugify": "^1.6.9",
     "tailwindcss-animate": "^1.0.7",
     "typeorm": "^0.3.28"

@@ -255,9 +255,7 @@ export function StudyPage() {
 
   return (
     <main className="min-h-screen flex flex-col items-center px-6 py-16"
-      style={{
-        background: "radial-gradient(ellipse at 20% 50%, #3D0E5E 0%, #8B1A6A 40%, #C0382A 70%, #D4561C 100%)",
-      }}
+      style={{}}
     >
       <h1 className="text-4xl font-semibold text-white mb-3 tracking-tight">
         What do you want to study?

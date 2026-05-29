@@ -42,5 +42,11 @@ body {
 
 
 .studies-layout > .header-navigation {
-  background-color: #09a942;
+  background-color: #fff;
+  color: #0a0a0a;
+}
+.header-navigation {
+  a, p, span, button {
+    color: #000;
+  }
 }

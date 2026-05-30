@@ -143,7 +143,7 @@ export function LessonDetailPage({ id }: { id: string }) {
         <main className="min-h-screen bg-gray-50">
             {/* Top bar */}
             <div className="bg-white border-b border-gray-200 px-4 py-3 sticky top-14 z-10">
-                <div className="max-w-3xl mx-auto flex items-center gap-2 text-sm text-gray-400 flex-wrap">
+                <div className="max-w-6xl mx-auto flex items-center gap-2 text-sm text-gray-400 flex-wrap">
                     <button onClick={() => router.back()} className="hover:text-gray-700 transition-colors">
                         ← Back
                     </button>
@@ -168,7 +168,7 @@ export function LessonDetailPage({ id }: { id: string }) {
                 </div>
             </div>
 
-            <div className="max-w-3xl mx-auto px-4 py-8 space-y-6 pt-[60px]">
+            <div className="max-w-6xl mx-auto px-4 py-8 space-y-6 pt-[60px]">
                 {/* Lesson header */}
                 <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
                     {lesson.thumbnail_url ? (
@@ -213,9 +213,13 @@ export function LessonDetailPage({ id }: { id: string }) {
                         <h2 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
                             <BookOpen size={14} className="text-red-500" /> Nội dung bài học
                         </h2>
-                        <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
-                            {lesson.content}
-                        </div>
+
+                        <div
+                                className="text-lg text-gray-700 leading-relaxed whitespace-pre-wrap"
+                                dangerouslySetInnerHTML={{ __html:lesson.content }}
+                            />
+
+
                     </div>
                 )}
 

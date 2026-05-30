@@ -4,6 +4,7 @@ import { LessonService } from "@/data/services/lesson.service";
 import { VocabularyService, VocabularyItem } from "@/data/services/vocabulary.service";
 import { useEffect, useState } from "react";
 import { ChevronDown, ChevronRight, BookOpen, ChevronLeft, Plus, X } from "lucide-react";
+import { RichTextEditor } from "@/app/components/RichTextEditor";
 
 type LessonRow = {
     id: number;
@@ -419,14 +420,14 @@ export function AdminLessonsTab() {
             {/* New Lesson modal */}
             {newLessonOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-                    <div className="bg-white rounded-xl shadow-lg w-full max-w-md">
+                    <div className="bg-white rounded-xl shadow-lg w-full max-w-2xl max-h-[90vh] flex flex-col">
                         <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-gray-100">
                             <h2 className="text-[15px] font-semibold text-gray-900">New Lesson</h2>
                             <button onClick={() => setNewLessonOpen(false)} className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors">
                                 <X size={15} className="text-gray-500" />
                             </button>
                         </div>
-                        <form onSubmit={handleCreateLesson} className="px-5 py-4 flex flex-col gap-3">
+                        <form onSubmit={handleCreateLesson} className="px-5 py-4 flex flex-col gap-3 overflow-y-auto flex-1">
                             <div>
                                 <label className="block text-[12px] font-medium text-gray-700 mb-1">Title <span className="text-red-500">*</span></label>
                                 <input
@@ -440,22 +441,18 @@ export function AdminLessonsTab() {
                             </div>
                             <div>
                                 <label className="block text-[12px] font-medium text-gray-700 mb-1">Description</label>
-                                <textarea
-                                    value={lessonForm.description}
-                                    onChange={e => setLessonForm(f => ({ ...f, description: e.target.value }))}
+                                <RichTextEditor
+                                    key={`desc-${newLessonOpen}`}
                                     placeholder="Short description (optional)"
-                                    rows={2}
-                                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none"
+                                    onChange={html => setLessonForm(f => ({ ...f, description: html }))}
                                 />
                             </div>
                             <div>
                                 <label className="block text-[12px] font-medium text-gray-700 mb-1">Content</label>
-                                <textarea
-                                    value={lessonForm.content}
-                                    onChange={e => setLessonForm(f => ({ ...f, content: e.target.value }))}
+                                <RichTextEditor
+                                    key={`content-${newLessonOpen}`}
                                     placeholder="Lesson content (optional)"
-                                    rows={3}
-                                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none"
+                                    onChange={html => setLessonForm(f => ({ ...f, content: html }))}
                                 />
                             </div>
                             <div className="grid grid-cols-2 gap-3">

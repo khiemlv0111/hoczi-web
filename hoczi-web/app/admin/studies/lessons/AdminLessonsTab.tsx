@@ -59,6 +59,37 @@ export function AdminLessonsTab() {
     const [total, setTotal] = useState(0);
     const [states, setStates] = useState<Record<number, LessonState>>({});
 
+    // New lesson modal
+    const [newLessonOpen, setNewLessonOpen] = useState(false);
+    const [lessonForm, setLessonForm] = useState({ title: '', description: '', content: '', lesson_type: 'text', media_url: '', estimated_minutes: '' });
+    const [lessonSubmitting, setLessonSubmitting] = useState(false);
+    const [lessonFormError, setLessonFormError] = useState('');
+
+    async function handleCreateLesson(e: { preventDefault: () => void }) {
+        e.preventDefault();
+        if (!lessonForm.title.trim()) { setLessonFormError('Title is required.'); return; }
+        setLessonSubmitting(true);
+        setLessonFormError('');
+        try {
+            const res = await LessonService.createLesson({
+                title: lessonForm.title,
+                description: lessonForm.description,
+                content: lessonForm.content,
+                lesson_type: lessonForm.lesson_type,
+                media_url: lessonForm.media_url,
+                estimated_minutes: lessonForm.estimated_minutes ? Number(lessonForm.estimated_minutes) : undefined,
+            } as any);
+            const created = res?.data ?? res;
+            if (created) setLessons(prev => [created, ...prev]);
+            setNewLessonOpen(false);
+            setLessonForm({ title: '', description: '', content: '', lesson_type: 'text', media_url: '', estimated_minutes: '' });
+        } catch {
+            setLessonFormError('Failed to create lesson. Please try again.');
+        } finally {
+            setLessonSubmitting(false);
+        }
+    }
+
     // Add vocab modal
     const [addVocabLessonId, setAddVocabLessonId] = useState<number | null>(null);
     const [vocabForm, setVocabForm] = useState(EMPTY_VOCAB_FORM);
@@ -146,9 +177,18 @@ export function AdminLessonsTab() {
                     <h2 className="text-lg font-semibold text-gray-900">Lessons</h2>
                     <p className="text-xs text-gray-500 mt-0.5">Browse lessons and their vocabulary.</p>
                 </div>
-                {total > 0 && (
-                    <span className="text-xs text-gray-400">{total} lesson{total !== 1 ? 's' : ''}</span>
-                )}
+                <div className="flex items-center gap-3">
+                    {total > 0 && (
+                        <span className="text-xs text-gray-400">{total} lesson{total !== 1 ? 's' : ''}</span>
+                    )}
+                    <button
+                        onClick={() => { setLessonFormError(''); setNewLessonOpen(true); }}
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                    >
+                        <Plus size={13} />
+                        New Lesson
+                    </button>
+                </div>
             </div>
 
             {loading ? (
@@ -369,6 +409,97 @@ export function AdminLessonsTab() {
                                 </button>
                                 <button type="submit" disabled={vocabSubmitting} className="px-4 py-1.5 text-sm rounded-lg bg-blue-500 text-white hover:bg-blue-600 disabled:opacity-60">
                                     {vocabSubmitting ? 'Saving...' : 'Save'}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* New Lesson modal */}
+            {newLessonOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+                    <div className="bg-white rounded-xl shadow-lg w-full max-w-md">
+                        <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-gray-100">
+                            <h2 className="text-[15px] font-semibold text-gray-900">New Lesson</h2>
+                            <button onClick={() => setNewLessonOpen(false)} className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors">
+                                <X size={15} className="text-gray-500" />
+                            </button>
+                        </div>
+                        <form onSubmit={handleCreateLesson} className="px-5 py-4 flex flex-col gap-3">
+                            <div>
+                                <label className="block text-[12px] font-medium text-gray-700 mb-1">Title <span className="text-red-500">*</span></label>
+                                <input
+                                    type="text"
+                                    value={lessonForm.title}
+                                    onChange={e => setLessonForm(f => ({ ...f, title: e.target.value }))}
+                                    placeholder="Lesson title"
+                                    autoFocus
+                                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-[12px] font-medium text-gray-700 mb-1">Description</label>
+                                <textarea
+                                    value={lessonForm.description}
+                                    onChange={e => setLessonForm(f => ({ ...f, description: e.target.value }))}
+                                    placeholder="Short description (optional)"
+                                    rows={2}
+                                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-[12px] font-medium text-gray-700 mb-1">Content</label>
+                                <textarea
+                                    value={lessonForm.content}
+                                    onChange={e => setLessonForm(f => ({ ...f, content: e.target.value }))}
+                                    placeholder="Lesson content (optional)"
+                                    rows={3}
+                                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none"
+                                />
+                            </div>
+                            <div className="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label className="block text-[12px] font-medium text-gray-700 mb-1">Type</label>
+                                    <select
+                                        value={lessonForm.lesson_type}
+                                        onChange={e => setLessonForm(f => ({ ...f, lesson_type: e.target.value }))}
+                                        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    >
+                                        <option value="text">Text</option>
+                                        <option value="video">Video</option>
+                                        <option value="audio">Audio</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="block text-[12px] font-medium text-gray-700 mb-1">Duration (min)</label>
+                                    <input
+                                        type="number"
+                                        min={1}
+                                        value={lessonForm.estimated_minutes}
+                                        onChange={e => setLessonForm(f => ({ ...f, estimated_minutes: e.target.value }))}
+                                        placeholder="e.g. 10"
+                                        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
+                                </div>
+                            </div>
+                            <div>
+                                <label className="block text-[12px] font-medium text-gray-700 mb-1">Media URL</label>
+                                <input
+                                    type="url"
+                                    value={lessonForm.media_url}
+                                    onChange={e => setLessonForm(f => ({ ...f, media_url: e.target.value }))}
+                                    placeholder="https://... (optional)"
+                                    className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                />
+                            </div>
+                            {lessonFormError && <p className="text-[12px] text-red-500">{lessonFormError}</p>}
+                            <div className="flex justify-end gap-2 mt-1">
+                                <button type="button" onClick={() => setNewLessonOpen(false)} className="px-4 py-1.5 text-sm rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50">
+                                    Cancel
+                                </button>
+                                <button type="submit" disabled={lessonSubmitting} className="px-4 py-1.5 text-sm rounded-lg bg-blue-500 text-white hover:bg-blue-600 disabled:opacity-60">
+                                    {lessonSubmitting ? 'Saving...' : 'Save'}
                                 </button>
                             </div>
                         </form>

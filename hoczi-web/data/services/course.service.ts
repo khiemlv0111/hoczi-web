@@ -38,7 +38,7 @@ export class CourseService {
     }
 
     static async addLessonToModule(payload: { courseModuleId: string; lessonId: number; orderIndex: number; isPreview: boolean }) {
-        const response = await postRequest('/api/courses/add-lesson-to-module', payload, true);
+        const response = await postRequest('/api/courses/add-lesson-to-course-module', payload, true);
         return response;
     }
 

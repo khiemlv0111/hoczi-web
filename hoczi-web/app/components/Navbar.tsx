@@ -47,7 +47,7 @@ export const Navbar = () => {
     return (
         <>
             <nav className={`fixed top-0 left-0 w-full z-50 border-b border-white/10 shadow-sm header-navigation ${pathname === '/' ? 'home-page' : ''} transition-colors`}>
-                <ul className="flex container mx-auto items-center justify-between gap-6 px-6 py-4">
+                <ul className="flex container mx-auto items-center justify-between gap-6 px-6 py-3">
                     <li>
                         <Link href="/" className={`text-blue-500 ${textColor} font-medium text-sm hover:opacity-75 transition-opacity`}>
                             {t(messages, 'common.home')}

@@ -32,7 +32,7 @@ export function ChinesePage() {
   }, []);
 
   return (
-    <main className="min-h-screen px-6 py-14 flex flex-col items-center bg-gray-50">
+    <main className="min-h-screen px-6 py-[80px] flex flex-col items-center bg-gray-50">
       <div className="w-full max-w-5xl">
         <button
           onClick={() => router.back()}

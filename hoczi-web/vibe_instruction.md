@@ -150,3 +150,8 @@ AdminStudiesPage at app/admin/studies/AdminStudiesPage.tsx, let create this page
 
 Create AdminCourseDetailPage at path app/admin/studies/courses/[id]/AdminCourseDetailPage.tsx
 - courses have course_modules, course_module_lessons
+
+
+let fix those issues
+- left sidebar is over the top, that collepse to header navbar
+- lesson detail at: studies/chinese/[id] The lesson detail body is too close to the navbar, making it hard to distinguish the content section from the navigation bar.

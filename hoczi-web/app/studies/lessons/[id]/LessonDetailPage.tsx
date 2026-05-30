@@ -115,7 +115,7 @@ export function LessonDetailPage({ id }: { id: string }) {
 
     if (loading) {
         return (
-            <main className="min-h-screen bg-gray-50 px-4 py-8 animate-pulse">
+            <main className="min-h-screen bg-gray-50 px-4 py-8 animate-pulse pt-[60px]">
                 <div className="max-w-3xl mx-auto space-y-4">
                     <div className="h-4 bg-gray-200 rounded w-64" />
                     <div className="h-8 bg-gray-200 rounded w-3/4" />
@@ -142,7 +142,7 @@ export function LessonDetailPage({ id }: { id: string }) {
     return (
         <main className="min-h-screen bg-gray-50">
             {/* Top bar */}
-            <div className="bg-white border-b border-gray-200 px-4 py-3 sticky top-0 z-10">
+            <div className="bg-white border-b border-gray-200 px-4 py-3 sticky top-14 z-10">
                 <div className="max-w-3xl mx-auto flex items-center gap-2 text-sm text-gray-400 flex-wrap">
                     <button onClick={() => router.back()} className="hover:text-gray-700 transition-colors">
                         ← Back
@@ -168,7 +168,7 @@ export function LessonDetailPage({ id }: { id: string }) {
                 </div>
             </div>
 
-            <div className="max-w-3xl mx-auto px-4 py-8 space-y-6">
+            <div className="max-w-3xl mx-auto px-4 py-8 space-y-6 pt-[60px]">
                 {/* Lesson header */}
                 <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
                     {lesson.thumbnail_url ? (

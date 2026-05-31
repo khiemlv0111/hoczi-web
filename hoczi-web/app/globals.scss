@@ -46,11 +46,13 @@ body {
   color: #0a0a0a;
 }
 .header-navigation {
+  background-color: #fff;
   a, p, span, button {
     color: #000;
   }
   &.home-page {
-    // background-color: red;
+    background-color: transparent;
+    box-shadow: none;
     a, p, span, button {
     color: #ffffff;
   }

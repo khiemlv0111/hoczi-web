@@ -155,3 +155,7 @@ Create AdminCourseDetailPage at path app/admin/studies/courses/[id]/AdminCourseD
 let fix those issues
 - left sidebar is over the top, that collepse to header navbar
 - lesson detail at: studies/chinese/[id] The lesson detail body is too close to the navbar, making it hard to distinguish the content section from the navigation bar.
+
+fix 1 số yêu cầu như sau:
+1. tách component WriteHanzi từ dòng 289 - 345
+2. Chữ trung (hanzi) có thể dùng chuột để viết, tách chữ thành các nét, xếp thứ tự các nét, ban đầu chữ mờ, user có thể dùng chuột để vẽ theo từng nét, nếu viết đúng nét mờ biến thành nét tỏ 

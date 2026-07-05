@@ -8,6 +8,9 @@ import { HomeController } from '../controllers/HomeController';
 const homeRoutes = Router();
 
 homeRoutes.get('/', new HomeController().homePage);
+
+homeRoutes.post('/text-to-speech', new HomeController().textToSpeechPage);
+
 homeRoutes.post('/send-message', async (res: Response, req: Request) => {
     // const data = req.body;
 

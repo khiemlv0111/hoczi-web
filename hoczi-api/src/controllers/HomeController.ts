@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
-import { ElevenLabsClient, play } from "@elevenlabs/elevenlabs-js";
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+import { Readable } from "node:stream";
 
 const elevenlabs = new ElevenLabsClient();
 
@@ -23,8 +24,6 @@ export class HomeController {
             },
         );
         res.set("Content-Type", "audio/mpeg");
-        await play(audio);
-
-        return res.json({ success: true, message: "Text to Speech Page", })
+        Readable.fromWeb(audio as any).pipe(res);
     }
 }

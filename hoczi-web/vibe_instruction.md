@@ -159,3 +159,6 @@ let fix those issues
 fix 1 số yêu cầu như sau:
 1. tách component WriteHanzi từ dòng 289 - 345
 2. Chữ trung (hanzi) có thể dùng chuột để viết, tách chữ thành các nét, xếp thứ tự các nét, ban đầu chữ mờ, user có thể dùng chuột để vẽ theo từng nét, nếu viết đúng nét mờ biến thành nét tỏ 
+
+
+fix cho tao 1 chi tiết là nét bút viết bằng chuột, nó quá nhỏ, cho nó đậm lên 8px 

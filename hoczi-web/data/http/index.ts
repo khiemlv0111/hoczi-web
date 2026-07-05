@@ -72,6 +72,16 @@ export const putRequest = async (url: string, data: any, isPrivate: boolean = tr
     return res.data;
 }
 
+export const postBlobRequest = async (url: string, data: unknown, isPrivate: boolean = false): Promise<Blob> => {
+    const accessToken = getAccessToken();
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (isPrivate && accessToken) {
+        headers['Authorization'] = `Bearer ${accessToken}`;
+    }
+    const res = await axios.post(`${DOMAIN}${url}`, data, { headers, responseType: 'blob' });
+    return res.data as Blob;
+};
+
 export const deleteRequest = async (url: string, isPrivate: boolean = true) => {
     const accessToken = getAccessToken();
     const headers: Record<string, string> = {

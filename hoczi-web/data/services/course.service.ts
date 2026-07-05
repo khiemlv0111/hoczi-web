@@ -42,7 +42,7 @@ export class CourseService {
         return response;
     }
 
-     static async getCourseLessonDetail(lessonId: number) {
+    static async getCourseLessonDetail(lessonId: number) {
         const response = await getRequest(`/api/courses/get-course-lesson-detail/${lessonId}`, true);
         return response;
     }

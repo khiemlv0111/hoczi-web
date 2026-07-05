@@ -1,6 +1,6 @@
 // import { getRequest } from '@/data/http'
 
-import { deleteRequest, getAccessToken, getRequest, getRequestPublic, getServerRequest, postRequest, putRequest } from "../http";
+import { deleteRequest, getAccessToken, getRequest, getRequestPublic, getServerRequest, postBlobRequest, postRequest, putRequest } from "../http";
 import { PaginationPayload } from "../types";
 
 // import { getAccessToken, getRequest, getRequestPublic, postRequest } from "../http";
@@ -144,6 +144,10 @@ export class UserService {
         formData.append("file", file);
         const response = await postRequest('/api/users/upload-file', formData, true);
         return response;
+    }
+
+    static async textToSpeech(payload: { message: string }): Promise<Blob> {
+        return postBlobRequest('/text-to-speech', payload, false);
     }
 
 

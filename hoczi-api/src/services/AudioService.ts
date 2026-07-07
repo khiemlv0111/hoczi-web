@@ -47,7 +47,7 @@ export class AudioService {
         const audioUrl = data.audioUrl;
         
 
-        const learningContent = await learningContentRepository.createLearningContent(userId, data.lessonId);
+        const learningContent = await learningContentRepository.createLearningContent(userId, data);
         if (!learningContent) {
             throw new Error('Lesson not found');
         }

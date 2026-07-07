@@ -172,13 +172,13 @@ export function HanziPage({ pinyin }: Props) {
     <main className="mt-[100px] min-h-screen bg-gray-50 px-4 py-8">
       <div className="max-w-5xl mx-auto">
         {/* Hero card */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0c1a3a] to-[#15234a] p-8 text-white">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0c1a3a] to-[#15234a] p-5 sm:p-8 text-white">
           {/* watermark character */}
           <span className="pointer-events-none absolute -right-6 -top-10 select-none font-serif text-[280px] font-bold leading-none text-white/5">
             {data.character}
           </span>
 
-          <div className="relative flex items-start justify-between">
+          <div className="relative flex flex-wrap items-start justify-between gap-2">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-gray-300">
               <BookText size={13} />
               Từ vựng tiếng Trung
@@ -189,12 +189,12 @@ export function HanziPage({ pinyin }: Props) {
             </div>
           </div>
 
-          <div className="relative mt-4 flex items-start justify-between gap-6">
+          <div className="relative mt-4 flex flex-col sm:flex-row items-start justify-between gap-4 sm:gap-6">
             <div>
               <p className="text-lg font-medium text-blue-400">{data.pinyin}</p>
 
               <div className="mt-1 flex items-center gap-4">
-                <h1 className="font-serif text-8xl font-bold leading-none">
+                <h1 className="font-serif text-6xl sm:text-8xl font-bold leading-none">
                   {data.character}
                 </h1>
                 <button
@@ -231,7 +231,7 @@ export function HanziPage({ pinyin }: Props) {
               </div>
             </div>
 
-            <div className="flex flex-shrink-0 flex-col items-end gap-2">
+            <div className="flex flex-shrink-0 flex-row sm:flex-col items-center sm:items-end gap-2">
               <button
                 type="button"
                 aria-label="Yêu thích"

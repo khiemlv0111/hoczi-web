@@ -77,8 +77,8 @@ export function ChineseBookDetailPage({ slug }: Props) {
     if (loading) {
         return (
             <main className="min-h-screen bg-gray-50 px-4 py-8">
-                <div className="max-w-6xl mx-auto flex gap-8 animate-pulse">
-                    <div className="w-56 flex-shrink-0 space-y-3">
+                <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-4 md:gap-8 animate-pulse">
+                    <div className="hidden md:block w-56 flex-shrink-0 space-y-3">
                         <div className="h-5 bg-gray-200 rounded w-3/4" />
                         {[1,2,3,4,5].map(i => <div key={i} className="h-4 bg-gray-100 rounded" />)}
                     </div>
@@ -141,9 +141,32 @@ export function ChineseBookDetailPage({ slug }: Props) {
                 </div>
             </div>
 
-            <div className="max-w-6xl mx-auto px-4 py-8 flex gap-8 items-start">
-                {/* Sidebar */}
-                <aside className="w-56 flex-shrink-0 sticky top-6">
+            {/* Mobile module tabs */}
+            <div className="md:hidden border-b border-gray-200 bg-white sticky top-[108px] z-10 overflow-x-auto">
+                <div className="flex gap-1 px-4 py-2 min-w-max">
+                    {sortedModules.map((mod, i) => {
+                        const isActive = mod.id === activeModuleId;
+                        return (
+                            <button
+                                key={mod.id}
+                                onClick={() => setActiveModuleId(mod.id)}
+                                className={`flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                                    isActive ? 'bg-red-500 text-white' : 'bg-gray-100 text-gray-600'
+                                }`}
+                            >
+                                <span className={`w-4 h-4 rounded-full text-[9px] font-bold flex items-center justify-center ${
+                                    isActive ? 'bg-white text-red-500' : 'bg-gray-300 text-gray-500'
+                                }`}>{i + 1}</span>
+                                {mod.title}
+                            </button>
+                        );
+                    })}
+                </div>
+            </div>
+
+            <div className="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row gap-4 md:gap-8 items-start">
+                {/* Sidebar — desktop only */}
+                <aside className="hidden md:block w-56 flex-shrink-0 sticky top-28">
                     <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 px-1">Nội dung khoá học</p>
                     <nav className="space-y-0.5">
                         {sortedModules.map((mod, i) => {

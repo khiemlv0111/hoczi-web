@@ -36,7 +36,7 @@ export function StudiesSidebar() {
     const pathname = usePathname();
 
     return (
-        <aside className="w-56 flex-shrink-0 bg-white border-r border-gray-200 h-[calc(100vh-3.5rem)] sticky top-[60px] self-start overflow-y-auto">
+        <aside className="hidden md:block w-56 flex-shrink-0 bg-white border-r border-gray-200 h-[calc(100vh-3.5rem)] sticky top-[60px] self-start overflow-y-auto">
             <div className="px-4 py-5">
                 <Link href="/studies" className="block text-base font-bold text-gray-900 mb-5 hover:text-blue-600 transition-colors">
                     Chuyên mục

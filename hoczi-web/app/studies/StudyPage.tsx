@@ -254,17 +254,15 @@ export function StudyPage() {
 
 
   return (
-    <main className="min-h-screen flex flex-col items-center px-6 py-16"
-      style={{}}
-    >
-      <h1 className="text-4xl font-semibold text-white mb-3 tracking-tight">
+    <main className="min-h-screen flex flex-col items-center px-4 sm:px-6 py-8 sm:py-16">
+      <h1 className="text-2xl sm:text-4xl font-semibold text-white mb-2 sm:mb-3 tracking-tight text-center">
         What do you want to study?
       </h1>
-      <p className="text-white/60 text-base mb-12">
+      <p className="text-white/60 text-sm sm:text-base mb-8 sm:mb-12 text-center">
         Pick a subject to get started
       </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 w-full max-w-7xl">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 w-full max-w-7xl">
         {SUBJECTS.map((subject) => (
           <Link
             key={subject.key}

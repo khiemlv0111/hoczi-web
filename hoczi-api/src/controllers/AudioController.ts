@@ -47,6 +47,8 @@ export class AudioController {
             content: req.body.content,
             audioUrl: req.body.audioUrl,
             tenant_id: 1,
+            type: 'audio',
+            language_code: 'cn'
 
         }; // Assuming the audio data is sent in the request body
 

@@ -13,6 +13,7 @@ import {
     Palette,
     Languages,
     PenLine,
+    Speech,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -148,6 +149,22 @@ export function AILearnPage() {
                         </div>
                     </button>
                 ))}
+                <button
+
+                    onClick={() => router.push(`/studies/text-to-speech`)}
+                    className="group bg-white border border-gray-200 rounded-xl p-4 text-left hover:border-blue-300 hover:shadow-sm transition-all"
+                > <div className="flex items-start gap-3">
+                        <div className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 bg-red-50 text-red-600`}>
+                            <Speech size={16} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 mb-0.5">
+                                <p className="text-[13px] font-medium text-gray-900">{'Text To Speech'}</p>
+
+                            </div>
+                            <p className="text-[11px] text-gray-400 leading-relaxed">{'Convert text to natural-sounding speech'}</p>
+                        </div>
+                    </div> </button>
             </div>
         </div>
     );

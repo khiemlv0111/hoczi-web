@@ -13,6 +13,7 @@ import chessRoutes from './chess.route';
 import bookRoutes from './book.route';
 import courseRoutes from './course.route';
 import vocabularyRoutes from './vocabulary.route';
+import audioRoutes from './audio.route';
 
 
 
@@ -35,6 +36,8 @@ routes.use('/api/chess', chessRoutes);
 routes.use('/api/books', bookRoutes);
 routes.use('/api/courses', courseRoutes);
 routes.use('/api/vocabularies', vocabularyRoutes);
+
+routes.use('/api/audio', audioRoutes);
 
 
 

@@ -2,6 +2,7 @@ import { vocabularyRepository } from "../repositories/vocabularyRepository";
 import { lessonVocabularyRepository } from "../repositories/lessonVocabularyRepository";
 import { contentAudioRepository } from "../repositories/contentAudioRepository";
 import { learningContentRepository } from "../repositories/learningContentRepository";
+import { text } from "node:stream/consumers";
 
 
 // @Column({ type: "int" })
@@ -58,6 +59,7 @@ export class AudioService {
             content_id: learningContent.id,
             model_id: data.modelId || null,
             mime_type: data.mimeType || 'audio/mpeg',
+            text_hash: data.text_hash || null,
         }
 
         const audioContent = await contentAudioRepository.createContentAudio(audioData);

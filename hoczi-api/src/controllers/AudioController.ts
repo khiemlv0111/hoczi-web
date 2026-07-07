@@ -3,6 +3,7 @@ import { AudioService } from '../services/AudioService';
 import { RequestValidator } from '../dto/requestValidator';
 import { AddVocabularyToLessonRequest, CreateCourseRequest, CreateVocabularyRequest } from '../dto/course.dto';
 import { audio } from '@elevenlabs/elevenlabs-js/api/resources/dubbing';
+import { text } from 'node:stream/consumers';
 // import { content } from '@elevenlabs/elevenlabs-js/api/resources/studio/resources/projects';
 
 const audioService = new AudioService();
@@ -48,7 +49,8 @@ export class AudioController {
             audioUrl: req.body.audioUrl,
             tenant_id: 1,
             type: 'audio',
-            language_code: 'cn'
+            language_code: 'cn',
+            text_hash: title,
 
         }; // Assuming the audio data is sent in the request body
 

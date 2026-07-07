@@ -151,4 +151,11 @@ export class UserService {
     }
 
 
+    static async saveAudioContent(payload: { content: string; audioUrl: string }) {
+        // const user = localStorage.getItem('')
+        const response = await postRequest('/api/audio/create-audio', payload, true);
+        return response
+    }
+
+
 }

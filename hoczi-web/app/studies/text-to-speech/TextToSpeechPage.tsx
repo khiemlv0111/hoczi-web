@@ -2,7 +2,7 @@
 
 import { useState, useRef } from "react";
 import { UserService } from "@/data/services/user.service";
-import { Volume2, Loader2, RotateCcw, Copy, Check } from "lucide-react";
+import { Volume2, Loader2, RotateCcw, Copy, Check, Save } from "lucide-react";
 
 const EXAMPLE_TEXTS = [
   "The quick brown fox jumps over the lazy dog.",
@@ -16,7 +16,30 @@ export default function TextToSpeechPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const audioBlobRef = useRef<Blob | null>(null);
+
+  const handleSave = async () => {
+    if (saving || saved || !audioBlobRef.current) return;
+    setSaving(true);
+    try {
+      const file = new File([audioBlobRef.current], "audio.mp3", {
+        type: audioBlobRef.current.type || "audio/mpeg",
+      });
+      const uploadRes = await UserService.uploadFile(file);
+      const uploadedUrl: string =
+        uploadRes?.url ?? uploadRes?.data?.url ?? uploadRes?.fileUrl ?? "";
+      await UserService.saveAudioContent({ content: text.trim(), audioUrl: uploadedUrl });
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3000);
+    } catch {
+      // silent
+    } finally {
+      setSaving(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,10 +51,11 @@ export default function TextToSpeechPage() {
 
     try {
       const blob = await UserService.textToSpeech({ message: text.trim() });
-      // revoke previous object URL to free memory
+      audioBlobRef.current = blob;
       if (audioUrl) URL.revokeObjectURL(audioUrl);
       const url = URL.createObjectURL(blob);
       setAudioUrl(url);
+      setSaved(false);
       setTimeout(() => audioRef.current?.play(), 100);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Lỗi không xác định.";
@@ -49,8 +73,11 @@ export default function TextToSpeechPage() {
 
   const handleReset = () => {
     setText("");
+    if (audioUrl) URL.revokeObjectURL(audioUrl);
     setAudioUrl(null);
     setError(null);
+    audioBlobRef.current = null;
+    setSaved(false);
   };
 
   const charCount = text.length;
@@ -153,9 +180,26 @@ export default function TextToSpeechPage() {
         {/* Audio player */}
         {audioUrl && (
           <div className="mt-6 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-            <div className="mb-3 flex items-center gap-2 text-sm font-medium text-gray-700">
-              <Volume2 size={16} className="text-[#0c1a3a]" />
-              Kết quả
+            <div className="mb-3 flex items-center justify-between">
+              <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                <Volume2 size={16} className="text-[#0c1a3a]" />
+                Kết quả
+              </div>
+              <button
+                type="button"
+                onClick={handleSave}
+                disabled={saving || saved}
+                className="flex items-center gap-1.5 rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              >
+                {saving ? (
+                  <Loader2 size={13} className="animate-spin" />
+                ) : saved ? (
+                  <Check size={13} className="text-green-500" />
+                ) : (
+                  <Save size={13} />
+                )}
+                {saved ? "Đã lưu" : "Lưu audio"}
+              </button>
             </div>
             <audio
               ref={audioRef}

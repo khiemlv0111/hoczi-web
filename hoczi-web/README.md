@@ -40,3 +40,8 @@ ssh ubuntu@13.215.162.35
 
 
 continue text to speech function at app/studies/text-to-speech/TextToSpeechPage.tsx, user input text, submit to call api UserService.textToSpeech
+hàm upload file handleSave app/studies/text-to-speech/TextToSpeechPage.tsx line 25 chỉ có 2MB nhưng vẫn bị lỗi vượt quá size, tao nhớ có chỗ upload file (handlePdfUpload) lớn được mà, mày check và fix lỗi này 
+Hiện tại text input đang giới hạn 1000 ký tự, mày tăng lên 10000 ký tự đi, tăng high của textarea lên 150px nữa 
+
+đây là response data của trang audio content list, hãy display list,
+Hãy display list, có title, content, click vào title chuyển sang trang app/studies/text-to-speech/speech-detail, trong trang detail này hãy display content và audio player

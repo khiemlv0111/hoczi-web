@@ -157,5 +157,17 @@ export class UserService {
         return response
     }
 
+    static async getAudioContentList() {
+        // const user = localStorage.getItem('')
+        const response = await getRequest('/api/audio/get-audio-list', true);
+        return response
+    }
+
+    static async getAudioContentDetail(contentId: number) {
+        // const user = localStorage.getItem('')
+        const response = await getRequest(`/api/audio/get-content-detail/${contentId}`, true);
+        return response
+    }
+
 
 }

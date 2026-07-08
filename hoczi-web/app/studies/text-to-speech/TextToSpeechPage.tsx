@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import { UserService } from "@/data/services/user.service";
+import { useFileUpload } from "@/data/hooks/useFileUpload";
 import { Volume2, Loader2, RotateCcw, Copy, Check, Save } from "lucide-react";
 import Link from "next/link";
 
@@ -21,6 +22,7 @@ export default function TextToSpeechPage() {
     const [saved, setSaved] = useState(false);
     const audioRef = useRef<HTMLAudioElement>(null);
     const audioBlobRef = useRef<Blob | null>(null);
+    const { upload: uploadToS3 } = useFileUpload();
 
     const handleSave = async () => {
         if (saving || saved || !audioBlobRef.current) return;
@@ -29,10 +31,9 @@ export default function TextToSpeechPage() {
             const file = new File([audioBlobRef.current], "audio.mp3", {
                 type: audioBlobRef.current.type || "audio/mpeg",
             });
-            const uploadRes = await UserService.uploadFile(file);
-            const uploadedUrl: string =
-                uploadRes?.url ?? uploadRes?.data?.url ?? uploadRes?.fileUrl ?? "";
-            await UserService.saveAudioContent({ content: text.trim(), audioUrl: uploadedUrl });
+            // Upload directly to S3 via presigned URL — no backend 2 MB limit
+            const { publicUrl } = await uploadToS3(file);
+            await UserService.saveAudioContent({ content: text.trim(), audioUrl: publicUrl });
             setSaved(true);
             setTimeout(() => setSaved(false), 3000);
         } catch {
@@ -82,7 +83,7 @@ export default function TextToSpeechPage() {
     };
 
     const charCount = text.length;
-    const MAX_CHARS = 1000;
+    const MAX_CHARS = 10000;
 
     return (
         <div className="mt-[100px] min-h-screen bg-gray-50">
@@ -127,7 +128,7 @@ export default function TextToSpeechPage() {
                             value={text}
                             onChange={(e) => setText(e.target.value.slice(0, MAX_CHARS))}
                             placeholder="Nhập văn bản muốn chuyển thành giọng nói…"
-                            rows={6}
+                            rows={12}
                             className="w-full resize-none rounded-t-2xl px-5 pt-5 pb-3 text-sm text-gray-800 placeholder-gray-400 outline-none"
                         />
 

@@ -13,11 +13,17 @@ class LearningContentRepository {
     }
 
     async learningContentDetail(id: number) {
-        return this.repo.findOne({ where: { id } });
+        return this.repo.findOne({
+            where: { id },
+            relations: ['audios'],
+        });
     }
 
     async learningContentList(userId: number) {
-        return this.repo.find({ where: { user_id: userId } });
+        return this.repo.find({
+            where: { user_id: userId },
+            relations: ['audios'],
+        });
     }
 
 

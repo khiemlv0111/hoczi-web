@@ -68,7 +68,7 @@ export class AudioService {
     }
 
     async getAudioDetail(contentId: number) {
-        return contentAudioRepository.contentAudioDetail(contentId);
+        return learningContentRepository.learningContentDetail(contentId);
     }
 
     async getAudioList(userId: number) {

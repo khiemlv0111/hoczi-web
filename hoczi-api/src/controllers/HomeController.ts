@@ -15,8 +15,9 @@ export class HomeController {
 
     async textToSpeechPage(req: Request, res: Response) {
         const text = req.body.message;
+        const voiceId = req.body.voiceId || "JBFqnCBsd6RMkjVDRZzb"; // Default voice ID if not provided
         const audio = await elevenlabs.textToSpeech.convert(
-            "JBFqnCBsd6RMkjVDRZzb", // "George" - browse voices at elevenlabs.io/app/voice-library
+            voiceId,
             {
                 text: text,
                 modelId: "eleven_v3",

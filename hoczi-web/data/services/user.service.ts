@@ -146,7 +146,7 @@ export class UserService {
         return response;
     }
 
-    static async textToSpeech(payload: { message: string }): Promise<Blob> {
+    static async textToSpeech(payload: { message: string; voiceId: string }): Promise<Blob> {
         return postBlobRequest('/text-to-speech', payload, false);
     }
 

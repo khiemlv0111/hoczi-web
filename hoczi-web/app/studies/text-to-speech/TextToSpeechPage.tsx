@@ -6,10 +6,16 @@ import { useFileUpload } from "@/data/hooks/useFileUpload";
 import { Volume2, Loader2, RotateCcw, Copy, Check, Save } from "lucide-react";
 import Link from "next/link";
 
-const EXAMPLE_TEXTS = [
-    "The quick brown fox jumps over the lazy dog.",
-    "Xin chào, tôi đang học tiếng Trung Quốc.",
-    "你好，我在学习中文。",
+const voiceIds = {
+    default: "JBFqnCBsd6RMkjVDRZzb",
+    man: "fQj4gJSexpu8RDE2Ii5m",
+    women: "El018FmI047NtSsCfyrY"
+};
+
+const VOICE_OPTIONS = [
+    { id: voiceIds.default, label: "Mặc định" },
+    { id: voiceIds.man, label: "Giọng nam" },
+    { id: voiceIds.women, label: "Giọng nữ" },
 ];
 
 export default function TextToSpeechPage() {
@@ -23,6 +29,8 @@ export default function TextToSpeechPage() {
     const audioRef = useRef<HTMLAudioElement>(null);
     const audioBlobRef = useRef<Blob | null>(null);
     const { upload: uploadToS3 } = useFileUpload();
+
+    const [voice, setVoice] = useState(voiceIds.default);
 
     const handleSave = async () => {
         if (saving || saved || !audioBlobRef.current) return;
@@ -52,7 +60,7 @@ export default function TextToSpeechPage() {
         setAudioUrl(null);
 
         try {
-            const blob = await UserService.textToSpeech({ message: text.trim() });
+            const blob = await UserService.textToSpeech({ message: text.trim(), voiceId: voice });
             audioBlobRef.current = blob;
             if (audioUrl) URL.revokeObjectURL(audioUrl);
             const url = URL.createObjectURL(blob);
@@ -107,16 +115,20 @@ export default function TextToSpeechPage() {
                     </div>
                 </div>
 
-                {/* Example chips */}
+                {/* Voice selection */}
                 <div className="mb-4 flex flex-wrap gap-2">
-                    {EXAMPLE_TEXTS.map((t) => (
+                    {VOICE_OPTIONS.map((v) => (
                         <button
-                            key={t}
+                            key={v.id}
                             type="button"
-                            onClick={() => setText(t)}
-                            className="rounded-full border border-gray-200 bg-white px-3 py-1 text-xs text-gray-600 hover:border-[#0c1a3a] hover:text-[#0c1a3a] transition-colors"
+                            onClick={() => setVoice(v.id)}
+                            className={`rounded-full border px-3 py-1 text-xs transition-colors ${
+                                voice === v.id
+                                    ? "border-[#0c1a3a] bg-[#0c1a3a] text-white"
+                                    : "border-gray-200 bg-white text-gray-600 hover:border-[#0c1a3a] hover:text-[#0c1a3a]"
+                            }`}
                         >
-                            {t.length > 36 ? t.slice(0, 36) + "…" : t}
+                            {v.label}
                         </button>
                     ))}
                 </div>

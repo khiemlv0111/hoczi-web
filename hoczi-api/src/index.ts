@@ -7,6 +7,7 @@ import http from "http";
 import cookieParser from 'cookie-parser';
 import { runCronJobMinute } from './utils/schedule_job';
 import { initProject } from './seeds/init_project';
+import { errorMiddleware } from './middlewares/error';
 
 AppDataSource.initialize().then(() => {
 	const app = express();
@@ -42,7 +43,8 @@ AppDataSource.initialize().then(() => {
 	// runCronJobCheckKycDocument(1);
 	// runCronJobMinute(5);
 
-	// app.use(errorMiddleware);
+	// Must be registered after the routes; express-async-errors forwards async throws here.
+	app.use(errorMiddleware);
 
 	
 	

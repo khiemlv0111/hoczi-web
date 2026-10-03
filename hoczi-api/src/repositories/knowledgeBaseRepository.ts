@@ -32,6 +32,10 @@ class KnowledgeBaseRepository {
         return await this.repo.save(entity);
     }
 
+    async update(id: number, data: Partial<KnowledgeBase>) {
+        await this.repo.update(id, data);
+    }
+
     async delete(id: number) {
         return await this.repo.delete(id);
     }

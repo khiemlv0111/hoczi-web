@@ -48,6 +48,14 @@ export class KnowledgeBaseController {
         return res.json(response);
     }
 
+    async reindexKnowledgeBase(req: Request, res: Response) {
+        const response = await knowledgeBaseService.reindexKnowledgeBase(Number(req.params.id));
+        if (!response) {
+            return res.status(404).json({ success: false, message: 'Knowledge base not found' });
+        }
+        return res.json(response);
+    }
+
     async deleteKnowledgeBase(req: Request, res: Response) {
         const deleted = await knowledgeBaseService.deleteKnowledgeBase(Number(req.params.id));
         if (!deleted) {

@@ -15,6 +15,8 @@ import courseRoutes from './course.route';
 import vocabularyRoutes from './vocabulary.route';
 import audioRoutes from './audio.route';
 import knowledgeBaseRoutes from './knowledgeBase.route';
+import knowledgeRoutes from './knowledge.route';
+import aiRoutes from './ai.route';
 
 
 
@@ -40,6 +42,8 @@ routes.use('/api/vocabularies', vocabularyRoutes);
 
 routes.use('/api/audio', audioRoutes);
 routes.use('/api/knowledge-bases', knowledgeBaseRoutes);
+routes.use('/api/knowledge', knowledgeRoutes);
+routes.use('/api/ai', aiRoutes);
 
 
 

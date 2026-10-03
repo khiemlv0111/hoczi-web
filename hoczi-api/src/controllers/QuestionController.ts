@@ -3,7 +3,8 @@ import { RequestValidator } from '../dto/requestValidator';
 import { QuestionService } from '../services/QuestionService';
 import { CreateAnswerRequest, CreateQuestionRequest } from '../dto/question.dto';
 import { CreateQuizRequest, SubmitQuizSessionRequest } from '../dto/user.dto';
-import { anthropic } from '../helpers';
+import { anthropicChat } from '../helpers/ai/anthropicChat';
+import { userRepository } from '../repositories/userRepository';
 
 const questionService = new QuestionService();
 
@@ -222,44 +223,14 @@ export class QuestionController {
         const { id } = req.user;
         const { message } = req.body;
 
-        try {
-
-            if (!message) {
-                return res.status(400).json({ error: 'Message is required' });
-            }
-
-            const response = await anthropic.messages.create({
-                model: 'claude-opus-4-7',
-                max_tokens: 1024,
-                messages: [
-                    { role: 'user', content: message }
-                ],
-            });
-
-
-            // response.content là array of blocks
-            const text = response.content
-                .filter(block => block.type === 'text')
-                .map(block => (block as any).text)
-                .join('\n');
-
-            res.json({
-                text,
-                usage: response.usage, // input_tokens, output_tokens
-            });
-
-        } catch (error: any) {
-            console.error('Anthropic error:', error);
-            res.status(500).json({ error: error.message });
+        if (!message) {
+            return res.status(400).json({ error: 'Message is required' });
         }
 
-
+        const user = await userRepository.findById(Number(id));
+        const response = await anthropicChat(message, { userId: Number(id), tenantId: user?.tenant_id ?? null });
+        res.json(response);
     }
-
-
-
-
-
 
 }
 

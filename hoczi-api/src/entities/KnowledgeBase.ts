@@ -37,9 +37,22 @@ export class KnowledgeBase {
     @Column({ type: 'integer', nullable: true })
     created_by?: number;
 
-    @ManyToOne(() => User, { nullable: true })
+    @ManyToOne(() => User, { nullable: true, onDelete: 'SET NULL' })
     @JoinColumn({ name: 'created_by' })
     creator?: User;
+
+    // Search index state: not_indexed | queued | indexed | failed
+    @Column({ type: 'varchar', length: 20, default: 'not_indexed' })
+    index_status!: string;
+
+    @Column({ type: 'varchar', length: 255, nullable: true })
+    openai_file_id?: string | null;
+
+    @Column({ type: 'text', nullable: true })
+    index_error?: string | null;
+
+    @Column({ type: 'timestamp', nullable: true })
+    indexed_at?: Date | null;
 
     @CreateDateColumn()
     created_at!: Date;

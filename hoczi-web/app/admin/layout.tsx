@@ -14,7 +14,8 @@ import {
     Building2,
     HandCoins,
     Book,
-    BookType
+    BookType,
+    Library
 } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAppData } from "../context/AppContext";
@@ -33,6 +34,7 @@ const navMain = [
     { path: '/admin/activities', label: "Activities", icon: HandCoins },
     { path: '/admin/books', label: "Books", icon: Book },
     { path: '/admin/studies', label: "Studies", icon: BookType },
+    { path: '/admin/knowledge-base', label: "Knowledge base", icon: Library },
 ];
 
 const navSettings = [

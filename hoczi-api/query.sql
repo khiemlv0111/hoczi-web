@@ -197,3 +197,16 @@ insert into lessons(title, description, content, created_by) values('Basic IT Vo
 
 
 insert into course_module_lessons(course_module_id, lesson_id) values(1, 80);
+
+CREATE TABLE knowledge_bases (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    content TEXT NOT NULL,
+    category VARCHAR(100),
+    status VARCHAR(50) NOT NULL DEFAULT 'active',
+    -- active, inactive
+    created_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+);

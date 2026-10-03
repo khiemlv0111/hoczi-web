@@ -25,6 +25,7 @@ import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { CommonModal } from "../components/modal/CommonModal";
 import { CreateQuestionForm } from "./questions/CreateQuestionForm";
+import { AdminChatbot } from "./AdminChatbot";
 
 
 const navMain = [
@@ -217,6 +218,8 @@ export default function AdminLayout({
 
                 </main>
             </div>
+
+            <AdminChatbot />
 
             <CommonModal open={open} onClose={() => { setOpen(v => !v) }}>
                 <div>

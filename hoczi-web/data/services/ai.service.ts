@@ -138,6 +138,19 @@ export type GeneratePayload = {
     notes?: string;
 };
 
+export type ChatTurn = { role: 'user' | 'assistant'; content: string };
+
+export type ChatCitation = Citation & { title: string | null };
+
+export type ChatReply = {
+    answer: string;
+    // documents / mixed: grounded in uploaded sources; general: general knowledge only
+    source: 'documents' | 'mixed' | 'general';
+    searched: boolean;
+    citations: ChatCitation[];
+    unverifiedCitationCount: number;
+};
+
 // Server error message (validation, budget, provider) if there is one.
 export function apiErrorMessage(error: unknown, fallback: string) {
     if (axios.isAxiosError(error)) {
@@ -185,6 +198,11 @@ export class AiService {
 
     static async getUsage() {
         return getRequest('/api/knowledge/usage', true);
+    }
+
+    // ---- chat assistant ----
+    static async chat(messages: ChatTurn[]): Promise<ChatReply> {
+        return postRequest('/api/ai/chat', { messages }, true);
     }
 
     // ---- generation & review ----

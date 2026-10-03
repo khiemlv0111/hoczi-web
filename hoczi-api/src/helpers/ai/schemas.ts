@@ -92,6 +92,20 @@ export function generationSchema(task: TaskType) {
     return { name: task, schema: schemas[task] };
 }
 
+// Admin chat assistant: answers from documents when relevant, otherwise from general knowledge.
+export const chatSchema = {
+    name: 'assistant_reply',
+    schema: obj({
+        answer: { type: 'string', description: 'Plain text answer. No Markdown.' },
+        answerSource: {
+            type: 'string',
+            enum: ['documents', 'general', 'mixed'],
+            description: 'documents: based on retrieved Hoczi sources; general: general knowledge only; mixed: both.',
+        },
+        citations: { type: 'array', items: citation },
+    }),
+};
+
 export const askSchema = {
     name: 'curriculum_answer',
     schema: obj({

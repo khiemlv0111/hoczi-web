@@ -1,6 +1,8 @@
 import {
-    ArrayMaxSize, IsArray, IsBoolean, IsIn, IsInt, IsNotEmpty, IsObject, IsOptional, IsString, Max, MaxLength, Min,
+    ArrayMaxSize, ArrayMinSize, IsArray, IsBoolean, IsIn, IsInt, IsNotEmpty, IsObject, IsOptional, IsString, Max, MaxLength, Min,
+    ValidateNested,
 } from "class-validator";
+import { Type } from "class-transformer";
 import { ITEM_TYPES, TASK_TYPES } from "../helpers/ai/schemas";
 
 export const HSK_STANDARDS = ['hsk2', 'hsk3'];
@@ -177,6 +179,26 @@ export class AskRequest {
     @IsOptional()
     @IsIn(SCRIPTS)
     script?: string;
+}
+
+export class ChatMessage {
+    @IsIn(['user', 'assistant'])
+    role!: 'user' | 'assistant';
+
+    @IsNotEmpty()
+    @IsString()
+    @MaxLength(4000)
+    content!: string;
+}
+
+export class ChatRequest {
+    // Conversation so far, oldest first; the last message must be the user's question.
+    @IsArray()
+    @ArrayMinSize(1)
+    @ArrayMaxSize(40)
+    @ValidateNested({ each: true })
+    @Type(() => ChatMessage)
+    messages!: ChatMessage[];
 }
 
 export class UpdateDraftRequest {

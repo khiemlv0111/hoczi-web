@@ -65,11 +65,17 @@ export function buildFilters(scope: RetrievalScope) {
     return { type: 'and' as const, filters };
 }
 
+export type ChatTurn = { role: 'user' | 'assistant'; content: string };
+
 export type GroundedRequest = {
     operation: string;
     promptVersion: string;
     instructions: string;
-    input: string;
+    // A single prompt, or a conversation (oldest first, last turn from the user)
+    input: string | ChatTurn[];
+    // required: always search the corpus first (generation, ask).
+    // auto: the model decides; works without a vector store (chat assistant).
+    fileSearch?: 'required' | 'auto';
     schema: { name: string; schema: Record<string, unknown> };
     scope: RetrievalScope;
     userId: number | null;
@@ -83,7 +89,9 @@ export type GroundedResult = {
 };
 
 export async function runGrounded(req: GroundedRequest): Promise<GroundedResult> {
-    assertOpenAiConfigured({ vectorStore: true });
+    const mode = req.fileSearch ?? 'required';
+    assertOpenAiConfigured({ vectorStore: mode === 'required' });
+    const useFileSearch = !!aiConfig.openai.vectorStoreId;
     const openai = getOpenAI();
     const model = aiConfig.openai.model;
     const started = Date.now();
@@ -93,15 +101,19 @@ export async function runGrounded(req: GroundedRequest): Promise<GroundedResult>
         const response = await openai.responses.create({
             model,
             instructions: req.instructions,
-            input: req.input,
-            tools: [{
-                type: 'file_search',
-                vector_store_ids: [aiConfig.openai.vectorStoreId],
-                filters: buildFilters(req.scope),
-                max_num_results: aiConfig.openai.fileSearchMaxResults,
-            }],
-            tool_choice: 'required',
-            include: ['file_search_call.results'],
+            input: typeof req.input === 'string'
+                ? req.input
+                : req.input.map((turn) => ({ role: turn.role, content: turn.content })),
+            ...(useFileSearch ? {
+                tools: [{
+                    type: 'file_search' as const,
+                    vector_store_ids: [aiConfig.openai.vectorStoreId],
+                    filters: buildFilters(req.scope),
+                    max_num_results: aiConfig.openai.fileSearchMaxResults,
+                }],
+                tool_choice: mode,
+                include: ['file_search_call.results' as const],
+            } : {}),
             text: { format: { type: 'json_schema', name: req.schema.name, schema: req.schema.schema, strict: true } },
             max_output_tokens: aiConfig.limits.maxOutputTokens,
             store: false,

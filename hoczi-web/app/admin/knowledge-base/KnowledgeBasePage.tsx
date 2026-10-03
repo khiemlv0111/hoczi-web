@@ -13,6 +13,13 @@ type KnowledgeBaseForm = {
     status: string;
 };
 
+const INDEX_STYLE: Record<string, string> = {
+    indexed: 'bg-green-50 text-green-700',
+    queued: 'bg-blue-50 text-blue-700',
+    failed: 'bg-red-50 text-red-600',
+    not_indexed: 'bg-gray-100 text-gray-500',
+};
+
 const emptyForm: KnowledgeBaseForm = {
     title: '', description: '', content: '', category: '', status: 'active',
 };
@@ -105,6 +112,15 @@ export function KnowledgeBasePage() {
         }
     }
 
+    async function handleReindex(kb: KnowledgeBase) {
+        try {
+            await KnowledgeBaseService.reindexKnowledgeBase(kb.id);
+            fetchItems(page, search);
+        } catch {
+            alert('Failed to queue re-indexing.');
+        }
+    }
+
     async function handleDelete() {
         if (!deleteTarget) return;
         setDeleting(true);
@@ -165,6 +181,7 @@ export function KnowledgeBasePage() {
                                         <th className="pb-2 pr-4 font-medium">Category</th>
                                         <th className="pb-2 pr-4 font-medium">Description</th>
                                         <th className="pb-2 pr-4 font-medium">Status</th>
+                                        <th className="pb-2 pr-4 font-medium">AI index</th>
                                         <th className="pb-2 pr-4 font-medium">Updated</th>
                                         <th className="pb-2 font-medium text-right">Action</th>
                                     </tr>
@@ -172,7 +189,7 @@ export function KnowledgeBasePage() {
                                 <tbody className="divide-y divide-gray-100">
                                     {items.length === 0 ? (
                                         <tr>
-                                            <td colSpan={7} className="py-6 text-center text-gray-400 text-[12px]">
+                                            <td colSpan={8} className="py-6 text-center text-gray-400 text-[12px]">
                                                 No knowledge base found.
                                             </td>
                                         </tr>
@@ -190,6 +207,12 @@ export function KnowledgeBasePage() {
                                                         {kb.status ?? 'active'}
                                                     </span>
                                                 </td>
+                                                <td className="py-2 pr-4">
+                                                    <span title={kb.index_error ?? undefined}
+                                                        className={`text-[11px] px-2 py-0.5 rounded-full ${INDEX_STYLE[kb.index_status ?? 'not_indexed']}`}>
+                                                        {(kb.index_status ?? 'not_indexed').replace('_', ' ')}
+                                                    </span>
+                                                </td>
                                                 <td className="py-2 pr-4 text-gray-500 text-[12px] whitespace-nowrap">
                                                     {kb.updated_at ? new Date(kb.updated_at).toLocaleDateString() : '—'}
                                                 </td>
@@ -201,6 +224,14 @@ export function KnowledgeBasePage() {
                                                         >
                                                             Edit
                                                         </button>
+                                                        {kb.index_status === 'failed' && (
+                                                            <button
+                                                                onClick={() => handleReindex(kb)}
+                                                                className="text-[11px] px-3 py-1 rounded-md border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors"
+                                                            >
+                                                                Reindex
+                                                            </button>
+                                                        )}
                                                         <button
                                                             onClick={() => setDeleteTarget(kb)}
                                                             className="text-[11px] px-3 py-1 rounded-md bg-red-50 text-red-600 hover:bg-red-100 transition-colors"

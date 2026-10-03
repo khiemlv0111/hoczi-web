@@ -15,7 +15,9 @@ import {
     HandCoins,
     Book,
     BookType,
-    Library
+    Library,
+    FileText,
+    Sparkles
 } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAppData } from "../context/AppContext";
@@ -35,6 +37,8 @@ const navMain = [
     { path: '/admin/books', label: "Books", icon: Book },
     { path: '/admin/studies', label: "Studies", icon: BookType },
     { path: '/admin/knowledge-base', label: "Knowledge base", icon: Library },
+    { path: '/admin/ai-documents', label: "AI Documents", icon: FileText },
+    { path: '/admin/ai-studio', label: "AI Studio", icon: Sparkles },
 ];
 
 const navSettings = [

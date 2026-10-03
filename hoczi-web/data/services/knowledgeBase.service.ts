@@ -8,6 +8,9 @@ export type KnowledgeBase = {
     category?: string;
     status?: string;
     created_by?: number;
+    index_status?: 'not_indexed' | 'queued' | 'indexed' | 'failed';
+    index_error?: string | null;
+    indexed_at?: string | null;
     created_at?: string;
     updated_at?: string;
 };
@@ -39,6 +42,11 @@ export class KnowledgeBaseService {
 
     static async updateKnowledgeBase(id: number, payload: Partial<KnowledgeBasePayload>) {
         const response = await putRequest(`/api/knowledge-bases/${id}`, payload, true);
+        return response;
+    }
+
+    static async reindexKnowledgeBase(id: number) {
+        const response = await postRequest(`/api/knowledge-bases/${id}/reindex`, {}, true);
         return response;
     }
 

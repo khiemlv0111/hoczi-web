@@ -144,8 +144,11 @@ export type ChatCitation = Citation & { title: string | null };
 
 export type ChatReply = {
     answer: string;
+    // data: answered from Hoczi database statistics (admins only)
     // documents / mixed: grounded in uploaded sources; general: general knowledge only
-    source: 'documents' | 'mixed' | 'general';
+    source: 'data' | 'documents' | 'mixed' | 'general';
+    // Data tools that were run, e.g. { name: 'get_user_stats', label: 'User statistics' }
+    queried: { name: string; label: string }[];
     searched: boolean;
     citations: ChatCitation[];
     unverifiedCitationCount: number;

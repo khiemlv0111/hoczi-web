@@ -1,12 +1,12 @@
 'use client'
 
 import { AiService, apiErrorMessage, ChatCitation, ChatReply } from "@/data/services/ai.service";
-import { BookOpen, Loader2, MessageCircle, Send, Trash2, X } from "lucide-react";
+import { BookOpen, Database, Loader2, MessageCircle, Send, Trash2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 type Message =
     | { id: number; role: 'user'; content: string }
-    | { id: number; role: 'assistant'; content: string; source: ChatReply['source']; citations: ChatCitation[] }
+    | { id: number; role: 'assistant'; content: string; source: ChatReply['source']; citations: ChatCitation[]; queried?: ChatReply['queried'] }
     | { id: number; role: 'error'; content: string };
 
 const STORAGE_KEY = 'hoczi-admin-chat';
@@ -14,6 +14,7 @@ const STORAGE_KEY = 'hoczi-admin-chat';
 const HISTORY_TURNS = 12;
 
 const SUGGESTIONS = [
+    'Hệ thống có tất cả bao nhiêu user?',
     'Giải thích cấu trúc 是…的 cho người mới học',
     'Từ vựng chính của HSK 3 bài 1 là gì?',
     'Gợi ý một hoạt động lớp học 15 phút cho HSK 1',
@@ -37,7 +38,15 @@ function saveMessages(messages: Message[]) {
     }
 }
 
-function SourceBadge({ source }: { source: ChatReply['source'] }) {
+function SourceBadge({ source, queried }: { source: ChatReply['source']; queried?: ChatReply['queried'] }) {
+    if (source === 'data') {
+        return (
+            <span className="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded bg-blue-50 text-blue-700">
+                <Database size={10} />
+                From Hoczi database{queried?.length ? `: ${queried.map((q) => q.label).join(', ')}` : ''}
+            </span>
+        );
+    }
     if (source === 'general') {
         return <span className="text-[10px] px-1.5 py-0.5 rounded bg-gray-100 text-gray-500">General knowledge</span>;
     }
@@ -99,6 +108,7 @@ export function AdminChatbot() {
                 content: reply.answer,
                 source: reply.source,
                 citations: reply.citations,
+                queried: reply.queried,
             }]);
         } catch (error) {
             setMessages((prev) => [...prev, {
@@ -125,7 +135,7 @@ export function AdminChatbot() {
                     <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
                         <div>
                             <p className="text-[13px] font-medium text-gray-900">Hoczi Assistant</p>
-                            <p className="text-[11px] text-gray-400">Answers from uploaded documents when relevant</p>
+                            <p className="text-[11px] text-gray-400">Answers from Hoczi data, your documents, or general knowledge</p>
                         </div>
                         <div className="flex items-center gap-1">
                             <button
@@ -147,7 +157,7 @@ export function AdminChatbot() {
                         {messages.length === 0 && (
                             <div className="flex flex-col gap-2 mt-2">
                                 <p className="text-[12px] text-gray-500">
-                                    Ask anything. Questions about HSK content and your uploaded materials are answered from those documents, with sources.
+                                    Ask anything. System statistics (admins) come from the Hoczi database; HSK content questions are answered from your uploaded documents, with sources.
                                 </p>
                                 {SUGGESTIONS.map((s) => (
                                     <button key={s} onClick={() => send(s)}
@@ -179,7 +189,7 @@ export function AdminChatbot() {
                                         {m.content}
                                     </div>
                                     <div className="flex flex-wrap items-center gap-1">
-                                        <SourceBadge source={m.source} />
+                                        <SourceBadge source={m.source} queried={m.queried} />
                                     </div>
                                     {m.citations.length > 0 && (
                                         <ul className="text-[11px] text-gray-500 pl-1">

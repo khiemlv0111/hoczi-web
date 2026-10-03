@@ -99,8 +99,8 @@ export const chatSchema = {
         answer: { type: 'string', description: 'Plain text answer. No Markdown.' },
         answerSource: {
             type: 'string',
-            enum: ['documents', 'general', 'mixed'],
-            description: 'documents: based on retrieved Hoczi sources; general: general knowledge only; mixed: both.',
+            enum: ['data', 'documents', 'general', 'mixed'],
+            description: 'data: from Hoczi database tools; documents: from retrieved Hoczi sources; general: general knowledge only; mixed: documents + general knowledge.',
         },
         citations: { type: 'array', items: citation },
     }),

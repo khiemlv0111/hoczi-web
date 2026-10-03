@@ -67,6 +67,21 @@ export function buildFilters(scope: RetrievalScope) {
 
 export type ChatTurn = { role: 'user' | 'assistant'; content: string };
 
+// A server-side function the model may call (e.g. a whitelisted database query).
+// The model only chooses the function and its arguments; the server runs fixed code.
+export type FunctionTool = {
+    name: string;
+    description: string;
+    // Strict JSON schema for the arguments
+    parameters: Record<string, unknown>;
+    run: (args: Record<string, unknown>) => Promise<unknown>;
+};
+
+export type ToolCallRecord = { name: string; ok: boolean };
+
+// Upper bound on model ↔ tool round trips for one request.
+const MAX_TOOL_ROUNDS = 4;
+
 export type GroundedRequest = {
     operation: string;
     promptVersion: string;
@@ -76,6 +91,7 @@ export type GroundedRequest = {
     // required: always search the corpus first (generation, ask).
     // auto: the model decides; works without a vector store (chat assistant).
     fileSearch?: 'required' | 'auto';
+    functionTools?: FunctionTool[];
     schema: { name: string; schema: Record<string, unknown> };
     scope: RetrievalScope;
     userId: number | null;
@@ -84,67 +100,129 @@ export type GroundedRequest = {
 export type GroundedResult = {
     parsed: any;
     retrieved: RetrievedChunk[];
+    toolCalls: ToolCallRecord[];
     model: string;
     responseId: string;
 };
+
+function collectRetrieved(output: any[], into: RetrievedChunk[]) {
+    let calls = 0;
+    for (const out of output) {
+        if (out.type !== 'file_search_call') continue;
+        calls++;
+        for (const r of out.results ?? []) {
+            const attrs = (r.attributes ?? {}) as Partial<ChunkAttributes>;
+            if (!attrs.document_id) continue;
+            into.push({
+                documentId: String(attrs.document_id),
+                chunkId: typeof attrs.chunk_id === 'number' ? attrs.chunk_id : null,
+                title: attrs.title ?? r.filename ?? null,
+                pageStart: typeof attrs.page_start === 'number' ? attrs.page_start : null,
+                pageEnd: typeof attrs.page_end === 'number' ? attrs.page_end : null,
+                score: r.score ?? null,
+                fileId: r.file_id ?? null,
+            });
+        }
+    }
+    return calls;
+}
+
+async function runFunctionCall(call: { name: string; arguments: string; call_id: string }, tools: FunctionTool[], records: ToolCallRecord[]) {
+    const tool = tools.find((t) => t.name === call.name);
+    let output: unknown;
+    try {
+        if (!tool) throw new Error(`Unknown tool "${call.name}"`);
+        output = await tool.run(JSON.parse(call.arguments || '{}'));
+        records.push({ name: call.name, ok: true });
+    } catch (error: any) {
+        // The model sees the failure and can tell the user; details stay in the server log.
+        console.error(`[ai] tool ${call.name} failed`, error);
+        output = { error: error?.expose ? error.message : 'The query failed.' };
+        records.push({ name: call.name, ok: false });
+    }
+    return { type: 'function_call_output' as const, call_id: call.call_id, output: JSON.stringify(output) };
+}
 
 export async function runGrounded(req: GroundedRequest): Promise<GroundedResult> {
     const mode = req.fileSearch ?? 'required';
     assertOpenAiConfigured({ vectorStore: mode === 'required' });
     const useFileSearch = !!aiConfig.openai.vectorStoreId;
+    const functionTools = req.functionTools ?? [];
     const openai = getOpenAI();
     const model = aiConfig.openai.model;
     const started = Date.now();
     let fileSearchCalls = 0;
+    let inputTokens = 0;
+    let outputTokens = 0;
+    const retrieved: RetrievedChunk[] = [];
+    const toolCalls: ToolCallRecord[] = [];
+
+    const tools: any[] = [
+        ...(useFileSearch ? [{
+            type: 'file_search' as const,
+            vector_store_ids: [aiConfig.openai.vectorStoreId],
+            filters: buildFilters(req.scope),
+            max_num_results: aiConfig.openai.fileSearchMaxResults,
+        }] : []),
+        ...functionTools.map((t) => ({
+            type: 'function' as const,
+            name: t.name,
+            description: t.description,
+            parameters: t.parameters,
+            strict: true,
+        })),
+    ];
+    const include: any[] = [
+        ...(useFileSearch ? ['file_search_call.results'] : []),
+        // store:false means earlier reasoning must be sent back in encrypted form between tool rounds.
+        ...(functionTools.length ? ['reasoning.encrypted_content'] : []),
+    ];
+
+    let input: any = typeof req.input === 'string'
+        ? req.input
+        : req.input.map((turn) => ({ role: turn.role, content: turn.content }));
+
+    const usage = (outcome: string, extra: { errorCode?: string; providerRequestId?: string } = {}) => recordUsage({
+        userId: req.userId, tenantId: req.scope.tenantId, operation: req.operation,
+        provider: 'openai', model, promptVersion: req.promptVersion,
+        inputTokens, outputTokens, fileSearchCalls, latencyMs: Date.now() - started, outcome, ...extra,
+    });
 
     try {
-        const response = await openai.responses.create({
-            model,
-            instructions: req.instructions,
-            input: typeof req.input === 'string'
-                ? req.input
-                : req.input.map((turn) => ({ role: turn.role, content: turn.content })),
-            ...(useFileSearch ? {
-                tools: [{
-                    type: 'file_search' as const,
-                    vector_store_ids: [aiConfig.openai.vectorStoreId],
-                    filters: buildFilters(req.scope),
-                    max_num_results: aiConfig.openai.fileSearchMaxResults,
-                }],
-                tool_choice: mode,
-                include: ['file_search_call.results' as const],
-            } : {}),
-            text: { format: { type: 'json_schema', name: req.schema.name, schema: req.schema.schema, strict: true } },
-            max_output_tokens: aiConfig.limits.maxOutputTokens,
-            store: false,
-            safety_identifier: req.userId ? hashUserId(req.userId) : undefined,
-        });
+        let response;
+        for (let round = 0; ; round++) {
+            response = await openai.responses.create({
+                model,
+                instructions: req.instructions,
+                input,
+                ...(tools.length ? {
+                    tools,
+                    // Function tools are always optional; file search may be forced.
+                    tool_choice: mode === 'required' && useFileSearch && !functionTools.length ? 'required' : 'auto',
+                } : {}),
+                ...(include.length ? { include } : {}),
+                text: { format: { type: 'json_schema', name: req.schema.name, schema: req.schema.schema, strict: true } },
+                max_output_tokens: aiConfig.limits.maxOutputTokens,
+                store: false,
+                safety_identifier: req.userId ? hashUserId(req.userId) : undefined,
+            });
+            inputTokens += response.usage?.input_tokens ?? 0;
+            outputTokens += response.usage?.output_tokens ?? 0;
+            fileSearchCalls += collectRetrieved(response.output, retrieved);
 
-        const retrieved: RetrievedChunk[] = [];
-        for (const out of response.output) {
-            if (out.type !== 'file_search_call') continue;
-            fileSearchCalls++;
-            for (const r of out.results ?? []) {
-                const attrs = (r.attributes ?? {}) as Partial<ChunkAttributes>;
-                if (!attrs.document_id) continue;
-                retrieved.push({
-                    documentId: String(attrs.document_id),
-                    chunkId: typeof attrs.chunk_id === 'number' ? attrs.chunk_id : null,
-                    title: attrs.title ?? r.filename ?? null,
-                    pageStart: typeof attrs.page_start === 'number' ? attrs.page_start : null,
-                    pageEnd: typeof attrs.page_end === 'number' ? attrs.page_end : null,
-                    score: r.score ?? null,
-                    fileId: r.file_id ?? null,
-                });
+            const calls = response.output.filter((o: any) => o.type === 'function_call') as any[];
+            if (!calls.length || !functionTools.length) break;
+            if (round + 1 >= MAX_TOOL_ROUNDS) {
+                await usage('invalid_output', { errorCode: 'too_many_tool_rounds', providerRequestId: response.id });
+                throw new ApiError('The assistant needed too many steps for this question. Try asking something more specific.', 502);
             }
+            const outputs = await Promise.all(calls.map((c) => runFunctionCall(c, functionTools, toolCalls)));
+            const history = Array.isArray(input) ? input : [{ role: 'user', content: input }];
+            input = [...history, ...response.output, ...outputs];
         }
 
         if (response.status === 'incomplete') {
-            await recordUsage({
-                userId: req.userId, tenantId: req.scope.tenantId, operation: req.operation,
-                provider: 'openai', model, promptVersion: req.promptVersion,
-                inputTokens: response.usage?.input_tokens, outputTokens: response.usage?.output_tokens,
-                fileSearchCalls, latencyMs: Date.now() - started, outcome: 'invalid_output',
+            await usage('invalid_output', {
                 errorCode: `incomplete:${response.incomplete_details?.reason ?? ''}`, providerRequestId: response.id,
             });
             throw incompleteOutput(response.incomplete_details?.reason ?? 'unknown');
@@ -157,24 +235,15 @@ export async function runGrounded(req: GroundedRequest): Promise<GroundedResult>
             parsed = null;
         }
 
-        await recordUsage({
-            userId: req.userId, tenantId: req.scope.tenantId, operation: req.operation,
-            provider: 'openai', model, promptVersion: req.promptVersion,
-            inputTokens: response.usage?.input_tokens, outputTokens: response.usage?.output_tokens,
-            fileSearchCalls, latencyMs: Date.now() - started,
-            outcome: !parsed ? 'invalid_output' : parsed.insufficientEvidence ? 'insufficient_evidence' : 'success',
+        await usage(!parsed ? 'invalid_output' : parsed.insufficientEvidence ? 'insufficient_evidence' : 'success', {
             providerRequestId: response.id,
         });
 
         if (!parsed) throw incompleteOutput('unparseable_json');
-        return { parsed, retrieved, model, responseId: response.id };
+        return { parsed, retrieved, toolCalls, model, responseId: response.id };
     } catch (error) {
         if (error instanceof ApiError) throw error; // already logged above
-        await recordUsage({
-            userId: req.userId, tenantId: req.scope.tenantId, operation: req.operation,
-            provider: 'openai', model, promptVersion: req.promptVersion,
-            fileSearchCalls, latencyMs: Date.now() - started, outcome: 'error', errorCode: errorCode(error),
-        });
+        await usage('error', { errorCode: errorCode(error) });
         console.error(`[ai] ${req.operation} failed`, error);
         throw toApiError(error);
     }

@@ -6,7 +6,8 @@ import { Answer } from '../entities/Answer';
 import { ApiError, BadRequestError, NotFoundError } from '../errors/api-erros';
 import { AskRequest, ChatRequest, GenerateRequest, HSK_MAX_LEVEL, PublishDraftRequest } from '../dto/ai.dto';
 import { askSchema, chatSchema, generationSchema, TaskType } from '../helpers/ai/schemas';
-import { ASK_INSTRUCTIONS, CHAT_INSTRUCTIONS, generationInstructions, PROMPT_VERSIONS } from '../helpers/ai/prompts';
+import { ASK_INSTRUCTIONS, chatInstructions, generationInstructions, PROMPT_VERSIONS } from '../helpers/ai/prompts';
+import { ADMIN_DATA_TOOLS, DATA_TOOL_LABELS } from '../helpers/ai/dataTools';
 import { runGrounded, RetrievedChunk } from '../helpers/ai/retrieval';
 import { filterCitations, validateGeneration } from '../helpers/ai/validation';
 import { assertWithinLimits } from '../helpers/ai/usage';
@@ -151,8 +152,8 @@ export class AiGenerationService {
         };
     }
 
-    // Chat assistant for the admin area. The model searches the corpus only when the question
-    // is about learning content; other questions are answered from general knowledge.
+    // Chat assistant for the admin area with an intent router: the model sends each question to
+    // Hoczi data tools (admins only), the document corpus, or general knowledge.
     async chat(user: AiUser, dto: ChatRequest) {
         const turns = dto.messages.slice(-CHAT_MAX_TURNS);
         if (turns[turns.length - 1].role !== 'user') {
@@ -161,12 +162,15 @@ export class AiGenerationService {
         const tenantId = user.tenant_id ?? null;
         await assertWithinLimits(user.id, tenantId);
 
+        const canQueryData = isAdmin(user);
         const result = await runGrounded({
             operation: 'chat_assistant',
             promptVersion: PROMPT_VERSIONS.chat,
-            instructions: CHAT_INSTRUCTIONS,
+            instructions: chatInstructions({ canQueryData, today: new Date().toISOString().slice(0, 10) }),
             input: turns,
             fileSearch: 'auto',
+            // Data tools are only offered to admins; the model cannot call what it is not given.
+            functionTools: canQueryData ? ADMIN_DATA_TOOLS : [],
             schema: chatSchema,
             scope: { tenantId },
             userId: user.id,
@@ -175,10 +179,16 @@ export class AiGenerationService {
         const { valid, rejected } = filterCitations(result.parsed.citations, result.retrieved);
         const titles = new Map(result.retrieved.map((r) => [r.documentId, r.title]));
         const grounded = valid.length > 0;
+        const queried = [...new Set(result.toolCalls.filter((c) => c.ok).map((c) => c.name))];
+        // The route is decided from what actually happened, not from the model's own label:
+        // a "documents" claim without a verifiable citation is reported as general knowledge.
+        const source = queried.length ? 'data'
+            : grounded ? (result.parsed.answerSource === 'mixed' ? 'mixed' : 'documents')
+                : 'general';
         return {
             answer: String(result.parsed.answer ?? ''),
-            // A "documents" claim without a verifiable citation is reported as general knowledge.
-            source: grounded ? (result.parsed.answerSource === 'mixed' ? 'mixed' : 'documents') : 'general',
+            source,
+            queried: queried.map((name) => ({ name, label: DATA_TOOL_LABELS[name] ?? name })),
             searched: result.retrieved.length > 0,
             citations: valid.map((c) => ({ ...c, title: titles.get(c.documentId) ?? null })),
             unverifiedCitationCount: rejected.length,

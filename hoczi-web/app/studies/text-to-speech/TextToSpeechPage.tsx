@@ -11,7 +11,7 @@ const voiceIds = {
     man: "fQj4gJSexpu8RDE2Ii5m",
     women: "El018FmI047NtSsCfyrY",
     womenSouth: "uIXPHso8PhPOEOp1Mklz",
-    myVoice: "07E2U4spSqp7fgaLgUak"
+    myVoice: "79khmfoKRQzEuXstuMe0"
 };
 
 const VOICE_OPTIONS = [

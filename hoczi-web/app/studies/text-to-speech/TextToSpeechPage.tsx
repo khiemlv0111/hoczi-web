@@ -9,13 +9,15 @@ import Link from "next/link";
 const voiceIds = {
     default: "JBFqnCBsd6RMkjVDRZzb",
     man: "fQj4gJSexpu8RDE2Ii5m",
-    women: "El018FmI047NtSsCfyrY"
+    women: "El018FmI047NtSsCfyrY",
+    womenSouth: "xeRzNgA5BGMAmllSnOuF"
 };
 
 const VOICE_OPTIONS = [
     { id: voiceIds.default, label: "Mặc định" },
     { id: voiceIds.man, label: "Giọng nam" },
     { id: voiceIds.women, label: "Giọng nữ" },
+    { id: voiceIds.womenSouth, label: "Nữ miền Nam" },
 ];
 
 export default function TextToSpeechPage() {

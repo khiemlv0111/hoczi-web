@@ -10,7 +10,7 @@ const voiceIds = {
     default: "JBFqnCBsd6RMkjVDRZzb",
     man: "fQj4gJSexpu8RDE2Ii5m",
     women: "El018FmI047NtSsCfyrY",
-    womenSouth: "xeRzNgA5BGMAmllSnOuF"
+    womenSouth: "uIXPHso8PhPOEOp1Mklz"
 };
 
 const VOICE_OPTIONS = [

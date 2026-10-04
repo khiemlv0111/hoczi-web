@@ -4,9 +4,9 @@ import { AiDraft, AiDraftStatus } from '../entities/AiDraft';
 import { Question } from '../entities/Question';
 import { Answer } from '../entities/Answer';
 import { ApiError, BadRequestError, NotFoundError } from '../errors/api-erros';
-import { AskRequest, ChatRequest, GenerateRequest, HSK_MAX_LEVEL, PublishDraftRequest } from '../dto/ai.dto';
+import { AskRequest, ChatRequest, GenerateRequest, LearnChatRequest, HSK_MAX_LEVEL, PublishDraftRequest } from '../dto/ai.dto';
 import { askSchema, chatSchema, generationSchema, TaskType } from '../helpers/ai/schemas';
-import { ASK_INSTRUCTIONS, chatInstructions, generationInstructions, PROMPT_VERSIONS } from '../helpers/ai/prompts';
+import { ASK_INSTRUCTIONS, chatInstructions, generationInstructions, learnInstructions, LEARN_TOPICS, PROMPT_VERSIONS } from '../helpers/ai/prompts';
 import { ADMIN_DATA_TOOLS, DATA_TOOL_LABELS } from '../helpers/ai/dataTools';
 import { runGrounded, RetrievedChunk } from '../helpers/ai/retrieval';
 import { filterCitations, validateGeneration } from '../helpers/ai/validation';
@@ -190,6 +190,38 @@ export class AiGenerationService {
             source,
             queried: queried.map((name) => ({ name, label: DATA_TOOL_LABELS[name] ?? name })),
             searched: result.retrieved.length > 0,
+            citations: valid.map((c) => ({ ...c, title: titles.get(c.documentId) ?? null })),
+            unverifiedCitationCount: rejected.length,
+        };
+    }
+
+    // Learner tutor on the AI Learn topic pages. Same answer shape as chat, without data tools.
+    async learnChat(user: AiUser, dto: LearnChatRequest) {
+        const topic = LEARN_TOPICS[dto.topic];
+        if (!topic) throw new BadRequestError(`Unknown topic "${dto.topic}"`);
+        const turns = dto.messages.slice(-CHAT_MAX_TURNS);
+        if (turns[turns.length - 1].role !== 'user') {
+            throw new BadRequestError('The last message must be from the user');
+        }
+        const tenantId = user.tenant_id ?? null;
+        await assertWithinLimits(user.id, tenantId);
+
+        const result = await runGrounded({
+            operation: 'learn_chat',
+            promptVersion: PROMPT_VERSIONS.learn,
+            instructions: learnInstructions(topic),
+            input: turns,
+            fileSearch: 'auto',
+            schema: chatSchema,
+            scope: { tenantId },
+            userId: user.id,
+        });
+
+        const { valid, rejected } = filterCitations(result.parsed.citations, result.retrieved);
+        const titles = new Map(result.retrieved.map((r) => [r.documentId, r.title]));
+        return {
+            answer: String(result.parsed.answer ?? ''),
+            source: valid.length ? (result.parsed.answerSource === 'mixed' ? 'mixed' : 'documents') : 'general',
             citations: valid.map((c) => ({ ...c, title: titles.get(c.documentId) ?? null })),
             unverifiedCitationCount: rejected.length,
         };

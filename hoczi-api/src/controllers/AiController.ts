@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { RequestValidator } from '../dto/requestValidator';
-import { AskRequest, ChatRequest, GenerateRequest, PublishDraftRequest, ReviewDraftRequest, UpdateDraftRequest } from '../dto/ai.dto';
+import { AskRequest, ChatRequest, GenerateRequest, LearnChatRequest, PublishDraftRequest, ReviewDraftRequest, UpdateDraftRequest } from '../dto/ai.dto';
 import { AiGenerationService, AiUser } from '../services/AiGenerationService';
 const aiGenerationService = new AiGenerationService();
 
@@ -35,6 +35,15 @@ export class AiController {
             return res.status(400).json({ success: false, message: errors })
         }
         const response = await aiGenerationService.chat(currentUser(req), input);
+        return res.json(response);
+    }
+
+    async learnChat(req: Request, res: Response) {
+        const { errors, input } = await RequestValidator(LearnChatRequest, req.body);
+        if (errors) {
+            return res.status(400).json({ success: false, message: errors })
+        }
+        const response = await aiGenerationService.learnChat(currentUser(req), input);
         return res.json(response);
     }
 

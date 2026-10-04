@@ -201,6 +201,13 @@ export class ChatRequest {
     messages!: ChatMessage[];
 }
 
+export class LearnChatRequest extends ChatRequest {
+    @IsNotEmpty()
+    @IsString()
+    @MaxLength(50)
+    topic!: string;
+}
+
 export class UpdateDraftRequest {
     @IsObject()
     output!: Record<string, any>;

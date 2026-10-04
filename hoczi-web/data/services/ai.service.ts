@@ -154,6 +154,9 @@ export type ChatReply = {
     unverifiedCitationCount: number;
 };
 
+// AI Learn tutor reply (learner pages): same as ChatReply without database routing.
+export type LearnReply = Omit<ChatReply, 'queried' | 'searched'>;
+
 // Server error message (validation, budget, provider) if there is one.
 export function apiErrorMessage(error: unknown, fallback: string) {
     if (axios.isAxiosError(error)) {
@@ -206,6 +209,11 @@ export class AiService {
     // ---- chat assistant ----
     static async chat(messages: ChatTurn[]): Promise<ChatReply> {
         return postRequest('/api/ai/chat', { messages }, true);
+    }
+
+    // topic: key from TOPIC_CONFIG, e.g. "science"
+    static async learnChat(topic: string, messages: ChatTurn[]): Promise<LearnReply> {
+        return postRequest('/api/ai/learn/chat', { topic, messages }, true);
     }
 
     // ---- generation & review ----

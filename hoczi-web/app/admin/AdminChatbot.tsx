@@ -1,7 +1,8 @@
 'use client'
 
 import { AiService, apiErrorMessage, ChatCitation, ChatReply } from "@/data/services/ai.service";
-import { BookOpen, Database, Loader2, MessageCircle, Send, Trash2, X } from "lucide-react";
+import { Loader2, MessageCircle, Send, Trash2, X } from "lucide-react";
+import { ChatCitationList, ChatSourceBadge } from "@/app/components/ai/ChatSources";
 import { useEffect, useRef, useState } from "react";
 
 type Message =
@@ -36,26 +37,6 @@ function saveMessages(messages: Message[]) {
     } catch {
         // Storage can be unavailable (private mode); the chat still works in memory.
     }
-}
-
-function SourceBadge({ source, queried }: { source: ChatReply['source']; queried?: ChatReply['queried'] }) {
-    if (source === 'data') {
-        return (
-            <span className="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded bg-blue-50 text-blue-700">
-                <Database size={10} />
-                From Hoczi database{queried?.length ? `: ${queried.map((q) => q.label).join(', ')}` : ''}
-            </span>
-        );
-    }
-    if (source === 'general') {
-        return <span className="text-[10px] px-1.5 py-0.5 rounded bg-gray-100 text-gray-500">General knowledge</span>;
-    }
-    return (
-        <span className="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded bg-green-50 text-green-700">
-            <BookOpen size={10} />
-            {source === 'mixed' ? 'Documents + general knowledge' : 'From your documents'}
-        </span>
-    );
 }
 
 export function AdminChatbot() {
@@ -189,18 +170,9 @@ export function AdminChatbot() {
                                         {m.content}
                                     </div>
                                     <div className="flex flex-wrap items-center gap-1">
-                                        <SourceBadge source={m.source} queried={m.queried} />
+                                        <ChatSourceBadge source={m.source} queried={m.queried} />
                                     </div>
-                                    {m.citations.length > 0 && (
-                                        <ul className="text-[11px] text-gray-500 pl-1">
-                                            {m.citations.map((c, i) => (
-                                                <li key={i}>
-                                                    · {c.title ?? c.documentId}{c.page ? `, p. ${c.page}` : ''}{c.section ? ` (${c.section})` : ''}
-                                                    <span className="text-gray-300"> [{c.documentId}]</span>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    )}
+                                    <ChatCitationList citations={m.citations} />
                                 </div>
                             );
                         })}

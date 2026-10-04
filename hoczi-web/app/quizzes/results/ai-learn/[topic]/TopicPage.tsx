@@ -17,9 +17,12 @@ import {
     Send,
     Bot,
     User,
+    Trash2,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
+import { AiService, apiErrorMessage, ChatCitation, LearnReply } from "@/data/services/ai.service";
+import { ChatCitationList, ChatSourceBadge } from "@/app/components/ai/ChatSources";
 
 const TOPIC_CONFIG = {
     math: {
@@ -185,7 +188,34 @@ type TopicKey = keyof typeof TOPIC_CONFIG;
 type Message = {
     role: "user" | "assistant";
     content: string;
+    // Assistant replies only
+    source?: LearnReply["source"];
+    citations?: ChatCitation[];
+    // Failed request: shown to the learner but never sent back to the AI
+    error?: boolean;
 };
+
+// Turns sent to the tutor; the server also caps history.
+const HISTORY_TURNS = 12;
+
+const storageKey = (topic: string) => `hoczi-ai-learn-${topic}`;
+
+function loadMessages(topic: string): Message[] {
+    try {
+        const parsed = JSON.parse(sessionStorage.getItem(storageKey(topic)) ?? "[]");
+        return Array.isArray(parsed) ? parsed : [];
+    } catch {
+        return [];
+    }
+}
+
+function saveMessages(topic: string, messages: Message[]) {
+    try {
+        sessionStorage.setItem(storageKey(topic), JSON.stringify(messages.slice(-50)));
+    } catch {
+        // Storage unavailable (private mode): the conversation still works in memory.
+    }
+}
 
 export function TopicPage({ topic }: { topic: string }) {
     const router = useRouter();
@@ -194,6 +224,17 @@ export function TopicPage({ topic }: { topic: string }) {
     const [input, setInput] = useState("");
     const [loading, setLoading] = useState(false);
     const bottomRef = useRef<HTMLDivElement>(null);
+    const restored = useRef(false);
+
+    // Keep the conversation when the learner reloads or comes back to this topic (same tab).
+    useEffect(() => {
+        setMessages(loadMessages(topic));
+        restored.current = true;
+    }, [topic]);
+
+    useEffect(() => {
+        if (restored.current) saveMessages(topic, messages);
+    }, [topic, messages]);
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -223,16 +264,20 @@ export function TopicPage({ topic }: { topic: string }) {
         setMessages(next);
         setLoading(true);
 
+        const history = next
+            .filter((m) => !m.error)
+            .slice(-HISTORY_TURNS)
+            .map((m) => ({ role: m.role, content: m.content.slice(0, 4000) }));
+
         try {
-            const res = await fetch("/api/ai-learn/chat", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ topic: config.label, messages: next }),
-            });
-            const data = await res.json();
-            setMessages([...next, { role: "assistant", content: data.reply ?? "Sorry, I couldn't answer that." }]);
-        } catch {
-            setMessages([...next, { role: "assistant", content: "Something went wrong. Please try again." }]);
+            const reply = await AiService.learnChat(topic, history);
+            setMessages([...next, { role: "assistant", content: reply.answer, source: reply.source, citations: reply.citations }]);
+        } catch (error) {
+            setMessages([...next, {
+                role: "assistant",
+                content: apiErrorMessage(error, "Something went wrong. Please try again."),
+                error: true,
+            }]);
         } finally {
             setLoading(false);
         }
@@ -253,10 +298,20 @@ export function TopicPage({ topic }: { topic: string }) {
                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${config.color}`}>
                     <Icon size={15} />
                 </div>
-                <div>
+                <div className="flex-1">
                     <p className="text-[14px] font-semibold text-gray-900">{config.label}</p>
                     <p className="text-[11px] text-gray-400">{config.description}</p>
                 </div>
+                {!isEmpty && (
+                    <button
+                        onClick={() => setMessages([])}
+                        disabled={loading}
+                        title="New conversation"
+                        className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 disabled:opacity-40 transition-colors"
+                    >
+                        <Trash2 size={15} />
+                    </button>
+                )}
             </div>
 
             {/* Chat area */}
@@ -294,14 +349,24 @@ export function TopicPage({ topic }: { topic: string }) {
                                 <Bot size={13} className="text-gray-500" />
                             </div>
                         )}
-                        <div
-                            className={`max-w-[75%] px-4 py-2.5 rounded-2xl text-[13px] leading-relaxed whitespace-pre-wrap ${
-                                msg.role === "user"
-                                    ? "bg-blue-600 text-white rounded-br-sm"
-                                    : "bg-gray-100 text-gray-800 rounded-bl-sm"
-                            }`}
-                        >
-                            {msg.content}
+                        <div className="max-w-[75%] flex flex-col gap-1">
+                            <div
+                                className={`px-4 py-2.5 rounded-2xl text-[13px] leading-relaxed whitespace-pre-wrap break-words ${
+                                    msg.role === "user"
+                                        ? "bg-blue-600 text-white rounded-br-sm"
+                                        : msg.error
+                                            ? "bg-red-50 text-red-700 rounded-bl-sm"
+                                            : "bg-gray-100 text-gray-800 rounded-bl-sm"
+                                }`}
+                            >
+                                {msg.content}
+                            </div>
+                            {msg.role === "assistant" && msg.source && (
+                                <>
+                                    <div><ChatSourceBadge source={msg.source} /></div>
+                                    <ChatCitationList citations={msg.citations ?? []} />
+                                </>
+                            )}
                         </div>
                         {msg.role === "user" && (
                             <div className="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -333,7 +398,8 @@ export function TopicPage({ topic }: { topic: string }) {
                     type="text"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && sendMessage(input)}
+                    onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing && sendMessage(input)}
+                    maxLength={4000}
                     placeholder={`Ask about ${config.label}…`}
                     className="flex-1 border border-gray-200 rounded-xl px-4 py-2.5 text-[13px] text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />

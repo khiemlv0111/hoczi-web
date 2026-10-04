@@ -10,7 +10,8 @@ const voiceIds = {
     default: "JBFqnCBsd6RMkjVDRZzb",
     man: "fQj4gJSexpu8RDE2Ii5m",
     women: "El018FmI047NtSsCfyrY",
-    womenSouth: "uIXPHso8PhPOEOp1Mklz"
+    womenSouth: "uIXPHso8PhPOEOp1Mklz",
+    myVoice: "07E2U4spSqp7fgaLgUak"
 };
 
 const VOICE_OPTIONS = [
@@ -18,6 +19,7 @@ const VOICE_OPTIONS = [
     { id: voiceIds.man, label: "Giọng nam" },
     { id: voiceIds.women, label: "Giọng nữ" },
     { id: voiceIds.womenSouth, label: "Nữ miền Nam" },
+    { id: voiceIds.myVoice, label: "My Voice" },
 ];
 
 export default function TextToSpeechPage() {

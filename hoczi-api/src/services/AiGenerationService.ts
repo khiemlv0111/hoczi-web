@@ -11,6 +11,7 @@ import { ADMIN_DATA_TOOLS, DATA_TOOL_LABELS } from '../helpers/ai/dataTools';
 import { runGrounded, RetrievedChunk } from '../helpers/ai/retrieval';
 import { filterCitations, validateGeneration } from '../helpers/ai/validation';
 import { assertWithinLimits } from '../helpers/ai/usage';
+import { quickReply } from '../helpers/ai/intentRouter';
 import { AiDraftFilter, aiDraftRepository } from '../repositories/aiDraftRepository';
 
 export type AiUser = { id: number; role?: string; tenant_id?: number | null };
@@ -160,6 +161,13 @@ export class AiGenerationService {
             throw new BadRequestError('The last message must be from the user');
         }
         const tenantId = user.tenant_id ?? null;
+
+        // Greetings and other canned intents are answered without the model (no cost, no rate limit).
+        const quick = await quickReply(turns[turns.length - 1].content, { operation: 'chat_assistant', userId: user.id, tenantId });
+        if (quick) {
+            return { answer: quick.answer, source: 'rule', queried: [], searched: false, citations: [], unverifiedCitationCount: 0 };
+        }
+
         await assertWithinLimits(user.id, tenantId);
 
         const canQueryData = isAdmin(user);
@@ -204,6 +212,12 @@ export class AiGenerationService {
             throw new BadRequestError('The last message must be from the user');
         }
         const tenantId = user.tenant_id ?? null;
+
+        const quick = await quickReply(turns[turns.length - 1].content, { operation: 'learn_chat', userId: user.id, tenantId });
+        if (quick) {
+            return { answer: quick.answer, source: 'rule', citations: [], unverifiedCitationCount: 0 };
+        }
+
         await assertWithinLimits(user.id, tenantId);
 
         const result = await runGrounded({

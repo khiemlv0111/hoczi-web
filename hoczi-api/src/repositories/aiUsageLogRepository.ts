@@ -13,6 +13,8 @@ class AiUsageLogRepository {
     async countForUserSince(userId: number, since: Date) {
         return this.repo.createQueryBuilder('log')
             .where('log.user_id = :userId AND log.created_at >= :since', { userId, since })
+            // Rule-based replies (intent router) cost nothing and are not rate limited.
+            .andWhere("log.provider != 'rule'")
             .getCount();
     }
 

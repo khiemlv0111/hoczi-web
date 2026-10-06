@@ -145,7 +145,11 @@ async function runFunctionCall(call: { name: string; arguments: string; call_id:
 
 export async function runGrounded(req: GroundedRequest): Promise<GroundedResult> {
     const mode = req.fileSearch ?? 'required';
-    assertOpenAiConfigured({ vectorStore: mode === 'required' });
+    try {
+        assertOpenAiConfigured({ vectorStore: mode === 'required' });
+    } catch (error) {
+        throw toApiError(error); // 503 "AI service is not configured"
+    }
     const useFileSearch = !!aiConfig.openai.vectorStoreId;
     const functionTools = req.functionTools ?? [];
     const openai = getOpenAI();

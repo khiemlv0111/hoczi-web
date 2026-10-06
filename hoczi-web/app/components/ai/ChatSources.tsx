@@ -3,6 +3,8 @@ import { BookOpen, Database } from "lucide-react";
 
 // Where an AI chat answer came from, shared by the admin assistant and the AI Learn pages.
 export function ChatSourceBadge({ source, queried }: { source: ChatReply['source']; queried?: ChatReply['queried'] }) {
+    // Canned replies (greetings) need no source label.
+    if (source === 'rule') return null;
     if (source === 'data') {
         return (
             <span className="inline-flex items-center gap-1 text-[10px] px-1.5 py-0.5 rounded bg-blue-50 text-blue-700">

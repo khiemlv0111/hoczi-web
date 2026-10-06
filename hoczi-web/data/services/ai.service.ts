@@ -146,7 +146,8 @@ export type ChatReply = {
     answer: string;
     // data: answered from Hoczi database statistics (admins only)
     // documents / mixed: grounded in uploaded sources; general: general knowledge only
-    source: 'data' | 'documents' | 'mixed' | 'general';
+    // rule: canned reply from the intent router (greetings), no model call
+    source: 'data' | 'documents' | 'mixed' | 'general' | 'rule';
     // Data tools that were run, e.g. { name: 'get_user_stats', label: 'User statistics' }
     queried: { name: string; label: string }[];
     searched: boolean;

@@ -28,12 +28,16 @@ export const aiConfig = {
         get chunkMaxTokens() { return num('OPENAI_CHUNK_MAX_TOKENS', 800); },
         get chunkOverlapTokens() { return num('OPENAI_CHUNK_OVERLAP_TOKENS', 200); },
     },
-    // Text-to-speech for lesson audio (POST /api/ai/tts). Audio is cached on disk by content hash.
+    // Lesson audio (POST /api/ai/tts): ElevenLabs voice, stored once in S3 and served from CloudFront.
     tts: {
-        get model() { return process.env.OPENAI_TTS_MODEL || 'gpt-4o-mini-tts'; },
-        get voice() { return process.env.OPENAI_TTS_VOICE || 'coral'; },
+        // "LinTeacher" voice used on /studies/text-to-speech
+        get voiceId() { return process.env.ELEVENLABS_LESSON_VOICE_ID || 'fLPxjLBNNpFZPxTpuIts'; },
+        get model() { return process.env.ELEVENLABS_TTS_MODEL || 'eleven_v3'; },
+        get slowSpeed() { return num('AI_TTS_SLOW_SPEED', 0.75); },
         get maxChars() { return num('AI_TTS_MAX_CHARS', 2000); },
-        get cacheDir() { return process.env.AI_TTS_CACHE_DIR || ''; },
+        get bucket() { return process.env.AWS_S3_BUCKET_NAME ?? ''; },
+        // Same CloudFront distribution the web app uses for uploaded files.
+        get publicBaseUrl() { return (process.env.CLOUDFRONT_URL || 'https://d1y3v0ou093g3m.cloudfront.net').replace(/\/+$/, ''); },
         get requestsPerMinutePerUser() { return num('AI_TTS_RATE_LIMIT_PER_MINUTE', 30); },
     },
     anthropic: {

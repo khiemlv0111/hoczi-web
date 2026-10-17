@@ -1,17 +1,25 @@
 'use client'
 
-import { Volume2 } from "lucide-react";
-import { speak } from "./utils";
+import { Loader2, Volume2 } from "lucide-react";
+import { useState } from "react";
+import { speak } from "./tts";
 
 export function SpeakButton({ text, rate, label }: { text: string; rate?: number; label?: string }) {
+  const [loading, setLoading] = useState(false);
+  const Icon = loading ? Loader2 : Volume2;
   return (
     <button
       type="button"
-      onClick={e => { e.stopPropagation(); speak(text, rate); }}
+      onClick={e => {
+        e.stopPropagation();
+        setLoading(true);
+        speak(text, rate).finally(() => setLoading(false));
+      }}
       className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100 transition-colors"
       aria-label={`Nghe: ${text}`}
+      aria-busy={loading}
     >
-      <Volume2 className="w-3.5 h-3.5" />
+      <Icon className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
       {label}
     </button>
   );

@@ -45,7 +45,8 @@ export function seededShuffle<T>(arr: T[], seed: string): T[] {
   return a;
 }
 
-export function speak(text: string, rate = 0.85) {
+/** Giọng đọc có sẵn của trình duyệt — dùng khi không gọi được API đọc của OpenAI. */
+export function speakWithBrowser(text: string, rate = 0.85) {
   if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
   const synth = window.speechSynthesis;
   synth.cancel();

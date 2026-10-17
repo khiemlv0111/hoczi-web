@@ -15,6 +15,9 @@ export type Vocab = {
 };
 
 export type TextParagraph = {
+  /** Tiêu đề đoạn, vd. "课文一 · 在学校" (HSK4: mỗi bài có nhiều bài khóa ngắn) */
+  heading?: string;
+  /** Hội thoại: mỗi lượt lời một dòng "小夏：……" (ngăn cách bằng \n) */
   zh: string;
   vi: string;
   questions?: string[];
@@ -78,7 +81,7 @@ export type PracticeSection =
 export type SectionKind = PracticeSection["kind"];
 
 export type Lesson = {
-  level: string; // "hsk5"
+  level: string; // "hsk4", "hsk5"
   no: number;
   slug: string; // "bai-9"
   zh: string;

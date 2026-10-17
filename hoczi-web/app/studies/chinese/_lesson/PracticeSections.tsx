@@ -152,7 +152,7 @@ function FillBlanks({ section, value, onChange, result, locked }: BodyProps<"fil
       {section.passages.map((p, pi) => (
         <div key={pi} className="rounded-xl border border-gray-200 p-4">
           <h3 className="text-sm font-semibold text-purple-700 mb-2">{p.title}</h3>
-          <p className={`${zh} leading-[2.4]`}>
+          <p className={`${zh} leading-[2.4] whitespace-pre-line`}>
             {p.text.split(/\{\{(\w+)\}\}/).map((part, idx) => {
               if (idx % 2 === 0) return <span key={idx}>{part}</span>;
               const key = part;

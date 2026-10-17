@@ -1,0 +1,343 @@
+import type { Lesson } from "../../_lesson/types";
+
+// HSK标准教程4 · 第3课 经理对我印象不错 (Giám đốc có ấn tượng tốt về tôi)
+// Nguồn: Giáo trình chuẩn HSK4 tập 1, trang 34–47 (bản scan, đọc từ ảnh trang).
+// Từ vựng, bài khóa, ngữ pháp và luyện nhanh lấy từ sách; phần luyện tập 100 điểm,
+// nghĩa từ mở rộng và bản dịch tiếng Việt bài khóa được soạn thêm (cần giáo viên duyệt lại).
+
+export const lesson03: Lesson = {
+  level: "hsk4",
+  no: 3,
+  slug: "bai-3",
+  zh: "经理对我印象不错",
+  pinyin: "Jīnglǐ duì wǒ yìnxiàng búcuò",
+  vi: "Giám đốc có ấn tượng tốt về tôi",
+  en: "The Manager Has a Good Impression of Me",
+  topic: "求职面试 · Xin việc và phỏng vấn",
+  durationMinutes: 60,
+
+  goals: [
+    "Nắm nghĩa và cách dùng các từ trọng điểm: 紧张、信心、能力、招聘、应聘、提供、负责、符合、通知、律师、专业、收入、安排、正式、诚实、改变、判断、顾客、准时…",
+    "Nắm 5 điểm ngữ pháp: phó từ 挺（挺……的）; 本来; 另外 (đại từ / phó từ / liên từ) và phân biệt 另外 – 另; 首先……其次……; 不管……都……",
+    "Đọc hiểu 5 bài khóa về phỏng vấn, tuyển dụng, công việc và ấn tượng đầu tiên; thuật lại bằng từ vựng đã học.",
+    "Hỏi – đáp về kinh nghiệm xin việc, viết đoạn văn giới thiệu người để lại ấn tượng đầu tiên sâu sắc nhất.",
+    "Nắm các từ mở rộng có chữ 时: 时候、时间、及时、平时、准时.",
+  ],
+
+  warmUp: [
+    { zh: "给下面的词语选择对应的图片：紧张、面试、律师、笔试、应聘、通知。", vi: "Chọn hình tương ứng với các từ: 紧张 (hồi hộp), 面试 (phỏng vấn), 律师 (luật sư), 笔试 (thi viết), 应聘 (xin việc), 通知 (thông báo)." },
+    { zh: "你理想中的工作是什么样的？为什么？", vi: "Công việc lý tưởng của bạn là công việc thế nào? Tại sao? (Xét theo thu nhập tháng, đồng nghiệp, phương tiện đi lại, giờ làm việc, mức độ liên quan đến chuyên ngành đã học.)" },
+  ],
+
+  vocab: [
+    { id: 1, han: "挺", py: "tǐng", pos: "p.", meaning: "rất", example: "他们问的问题都挺容易的。", exampleVi: "Những câu họ hỏi đều khá dễ." },
+    { id: 2, han: "紧张", py: "jǐnzhāng", pos: "tt.", meaning: "hồi hộp, căng thẳng", example: "还可以，就是我有点儿紧张。", exampleVi: "Cũng được, chỉ là tôi hơi hồi hộp." },
+    { id: 3, han: "信心", py: "xìnxīn", pos: "dt.", meaning: "lòng tin, sự tự tin", example: "面试的时候，一定要对自己有信心。", exampleVi: "Khi phỏng vấn, nhất định phải tự tin vào bản thân." },
+    { id: 4, han: "能力", py: "nénglì", pos: "dt.", meaning: "năng lực, khả năng", example: "要相信自己的能力。", exampleVi: "Phải tin vào năng lực của mình." },
+    { id: 5, han: "招聘", py: "zhāopìn", pos: "đgt.", meaning: "tuyển dụng", example: "学校体育馆还有一个招聘会。", exampleVi: "Ở nhà thi đấu của trường còn có một hội chợ tuyển dụng." },
+    { id: 6, han: "提供", py: "tígōng", pos: "đgt.", meaning: "cung cấp", example: "听说这次招聘会提供的工作机会很多。", exampleVi: "Nghe nói hội chợ tuyển dụng lần này cung cấp rất nhiều cơ hội việc làm." },
+    { id: 7, han: "小雨", py: "Xiǎoyǔ", pos: "dt. riêng", meaning: "Tiểu Vũ (tên người)", example: "小雨上午参加了一个面试。", exampleVi: "Buổi sáng Tiểu Vũ đã tham gia một buổi phỏng vấn." },
+    { id: 8, han: "负责", py: "fùzé", pos: "đgt.", meaning: "phụ trách, chịu trách nhiệm", example: "这次招聘不是小李负责吗？", exampleVi: "Đợt tuyển dụng này chẳng phải do Tiểu Lý phụ trách sao?" },
+    { id: 9, han: "本来", py: "běnlái", pos: "p.", meaning: "lúc đầu, trước đây", example: "本来是小李负责的，但是他突然生病住院了。", exampleVi: "Lúc đầu là Tiểu Lý phụ trách, nhưng cậu ấy đột nhiên bị ốm phải nằm viện." },
+    { id: 10, han: "应聘", py: "yìngpìn", pos: "đgt.", meaning: "xin việc", example: "这次来应聘的一共有15人。", exampleVi: "Lần này có tổng cộng 15 người đến ứng tuyển." },
+    { id: 11, han: "材料", py: "cáiliào", pos: "dt.", meaning: "tư liệu, tài liệu", example: "这是他们的材料，您看看。", exampleVi: "Đây là hồ sơ của họ, anh xem thử." },
+    { id: 12, han: "符合", py: "fúhé", pos: "đgt.", meaning: "phù hợp", example: "这两个人的能力都比较符合我们的要求。", exampleVi: "Năng lực của hai người này đều khá phù hợp với yêu cầu của chúng ta." },
+    { id: 13, han: "通知", py: "tōngzhī", pos: "đgt.", meaning: "báo tin, thông báo", example: "你通知他们下周一上午九点来我办公室吧。", exampleVi: "Cậu báo họ chín giờ sáng thứ Hai tuần sau đến văn phòng tôi nhé." },
+    { id: 14, han: "马", py: "Mǎ", pos: "dt. riêng", meaning: "Mã (họ)", example: "马经理和小林聊招聘的事情。", exampleVi: "Giám đốc Mã và Tiểu Lâm nói chuyện về việc tuyển dụng." },
+    { id: 15, han: "律师", py: "lǜshī", pos: "dt.", meaning: "luật sư", example: "我一毕业就去上海当律师了。", exampleVi: "Tốt nghiệp xong là tôi đi Thượng Hải làm luật sư ngay." },
+    { id: 16, han: "专业", py: "zhuānyè", pos: "dt.", meaning: "chuyên ngành", example: "我学的就是法律专业。", exampleVi: "Tôi học chính là chuyên ngành luật." },
+    { id: 17, han: "另外", py: "lìngwài", pos: "liên.", meaning: "ngoài ra", example: "同事们都很喜欢我。另外，收入也不错。", exampleVi: "Đồng nghiệp đều rất quý tôi. Ngoài ra, thu nhập cũng khá." },
+    { id: 18, han: "收入", py: "shōurù", pos: "dt.", meaning: "thu nhập", example: "另外，收入也不错。", exampleVi: "Ngoài ra, thu nhập cũng không tệ." },
+    { id: 19, han: "咱们", py: "zánmen", pos: "đt.", meaning: "chúng ta, chúng mình", example: "星期天咱们同学聚会，你能来参加吗？", exampleVi: "Chủ nhật bạn cùng lớp chúng mình họp mặt, cậu đến dự được không?" },
+    { id: 20, han: "安排", py: "ānpái", pos: "đgt.", meaning: "sắp xếp", example: "这次来北京，时间安排得很紧张。", exampleVi: "Lần này đến Bắc Kinh, thời gian sắp xếp rất sít sao." },
+    { id: 21, han: "首先", py: "shǒuxiān", pos: "đt.", meaning: "trước hết, trước tiên", example: "首先，要穿正式的衣服。", exampleVi: "Trước hết, phải mặc quần áo trang trọng." },
+    { id: 22, han: "正式", py: "zhèngshì", pos: "tt.", meaning: "chính thức, trang trọng", example: "面试时要穿正式的衣服。", exampleVi: "Khi phỏng vấn phải mặc quần áo trang trọng." },
+    { id: 23, han: "留", py: "liú", pos: "đgt.", meaning: "để lại", example: "这会给面试者留下一个好的印象。", exampleVi: "Điều này sẽ để lại ấn tượng tốt cho người phỏng vấn." },
+    { id: 24, han: "其次", py: "qícì", pos: "đt.", meaning: "thứ hai, sau đó", example: "其次，应聘时不要紧张。", exampleVi: "Thứ hai, khi ứng tuyển đừng căng thẳng." },
+    { id: 25, han: "诚实", py: "chéngshí", pos: "tt.", meaning: "thành thật", example: "最重要的是回答问题要诚实。", exampleVi: "Quan trọng nhất là trả lời câu hỏi phải thành thật." },
+    { id: 26, han: "改变", py: "gǎibiàn", pos: "đgt.", meaning: "thay đổi", example: "虽然第一印象不总是对的，但如果想改变却很困难。", exampleVi: "Tuy ấn tượng đầu tiên không phải lúc nào cũng đúng, nhưng nếu muốn thay đổi thì lại rất khó." },
+    { id: 27, han: "感觉", py: "gǎnjué", pos: "dt.", meaning: "cảm giác, cảm nghĩ", example: "第一印象会影响他们以后对你的感觉和判断。", exampleVi: "Ấn tượng đầu tiên sẽ ảnh hưởng đến cảm nhận và đánh giá của họ về bạn sau này." },
+    { id: 28, han: "判断", py: "pànduàn", pos: "đgt.", meaning: "nhận xét, đánh giá", example: "看一个人怎么说话，常可以比较容易地判断出他是一个什么样的人。", exampleVi: "Nhìn cách một người nói chuyện, thường có thể khá dễ dàng đánh giá anh ta là người thế nào." },
+    { id: 29, han: "顾客", py: "gùkè", pos: "dt.", meaning: "khách hàng", example: "给第一次见面的顾客留下好的印象，你可能会卖出更多的东西。", exampleVi: "Để lại ấn tượng tốt cho khách hàng gặp lần đầu, bạn có thể bán được nhiều hàng hơn." },
+    { id: 30, han: "准时", py: "zhǔnshí", pos: "tt.", meaning: "đúng giờ", example: "准时都非常重要。", exampleVi: "Đúng giờ đều vô cùng quan trọng." },
+    { id: 31, han: "不管", py: "bùguǎn", pos: "liên.", meaning: "bất kể, bất luận", example: "不管是上课、上班，还是与别人约会，准时都非常重要。", exampleVi: "Bất kể là đi học, đi làm hay hẹn gặp người khác, đúng giờ đều vô cùng quan trọng." },
+    { id: 32, han: "与", py: "yǔ", pos: "gt.", meaning: "với, và", example: "还是与别人约会，准时都非常重要。", exampleVi: "Hay là hẹn gặp với người khác, đúng giờ đều rất quan trọng." },
+    { id: 33, han: "约会", py: "yuēhuì", pos: "đgt.", meaning: "hẹn gặp, hẹn hò", example: "与别人约会的时候一定要准时。", exampleVi: "Khi hẹn gặp người khác nhất định phải đúng giờ." },
+    { id: 34, han: "时候", py: "shíhou", pos: "dt.", meaning: "lúc, khi", example: "他特别幽默，跟他在一起的时候，总是感觉时间过得很快。", exampleVi: "Anh ấy rất hài hước, lúc ở cùng anh ấy luôn thấy thời gian trôi rất nhanh.", group: "extended" },
+    { id: 35, han: "时间", py: "shíjiān", pos: "dt.", meaning: "thời gian", example: "真不好意思，我和同学约好了去看电影，咱们换个时间吧。", exampleVi: "Thật ngại quá, mình hẹn bạn đi xem phim rồi, chúng ta đổi thời gian khác nhé.", group: "extended" },
+    { id: 36, han: "及时", py: "jíshí", pos: "tt./p.", meaning: "kịp thời", example: "在你遇到困难的时候，真正的朋友会站出来，及时给你帮助。", exampleVi: "Khi bạn gặp khó khăn, người bạn thật sự sẽ đứng ra giúp đỡ bạn kịp thời.", group: "extended" },
+    { id: 37, han: "平时", py: "píngshí", pos: "dt.", meaning: "ngày thường, bình thường", example: "平时安娜总是在学校上课，很少有时间出去玩儿。", exampleVi: "Ngày thường Anna luôn học ở trường, ít có thời gian đi chơi.", group: "extended" },
+  ],
+
+  text: {
+    title: "课文 经理对我印象不错",
+    paragraphs: [
+      {
+        heading: "课文一 · 小夏和小雨聊小雨面试的情况",
+        zh: "小夏：你上午的面试怎么样？\n小雨：还可以，他们问的问题都挺容易的，就是我有点儿紧张。\n小夏：面试的时候，一定要对自己有信心，要相信自己的能力。\n小雨：你说得对！3月15号上午8点在学校体育馆还有一个招聘会，你去吗？\n小夏：我还没决定呢。\n小雨：听说这次招聘会提供的工作机会很多，我们一起去看看吧。",
+        vi: "Tiểu Hạ: Buổi phỏng vấn sáng nay của cậu thế nào?\nTiểu Vũ: Cũng được, những câu họ hỏi đều khá dễ, chỉ là mình hơi hồi hộp.\nTiểu Hạ: Khi phỏng vấn nhất định phải tự tin vào bản thân, phải tin vào năng lực của mình.\nTiểu Vũ: Cậu nói đúng! 8 giờ sáng ngày 15 tháng 3 ở nhà thi đấu của trường còn có một hội chợ tuyển dụng, cậu có đi không?\nTiểu Hạ: Mình vẫn chưa quyết định.\nTiểu Vũ: Nghe nói hội chợ tuyển dụng lần này có rất nhiều cơ hội việc làm, chúng mình cùng đi xem đi.",
+        questions: ["小雨面试时紧张吗？面试时应该怎样？", "体育馆的招聘会是在什么时候？"],
+      },
+      {
+        heading: "课文二 · 马经理和小林聊招聘的事情",
+        zh: "马经理：小林，这次招聘不是小李负责吗？\n小林：本来是小李负责的，但是他突然生病住院了，所以就交给我来做了。\n马经理：哦，这次应聘的人多吗？\n小林：经理，这次来应聘的一共有15人。经过笔试和面试，有两个不错。这是他们的材料，您看看。\n马经理：这两个人的能力都比较符合我们的要求。你通知他们下周一上午九点来我办公室吧。\n小林：好的，那我马上跟他们联系。",
+        vi: "Giám đốc Mã: Tiểu Lâm, đợt tuyển dụng này chẳng phải do Tiểu Lý phụ trách sao?\nTiểu Lâm: Lúc đầu là Tiểu Lý phụ trách, nhưng cậu ấy đột nhiên bị ốm phải nằm viện, nên giao lại cho tôi làm.\nGiám đốc Mã: Ồ, lần này người ứng tuyển có đông không?\nTiểu Lâm: Thưa giám đốc, lần này có tổng cộng 15 người đến ứng tuyển. Qua thi viết và phỏng vấn, có hai người khá tốt. Đây là hồ sơ của họ, anh xem thử.\nGiám đốc Mã: Năng lực của hai người này đều khá phù hợp với yêu cầu của chúng ta. Cậu báo họ chín giờ sáng thứ Hai tuần sau đến văn phòng tôi nhé.\nTiểu Lâm: Vâng, vậy tôi liên lạc với họ ngay.",
+        questions: ["谁负责过这次招聘工作？", "参加应聘的两个人适合不适合这个工作？为什么？"],
+      },
+      {
+        heading: "课文三 · 小林和王静聊王静的工作情况",
+        zh: "小林：王静，好久不见了！大学毕业后就没联系了，你现在在哪儿工作呢？\n王静：我一毕业就去上海当律师了。\n小林：你对现在的工作一定非常满意吧？\n王静：我很喜欢现在的工作，因为我学的就是法律专业，而且同事们都很喜欢我。另外，收入也不错。\n小林：星期天咱们同学聚会，你能来参加吗？\n王静：能来。虽然这次来北京，时间安排得很紧张，但我一定借这次机会去跟大家见见面。",
+        vi: "Tiểu Lâm: Vương Tĩnh, lâu lắm không gặp! Từ hồi tốt nghiệp đại học là không liên lạc nữa, bây giờ cậu làm việc ở đâu?\nVương Tĩnh: Tốt nghiệp xong là mình đi Thượng Hải làm luật sư ngay.\nTiểu Lâm: Chắc hẳn cậu rất hài lòng với công việc hiện tại nhỉ?\nVương Tĩnh: Mình rất thích công việc hiện tại, vì mình học chính là chuyên ngành luật, hơn nữa đồng nghiệp đều rất quý mình. Ngoài ra, thu nhập cũng khá.\nTiểu Lâm: Chủ nhật bạn cùng lớp chúng mình họp mặt, cậu đến dự được không?\nVương Tĩnh: Được. Tuy lần này đến Bắc Kinh thời gian sắp xếp rất sít sao, nhưng mình nhất định nhân dịp này đến gặp mọi người.",
+        questions: ["王静为什么很喜欢她现在的工作？", "王静这次来北京是为了参加同学聚会吗？为什么？"],
+      },
+      {
+        heading: "课文四 · 面试需要注意什么",
+        zh: "面试的时候，经理对我印象不错，还通知我明天就可以上班了。真没想到，找工作这么顺利。你想知道面试需要注意什么吗？首先，要穿正式的衣服，这会给面试者留下一个好的印象，让他觉得你是一个认真的人。其次，应聘时不要紧张。回答问题时，说得不要太快，声音也不要太小，要相信自己有能力做好。当然，最重要的是回答问题要诚实。",
+        vi: "Lúc phỏng vấn, giám đốc có ấn tượng tốt về tôi, còn thông báo ngày mai tôi có thể đi làm luôn. Thật không ngờ tìm việc lại thuận lợi như vậy. Bạn có muốn biết phỏng vấn cần chú ý những gì không? Trước hết, phải mặc quần áo trang trọng, điều này sẽ để lại cho người phỏng vấn một ấn tượng tốt, khiến họ thấy bạn là người nghiêm túc. Thứ hai, khi ứng tuyển đừng căng thẳng. Khi trả lời câu hỏi, đừng nói quá nhanh, giọng cũng đừng quá nhỏ, phải tin rằng mình có khả năng làm tốt. Đương nhiên, quan trọng nhất là trả lời câu hỏi phải thành thật.",
+        questions: ["面试时如果穿正式的衣服，会给人带来什么好处？", "回答问题时应该注意哪些问题？"],
+      },
+      {
+        heading: "课文五 · 第一印象",
+        zh: "第一印象就是在第一次见面时给别人留下的印象。虽然第一印象不总是对的，但如果想改变却很困难。你给别人的第一印象会影响他们以后对你的感觉和判断。所以，给第一次见面的同事留下好的印象，以后的工作可能会更顺利；给第一次见面的顾客留下好的印象，你可能会卖出更多的东西。但是，如果第一次见面给别人留下像不准时这样的坏印象，那么以后就很难让别人相信你。所以不管是上课、上班，还是与别人约会，准时都非常重要。",
+        vi: "Ấn tượng đầu tiên chính là ấn tượng để lại cho người khác trong lần gặp mặt đầu tiên. Tuy ấn tượng đầu tiên không phải lúc nào cũng đúng, nhưng nếu muốn thay đổi thì lại rất khó. Ấn tượng đầu tiên bạn để lại cho người khác sẽ ảnh hưởng đến cảm nhận và đánh giá của họ về bạn sau này. Vì vậy, để lại ấn tượng tốt cho đồng nghiệp gặp lần đầu thì công việc sau này có thể sẽ thuận lợi hơn; để lại ấn tượng tốt cho khách hàng gặp lần đầu thì bạn có thể bán được nhiều hàng hơn. Nhưng nếu lần gặp đầu tiên để lại cho người khác ấn tượng xấu như không đúng giờ, thì sau này rất khó khiến người khác tin bạn. Cho nên bất kể là đi học, đi làm hay hẹn gặp người khác, đúng giờ đều vô cùng quan trọng.",
+        questions: ["第一印象是什么意思？", "你给别人的第一印象对你有哪些影响？"],
+      },
+    ],
+    notes: [
+      "小夏 (Xiǎo Xià): Tiểu Hạ. 小雨 (Xiǎoyǔ): Tiểu Vũ. 马经理 (Mǎ jīnglǐ): giám đốc Mã. 小林 (Xiǎo Lín): Tiểu Lâm. 王静 (Wáng Jìng): Vương Tĩnh.",
+      "Văn hóa – 中山装和旗袍: áo Tôn Trung Sơn và sườn xám là trang phục truyền thống trang trọng của nam và nữ Trung Quốc. Áo Tôn Trung Sơn do ông Tôn Trung Sơn kết hợp đặc điểm trang phục kiểu Tây và kiểu Trung; bốn túi áo tượng trưng cho lễ, nghĩa, liêm, sỉ. Sườn xám được gọi là “đại diện cho trang phục phụ nữ phương Đông”.",
+    ],
+  },
+
+  grammar: [
+    {
+      word: "挺",
+      title: "Phó từ “rất” – cấu trúc 挺……的",
+      usages: [
+        {
+          label: "Cách dùng",
+          explain: "Phó từ 挺 có nghĩa là “rất” (= 很), thường được dùng trong cấu trúc 挺……的 (khẩu ngữ).",
+          examples: [
+            "他们问的问题都挺容易的。",
+            "这家店的东西挺好的，我经常来这儿买东西。",
+            "我挺喜欢这个地方的，周围环境比以前住的地方安静很多。",
+          ],
+        },
+      ],
+    },
+    {
+      word: "本来",
+      title: "Phó từ “đáng lẽ; lúc đầu, trước đây”",
+      usages: [
+        { label: "Đáng lẽ (theo lẽ thường phải như vậy)", explain: "本来 diễn tả rằng tình huống/sự việc nào đó đáng lẽ phải như vậy.", examples: ["这件事本来应该听他的。"] },
+        { label: "Lúc đầu, trước đây (= 原先、原来)", explain: "本来 mang nghĩa “lúc đầu, trước đây”, thường đối lập với tình hình hiện tại.", examples: ["我本来不会开车，但现在开得特别好。", "（这次招聘）本来是小李负责的。"] },
+      ],
+    },
+    {
+      word: "另外",
+      title: "Đại từ / phó từ / liên từ “khác, ngoài ra”",
+      usages: [
+        { label: "Đại từ", explain: "Chỉ người hay sự vật bên ngoài phạm vi đã được đề cập trước đó, thường dùng trong cấu trúc “另外（+的）+ số lượng（+ danh từ）” hay “另外 + 的（+ danh từ）”.", examples: ["前面车有点儿多，我们走另外一条路，不会迟到的。", "这件衣服有点儿大，你试试另外的那件吧。"] },
+        { label: "Phó từ", explain: "Diễn tả ý bên ngoài phạm vi đã được đề cập trước đó, thường dùng kết hợp với 还/再/又.", examples: ["除了她说的，我另外又补充了几条意见。", "家里的空调坏了，咱们另外再买一个吧。"] },
+        { label: "Liên từ", explain: "Có nghĩa là “ngoài ra” (= 除此以外), dùng để nối các vế câu hoặc các câu.", examples: ["我学的就是法律专业，而且同事们都很喜欢我。另外，收入也不错。", "现在上网买东西很方便，卖家可以把你买的东西送到你办公室或者家里。另外，还比较便宜。"] },
+      ],
+      note: "比一比 另外 – 另: Giống: cả hai đều làm đại từ (他一边说谢谢，一边从手里拿出另外/另一本书。) và phó từ (我今天晚上另外/另有安排，我们明天再一起吃饭吧。). Khác: ① khi làm đại từ, 另外 dùng “另外（+的）+ số lượng（+ danh từ）” hoặc “另外 + 的（+ danh từ）”, còn 另 chỉ dùng “另 + số lượng（+ danh từ）”, không thêm 的 (你骑另外/另一辆吧。你骑另外的车吧。); ② khi làm phó từ, 另 thường bổ nghĩa cho động từ một âm tiết, 另外 không bị hạn chế (你还是另外/另找别人吧。还另外提供了不少新的材料。); ③ 另外 làm được liên từ, 另 thì không (冬季应该注意多吃水果。另外，还要记得多喝水。).",
+    },
+    {
+      word: "首先……其次……",
+      title: "“Trước hết…, thứ hai…”",
+      usages: [
+        { label: "Đại từ (liệt kê theo thứ tự)", explain: "首先 và 其次 là đại từ, thường dùng kết hợp trong văn viết để liệt kê các sự việc theo trình tự nào đó.", examples: ["不管做什么事情，首先应该明白你为什么要做，其次要知道怎么做。", "首先，要穿正式的衣服，这会给面试者留下一个好的印象，让他觉得你是一个认真的人。其次，应聘时不要紧张。"] },
+        { label: "首先 – phó từ “đầu tiên, sớm nhất”", explain: "首先 cũng có thể làm phó từ với nghĩa “đầu tiên, sớm nhất” (= 最先、最早).", examples: ["不管以后做什么工作，你首先应该有一个好身体。", "很多人遇到不明白的地方，首先想到的是上网查一查。"] },
+      ],
+    },
+    {
+      word: "不管",
+      title: "Liên từ “bất kể, bất luận”",
+      usages: [
+        {
+          label: "Cách dùng",
+          explain: "不管 chỉ kết luận hay kết quả không thay đổi trong mọi tình huống giả định; thường dùng với đại từ nghi vấn 什么、怎么、谁、哪儿、多（么）, hoặc với 还是 / dạng chính phản; vế sau thường có 都.",
+          examples: [
+            "山本不管做什么事都非常认真。",
+            "不管是上课、上班，还是与别人约会，准时都非常重要。",
+            "不管忙不忙，他每天都要锻炼一个小时身体。",
+          ],
+        },
+      ],
+      note: "Mẫu: 不管 + đại từ nghi vấn / A还是B / V不V，……都……",
+    },
+  ],
+
+  wordChoice: [
+    { sentence: "他们这次招聘的要求虽然高，但是那些要求你都___，你应该去试试。", options: ["符合", "提供", "安排", "判断"], answer: "符合" },
+    { sentence: "看一个人怎么说话，常可以比较容易地___出他是一个什么样的人。", options: ["紧张", "判断", "符合", "提供"], answer: "判断" },
+    { sentence: "第一次跟女朋友见面的时候，他___得脸和耳朵都红了。", options: ["安排", "符合", "紧张", "判断"], answer: "紧张" },
+    { sentence: "她想借这次机会去长城看看，可是公司的事情很多，时间___得很紧张。", options: ["提供", "安排", "判断", "紧张"], answer: "安排" },
+    { sentence: "这里___的工作机会是最多的，每天都有很多公司在上面发招聘通知。", options: ["提供", "符合", "安排", "紧张"], answer: "提供" },
+    { sentence: "走，___一起去跑步吧，锻炼锻炼身体。", options: ["咱们", "材料", "感觉", "准时"], answer: "咱们" },
+    { sentence: "这次工作虽然时间非常紧张，但是___不是很难。", options: ["留", "感觉", "材料", "咱们"], answer: "感觉" },
+    { sentence: "校长，这份___我已经按照您的要求改好了。", options: ["感觉", "准时", "材料", "留"], answer: "材料" },
+    { sentence: "外面刮大风了，现在只好___在家里上网了。", options: ["留", "咱们", "准时", "感觉"], answer: "留" },
+    { sentence: "王老师真是一个特别___的人，我还从来没见他迟到过呢。", options: ["材料", "咱们", "准时", "留"], answer: "准时" },
+  ],
+
+  practice: [
+    {
+      id: "listen", kind: "listen-pick", icon: "🎧", title: "Phần 1 · Nghe - chọn chữ Hán", points: 8,
+      subtitle: "Bấm 🔊 nghe từ, sau đó chọn đúng chữ Hán tương ứng.",
+      items: [
+        { vocabId: 2, distractors: [3, 4, 25] },
+        { vocabId: 5, distractors: [10, 13, 6] },
+        { vocabId: 8, distractors: [9, 12, 20] },
+        { vocabId: 12, distractors: [11, 13, 8] },
+        { vocabId: 15, distractors: [16, 18, 29] },
+        { vocabId: 22, distractors: [25, 30, 2] },
+        { vocabId: 28, distractors: [26, 27, 23] },
+        { vocabId: 30, distractors: [36, 37, 35] },
+      ],
+    },
+    {
+      id: "pinyin", kind: "pinyin", icon: "✍️", title: "Phần 2 · Điền pinyin", points: 8,
+      subtitle: "Gõ pinyin không dấu thanh cũng được chấp nhận, nhưng cố gắng gõ đúng dấu thanh nhé.",
+      vocabIds: [3, 6, 11, 16, 19, 24, 26, 31],
+    },
+    {
+      id: "order", kind: "order", icon: "🧩", title: "Phần 3 · Sắp xếp câu", points: 10,
+      subtitle: "Bấm lần lượt các mảnh theo đúng thứ tự để ghép thành câu. Bấm vào mảnh đã chọn để bỏ ra.",
+      items: [
+        { tokens: ["面试的时候", "一定要", "对自己", "有信心", "。"], answer: "面试的时候一定要对自己有信心。", vi: "Khi phỏng vấn nhất định phải tự tin vào bản thân." },
+        { tokens: ["这两个人的能力", "都比较", "符合", "我们的要求", "。"], answer: "这两个人的能力都比较符合我们的要求。", vi: "Năng lực của hai người này đều khá phù hợp với yêu cầu của chúng ta." },
+        { tokens: ["我", "一毕业", "就去上海", "当律师了", "。"], answer: "我一毕业就去上海当律师了。", vi: "Tốt nghiệp xong là tôi đi Thượng Hải làm luật sư ngay." },
+        { tokens: ["经理", "对我", "印象", "不错", "。"], answer: "经理对我印象不错。", vi: "Giám đốc có ấn tượng tốt về tôi." },
+        { tokens: ["不管", "做什么事", "他", "都非常认真", "。"], answer: "不管做什么事他都非常认真。", vi: "Bất kể làm việc gì anh ấy cũng rất nghiêm túc." },
+      ],
+    },
+    {
+      id: "fill-1", kind: "fill-blanks", icon: "💬", title: "Phần 4 · Hoàn thành bài khóa (bài 1–3)", points: 10,
+      subtitle: "Bấm vào chỗ trống rồi bấm từ đúng trong ngân hàng từ. Bấm lại chỗ đã điền để xóa.",
+      passages: [
+        { title: "Bài 1 · Buổi phỏng vấn của Tiểu Vũ", text: "小夏：你上午的面试怎么样？\n小雨：还可以，他们问的问题都{{a1}}容易的，就是我有点儿{{a2}}。\n小夏：面试的时候，一定要对自己有{{a3}}，要相信自己的{{a4}}。\n小雨：听说这次{{a5}}会{{a6}}的工作机会很多，我们一起去看看吧。" },
+        { title: "Bài 2 · Chuyện tuyển dụng", text: "马经理：小林，这次招聘不是小李{{a7}}吗？\n小林：{{a8}}是小李负责的，但是他突然生病住院了。\n马经理：这两个人的能力都比较{{a9}}我们的要求。" },
+        { title: "Bài 3 · Công việc của Vương Tĩnh", text: "王静：我很喜欢现在的工作，因为我学的就是法律专业，而且同事们都很喜欢我。另外，{{a10}}也不错。" },
+      ],
+      answers: { a1: "挺", a2: "紧张", a3: "信心", a4: "能力", a5: "招聘", a6: "提供", a7: "负责", a8: "本来", a9: "符合", a10: "收入" },
+      bank: ["挺", "紧张", "信心", "能力", "招聘", "提供", "负责", "本来", "符合", "收入", "应聘", "材料", "通知", "安排"],
+    },
+    {
+      id: "fill-2", kind: "fill-blanks", icon: "📄", title: "Phần 5 · Hoàn thành bài khóa (bài 4–5)", points: 10,
+      subtitle: "Điền từ thích hợp vào đoạn văn về kinh nghiệm phỏng vấn và ấn tượng đầu tiên.",
+      passages: [
+        { title: "Bài 4 · Phỏng vấn cần chú ý gì", text: "{{b1}}，要穿{{b2}}的衣服，这会给面试者{{b3}}下一个好的印象，让他觉得你是一个认真的人。{{b4}}，应聘时不要紧张。当然，最重要的是回答问题要{{b5}}。" },
+        { title: "Bài 5 · Ấn tượng đầu tiên", text: "虽然第一印象不总是对的，但如果想{{b6}}却很困难。你给别人的第一印象会影响他们以后对你的{{b7}}和{{b8}}。给第一次见面的{{b9}}留下好的印象，你可能会卖出更多的东西。所以{{b10}}是上课、上班，还是与别人约会，准时都非常重要。" },
+      ],
+      answers: { b1: "首先", b2: "正式", b3: "留", b4: "其次", b5: "诚实", b6: "改变", b7: "感觉", b8: "判断", b9: "顾客", b10: "不管" },
+      bank: ["首先", "正式", "留", "其次", "诚实", "改变", "感觉", "判断", "顾客", "不管", "准时", "约会", "与", "另外"],
+    },
+    {
+      id: "zh-vi", kind: "translate-zh-vi", icon: "🇨🇳", title: "Phần 6 · Dịch Trung → Việt", points: 6,
+      subtitle: "Dịch các câu sau sang tiếng Việt. Hệ thống chấm theo từ khóa chính, hãy so sánh với bản dịch gợi ý.",
+      items: [
+        { zh: "面试的时候，一定要对自己有信心。", vi: "Khi phỏng vấn nhất định phải tự tin vào bản thân.", keywords: ["phỏng vấn", "tự tin"] },
+        { zh: "听说这次招聘会提供的工作机会很多。", vi: "Nghe nói hội chợ tuyển dụng lần này cung cấp rất nhiều cơ hội việc làm.", keywords: ["tuyển dụng", "cung cấp", "cơ hội"] },
+        { zh: "我很喜欢现在的工作。另外，收入也不错。", vi: "Tôi rất thích công việc hiện tại. Ngoài ra, thu nhập cũng khá.", keywords: ["công việc", "ngoài ra", "thu nhập"] },
+        { zh: "最重要的是回答问题要诚实。", vi: "Quan trọng nhất là trả lời câu hỏi phải thành thật.", keywords: ["quan trọng nhất", "trả lời", "thành thật"] },
+        { zh: "不管是上课还是上班，准时都非常重要。", vi: "Bất kể là đi học hay đi làm, đúng giờ đều vô cùng quan trọng.", keywords: ["bất kể", "đúng giờ", "quan trọng"] },
+      ],
+    },
+    {
+      id: "vi-zh", kind: "translate-vi-zh", icon: "🇻🇳", title: "Phần 7 · Dịch Việt → Trung", points: 6,
+      subtitle: "Dịch các câu sau sang tiếng Trung, dùng từ vựng – ngữ pháp đã học trong bài.",
+      items: [
+        { vi: "Những câu họ hỏi đều khá dễ.", answers: ["他们问的问题都挺容易的。", "他们问的问题都挺容易。"] },
+        { vi: "Lúc đầu tôi không biết lái xe, nhưng bây giờ lái rất giỏi.", answers: ["我本来不会开车，但现在开得特别好。", "我本来不会开车，但是现在开得很好。", "我本来不会开车，可是现在开得很好。"] },
+        { vi: "Cậu báo họ thứ Hai tuần sau đến văn phòng tôi nhé.", answers: ["你通知他们下周一来我办公室吧。", "你通知他们下星期一来我办公室吧。"] },
+        { vi: "Giám đốc có ấn tượng tốt về tôi.", answers: ["经理对我印象不错。", "经理对我的印象不错。", "经理对我印象很好。"] },
+        { vi: "Bất kể bận hay không, ngày nào anh ấy cũng rèn luyện thân thể một tiếng.", answers: ["不管忙不忙，他每天都要锻炼一个小时身体。", "不管忙不忙，他每天都锻炼一个小时身体。", "不管忙不忙，他每天都锻炼一个小时。"] },
+      ],
+    },
+    {
+      id: "true-false", kind: "true-false", icon: "✅", title: "Phần 8 · Đúng / Sai", points: 8,
+      subtitle: "Dựa vào nội dung bài khóa, chọn Đúng hoặc Sai.",
+      items: [
+        { q: "小雨觉得面试的问题都挺难的。", a: false },
+        { q: "学校体育馆的招聘会是3月15号上午8点。", a: true },
+        { q: "这次招聘本来是小林负责的。", a: false },
+        { q: "这次来应聘的一共有15人。", a: true },
+        { q: "王静现在在上海当律师。", a: true },
+        { q: "王静这次来北京时间很多，所以去参加同学聚会。", a: false },
+        { q: "面试时要穿正式的衣服，这会给面试者留下好的印象。", a: true },
+        { q: "第一印象如果不好，想改变很容易。", a: false },
+      ],
+    },
+    {
+      id: "dictation", kind: "dictation", icon: "🎙️", title: "Phần 9 · Nghe - viết (chính tả)", points: 10,
+      subtitle: "Bấm 🔊 nghe câu (nghe lại bao nhiêu lần cũng được), gõ lại đúng chữ Hán và dấu câu.",
+      items: [
+        "他们问的问题都挺容易的。",
+        "这是他们的材料，您看看。",
+        "我学的就是法律专业。",
+        "其次，应聘时不要紧张。",
+        "准时都非常重要。",
+      ],
+    },
+    {
+      id: "essay", kind: "essay", icon: "📝", title: "Phần 10 · Viết đoạn văn", points: 7,
+      subtitle: "Tự luận – hệ thống chỉ chấm sơ bộ độ dài và từ vựng sử dụng.",
+      prompt: "请介绍一下谁给你的第一印象最深，说说为什么。 (Hãy giới thiệu người để lại cho bạn ấn tượng đầu tiên sâu sắc nhất và giải thích tại sao.)",
+      requirement: "Yêu cầu: viết ít nhất 80 chữ Hán, sử dụng tối thiểu 5 từ vựng và 2 điểm ngữ pháp của bài 3 (挺, 本来, 另外, 首先……其次……, 不管).",
+      minChars: 80,
+      minVocab: 5,
+      grammarMarkers: ["挺", "本来", "另外", "首先", "其次", "不管"],
+      minGrammar: 2,
+      sample: "给我第一印象最深的人是我的经理。去年我去他们公司应聘，本来我挺紧张的，可是他对我很热情，让我对自己有了信心。首先，他准时来到办公室，穿着很正式的衣服，让我觉得他是一个认真的人。其次，他问的问题都很清楚，还认真地听我回答。另外，面试以后他马上通知我结果。现在我在他的公司工作，我发现他不管对同事还是对顾客，都非常诚实。",
+    },
+    {
+      id: "gram-1", kind: "grammar-fill", icon: "🧠", title: "Phần 11 · Ngữ pháp: 另外 / 另", points: 6,
+      subtitle: "Chọn 另外 hoặc 另 cho mỗi chỗ trống (có câu dùng được cả hai).",
+      grammarWord: "另外 / 另",
+      options: ["另外", "另"],
+      items: [
+        { q: "他叫马克，___一个同学叫安娜。", answers: ["另外", "另"] },
+        { q: "这次聚会需要买一些水果，___再准备一些啤酒。", answers: ["另外"] },
+        { q: "上个月经理去上海参加了___的一个重要会议。", answers: ["另外"] },
+        { q: "等一会儿吧，我先看看菜单。___，给我来杯绿茶。", answers: ["另外"] },
+        { q: "衬衫没问题，但是裤子颜色不太好，你___换一条吧。", answers: ["另外", "另"] },
+        { q: "刚才马克把车借走了，你骑___的车吧。", answers: ["另外"] },
+        { q: "冬季应该注意多吃水果。___，还要记得多喝水。", answers: ["另外"] },
+        { q: "最近小雨太忙了，没时间帮你，你还是___找别人吧。", answers: ["另外", "另"] },
+      ],
+    },
+    {
+      id: "gram-2", kind: "grammar-fill", icon: "🧠", title: "Phần 12 · Ngữ pháp: 不管", points: 6,
+      subtitle: "Điền liên từ thích hợp vào chỗ trống (不管……都…… – bất kể…, đều…).",
+      grammarWord: "不管",
+      items: [
+        { q: "山本___做什么事都非常认真。", answers: ["不管"] },
+        { q: "___是上课、上班，还是与别人约会，准时都非常重要。", answers: ["不管"] },
+        { q: "___忙不忙，他每天都要锻炼一个小时身体。", answers: ["不管"] },
+        { q: "___刮风还是下雨，他每天都去打篮球。", answers: ["不管"] },
+        { q: "放心吧，___多难，我都会帮你。", answers: ["不管"] },
+        { q: "___谁有困难，小林都热情地帮助他。", answers: ["不管"] },
+        { q: "___你去哪儿，都要给妈妈打个电话。", answers: ["不管"] },
+        { q: "___做什么事情，首先应该明白你为什么要做。", answers: ["不管"] },
+      ],
+    },
+    {
+      id: "gram-3", kind: "grammar-fill", icon: "🧠", title: "Phần 13 · Ngữ pháp: 首先 / 其次", points: 5,
+      subtitle: "Chọn 首先 hoặc 其次 cho mỗi chỗ trống.",
+      grammarWord: "首先……其次……",
+      options: ["首先", "其次"],
+      items: [
+        { q: "___，要穿正式的衣服，这会给面试者留下一个好的印象。", answers: ["首先"] },
+        { q: "首先要穿正式的衣服；___，应聘时不要紧张。", answers: ["其次"] },
+        { q: "不管做什么事情，___应该明白你为什么要做。", answers: ["首先"] },
+        { q: "首先应该明白你为什么要做，___要知道怎么做。", answers: ["其次"] },
+        { q: "不管以后做什么工作，你___应该有一个好身体。", answers: ["首先"] },
+        { q: "很多人遇到不明白的地方，___想到的是上网查一查。", answers: ["首先"] },
+        { q: "要想学好汉语，首先要多听多说，___，应该常常复习。", answers: ["其次"] },
+        { q: "我不同意你这么做，首先你不了解他，___，这件事也不是你的责任。", answers: ["其次"] },
+      ],
+    },
+  ],
+};

@@ -1,6 +1,7 @@
 'use client'
 
 import { CourseService, CourseItem } from "@/data/services/course.service";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -13,10 +14,12 @@ const GRADIENTS = [
   "from-blue-500 to-cyan-400",
 ];
 
+const HSK_LEVELS = [1, 2, 3, 4, 5, 6];
+
 const STATUS_BADGE: Record<string, string> = {
   published: "bg-green-100 text-green-700",
-  draft:     "bg-yellow-100 text-yellow-700",
-  archived:  "bg-gray-100 text-gray-500",
+  draft: "bg-yellow-100 text-yellow-700",
+  archived: "bg-gray-100 text-gray-500",
 };
 
 export function ChinesePage() {
@@ -33,6 +36,7 @@ export function ChinesePage() {
 
   return (
     <main className="min-h-screen px-6 py-[80px] flex flex-col items-center bg-gray-50">
+
       <div className="w-full max-w-5xl">
         <button
           onClick={() => router.back()}
@@ -40,10 +44,24 @@ export function ChinesePage() {
         >
           ← Back
         </button>
+        <h1 className="text-4xl font-semibold text-gray-900 mb-2 tracking-tight">Tiếng Trung · HSK</h1>
+        <p className="text-gray-500 text-base mb-6">Chọn cấp độ HSK để vào danh sách bài học.</p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-14">
+          {HSK_LEVELS.map((level, idx) => (
+            <Link
+              key={level}
+              href={`/studies/chinese/hsk${level}`}
+              className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md active:scale-95 transition-all duration-150"
+            >
+              <div className={`bg-gradient-to-r ${GRADIENTS[idx % GRADIENTS.length]} h-16 flex items-center justify-center text-white text-2xl font-bold`}>
+                HSK {level}
+              </div>
+              <div className="px-3 py-2 text-center text-sm text-gray-500">标准教程 {level}</div>
+            </Link>
+          ))}
+        </div>
 
-        <h1 className="text-4xl font-semibold text-gray-900 mb-2 tracking-tight">
-          🇨🇳 Chinese
-        </h1>
+
         <p className="text-gray-500 text-base mb-10">
           {loading ? 'Loading courses…' : `${courses.length} course${courses.length !== 1 ? 's' : ''} available — choose one to start learning`}
         </p>

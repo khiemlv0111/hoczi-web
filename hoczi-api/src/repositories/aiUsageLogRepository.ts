@@ -15,6 +15,14 @@ class AiUsageLogRepository {
             .where('log.user_id = :userId AND log.created_at >= :since', { userId, since })
             // Rule-based replies (intent router) cost nothing and are not rate limited.
             .andWhere("log.provider != 'rule'")
+            // Text-to-speech has its own limit (AI_TTS_RATE_LIMIT_PER_MINUTE).
+            .andWhere("log.operation != 'tts'")
+            .getCount();
+    }
+
+    async countOperationForUserSince(userId: number, operation: string, since: Date) {
+        return this.repo.createQueryBuilder('log')
+            .where('log.user_id = :userId AND log.operation = :operation AND log.created_at >= :since', { userId, operation, since })
             .getCount();
     }
 

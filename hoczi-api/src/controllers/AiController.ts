@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
 import { RequestValidator } from '../dto/requestValidator';
-import { AskRequest, ChatRequest, GenerateRequest, LearnChatRequest, PublishDraftRequest, ReviewDraftRequest, UpdateDraftRequest } from '../dto/ai.dto';
+import { AskRequest, ChatRequest, GenerateRequest, LearnChatRequest, PublishDraftRequest, ReviewDraftRequest, TtsRequest, UpdateDraftRequest } from '../dto/ai.dto';
 import { AiGenerationService, AiUser } from '../services/AiGenerationService';
+import { synthesizeSpeech } from '../helpers/ai/tts';
 const aiGenerationService = new AiGenerationService();
 
 // requireRole has loaded role and tenant_id onto req.user.
@@ -45,6 +46,22 @@ export class AiController {
         }
         const response = await aiGenerationService.learnChat(currentUser(req), input);
         return res.json(response);
+    }
+
+    // Returns MP3 audio (not JSON) so the lesson page can play it directly.
+    async tts(req: Request, res: Response) {
+        const { errors, input } = await RequestValidator(TtsRequest, req.body);
+        if (errors) {
+            return res.status(400).json({ success: false, message: errors })
+        }
+        const { audio, cached } = await synthesizeSpeech(currentUser(req), input.text, input.slow ?? false);
+        res.set({
+            'Content-Type': 'audio/mpeg',
+            'Content-Length': String(audio.length),
+            'Cache-Control': 'private, max-age=86400',
+            'X-TTS-Cache': cached ? 'hit' : 'miss',
+        });
+        return res.send(audio);
     }
 
     async getDrafts(req: Request, res: Response) {

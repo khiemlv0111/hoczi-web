@@ -28,6 +28,14 @@ export const aiConfig = {
         get chunkMaxTokens() { return num('OPENAI_CHUNK_MAX_TOKENS', 800); },
         get chunkOverlapTokens() { return num('OPENAI_CHUNK_OVERLAP_TOKENS', 200); },
     },
+    // Text-to-speech for lesson audio (POST /api/ai/tts). Audio is cached on disk by content hash.
+    tts: {
+        get model() { return process.env.OPENAI_TTS_MODEL || 'gpt-4o-mini-tts'; },
+        get voice() { return process.env.OPENAI_TTS_VOICE || 'coral'; },
+        get maxChars() { return num('AI_TTS_MAX_CHARS', 2000); },
+        get cacheDir() { return process.env.AI_TTS_CACHE_DIR || ''; },
+        get requestsPerMinutePerUser() { return num('AI_TTS_RATE_LIMIT_PER_MINUTE', 30); },
+    },
     anthropic: {
         get model() { return process.env.ANTHROPIC_MODEL || 'claude-opus-4-7'; },
         get timeoutMs() { return num('ANTHROPIC_REQUEST_TIMEOUT_MS', 60_000); },
@@ -44,6 +52,7 @@ export const aiConfig = {
         get inputPer1M() { return num('AI_PRICE_INPUT_PER_1M_USD', 0); },
         get outputPer1M() { return num('AI_PRICE_OUTPUT_PER_1M_USD', 0); },
         get fileSearchPer1K() { return num('AI_PRICE_FILE_SEARCH_PER_1K_USD', 0); },
+        get ttsPer1MChars() { return num('AI_PRICE_TTS_PER_1M_CHARS_USD', 0); },
     },
     ingestion: {
         get bucket() { return process.env.AWS_S3_BUCKET_NAME ?? ''; },

@@ -208,6 +208,17 @@ export class LearnChatRequest extends ChatRequest {
     topic!: string;
 }
 
+export class TtsRequest {
+    @IsNotEmpty()
+    @IsString()
+    @MaxLength(5000) // the configured limit (AI_TTS_MAX_CHARS) is checked in the TTS helper
+    text!: string;
+
+    @IsOptional()
+    @IsBoolean()
+    slow?: boolean;
+}
+
 export class UpdateDraftRequest {
     @IsObject()
     output!: Record<string, any>;

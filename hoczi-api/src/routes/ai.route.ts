@@ -9,6 +9,8 @@ aiRoutes.post('/ask', requireRole(ROLES.ANY), new AiController().ask);
 aiRoutes.post('/chat', requireRole(ROLES.ANY), new AiController().chat);
 // Learner tutor for /quizzes/results/ai-learn/[topic]
 aiRoutes.post('/learn/chat', requireRole(ROLES.ANY), new AiController().learnChat);
+// Lesson audio: Mandarin text-to-speech, cached by content
+aiRoutes.post('/tts', requireRole(ROLES.ANY), new AiController().tts);
 
 aiRoutes.post('/generate', requireRole(ROLES.AUTHOR), new AiController().generate);
 aiRoutes.get('/drafts', requireRole(ROLES.AUTHOR), new AiController().getDrafts);

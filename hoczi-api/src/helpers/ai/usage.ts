@@ -12,17 +12,20 @@ export type UsageRecord = {
     inputTokens?: number;
     outputTokens?: number;
     fileSearchCalls?: number;
+    // Text-to-speech input length, priced per character.
+    ttsChars?: number;
     latencyMs: number;
     outcome: string;
     errorCode?: string | null;
     providerRequestId?: string | null;
 };
 
-export function estimateCostUsd(r: Pick<UsageRecord, 'inputTokens' | 'outputTokens' | 'fileSearchCalls'>) {
+export function estimateCostUsd(r: Pick<UsageRecord, 'inputTokens' | 'outputTokens' | 'fileSearchCalls' | 'ttsChars'>) {
     const p = aiConfig.pricing;
     return ((r.inputTokens ?? 0) / 1_000_000) * p.inputPer1M
         + ((r.outputTokens ?? 0) / 1_000_000) * p.outputPer1M
-        + ((r.fileSearchCalls ?? 0) / 1000) * p.fileSearchPer1K;
+        + ((r.fileSearchCalls ?? 0) / 1000) * p.fileSearchPer1K
+        + ((r.ttsChars ?? 0) / 1_000_000) * p.ttsPer1MChars;
 }
 
 function startOfMonth() {
@@ -40,6 +43,13 @@ export async function assertWithinLimits(userId: number | null, tenantId: number
             throw new ApiError('Too many AI requests, please wait a minute', 429);
         }
     }
+
+    await assertWithinBudget(tenantId);
+}
+
+// Monthly budgets only; operations with their own rate limit (TTS) call this directly.
+export async function assertWithinBudget(tenantId: number | null) {
+    const limits = aiConfig.limits;
 
     if (limits.monthlyBudgetUsd > 0) {
         const spent = await aiUsageLogRepository.sumCostSince(startOfMonth());

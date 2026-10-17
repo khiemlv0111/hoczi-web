@@ -10,13 +10,14 @@ import { lesson08 } from "./lesson-08";
 import { lesson09 } from "./lesson-09";
 import { lesson10 } from "./lesson-10";
 import { lesson11 } from "./lesson-11";
+import { lesson12 } from "./lesson-12";
 
 export const HSK5_TOTAL_LESSONS = 36;
 
 // Thêm bài mới: tạo file lesson-XX.ts rồi đăng ký vào đây.
 const CONTENT: Lesson[] = [
   lesson01, lesson02, lesson03, lesson04, lesson05, lesson06,
-  lesson07, lesson08, lesson09, lesson10, lesson11,
+  lesson07, lesson08, lesson09, lesson10, lesson11, lesson12,
 ];
 
 export const HSK5_LESSONS: LessonMeta[] = Array.from({ length: HSK5_TOTAL_LESSONS }, (_, i) => {

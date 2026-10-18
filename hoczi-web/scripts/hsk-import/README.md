@@ -19,8 +19,8 @@ Lưu ý:
 - Ngữ pháp được lấy tự động từ bảng `GRAMx_INTRO`; muốn thêm điểm ngữ pháp khác thì khai báo `extraGrammar` trong file nội dung học.
 - Bài 6 và bài 9 được viết tay trực tiếp trong `_data` (bài 6 không có file HTML), không sinh bằng script.
 
-## HSK3, HSK4
+## HSK2, HSK3, HSK4
 
-Các bài `app/studies/chinese/hsk3/_data/` và `hsk4/_data/` (`lesson-01.ts` … `lesson-20.ts`) được soạn tay từ bản scan
-`app/studies/chinese/docs/hsk3/*.pdf`, `docs/hsk4/*.pdf` (render trang bằng `pdftoppm` rồi đọc ảnh), không dùng `import.js`.
-Kiểm tra: `node scripts/hsk-import/check.js app/studies/chinese/hsk3/_data` (tương tự với `hsk4/_data`).
+Các bài `app/studies/chinese/hsk2/_data/` (`lesson-01.ts` … `lesson-15.ts`), `hsk3/_data/` và `hsk4/_data/` (`lesson-01.ts` … `lesson-20.ts`) được soạn tay từ bản scan
+`app/studies/chinese/docs/hsk2/*.pdf`, `docs/hsk3/*.pdf`, `docs/hsk4/*.pdf` (render trang bằng `pdftoppm` rồi đọc ảnh), không dùng `import.js`.
+Kiểm tra: `node scripts/hsk-import/check.js app/studies/chinese/hsk3/_data` (tương tự với `hsk2/_data`, `hsk4/_data`).

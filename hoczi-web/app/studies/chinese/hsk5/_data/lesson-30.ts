@@ -1,0 +1,342 @@
+import type { Lesson } from "../../_lesson/types";
+
+// HSK标准教程5 · 第30课 竞争让市场更高效。 (Cạnh tranh khiến thị trường phát triển.)
+// Nguồn: Giáo trình chuẩn HSK5 tập 2, trang 104–111 (bản scan, đọc từ ảnh trang).
+// Từ vựng, bài khóa, ngữ pháp và luyện nhanh lấy từ sách; phần luyện tập 100 điểm
+// và bản dịch tiếng Việt bài khóa được soạn thêm (cần giáo viên duyệt lại).
+const W_EX1 = ["实用", "接近", "落后", "逃避", "延长"];
+const W_EXT = ["贸易", "谈判", "破产", "贷款"];
+
+export const lesson30: Lesson = {
+  level: "hsk5",
+  no: 30,
+  slug: "bai-30",
+  zh: "竞争让市场更高效。",
+  pinyin: "Jìngzhēng ràng shìchǎng gèng gāoxiào.",
+  vi: "Cạnh tranh khiến thị trường phát triển.",
+  en: "Competition Makes Markets More Efficient",
+  topic: "关注经济 · Quan tâm kinh tế",
+  durationMinutes: 60,
+
+  goals: [
+    "Nắm nghĩa và cách dùng các từ trọng điểm cấp 5: 沙丁鱼、运输、岸、商品、延长、存活、改善、无意、巧妙、实用、天敌、鲇鱼、设备、和平、构成、逃避、不断、旺盛、比例、感想、体会、概念、核心、刺激、活力、落后、本质、员工、危机、有利、挖掘、潜力、决赛、接近、佳、的确…",
+    "Nắm cách kết hợp: 改善 + 条件/环境/关系/服务; 刺激 + 胃/大脑/生产/经济; 有利的 + 形势/条件/地位; 巧妙的 + 方法/设计/回答; 不断 + 发展/改善/追求; 无意（中）+ 发现/看到/听到; 概念 + 明确/模糊; 设备 + 落后/齐全…",
+    "Hiểu và dùng được 无意、有利、的确; phân biệt 接近 và 靠近.",
+    "Đọc hiểu bài khóa về “hiệu ứng cá nheo” (鲇鱼效应) trong kinh tế học, kể lại bằng từ vựng đã học.",
+    "Thảo luận “Bạn có thích cạnh tranh không?”, viết đoạn văn 「竞争的利与弊」.",
+    "Nắm 14 từ mở rộng chủ đề 经济 (kinh tế 2).",
+  ],
+
+  warmUp: [
+    { zh: "你觉得这幅图片想告诉我们什么？说说你对这幅图片的理解。", vi: "Bạn nghĩ bức hình (nhóm nhân viên văn phòng ở tư thế chuẩn bị xuất phát chạy đua) muốn nói gì? Hãy nói cách hiểu của bạn." },
+    { zh: "请试着找出本课和你知道的跟“竞争”有关的词语，并说说你选这些词的道理。（本课生词中的：刺激……）", vi: "Hãy thử tìm các từ trong bài và từ bạn biết liên quan đến “cạnh tranh”, và nói lý do bạn chọn chúng (từ mới trong bài: kích thích…)." },
+  ],
+
+  vocab: [
+    { id: 1, han: "沙丁鱼", py: "shādīngyú", pos: "dt.", meaning: "cá mòi", example: "西班牙人特别喜欢吃沙丁鱼。", exampleVi: "Người Tây Ban Nha đặc biệt thích ăn cá mòi." },
+    { id: 2, han: "运输", py: "yùnshū", pos: "đgt.", meaning: "vận chuyển", example: "沙丁鱼对离开大海后的环境极不适应，运输就成了问题。", exampleVi: "Cá mòi cực kỳ không thích nghi với môi trường sau khi rời biển, nên việc vận chuyển trở thành vấn đề." },
+    { id: 3, han: "岸", py: "àn", pos: "dt.", meaning: "bờ (sông, biển…)", example: "鱼上岸后，过不了多久就会死去。", exampleVi: "Cá lên bờ chẳng bao lâu sẽ chết." },
+    { id: 4, han: "商品", py: "shāngpǐn", pos: "dt.", meaning: "hàng hóa", example: "死掉的沙丁鱼作为商品销售，价格就会便宜很多。", exampleVi: "Cá mòi chết đem bán như hàng hóa thì giá sẽ rẻ hơn nhiều." },
+    { id: 5, han: "延长", py: "yáncháng", pos: "đgt.", meaning: "kéo dài", example: "由于报名的考生太多，学校决定适当延长报名时间。", exampleVi: "Do thí sinh đăng ký quá đông, trường quyết định kéo dài thời gian đăng ký một cách thích hợp." },
+    { id: 6, han: "存活", py: "cúnhuó", pos: "đgt.", meaning: "sống sót, tồn tại", example: "为了延长沙丁鱼的存活期，渔民们想了很多办法。", exampleVi: "Để kéo dài thời gian sống của cá mòi, ngư dân đã nghĩ ra nhiều cách." },
+    { id: 7, han: "改善", py: "gǎishàn", pos: "đgt.", meaning: "cải thiện", example: "情况仍然没有得到太大的改善。", exampleVi: "Tình hình vẫn chưa được cải thiện nhiều." },
+    { id: 8, han: "无意", py: "wúyì", pos: "phó./đgt.", meaning: "tình cờ; không muốn", example: "后来一位渔民无意中发现了一种巧妙而实用的方法。", exampleVi: "Sau đó một ngư dân tình cờ phát hiện ra một cách khéo léo mà thiết thực." },
+    { id: 9, han: "巧妙", py: "qiǎomiào", pos: "tt.", meaning: "khéo léo, tài tình, hay", example: "这是一个巧妙的设计。", exampleVi: "Đây là một thiết kế khéo léo." },
+    { id: 10, han: "实用", py: "shíyòng", pos: "tt.", meaning: "thực dụng, thiết thực", example: "公司在产品包装、宣传推广和销售等方面积累了相当丰富、实用的经验。", exampleVi: "Công ty đã tích lũy kinh nghiệm khá phong phú, thiết thực về bao bì, quảng bá và bán hàng." },
+    { id: 11, han: "天敌", py: "tiāndí", pos: "dt.", meaning: "kẻ thù tự nhiên", example: "把几条沙丁鱼的天敌鲇鱼放进装鱼的设备中。", exampleVi: "Thả vài con cá nheo – thiên địch của cá mòi – vào thùng đựng cá." },
+    { id: 12, han: "鲇鱼", py: "niányú", pos: "dt.", meaning: "cá nheo", example: "因为鲇鱼是食肉鱼，它会四处游动寻找小鱼吃。", exampleVi: "Vì cá nheo là cá ăn thịt, nó sẽ bơi khắp nơi tìm cá nhỏ để ăn." },
+    { id: 13, han: "设备", py: "shèbèi", pos: "dt.", meaning: "thiết bị, dụng cụ", example: "这家工厂的设备很落后。", exampleVi: "Thiết bị của nhà máy này rất lạc hậu." },
+    { id: 14, han: "和平", py: "hépíng", pos: "tt.", meaning: "hòa bình", example: "鲇鱼无法和沙丁鱼和平共处。", exampleVi: "Cá nheo không thể chung sống hòa bình với cá mòi." },
+    { id: 15, han: "构成", py: "gòuchéng", pos: "đgt.", meaning: "tạo thành, hình thành", example: "它对沙丁鱼构成威胁。", exampleVi: "Nó tạo thành mối đe dọa với cá mòi." },
+    { id: 16, han: "逃避", py: "táobì", pos: "đgt.", meaning: "chạy trốn, trốn tránh", example: "遇到困难不应该逃避，应该积极地面对。", exampleVi: "Gặp khó khăn không nên trốn tránh, nên tích cực đối mặt." },
+    { id: 17, han: "不断", py: "búduàn", pos: "phó.", meaning: "không ngừng, liên tục", example: "为了逃避天敌，沙丁鱼自然会不断地加速游动。", exampleVi: "Để trốn thiên địch, cá mòi tự nhiên sẽ không ngừng tăng tốc bơi." },
+    { id: 18, han: "旺盛", py: "wàngshèng", pos: "tt.", meaning: "dồi dào, mạnh mẽ", example: "沙丁鱼保持了旺盛的生命力。", exampleVi: "Cá mòi giữ được sức sống dồi dào." },
+    { id: 19, han: "比例", py: "bǐlì", pos: "dt.", meaning: "tỷ lệ", example: "存活的比例大大提高。", exampleVi: "Tỷ lệ sống sót tăng lên rất nhiều." },
+    { id: 20, han: "感想", py: "gǎnxiǎng", pos: "dt.", meaning: "cảm tưởng, cảm nghĩ", example: "看到这里，你有什么感想和体会呢？", exampleVi: "Đọc đến đây, bạn có cảm nghĩ và nhận thức gì?" },
+    { id: 21, han: "体会", py: "tǐhuì", pos: "dt.", meaning: "nhận thức, sự hiểu biết", example: "让孩子体会到自己的意见受到尊重，这一点很重要。", exampleVi: "Để trẻ cảm nhận được ý kiến của mình được tôn trọng, điều này rất quan trọng." },
+    { id: 22, han: "概念", py: "gàiniàn", pos: "dt.", meaning: "khái niệm, ý niệm", example: "这个概念的核心是什么？", exampleVi: "Cốt lõi của khái niệm này là gì?" },
+    { id: 23, han: "核心", py: "héxīn", pos: "dt.", meaning: "phần cốt lõi, nòng cốt", example: "这个概念的核心是：一个市场如果能采取一种措施，刺激企业活跃起来……", exampleVi: "Cốt lõi của khái niệm này là: nếu một thị trường có biện pháp kích thích doanh nghiệp năng động lên…" },
+    { id: 24, han: "刺激", py: "cìjī", pos: "đgt.", meaning: "kích thích, thúc đẩy", example: "这些措施刺激了经济的发展。", exampleVi: "Những biện pháp này kích thích sự phát triển kinh tế." },
+    { id: 25, han: "活力", py: "huólì", pos: "dt.", meaning: "sức sống", example: "就能使企业获得足够的活力。", exampleVi: "Thì có thể giúp doanh nghiệp có đủ sức sống." },
+    { id: 26, han: "落后", py: "luòhòu", pos: "đgt./tt.", meaning: "tụt lại đằng sau, thụt lùi; lạc hậu", example: "中国各地区经济发展水平不平衡，中西部落后于东南沿海地区。", exampleVi: "Trình độ phát triển kinh tế các vùng Trung Quốc không đồng đều, miền Trung và Tây tụt hậu so với vùng duyên hải Đông Nam." },
+    { id: 27, han: "本质", py: "běnzhì", pos: "dt.", meaning: "bản chất", example: "从本质上说，“鲇鱼效应”就是一种压力效应。", exampleVi: "Về bản chất, “hiệu ứng cá nheo” chính là một hiệu ứng áp lực." },
+    { id: 28, han: "员工", py: "yuángōng", pos: "dt.", meaning: "công nhân viên", example: "“鲇鱼效应”使得企业和员工产生一种危机感。", exampleVi: "“Hiệu ứng cá nheo” khiến doanh nghiệp và nhân viên nảy sinh cảm giác nguy cơ." },
+    { id: 29, han: "危机", py: "wēijī", pos: "dt.", meaning: "sự khủng hoảng", example: "公司正面临一场危机。", exampleVi: "Công ty đang đối mặt với một cuộc khủng hoảng." },
+    { id: 30, han: "有利", py: "yǒulì", pos: "tt.", meaning: "có lợi, có ích", example: "高高的个子、漂亮的外表，都是他的有利条件。", exampleVi: "Vóc dáng cao, ngoại hình đẹp đều là điều kiện có lợi của anh ấy." },
+    { id: 31, han: "挖掘", py: "wājué", pos: "đgt.", meaning: "khai thác, đào", example: "适度的压力更加有助于挖掘我们的潜力。", exampleVi: "Áp lực vừa phải càng giúp khai thác tiềm năng của chúng ta." },
+    { id: 32, han: "潜力", py: "qiánlì", pos: "dt.", meaning: "tiềm lực", example: "这个孩子很有潜力。", exampleVi: "Đứa trẻ này rất có tiềm năng." },
+    { id: 33, han: "决赛", py: "juésài", pos: "đgt./dt.", meaning: "thi đấu chung kết", example: "运动员每到参加比赛，尤其是决赛时，一定要将自己调整到接近最佳状态。", exampleVi: "Vận động viên mỗi khi thi đấu, nhất là trận chung kết, nhất định phải điều chỉnh bản thân về gần trạng thái tốt nhất." },
+    { id: 34, han: "接近", py: "jiējìn", pos: "đgt.", meaning: "đến gần, tới gần", example: "参加本届运动会的运动员人数接近一万人。", exampleVi: "Số vận động viên tham gia đại hội thể thao lần này gần một vạn người." },
+    { id: 35, han: "佳", py: "jiā", pos: "tt.", meaning: "tốt, đẹp, hay", example: "他今天状态不佳。", exampleVi: "Hôm nay trạng thái của anh ấy không tốt." },
+    { id: 36, han: "的确", py: "díquè", pos: "phó.", meaning: "đích thực, quả thực", example: "他的确是我所教过的学生中最聪明的。", exampleVi: "Cậu ấy quả thực là người thông minh nhất trong số học sinh tôi từng dạy." },
+    { id: 37, han: "出口", py: "chūkǒu", pos: "đgt.", meaning: "xuất khẩu", example: "这家公司的产品主要出口到欧洲。", exampleVi: "Sản phẩm công ty này chủ yếu xuất khẩu sang châu Âu.", group: "extended" },
+    { id: 38, han: "进口", py: "jìnkǒu", pos: "đgt.", meaning: "nhập khẩu", example: "这些水果是进口的。", exampleVi: "Những trái cây này là hàng nhập khẩu.", group: "extended" },
+    { id: 39, han: "贸易", py: "màoyì", pos: "dt.", meaning: "mậu dịch, thương mại", example: "他从事对外贸易工作多年，积累了丰富的经验。", exampleVi: "Anh ấy làm công tác ngoại thương nhiều năm, tích lũy kinh nghiệm phong phú.", group: "extended" },
+    { id: 40, han: "谈判", py: "tánpàn", pos: "đgt./dt.", meaning: "đàm phán", example: "谈判进行得还算顺利，最快下周就可以签合同了。", exampleVi: "Đàm phán diễn ra khá thuận lợi, nhanh nhất tuần sau có thể ký hợp đồng.", group: "extended" },
+    { id: 41, han: "合同", py: "hétong", pos: "dt.", meaning: "hợp đồng", example: "我们下周签合同。", exampleVi: "Tuần sau chúng ta ký hợp đồng.", group: "extended" },
+    { id: 42, han: "中介", py: "zhōngjiè", pos: "dt.", meaning: "môi giới, trung gian", example: "我们是通过中介找到这套房子的。", exampleVi: "Chúng tôi tìm được căn hộ này qua môi giới.", group: "extended" },
+    { id: 43, han: "破产", py: "pò chǎn", pos: "đgt.", meaning: "phá sản", example: "公司的项目挺不错，但资金出了问题，目前面临破产危险。", exampleVi: "Dự án của công ty khá tốt, nhưng vốn gặp vấn đề, hiện đang đứng trước nguy cơ phá sản.", group: "extended" },
+    { id: 44, han: "股票", py: "gǔpiào", pos: "dt.", meaning: "cổ phiếu", example: "他喜欢买股票。", exampleVi: "Anh ấy thích mua cổ phiếu.", group: "extended" },
+    { id: 45, han: "账户", py: "zhànghù", pos: "dt.", meaning: "tài khoản", example: "请把钱转到我的账户里。", exampleVi: "Hãy chuyển tiền vào tài khoản của tôi.", group: "extended" },
+    { id: 46, han: "利息", py: "lìxī", pos: "dt.", meaning: "tiền lãi", example: "现在银行的利息不高。", exampleVi: "Bây giờ lãi suất ngân hàng không cao.", group: "extended" },
+    { id: 47, han: "贷款", py: "dàikuǎn", pos: "dt./đgt.", meaning: "khoản vay; vay tiền", example: "买房的贷款还有三四年就可以还清了。", exampleVi: "Khoản vay mua nhà còn ba bốn năm nữa là trả xong.", group: "extended" },
+    { id: 48, han: "汇率", py: "huìlǜ", pos: "dt.", meaning: "tỷ giá", example: "今天美元的汇率是多少？", exampleVi: "Hôm nay tỷ giá đô la là bao nhiêu?", group: "extended" },
+  ],
+
+  text: {
+    title: "课文 竞争让市场更高效",
+    paragraphs: [
+      {
+        zh: "西班牙人特别喜欢吃沙丁鱼。但沙丁鱼对离开大海后的环境极不适应，运输就成了问题。鱼上岸后，过不了多久就会死去。而死掉的沙丁鱼口感很差，作为商品销售，价格就会便宜很多。如果上岸时沙丁鱼还活着，鱼的卖价可以涨很多倍。",
+        vi: "Người Tây Ban Nha đặc biệt thích ăn cá mòi. Nhưng cá mòi cực kỳ không thích nghi với môi trường sau khi rời biển, việc vận chuyển trở thành vấn đề. Cá lên bờ chẳng bao lâu sẽ chết. Mà cá mòi chết thì vị rất kém, đem bán như hàng hóa thì giá rẻ đi nhiều. Nếu lúc lên bờ cá mòi vẫn còn sống, giá bán có thể tăng gấp nhiều lần.",
+        questions: ["沙丁鱼的运输为什么成了问题？", "请用重点词语复述：环境、适应、岸、口感、销售、涨"],
+      },
+      {
+        zh: "为了延长沙丁鱼的存活期，减少经济损失，渔民们想了很多办法，但情况仍然没有得到太大的改善。后来一位渔民无意中发现了一种巧妙而实用的方法：把几条沙丁鱼的天敌鲇鱼放进装鱼的设备中。因为鲇鱼是食肉鱼，无法和沙丁鱼和平共处，它会四处游动寻找小鱼吃，对沙丁鱼构成威胁。为了逃避天敌，沙丁鱼自然会不断地加速游动，从而保持了旺盛的生命力，存活的比例大大提高。",
+        vi: "Để kéo dài thời gian sống của cá mòi, giảm tổn thất kinh tế, ngư dân nghĩ ra rất nhiều cách nhưng tình hình vẫn chưa được cải thiện nhiều. Sau đó một ngư dân tình cờ phát hiện ra một cách khéo léo mà thiết thực: thả vài con cá nheo – thiên địch của cá mòi – vào thùng đựng cá. Vì cá nheo là cá ăn thịt, không thể chung sống hòa bình với cá mòi, nó bơi khắp nơi tìm cá nhỏ để ăn, tạo thành mối đe dọa với cá mòi. Để trốn thiên địch, cá mòi tự nhiên không ngừng tăng tốc bơi, nhờ đó giữ được sức sống dồi dào, tỷ lệ sống sót tăng lên rất nhiều.",
+        questions: ["渔民无意中发现了什么方法？", "为什么放进鲇鱼以后，沙丁鱼存活的比例提高了？", "请用重点词语复述：延长、改善、无意、巧妙、实用、逃避、不断、比例"],
+      },
+      {
+        zh: "看到这里，你有什么感想和体会呢？其实，这在经济学上被称为“鲇鱼效应”。鲇鱼效应对于市场经济以及现代企业管理都有着重要的启发作用。这个概念的核心是：一个市场如果能采取一种措施，刺激企业活跃起来，就能使企业获得足够的活力，在市场中积极参与竞争而不至于落后，同时这样反过来又能促使市场更为高效。",
+        vi: "Đọc đến đây, bạn có cảm nghĩ và nhận thức gì? Thật ra, điều này trong kinh tế học được gọi là “hiệu ứng cá nheo”. Hiệu ứng cá nheo có tác dụng gợi mở quan trọng với kinh tế thị trường cũng như quản lý doanh nghiệp hiện đại. Cốt lõi của khái niệm này là: nếu một thị trường có thể áp dụng một biện pháp kích thích doanh nghiệp năng động lên, thì có thể giúp doanh nghiệp có đủ sức sống, tích cực tham gia cạnh tranh trên thị trường mà không đến nỗi tụt hậu; đồng thời ngược lại cũng thúc đẩy thị trường hiệu quả hơn.",
+        questions: ["什么是“鲇鱼效应”？", "请用重点词语复述：体会、概念、核心、刺激、活力、落后"],
+      },
+      {
+        zh: "从本质上说，“鲇鱼效应”使得企业和员工产生一种危机感，其实就是一种压力效应。很多研究发现，适度的压力有利于我们保持良好的状态，更加有助于挖掘我们的潜力，从而提高个人的工作效率。比如运动员每到参加比赛，尤其是决赛时，一定要将自己调整到接近最佳状态，让自己感到适度的压力，如果他不紧张、没压力感，则不利于出成绩。因此，“鲇鱼效应”的确对挖掘员工潜力、提高企业活力具有积极的意义。",
+        vi: "Về bản chất, “hiệu ứng cá nheo” khiến doanh nghiệp và nhân viên nảy sinh cảm giác nguy cơ, thực chất là một hiệu ứng áp lực. Nhiều nghiên cứu phát hiện, áp lực vừa phải có lợi cho việc giữ trạng thái tốt, càng giúp khai thác tiềm năng của chúng ta, từ đó nâng cao hiệu suất làm việc cá nhân. Chẳng hạn vận động viên mỗi khi thi đấu, nhất là trận chung kết, nhất định phải điều chỉnh bản thân về gần trạng thái tốt nhất, để mình cảm thấy áp lực vừa phải; nếu không căng thẳng, không có cảm giác áp lực thì không có lợi cho việc đạt thành tích. Vì vậy, “hiệu ứng cá nheo” quả thực có ý nghĩa tích cực trong việc khai thác tiềm năng nhân viên, nâng cao sức sống doanh nghiệp.",
+        questions: ["“鲇鱼效应”的本质是什么？", "适度的压力有什么好处？", "请用重点词语复述：本质、危机、有利、挖掘、潜力、接近、的确"],
+      },
+    ],
+    notes: [
+      "西班牙 (Xībānyá): Tây Ban Nha. 鲇鱼效应 (niányú xiàoyìng): hiệu ứng cá nheo.",
+      "和平共处: chung sống hòa bình. 不至于: không đến nỗi.",
+      "Bài khóa cải biên từ 《每天学一点经济学》.",
+    ],
+  },
+
+  grammar: [
+    {
+      word: "无意",
+      title: "Động từ / phó từ “无意”",
+      usages: [
+        { label: "Động từ – không muốn", explain: "Nghĩa là không muốn, không có dự định.", examples: ["他无意伤害任何人。", "我无意打扰您，不过我可以跟您谈一会儿吗？"] },
+        { label: "Phó từ – tình cờ, vô ý", explain: "Nghĩa là không cố ý, thường nói “无意中……”.", examples: ["后来一位渔民无意中发现了一种巧妙而实用的方法。", "她在收拾花园时，无意地找到了这只耳环。"] },
+      ],
+    },
+    {
+      word: "有利",
+      title: "Tính từ “có lợi”",
+      usages: [
+        {
+          label: "Cách dùng",
+          explain: "Tính từ, nghĩa là có lợi, có ích. Thường dùng “有利于” biểu thị có lợi cho người hoặc sự việc nào đó. Dạng phủ định là “不利”.",
+          examples: [
+            "高高的个子、漂亮的外表，都是他的有利条件。",
+            "很多研究发现，适度的压力有利于我们保持良好的状态，……",
+            "笑能促进心肺活动，改善肌肉紧张状况，对睡眠也是有利的。",
+          ],
+        },
+      ],
+    },
+    {
+      word: "的确",
+      title: "Phó từ “quả thực”",
+      usages: [
+        {
+          label: "Cách dùng",
+          explain: "Phó từ, nghĩa là hoàn toàn xác thực, thật sự; có thể lặp lại thành “的的确确”.",
+          examples: [
+            "因此，“鲇鱼效应”的确对挖掘员工潜力、提高企业活力具有积极的意义。",
+            "他的确是我所教过的学生中最聪明的。",
+            "咱们总裁选择李阳负责的的确确有些冒险，因为他太年轻了。",
+          ],
+        },
+      ],
+    },
+    {
+      word: "接近 / 靠近",
+      title: "Phân biệt 接近 và 靠近",
+      usages: [
+        { label: "Điểm giống", explain: "Đều là động từ, đều có nghĩa “khoảng cách giữa hai bên gần, hoặc chuyển động về phía mục tiêu khiến khoảng cách thu hẹp”, có lúc thay được cho nhau.", examples: ["这个地方接近/靠近北极地区，夏季白天很长，天亮得也很早。"] },
+        { label: "接近", explain: "Đi với người, sự vật, thời gian, địa điểm, số lượng cụ thể; còn đi với sự vật trừu tượng; còn biểu thị khoảng cách không lớn.", examples: ["接近下午一点时，救护车终于赶到了。", "经过努力，现在我们已越来越接近年初定下的销售目标了。", "他们俩的水平非常接近，这场比赛真不好说谁会赢。"] },
+        { label: "靠近", explain: "Đi với người, sự vật, địa điểm cụ thể, nhưng thường không dùng cho thời gian, số lượng; thường không đi với sự vật trừu tượng.", examples: ["他们挤在靠近车窗的地方，脸对脸离得很近。"] },
+      ],
+    },
+  ],
+
+  wordChoice: [
+    { sentence: "遇到困难不应该___，应该积极地面对。", options: W_EX1, answer: "逃避" },
+    { sentence: "由于报名的考生太多，学校决定适当___报名时间。", options: W_EX1, answer: "延长" },
+    { sentence: "公司在产品包装、宣传推广和销售等方面积累了相当丰富、___的经验。", options: W_EX1, answer: "实用" },
+    { sentence: "中国各地区经济发展水平不平衡，中西部___于东南沿海地区。", options: W_EX1, answer: "落后" },
+    { sentence: "参加本届运动会的运动员人数___一万人。", options: W_EX1, answer: "接近" },
+    { sentence: "你听谁说刘方要结婚了？消息___吗？", options: ["的确", "确实"], answer: "确实" },
+    { sentence: "主任临时有点儿事，下午的会___到明天了。", options: ["延长", "推迟"], answer: "推迟" },
+    { sentence: "让孩子___到自己的意见受到尊重，这一点很重要。", options: ["体会", "感想"], answer: "体会" },
+    { sentence: "他___就看不见这些美丽的花呀。", options: ["本质", "根本"], answer: "根本" },
+    { sentence: "做这个动作时，大腿要尽量___胸部。", options: ["接近", "靠近"], answer: "靠近" },
+    { sentence: "直到天快亮的时候，他的体温才___正常。", options: ["接近", "靠近"], answer: "接近" },
+    { sentence: "这项技术已___世界先进水平。", options: ["接近", "靠近"], answer: "接近" },
+    { sentence: "对于这个问题，几国的意见很___。", options: ["接近", "靠近"], answer: "接近" },
+    { sentence: "他从事对外___工作多年，积累了丰富的经验。", options: W_EXT, answer: "贸易" },
+    { sentence: "___进行得还算顺利，最快下周就可以签合同了。", options: W_EXT, answer: "谈判" },
+    { sentence: "公司的项目挺不错，但资金出了问题，目前面临___危险。", options: W_EXT, answer: "破产" },
+    { sentence: "买房的___还有三四年就可以还清了。", options: W_EXT, answer: "贷款" },
+  ],
+
+  practice: [
+    {
+      id: "listen", kind: "listen-pick", icon: "🎧", title: "Phần 1 · Nghe - chọn chữ Hán", points: 8,
+      subtitle: "Bấm 🔊 nghe từ, sau đó chọn đúng chữ Hán tương ứng.",
+      items: [
+        { vocabId: 2, distractors: [3, 4, 1] },
+        { vocabId: 7, distractors: [5, 6, 8] },
+        { vocabId: 9, distractors: [10, 11, 13] },
+        { vocabId: 15, distractors: [14, 16, 17] },
+        { vocabId: 18, distractors: [19, 20, 21] },
+        { vocabId: 24, distractors: [22, 23, 25] },
+        { vocabId: 29, distractors: [27, 28, 30] },
+        { vocabId: 34, distractors: [33, 35, 36] },
+      ],
+    },
+    {
+      id: "pinyin", kind: "pinyin", icon: "✍️", title: "Phần 2 · Điền pinyin", points: 8,
+      subtitle: "Gõ pinyin không dấu thanh cũng được chấp nhận, nhưng cố gắng gõ đúng dấu thanh nhé.",
+      vocabIds: [6, 12, 16, 19, 26, 31, 32, 36],
+    },
+    {
+      id: "order", kind: "order", icon: "🧩", title: "Phần 3 · Sắp xếp câu", points: 10,
+      subtitle: "Bấm lần lượt các mảnh theo đúng thứ tự để ghép thành câu. Bấm vào mảnh đã chọn để bỏ ra.",
+      items: [
+        { tokens: ["鱼上岸后，", "过不了", "多久", "就会", "死去", "。"], answer: "鱼上岸后，过不了多久就会死去。", vi: "Cá lên bờ chẳng bao lâu sẽ chết." },
+        { tokens: ["一位渔民", "无意中", "发现了", "一种巧妙的", "方法", "。"], answer: "一位渔民无意中发现了一种巧妙的方法。", vi: "Một ngư dân tình cờ phát hiện ra một cách khéo léo." },
+        { tokens: ["鲇鱼", "对沙丁鱼", "构成", "威胁", "。"], answer: "鲇鱼对沙丁鱼构成威胁。", vi: "Cá nheo tạo thành mối đe dọa với cá mòi." },
+        { tokens: ["适度的压力", "有利于", "我们", "保持", "良好的状态", "。"], answer: "适度的压力有利于我们保持良好的状态。", vi: "Áp lực vừa phải có lợi cho việc giữ trạng thái tốt." },
+        { tokens: ["他", "的确", "是", "最聪明的", "学生", "。"], answer: "他的确是最聪明的学生。", vi: "Cậu ấy quả thực là học sinh thông minh nhất." },
+      ],
+    },
+    {
+      id: "fill-1", kind: "fill-blanks", icon: "💬", title: "Phần 4 · Hoàn thành bài khóa (đoạn 1–2)", points: 10,
+      subtitle: "Bấm vào chỗ trống rồi bấm từ đúng trong ngân hàng từ. Bấm lại chỗ đã điền để xóa.",
+      passages: [
+        { title: "Đoạn 1–2 · Cá mòi và cá nheo", text: "沙丁鱼对离开大海后的环境极不适应，{{c1}}就成了问题。鱼上{{c2}}后，过不了多久就会死去。为了{{c3}}沙丁鱼的存活期，渔民们想了很多办法，但情况仍然没有得到太大的{{c4}}。后来一位渔民{{c5}}中发现了一种{{c6}}而实用的方法。鲇鱼无法和沙丁鱼{{c7}}共处，对沙丁鱼{{c8}}威胁。为了{{c9}}天敌，沙丁鱼自然会{{c10}}地加速游动。" },
+      ],
+      answers: { c1: "运输", c2: "岸", c3: "延长", c4: "改善", c5: "无意", c6: "巧妙", c7: "和平", c8: "构成", c9: "逃避", c10: "不断" },
+      bank: ["运输", "岸", "延长", "改善", "无意", "巧妙", "和平", "构成", "逃避", "不断", "推迟", "实用", "比例"],
+    },
+    {
+      id: "fill-2", kind: "fill-blanks", icon: "📄", title: "Phần 5 · Hoàn thành bài khóa (đoạn 3–4)", points: 10,
+      subtitle: "Điền từ thích hợp vào đoạn văn về “hiệu ứng cá nheo”.",
+      passages: [
+        { title: "Đoạn 3–4 · Hiệu ứng cá nheo", text: "看到这里，你有什么{{e1}}和体会呢？这个{{e2}}的核心是：一个市场如果能采取一种措施，{{e3}}企业活跃起来，就能使企业获得足够的{{e4}}，在市场中积极参与竞争而不至于{{e5}}。从{{e6}}上说，“鲇鱼效应”使得企业和员工产生一种{{e7}}感。适度的压力{{e8}}于我们保持良好的状态，更加有助于挖掘我们的{{e9}}。“鲇鱼效应”{{e10}}对提高企业活力具有积极的意义。" },
+      ],
+      answers: { e1: "感想", e2: "概念", e3: "刺激", e4: "活力", e5: "落后", e6: "本质", e7: "危机", e8: "有利", e9: "潜力", e10: "的确" },
+      bank: ["感想", "概念", "刺激", "活力", "落后", "本质", "危机", "有利", "潜力", "的确", "根本", "核心", "接近"],
+    },
+    {
+      id: "zh-vi", kind: "translate-zh-vi", icon: "🇨🇳", title: "Phần 6 · Dịch Trung → Việt", points: 6,
+      subtitle: "Dịch các câu sau sang tiếng Việt. Hệ thống chấm theo từ khóa chính, hãy so sánh với bản dịch gợi ý.",
+      items: [
+        { zh: "遇到困难不应该逃避，应该积极地面对。", vi: "Gặp khó khăn không nên trốn tránh, nên tích cực đối mặt.", keywords: ["khó khăn", "trốn tránh", "đối mặt"] },
+        { zh: "沙丁鱼存活的比例大大提高。", vi: "Tỷ lệ sống sót của cá mòi tăng lên rất nhiều.", keywords: ["cá mòi", "tỷ lệ", "tăng"] },
+        { zh: "我无意打扰您。", vi: "Tôi không có ý làm phiền ông.", keywords: ["không", "làm phiền"] },
+        { zh: "笑对睡眠也是有利的。", vi: "Cười cũng có lợi cho giấc ngủ.", keywords: ["cười", "có lợi", "giấc ngủ"] },
+        { zh: "他们俩的水平非常接近。", vi: "Trình độ của hai người họ rất gần nhau.", keywords: ["trình độ", "gần"] },
+      ],
+    },
+    {
+      id: "vi-zh", kind: "translate-vi-zh", icon: "🇻🇳", title: "Phần 7 · Dịch Việt → Trung", points: 6,
+      subtitle: "Dịch các câu sau sang tiếng Trung, dùng từ vựng – ngữ pháp đã học trong bài.",
+      items: [
+        { vi: "Cậu ấy quả thực là người thông minh nhất.", answers: ["他的确是最聪明的。", "他的确是最聪明的人。"] },
+        { vi: "Gần một giờ chiều xe cứu thương mới đến.", answers: ["接近下午一点时，救护车才赶到。", "接近下午一点时，救护车终于赶到了。", "接近下午一点救护车才到。"] },
+        { vi: "Đứa trẻ này rất có tiềm năng.", answers: ["这个孩子很有潜力。"] },
+        { vi: "Thiết bị của nhà máy này rất lạc hậu.", answers: ["这家工厂的设备很落后。", "这个工厂的设备很落后。"] },
+        { vi: "Đọc sách có lợi cho trẻ em.", answers: ["读书有利于孩子。", "看书对孩子有利。", "读书对孩子有利。", "看书有利于孩子。"] },
+      ],
+    },
+    {
+      id: "true-false", kind: "true-false", icon: "✅", title: "Phần 8 · Đúng / Sai", points: 8,
+      subtitle: "Dựa vào nội dung bài khóa, chọn Đúng hoặc Sai.",
+      items: [
+        { q: "西班牙人特别喜欢吃沙丁鱼。", a: true },
+        { q: "沙丁鱼很适应离开大海后的环境。", a: false },
+        { q: "活着的沙丁鱼比死掉的贵很多。", a: true },
+        { q: "鲇鱼是沙丁鱼的天敌。", a: true },
+        { q: "放进鲇鱼以后，沙丁鱼都被吃掉了。", a: false },
+        { q: "“鲇鱼效应”本质上是一种压力效应。", a: true },
+        { q: "研究发现，压力越大越好。", a: false },
+        { q: "运动员参加决赛时，不应该有任何压力。", a: false },
+      ],
+    },
+    {
+      id: "dictation", kind: "dictation", icon: "🎙️", title: "Phần 9 · Nghe - viết (chính tả)", points: 10,
+      subtitle: "Bấm 🔊 nghe câu (nghe lại bao nhiêu lần cũng được), gõ lại đúng chữ Hán và dấu câu.",
+      items: [
+        "遇到困难不应该逃避。",
+        "情况没有得到改善。",
+        "这个孩子很有潜力。",
+        "他的确是最聪明的。",
+        "竞争让市场更高效。",
+      ],
+    },
+    {
+      id: "essay", kind: "essay", icon: "📝", title: "Phần 10 · Viết đoạn văn", points: 7,
+      subtitle: "Tự luận – hệ thống chỉ chấm sơ bộ độ dài và từ vựng sử dụng.",
+      prompt: "请以“竞争的利与弊”为题，谈一谈你的看法。 (Hãy viết về chủ đề “Lợi và hại của cạnh tranh”.)",
+      requirement: "Yêu cầu: viết ít nhất 100 chữ Hán, sử dụng tối thiểu 5 từ vựng và 2 điểm ngữ pháp của bài 30 (无意, 有利, 的确, 接近/靠近).",
+      minChars: 100,
+      minVocab: 5,
+      grammarMarkers: ["无意", "有利", "的确", "接近", "靠近"],
+      minGrammar: 2,
+      sample: "竞争的确有很多好处。就像“鲇鱼效应”说的那样，适度的竞争能刺激我们不断进步，有利于挖掘我们的潜力。在我们班，有一位同学汉语说得特别好，我无意中发现自己总是想和她比一比，结果我的汉语水平提高得很快，现在已经接近她的水平了。不过，竞争也有不利的一面。如果压力太大，人会变得很紧张，甚至想逃避。有些人还会把别人的成绩看作一种威胁，影响了朋友之间的关系。所以我觉得，我们应该积极地参与竞争，但也要保持良好的心态。",
+    },
+    {
+      id: "gram-1", kind: "grammar-fill", icon: "🧠", title: "Phần 11 · Ngữ pháp: 接近 / 靠近", points: 6,
+      subtitle: "Chọn 接近 hoặc 靠近 cho mỗi chỗ trống.",
+      grammarWord: "接近 / 靠近",
+      options: ["接近", "靠近"],
+      items: [
+        { q: "做这个动作时，大腿要尽量___胸部。", answers: ["靠近"] },
+        { q: "直到天快亮的时候，他的体温才___正常。", answers: ["接近"] },
+        { q: "这项技术已___世界先进水平。", answers: ["接近"] },
+        { q: "对于这个问题，几国的意见很___。", answers: ["接近"] },
+        { q: "___下午一点时，救护车终于赶到了。", answers: ["接近"] },
+        { q: "他们挤在___车窗的地方，脸对脸离得很近。", answers: ["靠近"] },
+        { q: "现在我们已越来越___年初定下的销售目标了。", answers: ["接近"] },
+        { q: "参加本届运动会的运动员人数___一万人。", answers: ["接近"] },
+      ],
+    },
+    {
+      id: "gram-2", kind: "grammar-fill", icon: "🧠", title: "Phần 12 · Ngữ pháp: 无意 / 有利", points: 6,
+      subtitle: "Chọn 无意 hoặc 有利 cho mỗi chỗ trống.",
+      grammarWord: "无意 / 有利",
+      options: ["无意", "有利"],
+      items: [
+        { q: "他___伤害任何人。", answers: ["无意"] },
+        { q: "高高的个子、漂亮的外表，都是他的___条件。", answers: ["有利"] },
+        { q: "后来一位渔民___中发现了一种巧妙而实用的方法。", answers: ["无意"] },
+        { q: "适度的压力___于我们保持良好的状态。", answers: ["有利"] },
+        { q: "她在收拾花园时，___地找到了这只耳环。", answers: ["无意"] },
+        { q: "笑能促进心肺活动，对睡眠也是___的。", answers: ["有利"] },
+        { q: "真对不起！踩到您的脚了，我是___的。", answers: ["无意"] },
+        { q: "与电子阅读相比，纸质阅读更___于保护眼睛。", answers: ["有利"] },
+      ],
+    },
+    {
+      id: "gram-3", kind: "grammar-fill", icon: "🧠", title: "Phần 13 · Ngữ pháp: 的确", points: 5,
+      subtitle: "Điền phó từ thích hợp vào chỗ trống (的确 – quả thực).",
+      grammarWord: "的确",
+      items: [
+        { q: "“鲇鱼效应”___对挖掘员工潜力具有积极的意义。", answers: ["的确"] },
+        { q: "他___是我所教过的学生中最聪明的。", answers: ["的确"] },
+        { q: "咱们总裁选择李阳负责___有些冒险，因为他太年轻了。", answers: ["的确"] },
+        { q: "丽丽的歌声优美动人，听她唱歌___是一种享受。", answers: ["的确"] },
+        { q: "卧室的窗帘___有些日子没洗了。", answers: ["的确"] },
+        { q: "你这次去九寨沟拍的照片___很漂亮。", answers: ["的确"] },
+        { q: "这个办法___很巧妙。", answers: ["的确"] },
+        { q: "他说的___是事实。", answers: ["的确"] },
+      ],
+    },
+  ],
+};

@@ -1,0 +1,350 @@
+import type { Lesson } from "../../_lesson/types";
+
+// HSK标准教程5 · 第15课 纸上谈兵 (Đánh trận trên giấy)
+// Nguồn: Giáo trình chuẩn HSK5 tập 1, trang 135–143 (bản scan, đọc từ ảnh trang).
+// Từ vựng, bài khóa, ngữ pháp và luyện nhanh lấy từ sách; phần luyện tập 100 điểm
+// và bản dịch tiếng Việt bài khóa được soạn thêm (cần giáo viên duyệt lại).
+const W_EX1 = ["宝贵", "阻止", "善于", "独立", "挑战", "糊涂"];
+const W_EXT = ["枪", "胜利", "英雄", "射击"];
+
+export const lesson15: Lesson = {
+  level: "hsk5",
+  no: 15,
+  slug: "bai-15",
+  zh: "纸上谈兵",
+  pinyin: "Zhǐshàng tánbīng",
+  vi: "Đánh trận trên giấy",
+  en: "Fighting a War on Paper",
+  topic: "放眼世界 · Nhìn ra thế giới",
+  durationMinutes: 60,
+
+  goals: [
+    "Nắm nghĩa và cách dùng các từ trọng điểm cấp 5: 军事、理论、作战、毛病、道理、迟早、军队、形势、命令、绝对、主动、挑战、胜利、上当、再三、阻止、独立、资格、糊涂、轻视、方案、宝贵、灵活…",
+    "Nắm cách kết hợp: 轻视 + 对方/科学/成果; 善于 + 学习/发现/总结; 糊涂的 + 孩子/看法; 宝贵的 + 机会/生命/时间; 独立地/主动地 + động từ; 形势 + 好转/严重/紧张…",
+    "Hiểu và dùng được 动词 + 得/不 + 过、迟早、再三; phân biệt 胜利 và 成功.",
+    "Đọc hiểu câu chuyện thành ngữ 纸上谈兵 về Triệu Quát, kể lại bằng từ vựng đã học.",
+    "Thảo luận về quan hệ giữa lý luận và thực tế, viết đoạn văn 「从赵括之死想到的」.",
+    "Nắm 7 từ mở rộng chủ đề 军事 (quân sự).",
+  ],
+
+  warmUp: [
+    { zh: "战国末期，秦国渐渐强大，最后打败其他六国，统一了中国。这段时期的历史你了解吗？请从图中找到秦国和赵国的位置。", vi: "Cuối thời Chiến Quốc, nước Tần dần lớn mạnh, cuối cùng đánh bại sáu nước còn lại, thống nhất Trung Quốc. Bạn có hiểu về giai đoạn lịch sử này không? Hãy tìm vị trí nước Tần và nước Triệu trên bản đồ." },
+    { zh: "请从生词表中找出与军事有关的词语，并说说它们是什么意思。（名词：军事、军队、阵地……；动词：作战、进攻、守……）", vi: "Hãy tìm trong bảng từ mới các từ liên quan đến quân sự và nói nghĩa của chúng (danh từ: quân sự, quân đội, trận địa…; động từ: tác chiến, tấn công, phòng thủ…)." },
+  ],
+
+  vocab: [
+    { id: 1, han: "纸上谈兵", py: "zhǐshàng tánbīng", pos: "thành ngữ", meaning: "bàn chuyện đánh giặc trên giấy (lý luận suông)", example: "现在常用“纸上谈兵”讽刺那些只会空谈理论的人。", exampleVi: "Ngày nay thường dùng “bàn binh trên giấy” để châm biếm những người chỉ biết nói lý thuyết suông." },
+    { id: 2, han: "军事", py: "jūnshì", pos: "dt.", meaning: "việc quân", example: "他从小读了不少兵书，跟别人谈论起军事来，没有人说得过他。", exampleVi: "Từ nhỏ cậu ta đọc không ít binh thư, bàn chuyện quân sự với người khác thì không ai nói lại được." },
+    { id: 3, han: "敌人", py: "dírén", pos: "dt.", meaning: "quân địch, kẻ thù", example: "他们终于打败了敌人。", exampleVi: "Cuối cùng họ đã đánh bại kẻ địch." },
+    { id: 4, han: "理论", py: "lǐlùn", pos: "dt.", meaning: "lý luận, lý thuyết", example: "儿子虽然对军事理论都很了解，但是没有实际作战的经验。", exampleVi: "Con trai tuy hiểu rõ lý luận quân sự nhưng không có kinh nghiệm thực chiến." },
+    { id: 5, han: "作战", py: "zuòzhàn", pos: "đgt.", meaning: "đánh trận, chiến đấu", example: "他还没有独立带兵作战的资格。", exampleVi: "Anh ta chưa đủ tư cách tự mình dẫn quân đánh trận." },
+    { id: 6, han: "毛病", py: "máobìng", pos: "dt.", meaning: "khuyết điểm, tật xấu", example: "师傅，最近我这车出了点儿毛病，空调总是不太凉。", exampleVi: "Bác thợ ơi, gần đây xe tôi bị trục trặc, điều hòa lúc nào cũng không mát lắm." },
+    { id: 7, han: "道理", py: "dàolǐ", pos: "dt.", meaning: "lý lẽ, lý thuyết", example: "父母给我讲了许多做人的道理，对我的影响很大。", exampleVi: "Bố mẹ giảng cho tôi nhiều đạo lý làm người, ảnh hưởng rất lớn đến tôi." },
+    { id: 8, han: "迟早", py: "chízǎo", pos: "phó.", meaning: "sớm muộn", example: "如果让他当了大将，迟早会害了赵国。", exampleVi: "Nếu để nó làm đại tướng, sớm muộn gì cũng hại nước Triệu." },
+    { id: 9, han: "军队", py: "jūnduì", pos: "dt.", meaning: "quân đội", example: "这一年正好秦国军队来打赵国。", exampleVi: "Năm đó vừa đúng lúc quân đội nước Tần đến đánh nước Triệu." },
+    { id: 10, han: "派", py: "pài", pos: "đgt.", meaning: "phái đi, cử đi", example: "赵国派老将廉颇带20万大军迎战。", exampleVi: "Nước Triệu cử lão tướng Liêm Pha dẫn 20 vạn đại quân nghênh chiến." },
+    { id: 11, han: "弱", py: "ruò", pos: "tt.", meaning: "yếu, kém", example: "廉颇根据敌强我弱的形势，命令士兵们坚守阵地。", exampleVi: "Căn cứ vào tình thế địch mạnh ta yếu, Liêm Pha ra lệnh cho binh sĩ giữ vững trận địa." },
+    { id: 12, han: "形势", py: "xíngshì", pos: "dt.", meaning: "tình hình", example: "现在的形势对我们很有利。", exampleVi: "Tình hình hiện nay rất có lợi cho chúng ta." },
+    { id: 13, han: "命令", py: "mìnglìng", pos: "đgt./dt.", meaning: "ra lệnh; mệnh lệnh", example: "他命令士兵们绝对不可主动出战。", exampleVi: "Ông ra lệnh cho binh sĩ tuyệt đối không được chủ động xuất chiến." },
+    { id: 14, han: "守", py: "shǒu", pos: "đgt.", meaning: "phòng thủ, trấn giữ", example: "士兵们坚守阵地，不出战。", exampleVi: "Binh sĩ giữ vững trận địa, không ra đánh." },
+    { id: 15, han: "阵地", py: "zhèndì", pos: "dt.", meaning: "trận địa, mặt trận", example: "我们一定要守住阵地。", exampleVi: "Chúng ta nhất định phải giữ được trận địa." },
+    { id: 16, han: "绝对", py: "juéduì", pos: "tt./phó.", meaning: "tuyệt đối; nhất định", example: "我相信这样的安排他是绝对不会同意的。", exampleVi: "Tôi tin rằng sắp xếp như vậy anh ấy tuyệt đối sẽ không đồng ý." },
+    { id: 17, han: "主动", py: "zhǔdòng", pos: "tt.", meaning: "chủ động", example: "他主动提出帮我解决这个问题。", exampleVi: "Anh ấy chủ động đề nghị giúp tôi giải quyết vấn đề này." },
+    { id: 18, han: "挑战", py: "tiǎozhàn", pos: "đgt./dt.", meaning: "khiêu chiến, thách thức; sự thách thức", example: "跳伞运动以自身的惊险和挑战性，被世人称为“勇敢者的运动”。", exampleVi: "Nhảy dù với sự mạo hiểm và tính thử thách của nó được gọi là “môn thể thao của người dũng cảm”." },
+    { id: 19, han: "骂", py: "mà", pos: "đgt.", meaning: "chửi, mắng", example: "秦军多次挑战，骂他是胆小鬼。", exampleVi: "Quân Tần nhiều lần khiêu chiến, mắng ông là đồ hèn nhát." },
+    { id: 20, han: "胆小鬼", py: "dǎnxiǎoguǐ", pos: "dt.", meaning: "kẻ hèn nhát", example: "别人骂他是胆小鬼，他还是不出兵。", exampleVi: "Người khác mắng ông là kẻ hèn nhát, ông vẫn không xuất quân." },
+    { id: 21, han: "胜利", py: "shènglì", pos: "đgt.", meaning: "thắng lợi", example: "秦军无法快速取得胜利，粮食也快没了。", exampleVi: "Quân Tần không thể nhanh chóng giành thắng lợi, lương thực cũng sắp hết." },
+    { id: 22, han: "调", py: "diào", pos: "đgt.", meaning: "điều động, thuyên chuyển", example: "秦人想办法叫赵国把廉颇调回去。", exampleVi: "Người Tần tìm cách khiến nước Triệu điều Liêm Pha về." },
+    { id: 23, han: "散布", py: "sànbù", pos: "đgt.", meaning: "gieo rắc, truyền", example: "他们在赵国四处散布谣言。", exampleVi: "Họ đi khắp nơi ở nước Triệu tung tin đồn." },
+    { id: 24, han: "谣言", py: "yáoyán", pos: "dt.", meaning: "tin đồn", example: "不要相信网上的谣言。", exampleVi: "Đừng tin những tin đồn trên mạng." },
+    { id: 25, han: "上当", py: "shàng dàng", pos: "đgt.", meaning: "bị lừa, mắc lừa", example: "赵王听到外面的那些谣言，果然上当了。", exampleVi: "Vua Triệu nghe những lời đồn bên ngoài, quả nhiên mắc lừa." },
+    { id: 26, han: "再三", py: "zàisān", pos: "phó.", meaning: "nhiều lần, hết lần này đến lần khác", example: "赵括的母亲再三阻止赵王任命儿子为大将。", exampleVi: "Mẹ Triệu Quát nhiều lần ngăn vua Triệu bổ nhiệm con mình làm đại tướng." },
+    { id: 27, han: "阻止", py: "zǔzhǐ", pos: "đgt.", meaning: "ngăn cản, cản trở", example: "我想帮他，却被朋友阻止了。", exampleVi: "Tôi muốn giúp cậu ấy nhưng bị bạn ngăn lại." },
+    { id: 28, han: "任命", py: "rènmìng", pos: "đgt.", meaning: "bổ nhiệm", example: "他被任命为公司的总经理。", exampleVi: "Anh ấy được bổ nhiệm làm tổng giám đốc công ty." },
+    { id: 29, han: "独立", py: "dúlì", pos: "đgt.", meaning: "có một mình, không lệ thuộc", example: "家长应尽量创造一个能让孩子独立生活和学习的环境。", exampleVi: "Phụ huynh nên cố gắng tạo một môi trường để con tự lập trong sinh hoạt và học tập." },
+    { id: 30, han: "资格", py: "zīgé", pos: "dt.", meaning: "tư cách", example: "他还没有独立带兵作战的资格。", exampleVi: "Anh ta chưa có tư cách tự mình dẫn quân đánh trận." },
+    { id: 31, han: "糊涂", py: "hútu", pos: "tt.", meaning: "đần độn, hồ đồ", example: "你这脑子可真糊涂，银行卡的密码怎么能忘了呢？", exampleVi: "Đầu óc cậu đúng là lẩm cẩm, mật khẩu thẻ ngân hàng sao lại quên được?" },
+    { id: 32, han: "公元", py: "gōngyuán", pos: "dt.", meaning: "công nguyên", example: "公元前260年，赵括带兵出战。", exampleVi: "Năm 260 trước Công nguyên, Triệu Quát dẫn quân xuất chiến." },
+    { id: 33, han: "盲目", py: "mángmù", pos: "tt.", meaning: "mù quáng", example: "一直盲目自信的他完全改变了廉颇的作战方案。", exampleVi: "Vốn luôn tự tin mù quáng, anh ta thay đổi hoàn toàn phương án tác chiến của Liêm Pha." },
+    { id: 34, han: "轻视", py: "qīngshì", pos: "đgt.", meaning: "khinh thường, xem thường", example: "我们不能轻视对方。", exampleVi: "Chúng ta không được xem thường đối phương." },
+    { id: 35, han: "方案", py: "fāng'àn", pos: "dt.", meaning: "kế hoạch, phương án", example: "这个方案还需要再讨论一下。", exampleVi: "Phương án này còn cần thảo luận thêm." },
+    { id: 36, han: "进攻", py: "jìngōng", pos: "đgt.", meaning: "tấn công, công kích", example: "赵括死搬兵书上的理论，主动进攻秦军。", exampleVi: "Triệu Quát rập khuôn lý thuyết trong binh thư, chủ động tấn công quân Tần." },
+    { id: 37, han: "宝贵", py: "bǎoguì", pos: "tt.", meaning: "quý báu, quý giá", example: "任何经验都是宝贵的，但并不是任何时候都是有效的。", exampleVi: "Kinh nghiệm nào cũng quý giá, nhưng không phải lúc nào cũng hiệu quả." },
+    { id: 38, han: "讽刺", py: "fěngcì", pos: "đgt.", meaning: "châm biếm, mỉa mai", example: "这部小说讽刺了当时的社会。", exampleVi: "Cuốn tiểu thuyết này châm biếm xã hội đương thời." },
+    { id: 39, han: "灵活", py: "línghuó", pos: "tt.", meaning: "linh hoạt, nhạy bén", example: "做事一定要灵活，要注意理论联系实际。", exampleVi: "Làm việc nhất định phải linh hoạt, phải chú ý gắn lý luận với thực tế." },
+    { id: 40, han: "枪", py: "qiāng", pos: "dt.", meaning: "súng", example: "猎人被眼前的情景吓傻了，慌乱地连开了几枪。", exampleVi: "Người thợ săn sợ ngây người trước cảnh tượng, hoảng loạn bắn liền mấy phát súng.", group: "extended" },
+    { id: 41, han: "射击", py: "shèjī", pos: "đgt.", meaning: "bắn, xạ kích", example: "在1896年的奥运会上，射击就被列为了正式比赛项目。", exampleVi: "Ngay tại Thế vận hội 1896, bắn súng đã được đưa vào làm môn thi đấu chính thức.", group: "extended" },
+    { id: 42, han: "英雄", py: "yīngxióng", pos: "dt.", meaning: "anh hùng", example: "花木兰是中国古代的女英雄。", exampleVi: "Hoa Mộc Lan là nữ anh hùng thời cổ đại Trung Quốc.", group: "extended" },
+    { id: 43, han: "士兵", py: "shìbīng", pos: "dt.", meaning: "binh sĩ", example: "廉颇命令士兵们坚守阵地。", exampleVi: "Liêm Pha ra lệnh cho binh sĩ giữ vững trận địa.", group: "extended" },
+    { id: 44, han: "战争", py: "zhànzhēng", pos: "dt.", meaning: "chiến tranh", example: "得民心者才会赢得这场战争的胜利。", exampleVi: "Ai được lòng dân mới giành được thắng lợi trong cuộc chiến này.", group: "extended" },
+  ],
+
+  text: {
+    title: "课文 纸上谈兵",
+    paragraphs: [
+      {
+        zh: "两千七百多年前的战国末期，赵国名将赵奢有个儿子叫赵括，他从小读了不少兵书，跟别人谈论起军事来，没有人说得过他，就是父亲赵奢也难不住他。赵括因此很骄傲，自以为天下无敌，连父亲也不放在眼里。\n但是赵奢心里明白，自己的儿子虽然对军事理论都很了解，但是没有实际作战的经验，想法很不符合实际。他曾经偷偷对妻子说：“儿子的毛病是只会讲大道理，缺乏实际锻炼，不能当大将。如果让他当了大将，迟早会害了赵国。”",
+        vi: "Cuối thời Chiến Quốc, cách đây hơn hai nghìn bảy trăm năm, danh tướng nước Triệu là Triệu Xa có một người con trai tên Triệu Quát. Từ nhỏ Triệu Quát đã đọc không ít binh thư, bàn chuyện quân sự với ai cũng không ai nói lại được cậu, ngay cả cha là Triệu Xa cũng không làm khó được. Vì thế Triệu Quát rất kiêu ngạo, tự cho mình thiên hạ vô địch, ngay cả cha cũng không coi ra gì.\nNhưng Triệu Xa trong lòng hiểu rõ, con mình tuy rất am hiểu lý luận quân sự nhưng không có kinh nghiệm thực chiến, suy nghĩ rất không hợp với thực tế. Ông từng lén nói với vợ: “Tật xấu của con là chỉ biết nói đạo lý lớn, thiếu rèn luyện thực tế, không thể làm đại tướng. Nếu để nó làm đại tướng, sớm muộn gì cũng hại nước Triệu.”",
+        questions: ["赵括为什么很骄傲？", "赵奢认为儿子有什么毛病？", "请用重点词语复述：军事、理论、说得过、骄傲、缺乏、毛病"],
+      },
+      {
+        zh: "几年后，赵奢去世了。这一年正好秦国军队来打赵国，赵国派老将廉颇带20万大军迎战。廉颇根据敌强我弱的形势，命令士兵们坚守阵地，绝对不可主动出战。秦军多次挑战，骂他是胆小鬼，他还是不出兵。这个办法果然非常有效，成功地把秦军拦在了国门之外。渐渐地，秦军无法快速取得胜利，粮食也快没了，有些坚持不住了。",
+        vi: "Mấy năm sau, Triệu Xa qua đời. Năm ấy vừa đúng lúc quân Tần kéo đến đánh nước Triệu, nước Triệu cử lão tướng Liêm Pha dẫn 20 vạn đại quân nghênh chiến. Căn cứ vào tình thế địch mạnh ta yếu, Liêm Pha ra lệnh cho binh sĩ giữ vững trận địa, tuyệt đối không được chủ động xuất chiến. Quân Tần nhiều lần khiêu chiến, mắng ông là đồ hèn nhát, ông vẫn không xuất quân. Cách này quả nhiên rất hiệu quả, chặn thành công quân Tần ngoài cửa ngõ đất nước. Dần dần, quân Tần không thể nhanh chóng giành thắng lợi, lương thực cũng sắp cạn, có phần không trụ nổi nữa.",
+        questions: ["廉颇用了什么办法对付秦军？效果怎么样？", "请用重点词语复述：弱、形势、命令、主动、挑战、坚守"],
+      },
+      {
+        zh: "秦人深知廉颇善于用兵，如果想在短期内打败赵国，必须想办法叫赵国把廉颇调回去。于是，他们在赵国四处散布谣言，说秦军最怕赵括，别的人都不放在眼里。\n这时，赵王正因廉颇闭门不战而生气呢，听到外面的那些谣言，果然上当了，他派赵括去换回廉颇。赵括的母亲再三阻止赵王任命儿子为大将，说他还没有独立带兵作战的资格。可是，糊涂的赵王哪里听得进去！",
+        vi: "Người Tần biết rõ Liêm Pha giỏi dụng binh, nếu muốn đánh bại nước Triệu trong thời gian ngắn thì phải tìm cách khiến nước Triệu điều Liêm Pha về. Thế là họ đi khắp nơi trong nước Triệu tung tin đồn rằng quân Tần sợ nhất Triệu Quát, còn những người khác thì chẳng coi ra gì.\nLúc ấy vua Triệu đang tức giận vì Liêm Pha đóng cửa không đánh, nghe những lời đồn bên ngoài, quả nhiên mắc lừa, bèn cử Triệu Quát đến thay Liêm Pha. Mẹ Triệu Quát nhiều lần ngăn vua Triệu bổ nhiệm con mình làm đại tướng, nói rằng cậu ta chưa đủ tư cách tự mình dẫn quân đánh trận. Thế nhưng vua Triệu hồ đồ nào có chịu nghe!",
+        questions: ["秦人散布了什么谣言？为什么？", "赵括的母亲为什么阻止赵王任命儿子为大将？", "请用重点词语复述：糊涂、上当、谣言、阻止、资格"],
+      },
+      {
+        zh: "公元前260年，赵括带兵出战。一直盲目自信、轻视秦军的他完全改变了廉颇的作战方案，死搬兵书上的理论，主动进攻秦军，结果数十万赵军全部被杀，丢掉了宝贵的生命。\n这就是成语“纸上谈兵”的故事。现在常用这个成语讽刺那些只会空谈理论的人，提醒大家做事一定要灵活，要注意理论联系实际。",
+        vi: "Năm 260 trước Công nguyên, Triệu Quát dẫn quân xuất chiến. Vốn luôn tự tin mù quáng, xem thường quân Tần, anh ta thay đổi hoàn toàn phương án tác chiến của Liêm Pha, rập khuôn lý thuyết trong binh thư, chủ động tấn công quân Tần; kết quả mấy chục vạn quân Triệu đều bị giết, mất đi sinh mạng quý giá.\nĐó chính là câu chuyện của thành ngữ “bàn binh trên giấy”. Ngày nay thành ngữ này thường được dùng để châm biếm những người chỉ biết nói lý thuyết suông, nhắc nhở mọi người làm việc phải linh hoạt, phải chú ý gắn lý luận với thực tế.",
+        questions: ["赵括是怎么打仗的？结果怎么样？", "“纸上谈兵”现在用来讽刺什么样的人？", "请用重点词语复述：自信、轻视、宝贵、理论、实际"],
+      },
+    ],
+    notes: [
+      "战国 (Zhànguó): thời Chiến Quốc (475 TCN – 221 TCN). 赵国 (Zhàoguó): nước Triệu. 秦国 (Qínguó): nước Tần.",
+      "赵奢 (Zhào Shē): Triệu Xa. 赵括 (Zhào Kuò): Triệu Quát. 廉颇 (Lián Pō): Liêm Pha.",
+      "天下无敌: thiên hạ vô địch. 不放在眼里: không coi ra gì. 死搬: rập khuôn, áp dụng máy móc.",
+    ],
+  },
+
+  grammar: [
+    {
+      word: "过",
+      title: "Động từ + 得/不 + 过 (hơn, thắng được)",
+      usages: [
+        {
+          label: "Cách dùng",
+          explain: "“过” là động từ xu hướng, đọc guò; thường dùng theo mẫu “động từ + 得/不 + 过” làm bổ ngữ, biểu thị nghĩa hơn được, thắng được.",
+          examples: [
+            "……跟别人谈论起军事来，没有人说得过他。",
+            "年轻人记忆力好，这一点我比不过你们。",
+            "我们的原材料贵，人工费用高，产品在价格上肯定竞争不过他们。",
+          ],
+        },
+      ],
+      note: "Hay gặp: 说得过/说不过, 打得过/打不过, 比不过, 跑不过…",
+    },
+    {
+      word: "迟早",
+      title: "Phó từ “sớm muộn”",
+      usages: [
+        {
+          label: "Cách dùng",
+          explain: "Phó từ, phía sau thường là động từ, biểu thị một hành động hoặc sự việc sớm muộn gì cũng sẽ xảy ra.",
+          examples: [
+            "如果让他当了大将，迟早会害了赵国。",
+            "随着网络技术的发展，这些问题迟早都会得到解决。",
+            "如果不重视技术研究和产品开发，我们迟早会被别人挤出市场。",
+          ],
+        },
+      ],
+      note: "Thường đi với 会/要: 迟早会……",
+    },
+    {
+      word: "再三",
+      title: "Phó từ “nhiều lần, hết lần này đến lần khác”",
+      usages: [
+        {
+          label: "Cách dùng",
+          explain: "Nghĩa là “一次又一次”; phía sau thường là động từ, đôi khi có thể đứng sau động từ không mang tân ngữ.",
+          examples: [
+            "赵括的母亲再三阻止赵王任命儿子为大将，……",
+            "我最近这段时间特别忙，实在没时间参加小王的活动，可他再三邀请，出于礼貌，我只好答应了。",
+            "朋友请他做公司的总经理，他考虑再三，最后还是客气地拒绝了。",
+          ],
+        },
+      ],
+    },
+    {
+      word: "胜利 / 成功",
+      title: "Phân biệt 胜利 và 成功",
+      usages: [
+        { label: "Điểm giống", explain: "Đều là động từ, biểu thị đạt được mục đích dự kiến.", examples: ["北京胜利/成功地举办了2008年夏季奥运会。"] },
+        { label: "胜利", explain: "Khi chỉ công việc đạt mục đích thường làm trạng ngữ; còn có nghĩa đánh bại đối phương trong chiến tranh hoặc thi đấu; không mang nghĩa “khiến người hài lòng”, không làm bổ ngữ.", examples: ["经过一年多的努力，我们胜利地完成了调查工作。", "谁坚持到最后，谁就是这场比赛的胜利者。"] },
+        { label: "成功", explain: "Dùng cho công việc, sự nghiệp và các phương diện khác; làm trạng ngữ và vị ngữ được; không có nghĩa đánh bại đối phương; còn là tính từ, mang nghĩa khiến người hài lòng, có thể làm bổ ngữ.", examples: ["经过艰苦的努力，实验终于成功了。", "这部电视剧拍得很成功，在全国播出后，受到观众的喜爱。"] },
+      ],
+    },
+  ],
+
+  wordChoice: [
+    { sentence: "我见朋友的小孩怎么也打不开房门，就想帮他，却被朋友___了。", options: W_EX1, answer: "阻止" },
+    { sentence: "任何经验都是___的，但并不是任何时候都是有效的。", options: W_EX1, answer: "宝贵" },
+    { sentence: "社会上的成功人士，有不少都___记住别人的名字。", options: W_EX1, answer: "善于" },
+    { sentence: "你这脑子可真___，银行卡的密码怎么能忘了呢？", options: W_EX1, answer: "糊涂" },
+    { sentence: "跳伞运动以自身的惊险和___性，被世人称为“勇敢者的运动”。", options: W_EX1, answer: "挑战" },
+    { sentence: "家长应尽量创造一个能让孩子___生活和学习的环境。", options: W_EX1, answer: "独立" },
+    { sentence: "我___以为这一生我只能做一个普普通通的工人了。", options: ["曾经", "已经"], answer: "曾经" },
+    { sentence: "师傅，最近我这车出了点儿___，空调总是不太凉。", options: ["缺点", "毛病"], answer: "毛病" },
+    { sentence: "父母给我讲了许多做人的___，对我的影响很大。", options: ["理论", "道理"], answer: "道理" },
+    { sentence: "我相信这样的安排他是___不会同意的。", options: ["绝对", "完全"], answer: "绝对" },
+    { sentence: "这项实验如果研究___，将给成千上万的病人带来希望。", options: ["胜利", "成功"], answer: "成功" },
+    { sentence: "得民心者才会赢得这场战争的___。", options: ["胜利", "成功"], answer: "胜利" },
+    { sentence: "她___地说服了丈夫放弃了搬家的打算。", options: ["胜利", "成功"], answer: "成功" },
+    { sentence: "座谈会开得很___，大家交换了意见，增进了理解。", options: ["胜利", "成功"], answer: "成功" },
+    { sentence: "猎人被眼前的情景吓傻了，慌乱地连开了几___。", options: W_EXT, answer: "枪" },
+    { sentence: "我们已经走完一大半了，坚持就是___。", options: W_EXT, answer: "胜利" },
+    { sentence: "花木兰是中国古代的女___，她替父参军并打败敌人，从而闻名天下。", options: W_EXT, answer: "英雄" },
+    { sentence: "在1896年的奥运会上，___就被列为了正式比赛项目。", options: W_EXT, answer: "射击" },
+  ],
+
+  practice: [
+    {
+      id: "listen", kind: "listen-pick", icon: "🎧", title: "Phần 1 · Nghe - chọn chữ Hán", points: 8,
+      subtitle: "Bấm 🔊 nghe từ, sau đó chọn đúng chữ Hán tương ứng.",
+      items: [
+        { vocabId: 2, distractors: [9, 5, 15] },
+        { vocabId: 4, distractors: [7, 35, 30] },
+        { vocabId: 12, distractors: [13, 11, 16] },
+        { vocabId: 18, distractors: [21, 17, 36] },
+        { vocabId: 24, distractors: [23, 25, 38] },
+        { vocabId: 27, distractors: [28, 26, 22] },
+        { vocabId: 31, distractors: [33, 34, 39] },
+        { vocabId: 37, distractors: [29, 32, 6] },
+      ],
+    },
+    {
+      id: "pinyin", kind: "pinyin", icon: "✍️", title: "Phần 2 · Điền pinyin", points: 8,
+      subtitle: "Gõ pinyin không dấu thanh cũng được chấp nhận, nhưng cố gắng gõ đúng dấu thanh nhé.",
+      vocabIds: [6, 8, 16, 20, 25, 26, 34, 39],
+    },
+    {
+      id: "order", kind: "order", icon: "🧩", title: "Phần 3 · Sắp xếp câu", points: 10,
+      subtitle: "Bấm lần lượt các mảnh theo đúng thứ tự để ghép thành câu. Bấm vào mảnh đã chọn để bỏ ra.",
+      items: [
+        { tokens: ["跟别人", "谈论起军事来，", "没有人", "说得过他", "。"], answer: "跟别人谈论起军事来，没有人说得过他。", vi: "Bàn chuyện quân sự với người khác thì không ai nói lại được cậu ta." },
+        { tokens: ["如果", "让他当了大将，", "迟早", "会害了赵国", "。"], answer: "如果让他当了大将，迟早会害了赵国。", vi: "Nếu để nó làm đại tướng, sớm muộn gì cũng hại nước Triệu." },
+        { tokens: ["廉颇", "命令", "士兵们", "坚守阵地", "。"], answer: "廉颇命令士兵们坚守阵地。", vi: "Liêm Pha ra lệnh cho binh sĩ giữ vững trận địa." },
+        { tokens: ["赵王", "听到", "那些谣言，", "果然", "上当了", "。"], answer: "赵王听到那些谣言，果然上当了。", vi: "Vua Triệu nghe những lời đồn ấy, quả nhiên mắc lừa." },
+        { tokens: ["做事", "一定要", "灵活，", "要注意", "理论联系实际", "。"], answer: "做事一定要灵活，要注意理论联系实际。", vi: "Làm việc nhất định phải linh hoạt, phải chú ý gắn lý luận với thực tế." },
+      ],
+    },
+    {
+      id: "fill-1", kind: "fill-blanks", icon: "💬", title: "Phần 4 · Hoàn thành bài khóa (đoạn 1–2)", points: 10,
+      subtitle: "Bấm vào chỗ trống rồi bấm từ đúng trong ngân hàng từ. Bấm lại chỗ đã điền để xóa.",
+      passages: [
+        { title: "Đoạn 1 · Tài quân sự của Triệu Quát", text: "赵括从小读了不少兵书，跟别人谈论起{{c1}}来，没有人说得过他。自己的儿子虽然对军事{{c2}}都很了解，但是没有实际{{c3}}的经验。“儿子的{{c4}}是只会讲大道理，缺乏实际锻炼，不能当大将。如果让他当了大将，{{c5}}会害了赵国。”" },
+        { title: "Đoạn 2 · Chiến thuật của Liêm Pha", text: "廉颇根据敌强我{{c6}}的{{c7}}，{{c8}}士兵们坚守阵地，{{c9}}不可{{c10}}出战。" },
+      ],
+      answers: { c1: "军事", c2: "理论", c3: "作战", c4: "毛病", c5: "迟早", c6: "弱", c7: "形势", c8: "命令", c9: "绝对", c10: "主动" },
+      bank: ["军事", "理论", "作战", "毛病", "迟早", "弱", "形势", "命令", "绝对", "主动", "道理", "挑战", "胜利"],
+    },
+    {
+      id: "fill-2", kind: "fill-blanks", icon: "📄", title: "Phần 5 · Hoàn thành bài khóa (đoạn 3–4)", points: 10,
+      subtitle: "Điền từ thích hợp vào đoạn văn về việc vua Triệu mắc lừa và cái chết của Triệu Quát.",
+      passages: [
+        { title: "Đoạn 3–4 · Vua Triệu mắc lừa, Triệu Quát thất bại", text: "他们在赵国四处{{e1}}{{e2}}，说秦军最怕赵括。赵王听到外面的那些谣言，果然{{e3}}了。赵括的母亲{{e4}}{{e5}}赵王任命儿子为大将，说他还没有独立带兵作战的{{e6}}。可是，{{e7}}的赵王哪里听得进去！一直盲目自信、{{e8}}秦军的他完全改变了廉颇的作战{{e9}}，结果数十万赵军全部被杀，丢掉了{{e10}}的生命。" },
+      ],
+      answers: { e1: "散布", e2: "谣言", e3: "上当", e4: "再三", e5: "阻止", e6: "资格", e7: "糊涂", e8: "轻视", e9: "方案", e10: "宝贵" },
+      bank: ["散布", "谣言", "上当", "再三", "阻止", "资格", "糊涂", "轻视", "方案", "宝贵", "任命", "灵活", "进攻"],
+    },
+    {
+      id: "zh-vi", kind: "translate-zh-vi", icon: "🇨🇳", title: "Phần 6 · Dịch Trung → Việt", points: 6,
+      subtitle: "Dịch các câu sau sang tiếng Việt. Hệ thống chấm theo từ khóa chính, hãy so sánh với bản dịch gợi ý.",
+      items: [
+        { zh: "儿子的毛病是只会讲大道理，缺乏实际锻炼。", vi: "Tật xấu của con là chỉ biết nói đạo lý lớn, thiếu rèn luyện thực tế.", keywords: ["tật xấu", "đạo lý", "thiếu", "thực tế"] },
+        { zh: "随着网络技术的发展，这些问题迟早都会得到解决。", vi: "Cùng với sự phát triển của công nghệ mạng, những vấn đề này sớm muộn đều sẽ được giải quyết.", keywords: ["phát triển", "sớm muộn", "giải quyết"] },
+        { zh: "赵王听到外面的那些谣言，果然上当了。", vi: "Vua Triệu nghe những lời đồn bên ngoài, quả nhiên mắc lừa.", keywords: ["vua Triệu", "lời đồn", "mắc lừa"] },
+        { zh: "任何经验都是宝贵的。", vi: "Kinh nghiệm nào cũng quý giá.", keywords: ["kinh nghiệm", "quý giá"] },
+        { zh: "做事一定要灵活，要注意理论联系实际。", vi: "Làm việc nhất định phải linh hoạt, phải chú ý gắn lý luận với thực tế.", keywords: ["linh hoạt", "lý luận", "thực tế"] },
+      ],
+    },
+    {
+      id: "vi-zh", kind: "translate-vi-zh", icon: "🇻🇳", title: "Phần 7 · Dịch Việt → Trung", points: 6,
+      subtitle: "Dịch các câu sau sang tiếng Trung, dùng từ vựng – ngữ pháp đã học trong bài.",
+      items: [
+        { vi: "Người trẻ trí nhớ tốt, điểm này tôi không bằng các bạn.", answers: ["年轻人记忆力好，这一点我比不过你们。"] },
+        { vi: "Cuối cùng thí nghiệm đã thành công.", answers: ["实验终于成功了。", "实验最后成功了。"] },
+        { vi: "Sắp xếp như vậy anh ấy tuyệt đối sẽ không đồng ý.", answers: ["这样的安排他是绝对不会同意的。", "这样的安排他绝对不会同意。"] },
+        { vi: "Anh ấy mời đi mời lại, tôi đành phải đồng ý.", answers: ["他再三邀请，我只好答应了。", "他再三邀请，我只好同意了。"] },
+        { vi: "Chúng ta không được xem thường đối phương.", answers: ["我们不能轻视对方。", "我们不可以轻视对方。"] },
+      ],
+    },
+    {
+      id: "true-false", kind: "true-false", icon: "✅", title: "Phần 8 · Đúng / Sai", points: 8,
+      subtitle: "Dựa vào nội dung bài khóa, chọn Đúng hoặc Sai.",
+      items: [
+        { q: "赵括从小读了不少兵书。", a: true },
+        { q: "赵奢认为儿子很适合当大将。", a: false },
+        { q: "廉颇命令士兵们主动出战。", a: false },
+        { q: "廉颇的办法成功地把秦军拦在了国门之外。", a: true },
+        { q: "秦人散布谣言，说秦军最怕廉颇。", a: false },
+        { q: "赵括的母亲再三阻止赵王任命儿子为大将。", a: true },
+        { q: "赵括按照廉颇的作战方案打仗。", a: false },
+        { q: "“纸上谈兵”用来讽刺只会空谈理论的人。", a: true },
+      ],
+    },
+    {
+      id: "dictation", kind: "dictation", icon: "🎙️", title: "Phần 9 · Nghe - viết (chính tả)", points: 10,
+      subtitle: "Bấm 🔊 nghe câu (nghe lại bao nhiêu lần cũng được), gõ lại đúng chữ Hán và dấu câu.",
+      items: [
+        "没有人说得过他。",
+        "这些问题迟早都会得到解决。",
+        "赵王果然上当了。",
+        "任何经验都是宝贵的。",
+        "做事一定要灵活。",
+      ],
+    },
+    {
+      id: "essay", kind: "essay", icon: "📝", title: "Phần 10 · Viết đoạn văn", points: 7,
+      subtitle: "Tự luận – hệ thống chỉ chấm sơ bộ độ dài và từ vựng sử dụng.",
+      prompt: "请以“从赵括之死想到的”为题，谈一谈你对这篇历史故事的看法。 (Hãy viết về chủ đề “Suy nghĩ từ cái chết của Triệu Quát”.)",
+      requirement: "Yêu cầu: viết ít nhất 100 chữ Hán, sử dụng tối thiểu 5 từ vựng và 2 điểm ngữ pháp của bài 15 (V得/不过, 迟早, 再三, 胜利/成功).",
+      minChars: 100,
+      minVocab: 5,
+      grammarMarkers: ["得过", "不过", "迟早", "再三", "胜利", "成功"],
+      minGrammar: 2,
+      sample: "赵括从小读了很多兵书，谈论起军事来，连父亲都说不过他。可是他只懂理论，缺乏实际作战的经验。当了大将以后，他盲目自信，轻视秦军，完全改变了廉颇的作战方案，结果数十万赵军丢掉了宝贵的生命。他的母亲曾经再三阻止赵王，可是糊涂的赵王还是上当了。这个故事告诉我们，书本上的知识虽然重要，但是如果不能理论联系实际，迟早会失败。我们学汉语也是这样，光看书是不够的，要多说多练，灵活运用，才能取得成功。",
+    },
+    {
+      id: "gram-1", kind: "grammar-fill", icon: "🧠", title: "Phần 11 · Ngữ pháp: 胜利 / 成功", points: 6,
+      subtitle: "Chọn 胜利 hoặc 成功 cho mỗi chỗ trống.",
+      grammarWord: "胜利 / 成功",
+      options: ["胜利", "成功"],
+      items: [
+        { q: "这项实验如果研究___，将给成千上万的病人带来希望。", answers: ["成功"] },
+        { q: "得民心者才会赢得这场战争的___。", answers: ["胜利"] },
+        { q: "她___地说服了丈夫放弃了搬家的打算。", answers: ["成功"] },
+        { q: "座谈会开得很___，大家交换了意见。", answers: ["成功"] },
+        { q: "谁坚持到最后，谁就是这场比赛的___者。", answers: ["胜利"] },
+        { q: "经过艰苦的努力，实验终于___了。", answers: ["成功"] },
+        { q: "这部电视剧拍得很___，受到观众的喜爱。", answers: ["成功"] },
+        { q: "秦军无法快速取得___，粮食也快没了。", answers: ["胜利"] },
+      ],
+    },
+    {
+      id: "gram-2", kind: "grammar-fill", icon: "🧠", title: "Phần 12 · Ngữ pháp: 迟早 / 再三", points: 6,
+      subtitle: "Chọn 迟早 hoặc 再三 cho mỗi chỗ trống.",
+      grammarWord: "迟早 / 再三",
+      options: ["迟早", "再三"],
+      items: [
+        { q: "如果让他当了大将，___会害了赵国。", answers: ["迟早"] },
+        { q: "赵括的母亲___阻止赵王任命儿子为大将。", answers: ["再三"] },
+        { q: "随着网络技术的发展，这些问题___都会得到解决。", answers: ["迟早"] },
+        { q: "可他___邀请，出于礼貌，我只好答应了。", answers: ["再三"] },
+        { q: "如果不重视产品开发，我们___会被别人挤出市场。", answers: ["迟早"] },
+        { q: "他考虑___，最后还是客气地拒绝了。", answers: ["再三"] },
+        { q: "你这种不认真的态度，___要吃亏的。", answers: ["迟早"] },
+        { q: "妈妈___提醒我出门要带伞。", answers: ["再三"] },
+      ],
+    },
+    {
+      id: "gram-3", kind: "grammar-fill", icon: "🧠", title: "Phần 13 · Ngữ pháp: 动词 + 得/不 + 过", points: 5,
+      subtitle: "Điền 得 hoặc 不 vào chỗ trống trong cấu trúc “động từ + 得/不 + 过”.",
+      grammarWord: "动词 + 得/不 + 过",
+      options: ["得", "不"],
+      items: [
+        { q: "跟别人谈论起军事来，没有人说___过他。", answers: ["得"] },
+        { q: "年轻人记忆力好，这一点我比___过你们。", answers: ["不"] },
+        { q: "我们的人工费用高，产品在价格上肯定竞争___过他们。", answers: ["不"] },
+        { q: "他跑得那么快，你跑___过他吗？", answers: ["得"] },
+        { q: "李阳受过专业训练，我们谁也打___过他。", answers: ["不"] },
+        { q: "老张虽然五十多岁了，可干起活儿来，年轻人都比___过他。", answers: ["不"] },
+        { q: "你是哥哥，难道还说___过你妹妹吗？", answers: ["不"] },
+        { q: "只要认真准备，我们一定比___过他们。", answers: ["得"] },
+      ],
+    },
+  ],
+};

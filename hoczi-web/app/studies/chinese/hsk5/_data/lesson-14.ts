@@ -1,0 +1,373 @@
+import type { Lesson } from "../../_lesson/types";
+
+// HSK标准教程5 · 第14课 北京的四合院 (Tứ hợp viện Bắc Kinh)
+// Nguồn: Giáo trình chuẩn HSK5 tập 1, trang 126–134 (bản scan, đọc từ ảnh trang).
+// Từ vựng, bài khóa, ngữ pháp và luyện nhanh lấy từ sách; phần luyện tập 100 điểm
+// và bản dịch tiếng Việt bài khóa được soạn thêm (cần giáo viên duyệt lại).
+const W_EX1 = ["浓", "广泛", "具备", "矛盾", "日常", "组合"];
+const W_EXT = ["阳台", "宿舍", "单元", "隔壁"];
+
+export const lesson14: Lesson = {
+  level: "hsk5",
+  no: 14,
+  slug: "bai-14",
+  zh: "北京的四合院",
+  pinyin: "Běijīng de sìhéyuàn",
+  vi: "Tứ hợp viện Bắc Kinh",
+  en: "Beijing's Siheyuan (Courtyard Houses)",
+  topic: "放眼世界 · Nhìn ra thế giới",
+  durationMinutes: 60,
+
+  goals: [
+    "Nắm nghĩa và cách dùng các từ trọng điểm cấp 5: 组合、建筑、形式、所谓、广泛、代表、通常、组成、具备、日常、接待、功能、空间、创造、因而、关闭、打交道、充分、亲切、矛盾、浓…",
+    "Nắm cách kết hợp: 具备……功能; 创造 + 历史/机会/条件/奇迹; 产生/有/闹 + 矛盾; 日常 + 生活/工作/用品; 广泛地 + 调查/应用/流行…",
+    "Hiểu và dùng được 所谓、则、为……所……、động từ + 起; phân biệt 通常 và 常常.",
+    "Đọc hiểu bài khóa giới thiệu kết cấu, công năng và tình làng nghĩa xóm trong tứ hợp viện, kể lại bằng từ vựng đã học.",
+    "Thảo luận về kiến trúc và du lịch, viết đoạn văn 「我眼中最美的中国建筑」.",
+    "Nắm 12 từ mở rộng chủ đề 建筑 (kiến trúc).",
+  ],
+
+  warmUp: [
+    { zh: "下面图片中的建筑，你知道哪些？请说一说它们分别是哪个国家的。", vi: "Trong các công trình kiến trúc ở hình (tháp Eiffel, tượng Nữ thần Tự do, Kim tự tháp, Đấu trường La Mã, Nhà hát Sydney…), bạn biết những công trình nào? Chúng thuộc nước nào?" },
+    { zh: "你知道中国北京的四合院吗？参观过的话，请给老师和同学们讲一讲。", vi: "Bạn có biết tứ hợp viện ở Bắc Kinh không? Nếu đã từng tham quan, hãy kể cho thầy cô và các bạn nghe." },
+  ],
+
+  vocab: [
+    { id: 1, han: "四合院", py: "sìhéyuàn", pos: "dt.", meaning: "tứ hợp viện", example: "四合院是中国华北地区民居中的一种组合建筑形式。", exampleVi: "Tứ hợp viện là một kiểu kiến trúc tổ hợp trong nhà ở dân gian vùng Hoa Bắc Trung Quốc." },
+    { id: 2, han: "民居", py: "mínjū", pos: "dt.", meaning: "nhà ở của thường dân", example: "四合院在中国汉族民居中历史最悠久。", exampleVi: "Tứ hợp viện có lịch sử lâu đời nhất trong nhà ở dân gian của người Hán." },
+    { id: 3, han: "组合", py: "zǔhé", pos: "đgt./dt.", meaning: "kết hợp; tổ hợp", example: "这本书是由三个部分组合起来的。", exampleVi: "Cuốn sách này được kết hợp từ ba phần." },
+    { id: 4, han: "建筑", py: "jiànzhù", pos: "dt.", meaning: "kiến trúc, công trình kiến trúc", example: "今天雾很浓，对面的建筑都看不清了。", exampleVi: "Hôm nay sương mù rất dày, các tòa nhà đối diện đều nhìn không rõ." },
+    { id: 5, han: "形式", py: "xíngshì", pos: "dt.", meaning: "hình thức", example: "这是一种很特别的建筑形式。", exampleVi: "Đây là một hình thức kiến trúc rất đặc biệt." },
+    { id: 6, han: "所谓", py: "suǒwèi", pos: "tt.", meaning: "cái gọi là", example: "所谓四合，“四”指东、西、南、北四面。", exampleVi: "Cái gọi là “tứ hợp”, “tứ” chỉ bốn phía đông, tây, nam, bắc." },
+    { id: 7, han: "方", py: "fāng", pos: "tt.", meaning: "vuông", example: "四面房屋围在一起，中间形成一个方形的院子。", exampleVi: "Nhà bốn phía quây lại với nhau, ở giữa tạo thành một cái sân hình vuông." },
+    { id: 8, han: "广泛", py: "guǎngfàn", pos: "tt.", meaning: "rộng rãi", example: "他的兴趣爱好非常广泛，跟谁都能聊到一块儿。", exampleVi: "Sở thích của anh ấy rất rộng, nói chuyện với ai cũng hợp." },
+    { id: 9, han: "样式", py: "yàngshì", pos: "dt.", meaning: "hình thức, kiểu dáng", example: "传统的北京四合院都有一套固定的样式。", exampleVi: "Tứ hợp viện Bắc Kinh truyền thống đều có một kiểu dáng cố định." },
+    { id: 10, han: "代表", py: "dàibiǎo", pos: "dt./đgt.", meaning: "đại biểu; đại diện", example: "北京四合院可以代表四合院的主要特点。", exampleVi: "Tứ hợp viện Bắc Kinh có thể đại diện cho những đặc điểm chính của tứ hợp viện." },
+    { id: 11, han: "通常", py: "tōngcháng", pos: "phó.", meaning: "thường, bình thường", example: "在通常情况下，火车是不会晚点的。", exampleVi: "Trong tình huống bình thường, tàu hỏa sẽ không trễ giờ." },
+    { id: 12, han: "并列", py: "bìngliè", pos: "đgt.", meaning: "đặt song song, đứng cạnh nhau", example: "有钱人家的四合院通常是由好几座四合院并列组成的。", exampleVi: "Tứ hợp viện của nhà giàu thường do mấy tứ hợp viện đặt song song hợp thành." },
+    { id: 13, han: "组成", py: "zǔchéng", pos: "đgt.", meaning: "tạo thành, hợp thành", example: "手机已经成为人们生活中的重要组成部分。", exampleVi: "Điện thoại đã trở thành một phần quan trọng trong cuộc sống của mọi người." },
+    { id: 14, han: "长辈", py: "zhǎngbèi", pos: "dt.", meaning: "bề trên, bậc cha chú", example: "北房一般包括长辈的卧室和客厅。", exampleVi: "Nhà phía bắc thường gồm phòng ngủ của bề trên và phòng khách." },
+    { id: 15, han: "具备", py: "jùbèi", pos: "đgt.", meaning: "có đủ, có", example: "现在的手机都具备很多功能，不再只是个打电话的工具。", exampleVi: "Điện thoại bây giờ đều có rất nhiều chức năng, không còn chỉ là công cụ để gọi điện." },
+    { id: 16, han: "日常", py: "rìcháng", pos: "tt.", meaning: "hằng ngày", example: "刚开始学中文的时候，我学的主要是一些日常用语。", exampleVi: "Lúc mới học tiếng Trung, tôi chủ yếu học một số câu giao tiếp hằng ngày." },
+    { id: 17, han: "起居", py: "qǐjū", pos: "dt.", meaning: "sinh hoạt thường ngày", example: "客厅具备日常起居、接待客人等功能。", exampleVi: "Phòng khách có các chức năng sinh hoạt hằng ngày, tiếp khách…" },
+    { id: 18, han: "接待", py: "jiēdài", pos: "đgt.", meaning: "tiếp đãi", example: "我们在客厅里接待客人。", exampleVi: "Chúng tôi tiếp khách ở phòng khách." },
+    { id: 19, han: "功能", py: "gōngnéng", pos: "dt.", meaning: "chức năng", example: "这款手机具备拍照、上网等很多功能。", exampleVi: "Chiếc điện thoại này có nhiều chức năng như chụp ảnh, lên mạng." },
+    { id: 20, han: "厢房", py: "xiāngfáng", pos: "dt.", meaning: "chái nhà, hiên nhà", example: "院子的两边是东西厢房，是晚辈们生活的地方。", exampleVi: "Hai bên sân là chái đông và chái tây, nơi con cháu sinh hoạt." },
+    { id: 21, han: "走廊", py: "zǒuláng", pos: "dt.", meaning: "hành lang, hàng hiên", example: "在正房和厢房之间建有走廊，可以供人行走和休息。", exampleVi: "Giữa nhà chính và chái nhà có hành lang để người ta đi lại và nghỉ ngơi." },
+    { id: 22, han: "空间", py: "kōngjiān", pos: "dt.", meaning: "không gian", example: "院子是十分理想的室外生活空间。", exampleVi: "Sân là không gian sinh hoạt ngoài trời vô cùng lý tưởng." },
+    { id: 23, han: "种", py: "zhòng", pos: "đgt.", meaning: "trồng", example: "有的人家喜欢种草、养花、种竹子。", exampleVi: "Có nhà thích trồng cỏ, nuôi hoa, trồng trúc." },
+    { id: 24, han: "竹子", py: "zhúzi", pos: "dt.", meaning: "cây trúc, cây tre", example: "院子里种着几棵竹子。", exampleVi: "Trong sân trồng mấy cây trúc." },
+    { id: 25, han: "则", py: "zé", pos: "liên./lượng.", meaning: "(chỉ sự tương phản) trong khi đó; mẩu, mục (tin)", example: "猫享受独处的快乐，而狗则是希望和别人分享快乐。", exampleVi: "Mèo tận hưởng niềm vui một mình, còn chó thì mong được chia sẻ niềm vui với người khác." },
+    { id: 26, han: "金鱼", py: "jīnyú", pos: "dt.", meaning: "cá vàng", example: "有的人家则喜欢用大盆养金鱼。", exampleVi: "Có nhà lại thích nuôi cá vàng trong chậu lớn." },
+    { id: 27, han: "创造", py: "chuàngzào", pos: "đgt.", meaning: "sáng tạo, tạo ra", example: "院子对创造生活情趣起了很大作用。", exampleVi: "Cái sân có tác dụng lớn trong việc tạo nên thú vị cho cuộc sống." },
+    { id: 28, han: "情趣", py: "qíngqù", pos: "dt.", meaning: "sự thú vị, điều thích thú", example: "养花种草让生活更有情趣。", exampleVi: "Trồng hoa trồng cỏ làm cuộc sống thú vị hơn." },
+    { id: 29, han: "因而", py: "yīn'ér", pos: "liên.", meaning: "do đó, vì vậy", example: "他坚持锻炼，因而身体很好。", exampleVi: "Anh ấy kiên trì rèn luyện, vì vậy sức khỏe rất tốt." },
+    { id: 30, han: "为", py: "wéi", pos: "giới.", meaning: "(thường dùng với “所”) bị, được", example: "四合院因而最为人们所喜爱。", exampleVi: "Vì vậy tứ hợp viện được mọi người yêu thích nhất." },
+    { id: 31, han: "关闭", py: "guānbì", pos: "đgt.", meaning: "đóng kín", example: "只要关闭起大门，四合院内便形成一个封闭式的小环境。", exampleVi: "Chỉ cần đóng cổng lại, bên trong tứ hợp viện liền thành một môi trường nhỏ khép kín." },
+    { id: 32, han: "封闭", py: "fēngbì", pos: "đgt.", meaning: "khép kín", example: "这是一个封闭式的小环境。", exampleVi: "Đây là một môi trường nhỏ khép kín." },
+    { id: 33, han: "打交道", py: "dǎ jiāodao", pos: "đgt.", meaning: "giao thiệp, tiếp xúc", example: "住在四合院里的人不常与周围的邻居打交道。", exampleVi: "Người sống trong tứ hợp viện không hay giao thiệp với hàng xóm xung quanh." },
+    { id: 34, han: "日子", py: "rìzi", pos: "dt.", meaning: "cuộc sống", example: "一家人过着与世无争的日子。", exampleVi: "Cả nhà sống cuộc sống không tranh giành với đời." },
+    { id: 35, han: "充分", py: "chōngfèn", pos: "tt.", meaning: "đầy đủ, trọn vẹn", example: "在小院里，一家人充分享受家庭的乐趣。", exampleVi: "Trong khoảng sân nhỏ, cả nhà tận hưởng trọn vẹn niềm vui gia đình." },
+    { id: 36, han: "令", py: "lìng", pos: "đgt.", meaning: "khiến, làm cho", example: "这里有一种令人感到自在亲切的气氛。", exampleVi: "Ở đây có một bầu không khí khiến người ta cảm thấy thoải mái, thân thiết." },
+    { id: 37, han: "亲切", py: "qīnqiè", pos: "tt.", meaning: "thân mật, thân thiết", example: "老师说话很亲切。", exampleVi: "Thầy giáo nói chuyện rất thân thiện." },
+    { id: 38, han: "劳动", py: "láodòng", pos: "dt./đgt.", meaning: "lao động, công việc; làm việc, lao động (bằng chân tay)", example: "大杂院的住户多为普通劳动人民。", exampleVi: "Cư dân trong “đại tạp viện” phần lớn là người lao động bình thường." },
+    { id: 39, han: "人民", py: "rénmín", pos: "dt.", meaning: "nhân dân", example: "他们都是普通劳动人民。", exampleVi: "Họ đều là những người dân lao động bình thường." },
+    { id: 40, han: "矛盾", py: "máodùn", pos: "dt./tt.", meaning: "sự mâu thuẫn; mâu thuẫn", example: "老人家里有两个儿子，他们俩常常闹矛盾。", exampleVi: "Nhà ông cụ có hai người con trai, hai người họ thường xuyên mâu thuẫn." },
+    { id: 41, han: "浓", py: "nóng", pos: "tt.", meaning: "sâu sắc, đậm", example: "这种浓浓的情感是许多老北京人无法忘记的。", exampleVi: "Thứ tình cảm đậm đà ấy là điều nhiều người Bắc Kinh xưa không thể quên." },
+    { id: 42, han: "屋子", py: "wūzi", pos: "dt.", meaning: "căn phòng, gian nhà", example: "屋子里冷得让人伸不出手。", exampleVi: "Trong phòng lạnh đến mức không thò tay ra được.", group: "extended" },
+    { id: 43, han: "卧室", py: "wòshì", pos: "dt.", meaning: "phòng ngủ", example: "这套房子有两个卧室。", exampleVi: "Căn hộ này có hai phòng ngủ.", group: "extended" },
+    { id: 44, han: "阳台", py: "yángtái", pos: "dt.", meaning: "ban công", example: "这套房子除了客厅、卧室、厨房、卫生间，还有两个大阳台。", exampleVi: "Căn hộ này ngoài phòng khách, phòng ngủ, bếp, nhà vệ sinh còn có hai ban công lớn.", group: "extended" },
+    { id: 45, han: "台阶", py: "táijiē", pos: "dt.", meaning: "bậc thềm", example: "下台阶的时候小心点儿。", exampleVi: "Khi xuống bậc thềm cẩn thận một chút.", group: "extended" },
+    { id: 46, han: "墙", py: "qiáng", pos: "dt.", meaning: "bức tường", example: "墙上挂着一张全家福。", exampleVi: "Trên tường treo một tấm ảnh cả gia đình.", group: "extended" },
+    { id: 47, han: "玻璃", py: "bōli", pos: "dt.", meaning: "kính, thủy tinh", example: "窗户的玻璃被打碎了。", exampleVi: "Kính cửa sổ bị đập vỡ rồi.", group: "extended" },
+    { id: 48, han: "宿舍", py: "sùshè", pos: "dt.", meaning: "ký túc xá", example: "我在外面租了套公寓，但下学期我想搬到学校宿舍去住。", exampleVi: "Tôi thuê một căn hộ bên ngoài, nhưng học kỳ sau tôi muốn chuyển vào ký túc xá trường.", group: "extended" },
+    { id: 49, han: "公寓", py: "gōngyù", pos: "dt.", meaning: "căn hộ, chung cư", example: "他在市中心租了一套公寓。", exampleVi: "Anh ấy thuê một căn hộ ở trung tâm thành phố.", group: "extended" },
+    { id: 50, han: "单元", py: "dānyuán", pos: "dt.", meaning: "đơn nguyên (khối nhà)", example: "我家住在学知小区一号楼二单元403。", exampleVi: "Nhà tôi ở phòng 403, đơn nguyên 2, tòa 1, khu dân cư Học Tri.", group: "extended" },
+    { id: 51, han: "隔壁", py: "gébì", pos: "dt.", meaning: "nhà bên cạnh", example: "她就住在我家隔壁，是我的邻居。", exampleVi: "Cô ấy sống ngay cạnh nhà tôi, là hàng xóm của tôi.", group: "extended" },
+    { id: 52, han: "大厦", py: "dàshà", pos: "dt.", meaning: "tòa nhà lớn, cao ốc", example: "公司在一座二十层的大厦里。", exampleVi: "Công ty nằm trong một tòa cao ốc hai mươi tầng.", group: "extended" },
+    { id: 53, han: "广场", py: "guǎngchǎng", pos: "dt.", meaning: "quảng trường", example: "晚上很多人在广场上跳舞。", exampleVi: "Buổi tối có rất nhiều người nhảy múa trên quảng trường.", group: "extended" },
+  ],
+
+  text: {
+    title: "课文 北京的四合院",
+    paragraphs: [
+      {
+        zh: "四合院，是中国华北地区民居中的一种组合建筑形式。所谓四合，“四”指东、西、南、北四面，“合”就是四面房屋围在一起，中间形成一个方形的院子。四合院在中国汉族民居中历史最悠久，分布最广泛。不过，只要人们一提到四合院，便自然会想到北京四合院，这是因为传统的北京四合院都有一套固定的样式，十分具有代表性，在各种各样的四合院中，北京四合院可以代表其主要特点。",
+        vi: "Tứ hợp viện là một kiểu kiến trúc tổ hợp trong nhà ở dân gian vùng Hoa Bắc, Trung Quốc. Cái gọi là “tứ hợp”: “tứ” chỉ bốn phía đông, tây, nam, bắc; “hợp” là nhà ở bốn phía quây lại với nhau, ở giữa tạo thành một khoảng sân hình vuông. Trong nhà ở dân gian của người Hán, tứ hợp viện có lịch sử lâu đời nhất và phân bố rộng nhất. Tuy nhiên, hễ nhắc đến tứ hợp viện, người ta tự nhiên nghĩ ngay đến tứ hợp viện Bắc Kinh, bởi tứ hợp viện Bắc Kinh truyền thống đều có một kiểu dáng cố định, rất tiêu biểu; trong muôn vàn kiểu tứ hợp viện, tứ hợp viện Bắc Kinh có thể đại diện cho những đặc điểm chính của nó.",
+        questions: ["什么是四合院？", "为什么一提到四合院，人们就会想到北京四合院？", "请用重点词语复述：建筑、所谓、广泛"],
+      },
+      {
+        zh: "北京有各种规模的四合院。最简单的四合院只有一个院子，比较复杂的有两三个，而有钱人家的，通常是由好几座四合院并列组成的。大门一般开在东南角或西北角，院中的北房是正房，比其他房屋的规模大，一般包括长辈的卧室和具备日常起居、接待客人等功能的客厅。院子的两边是东西厢房，是晚辈们生活的地方。在正房和厢房之间建有走廊，可以供人行走和休息。",
+        vi: "Bắc Kinh có tứ hợp viện đủ mọi quy mô. Tứ hợp viện đơn giản nhất chỉ có một sân, loại phức tạp hơn có hai ba sân, còn của nhà giàu thì thường do mấy tứ hợp viện đặt song song hợp thành. Cổng chính thường mở ở góc đông nam hoặc tây bắc. Nhà phía bắc trong sân là nhà chính, quy mô lớn hơn các gian khác, thường gồm phòng ngủ của bề trên và phòng khách có chức năng sinh hoạt hằng ngày, tiếp khách. Hai bên sân là chái đông và chái tây, nơi con cháu sinh sống. Giữa nhà chính và chái nhà có hành lang để người ta đi lại và nghỉ ngơi.",
+        questions: ["北京四合院的正房和厢房分别是谁住的？", "请用重点词语复述：规模、通常、功能"],
+      },
+      {
+        zh: "院子是十分理想的室外生活空间。有的人家喜欢种草、养花、种竹子，有的人家则喜欢用大盆养金鱼。院子不仅拉近了人与自然的关系，也让家里人在此得到了感情的交流，对创造生活情趣起了很大作用，因而最为人们所喜爱。",
+        vi: "Sân là không gian sinh hoạt ngoài trời vô cùng lý tưởng. Có nhà thích trồng cỏ, nuôi hoa, trồng trúc, có nhà lại thích nuôi cá vàng trong chậu lớn. Khoảng sân không chỉ kéo gần quan hệ giữa con người với thiên nhiên mà còn giúp người trong nhà giao lưu tình cảm ở đây, có tác dụng lớn trong việc tạo nên thú vị cho cuộc sống, vì vậy được mọi người yêu thích nhất.",
+        questions: ["院子有什么作用？", "请用重点词语复述：空间、则、因而、为……所……"],
+      },
+      {
+        zh: "只要关闭起大门，四合院内便形成一个封闭式的小环境。住在四合院里的人不常与周围的邻居打交道。在小院里，一家人过着与世无争的日子，充分享受家庭的乐趣，自然有一种令人感到自在亲切的气氛。但也有多户合住一座四合院的情况，被称为“大杂院”，住户多为普通劳动人民。邻里之间有时虽然也有矛盾，但更多时候是互帮互助，不是亲人胜过亲人，这种浓浓的情感是许多老北京人无法忘记的。",
+        vi: "Chỉ cần đóng cổng lại, bên trong tứ hợp viện liền thành một môi trường nhỏ khép kín. Người sống trong tứ hợp viện không hay giao thiệp với hàng xóm xung quanh. Trong khoảng sân nhỏ, cả nhà sống cuộc sống không tranh giành với đời, tận hưởng trọn vẹn niềm vui gia đình, tự nhiên có một bầu không khí khiến người ta thấy thoải mái, thân thiết. Nhưng cũng có trường hợp nhiều hộ ở chung một tứ hợp viện, gọi là “đại tạp viện”, cư dân phần lớn là người lao động bình thường. Giữa hàng xóm đôi khi tuy cũng có mâu thuẫn, nhưng phần nhiều là giúp đỡ lẫn nhau, không phải người thân mà còn hơn người thân; thứ tình cảm đậm đà ấy là điều nhiều người Bắc Kinh xưa không thể nào quên.",
+        questions: ["什么是“大杂院”？", "大杂院里的邻居关系怎么样？", "请用重点词语复述：起、打交道、令、矛盾"],
+      },
+    ],
+    notes: [
+      "华北 (Huáběi): vùng Hoa Bắc, Trung Quốc.",
+      "大杂院 (dàzáyuàn): “đại tạp viện” – tứ hợp viện có nhiều hộ ở chung.",
+      "与世无争: không tranh giành với đời. 不是亲人胜过亲人: không phải người thân mà còn hơn người thân.",
+      "Bài khóa cải biên từ 百度文库《建筑欣赏之四合院》.",
+    ],
+  },
+
+  grammar: [
+    {
+      word: "所谓",
+      title: "Tính từ “cái gọi là”",
+      usages: [
+        {
+          label: "Nêu từ cần giải thích",
+          explain: "Biểu thị điều thường được nói tới, dùng để nêu ra từ ngữ cần giải thích.",
+          examples: [
+            "很多时候，烦恼是自己找来的，这就是所谓的“自寻烦恼”。",
+            "所谓四合，“四”指东、西、南、北四面，“合”就是四面房屋围在一起，中间形成一个方形的院子。",
+          ],
+        },
+        {
+          label: "Không đồng ý, không thừa nhận",
+          explain: "Chỉ điều mà một số người nói, thường mang ý không đồng ý, không thừa nhận.",
+          examples: [
+            "他所谓的“新闻”，其实我们早就知道了！",
+            "现在市场上所谓的“健康食品”其实没有统一的标准。",
+          ],
+        },
+      ],
+    },
+    {
+      word: "则",
+      title: "Lượng từ và liên từ “则”",
+      usages: [
+        { label: "Lượng từ", explain: "Dùng cho văn bản ngắn thành bài hoặc thành mục.", examples: ["在第七课，我们学习了两则成语故事。", "今天的报纸上有一则非常重要的新闻。"] },
+        { label: "Liên từ – đối lập", explain: "Cấu trúc thường gặp “A……，（而）B则……”, biểu thị sự đối lập giữa hai vế.", examples: ["猫享受独处的快乐，而狗则是希望和别人分享快乐。", "有的人家喜欢种草、养花、种竹子，有的人家则喜欢用大盆养金鱼。"] },
+        { label: "Liên từ – nhân quả", explain: "Biểu thị quan hệ nhân quả, dùng trong văn viết, tương đương “就” trong khẩu ngữ.", examples: ["北京的冬天，有风则寒，无风则暖。", "“欲速则不达”，人生不能总是要求“快”，其实，“慢”也是一种生活的艺术。"] },
+      ],
+    },
+    {
+      word: "为……所……",
+      title: "Cấu trúc bị động “为……所……”",
+      usages: [
+        {
+          label: "Cách dùng",
+          explain: "Cấu trúc cố định, thường dùng trong văn viết; “为” ở đây mang nghĩa “被” (bị, được).",
+          examples: [
+            "认识他的人，没有人不为他认真的工作态度所感动。",
+            "有了科学，大自然就可以更好地为人所用。",
+            "院子……对创造生活情趣起了很大作用，因而最为人们所喜爱。",
+          ],
+        },
+      ],
+    },
+    {
+      word: "起",
+      title: "Động từ + 起",
+      usages: [
+        {
+          label: "Cách dùng",
+          explain: "“Động từ + 起” biểu thị sự nối liền, kết hợp và cố định.",
+          examples: [
+            "拉起手，我们就是好朋友。",
+            "只要关闭起大门，四合院内便形成一个封闭式的小环境。",
+            "对公司来说，最重要的是建立起一套行之有效的制度。",
+          ],
+        },
+      ],
+    },
+    {
+      word: "通常 / 常常",
+      title: "Phân biệt 通常 và 常常",
+      usages: [
+        { label: "Điểm giống", explain: "Đều biểu thị một hành động thường xảy ra, có câu có thể thay nhau nhưng ý nhấn mạnh khác nhau.", examples: ["我通常/常常在学校外面那个超市买东西。"] },
+        { label: "通常", explain: "Nhấn mạnh hành động có quy luật; là tính từ, có thể làm định ngữ.", examples: ["有钱人家的，通常是由好几座四合院并列组成的。", "我们通常的做法都是这样的。"] },
+        { label: "常常", explain: "Nhấn mạnh hành động xảy ra nhiều lần; là phó từ, không làm định ngữ hay bổ nghĩa cho phân câu.", examples: ["他成绩很好，常常受到表扬。", "他常常去上海出差，对上海很熟悉。"] },
+      ],
+      note: "Nói 在通常情况下 / 通常的做法, không nói *常常的做法.",
+    },
+  ],
+
+  wordChoice: [
+    { sentence: "现在的手机都___很多功能，不再只是个打电话的工具。", options: W_EX1, answer: "具备" },
+    { sentence: "刚开始学中文的时候，我学的主要是一些___用语。", options: W_EX1, answer: "日常" },
+    { sentence: "今天雾很___，对面的建筑都看不清了。", options: W_EX1, answer: "浓" },
+    { sentence: "这个问题需要进行___调查，然后才能做出决定。", options: W_EX1, answer: "广泛" },
+    { sentence: "这本书是由三个部分___起来的。", options: W_EX1, answer: "组合" },
+    { sentence: "老人家里有两个儿子，他们俩常常闹___。", options: W_EX1, answer: "矛盾" },
+    { sentence: "手机已经成为人们生活中的重要___部分。", options: ["组成", "组合"], answer: "组成" },
+    { sentence: "他的兴趣爱好非常___，跟谁都能聊到一块儿。", options: ["广大", "广泛"], answer: "广泛" },
+    { sentence: "他坚持锻炼，___身体很好。", options: ["因而", "反而"], answer: "因而" },
+    { sentence: "是那位工程师___我把机器安装在这儿。", options: ["令", "让"], answer: "让" },
+    { sentence: "她___在家帮妈妈干活儿。", options: ["通常", "常常"], answer: "常常" },
+    { sentence: "___除夕晚上都要放鞭炮、吃饺子。", options: ["通常", "常常"], answer: "通常" },
+    { sentence: "在___情况下，火车是不会晚点的。", options: ["通常", "常常"], answer: "通常" },
+    { sentence: "这套房子除了客厅、卧室、厨房、卫生间，还有两个大___。", options: W_EXT, answer: "阳台" },
+    { sentence: "我在外面租了套公寓，但下学期我想搬到学校___去住。", options: W_EXT, answer: "宿舍" },
+    { sentence: "我家住在学知小区一号楼二___403。", options: W_EXT, answer: "单元" },
+    { sentence: "她就住在我家___，是我的邻居。", options: W_EXT, answer: "隔壁" },
+  ],
+
+  practice: [
+    {
+      id: "listen", kind: "listen-pick", icon: "🎧", title: "Phần 1 · Nghe - chọn chữ Hán", points: 8,
+      subtitle: "Bấm 🔊 nghe từ, sau đó chọn đúng chữ Hán tương ứng.",
+      items: [
+        { vocabId: 4, distractors: [5, 9, 2] },
+        { vocabId: 8, distractors: [35, 11, 16] },
+        { vocabId: 13, distractors: [3, 12, 15] },
+        { vocabId: 18, distractors: [17, 19, 33] },
+        { vocabId: 22, distractors: [21, 20, 28] },
+        { vocabId: 27, distractors: [28, 29, 31] },
+        { vocabId: 37, distractors: [36, 34, 41] },
+        { vocabId: 40, distractors: [38, 39, 32] },
+      ],
+    },
+    {
+      id: "pinyin", kind: "pinyin", icon: "✍️", title: "Phần 2 · Điền pinyin", points: 8,
+      subtitle: "Gõ pinyin không dấu thanh cũng được chấp nhận, nhưng cố gắng gõ đúng dấu thanh nhé.",
+      vocabIds: [1, 6, 10, 14, 19, 29, 33, 35],
+    },
+    {
+      id: "order", kind: "order", icon: "🧩", title: "Phần 3 · Sắp xếp câu", points: 10,
+      subtitle: "Bấm lần lượt các mảnh theo đúng thứ tự để ghép thành câu. Bấm vào mảnh đã chọn để bỏ ra.",
+      items: [
+        { tokens: ["四合院", "在中国汉族民居中", "历史", "最悠久", "。"], answer: "四合院在中国汉族民居中历史最悠久。", vi: "Trong nhà ở dân gian của người Hán, tứ hợp viện có lịch sử lâu đời nhất." },
+        { tokens: ["北京四合院", "可以代表", "其", "主要特点", "。"], answer: "北京四合院可以代表其主要特点。", vi: "Tứ hợp viện Bắc Kinh có thể đại diện cho những đặc điểm chính của nó." },
+        { tokens: ["院子", "是", "十分理想的", "室外生活空间", "。"], answer: "院子是十分理想的室外生活空间。", vi: "Sân là không gian sinh hoạt ngoài trời vô cùng lý tưởng." },
+        { tokens: ["住在四合院里的人", "不常", "与周围的邻居", "打交道", "。"], answer: "住在四合院里的人不常与周围的邻居打交道。", vi: "Người sống trong tứ hợp viện không hay giao thiệp với hàng xóm xung quanh." },
+        { tokens: ["四合院", "因而", "最为", "人们所喜爱", "。"], answer: "四合院因而最为人们所喜爱。", vi: "Vì vậy tứ hợp viện được mọi người yêu thích nhất." },
+      ],
+    },
+    {
+      id: "fill-1", kind: "fill-blanks", icon: "💬", title: "Phần 4 · Hoàn thành bài khóa (đoạn 1–2)", points: 10,
+      subtitle: "Bấm vào chỗ trống rồi bấm từ đúng trong ngân hàng từ. Bấm lại chỗ đã điền để xóa.",
+      passages: [
+        { title: "Đoạn 1 · Thế nào là tứ hợp viện", text: "四合院，是中国华北地区民居中的一种{{c1}}建筑{{c2}}。{{c3}}四合，“四”指东、西、南、北四面。四合院在中国汉族民居中历史最悠久，分布最{{c4}}。传统的北京四合院都有一套固定的{{c5}}，十分具有{{c6}}性。" },
+        { title: "Đoạn 2 · Kết cấu", text: "有钱人家的，{{c7}}是由好几座四合院{{c8}}组成的。院中的北房是正房，一般包括{{c9}}的卧室和具备日常起居、接待客人等{{c10}}的客厅。" },
+      ],
+      answers: { c1: "组合", c2: "形式", c3: "所谓", c4: "广泛", c5: "样式", c6: "代表", c7: "通常", c8: "并列", c9: "长辈", c10: "功能" },
+      bank: ["组合", "形式", "所谓", "广泛", "样式", "代表", "通常", "并列", "长辈", "功能", "常常", "组成", "空间"],
+    },
+    {
+      id: "fill-2", kind: "fill-blanks", icon: "📄", title: "Phần 5 · Hoàn thành bài khóa (đoạn 3–4)", points: 10,
+      subtitle: "Điền từ thích hợp vào đoạn văn về cái sân và tình làng nghĩa xóm.",
+      passages: [
+        { title: "Đoạn 3–4 · Cái sân và đại tạp viện", text: "院子是十分理想的室外生活{{e1}}。有的人家喜欢种草、养花、种竹子，有的人家{{e2}}喜欢用大盆养金鱼。院子对{{e3}}生活情趣起了很大作用，{{e4}}最为人们所喜爱。只要{{e5}}起大门，四合院内便形成一个封闭式的小环境。住在四合院里的人不常与周围的邻居{{e6}}。一家人{{e7}}享受家庭的乐趣，自然有一种{{e8}}人感到自在亲切的气氛。邻里之间有时虽然也有{{e9}}，但更多时候是互帮互助，这种{{e10}}浓的情感是许多老北京人无法忘记的。" },
+      ],
+      answers: { e1: "空间", e2: "则", e3: "创造", e4: "因而", e5: "关闭", e6: "打交道", e7: "充分", e8: "令", e9: "矛盾", e10: "浓" },
+      bank: ["空间", "则", "创造", "因而", "关闭", "打交道", "充分", "令", "矛盾", "浓", "亲切", "封闭", "日子"],
+    },
+    {
+      id: "zh-vi", kind: "translate-zh-vi", icon: "🇨🇳", title: "Phần 6 · Dịch Trung → Việt", points: 6,
+      subtitle: "Dịch các câu sau sang tiếng Việt. Hệ thống chấm theo từ khóa chính, hãy so sánh với bản dịch gợi ý.",
+      items: [
+        { zh: "四合院是中国华北地区民居中的一种建筑形式。", vi: "Tứ hợp viện là một hình thức kiến trúc nhà ở dân gian vùng Hoa Bắc Trung Quốc.", keywords: ["tứ hợp viện", "kiến trúc", "Hoa Bắc"] },
+        { zh: "院子是十分理想的室外生活空间。", vi: "Sân là không gian sinh hoạt ngoài trời vô cùng lý tưởng.", keywords: ["sân", "không gian", "ngoài trời", "lý tưởng"] },
+        { zh: "他坚持锻炼，因而身体很好。", vi: "Anh ấy kiên trì rèn luyện, vì vậy sức khỏe rất tốt.", keywords: ["kiên trì", "rèn luyện", "vì vậy", "sức khỏe"] },
+        { zh: "现在的手机都具备很多功能。", vi: "Điện thoại bây giờ đều có rất nhiều chức năng.", keywords: ["điện thoại", "chức năng"] },
+        { zh: "这种浓浓的情感是许多老北京人无法忘记的。", vi: "Thứ tình cảm đậm đà ấy là điều nhiều người Bắc Kinh xưa không thể quên.", keywords: ["tình cảm", "Bắc Kinh", "không thể quên"] },
+      ],
+    },
+    {
+      id: "vi-zh", kind: "translate-vi-zh", icon: "🇻🇳", title: "Phần 7 · Dịch Việt → Trung", points: 6,
+      subtitle: "Dịch các câu sau sang tiếng Trung, dùng từ vựng – ngữ pháp đã học trong bài.",
+      items: [
+        { vi: "Hôm nay trên báo có một mẩu tin rất quan trọng.", answers: ["今天的报纸上有一则非常重要的新闻。", "今天报纸上有一则很重要的新闻。", "今天的报纸上有一则很重要的新闻。"] },
+        { vi: "Anh ấy thường xuyên đi công tác Thượng Hải.", answers: ["他常常去上海出差。", "他常常到上海出差。"] },
+        { vi: "Sở thích của anh ấy rất rộng.", answers: ["他的兴趣爱好非常广泛。", "他的兴趣很广泛。", "他的爱好很广泛。", "他的兴趣爱好很广泛。"] },
+        { vi: "Hai người họ thường xuyên mâu thuẫn.", answers: ["他们俩常常闹矛盾。", "他们两个人常常闹矛盾。"] },
+        { vi: "Tôi chủ yếu học một số câu giao tiếp hằng ngày.", answers: ["我学的主要是一些日常用语。", "我主要学一些日常用语。"] },
+      ],
+    },
+    {
+      id: "true-false", kind: "true-false", icon: "✅", title: "Phần 8 · Đúng / Sai", points: 8,
+      subtitle: "Dựa vào nội dung bài khóa, chọn Đúng hoặc Sai.",
+      items: [
+        { q: "四合院是中国华南地区的一种民居。", a: false },
+        { q: "四合院中间形成一个方形的院子。", a: true },
+        { q: "所有的北京四合院都只有一个院子。", a: false },
+        { q: "大门一般开在东南角或西北角。", a: true },
+        { q: "东西厢房是长辈们生活的地方。", a: false },
+        { q: "有的人家喜欢在院子里用大盆养金鱼。", a: true },
+        { q: "住在四合院里的人常常与周围的邻居打交道。", a: false },
+        { q: "大杂院里的住户多为普通劳动人民。", a: true },
+      ],
+    },
+    {
+      id: "dictation", kind: "dictation", icon: "🎙️", title: "Phần 9 · Nghe - viết (chính tả)", points: 10,
+      subtitle: "Bấm 🔊 nghe câu (nghe lại bao nhiêu lần cũng được), gõ lại đúng chữ Hán và dấu câu.",
+      items: [
+        "北京有各种规模的四合院。",
+        "院子是十分理想的室外生活空间。",
+        "他的兴趣爱好非常广泛。",
+        "他坚持锻炼，因而身体很好。",
+        "她就住在我家隔壁。",
+      ],
+    },
+    {
+      id: "essay", kind: "essay", icon: "📝", title: "Phần 10 · Viết đoạn văn", points: 7,
+      subtitle: "Tự luận – hệ thống chỉ chấm sơ bộ độ dài và từ vựng sử dụng.",
+      prompt: "请以“我眼中最美的中国建筑”为题，介绍一下你了解到的或在中国旅行时亲眼所见的印象最深的一处建筑。 (Hãy viết về chủ đề “Công trình kiến trúc Trung Quốc đẹp nhất trong mắt tôi”.)",
+      requirement: "Yêu cầu: viết ít nhất 100 chữ Hán, sử dụng tối thiểu 5 từ vựng và 2 điểm ngữ pháp của bài 14 (所谓, 则, 为……所……, 通常/常常).",
+      minChars: 100,
+      minVocab: 5,
+      grammarMarkers: ["所谓", "则", "通常", "常常"],
+      minGrammar: 2,
+      sample: "我眼中最美的中国建筑是北京的四合院。去年我去北京旅行，专门去胡同里参观了一座四合院。所谓四合院，就是东、西、南、北四面的房屋围在一起，中间形成一个方形的院子。北房是正房，通常是长辈住的，东西厢房则是晚辈们生活的地方。院子里种着竹子，还有一大盆金鱼，让人感到非常亲切。住在那儿的老人告诉我，以前邻居之间常常互帮互助，那种浓浓的感情让人难忘。我觉得四合院不仅是一种建筑，更代表了一种生活方式，因而深深地为我所喜爱。",
+    },
+    {
+      id: "gram-1", kind: "grammar-fill", icon: "🧠", title: "Phần 11 · Ngữ pháp: 通常 / 常常", points: 6,
+      subtitle: "Chọn 通常 hoặc 常常 cho mỗi chỗ trống.",
+      grammarWord: "通常 / 常常",
+      options: ["通常", "常常"],
+      items: [
+        { q: "她___在家帮妈妈干活儿。", answers: ["常常"] },
+        { q: "___除夕晚上都要放鞭炮、吃饺子。", answers: ["通常"] },
+        { q: "在___情况下，火车是不会晚点的。", answers: ["通常"] },
+        { q: "我们___的做法都是这样的。", answers: ["通常"] },
+        { q: "他成绩很好，___受到表扬。", answers: ["常常"] },
+        { q: "有钱人家的四合院，___是由好几座四合院并列组成的。", answers: ["通常"] },
+        { q: "他___去上海出差，对上海很熟悉。", answers: ["常常"] },
+        { q: "老人家里有两个儿子，他们俩___闹矛盾。", answers: ["常常"] },
+      ],
+    },
+    {
+      id: "gram-2", kind: "grammar-fill", icon: "🧠", title: "Phần 12 · Ngữ pháp: 则", points: 6,
+      subtitle: "Điền 则 vào chỗ trống (lượng từ hoặc liên từ chỉ đối lập / nhân quả).",
+      grammarWord: "则",
+      items: [
+        { q: "在第七课，我们学习了两___成语故事。", answers: ["则"] },
+        { q: "今天的报纸上有一___非常重要的新闻。", answers: ["则"] },
+        { q: "猫享受独处的快乐，而狗___是希望和别人分享快乐。", answers: ["则"] },
+        { q: "有的人家喜欢种竹子，有的人家___喜欢用大盆养金鱼。", answers: ["则"] },
+        { q: "北京的冬天，有风则寒，无风___暖。", answers: ["则"] },
+        { q: "欲速___不达。", answers: ["则"] },
+        { q: "北方人喜欢吃面食，南方人___喜欢吃米饭。", answers: ["则"] },
+        { q: "哥哥喜欢安静，弟弟___特别活泼。", answers: ["则"] },
+      ],
+    },
+    {
+      id: "gram-3", kind: "grammar-fill", icon: "🧠", title: "Phần 13 · Ngữ pháp: 为……所……", points: 5,
+      subtitle: "Điền 为 hoặc 所 vào chỗ trống để hoàn thành cấu trúc 为……所…….",
+      grammarWord: "为……所……",
+      options: ["为", "所"],
+      items: [
+        { q: "认识他的人，没有人不___他认真的工作态度所感动。", answers: ["为"] },
+        { q: "有了科学，大自然就可以更好地为人___用。", answers: ["所"] },
+        { q: "四合院因而最___人们所喜爱。", answers: ["为"] },
+        { q: "梅西是一位为全世界球迷___熟悉的足球明星。", answers: ["所"] },
+        { q: "这个老师很受欢迎，深深地___学生们所喜爱。", answers: ["为"] },
+        { q: "在这座小城，她为每一位老人___尊敬。", answers: ["所"] },
+        { q: "这种新技术已经___人们所广泛应用。", answers: ["为"] },
+        { q: "这种浓浓的情感为许多老北京人___难忘。", answers: ["所"] },
+      ],
+    },
+  ],
+};

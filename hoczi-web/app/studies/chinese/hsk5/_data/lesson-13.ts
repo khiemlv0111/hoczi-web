@@ -1,0 +1,360 @@
+import type { Lesson } from "../../_lesson/types";
+
+// HSK标准教程5 · 第13课 锯掉生活的“筐底” (Cưa bỏ “đáy giỏ” cuộc sống)
+// Nguồn: Giáo trình chuẩn HSK5 tập 1, trang 118–125 (bản scan, đọc từ ảnh trang).
+// Từ vựng, bài khóa, ngữ pháp và luyện nhanh lấy từ sách; phần luyện tập 100 điểm
+// và bản dịch tiếng Việt bài khóa được soạn thêm (cần giáo viên duyệt lại).
+const W_EX1 = ["重复", "造成", "气氛", "缺乏", "仿佛", "连忙"];
+const W_EXT = ["武术", "象棋", "对手", "冠军"];
+
+export const lesson13: Lesson = {
+  level: "hsk5",
+  no: 13,
+  slug: "bai-13",
+  zh: "锯掉生活的“筐底”",
+  pinyin: "Jùdiào shēnghuó de “kuāngdǐ”",
+  vi: "Cưa bỏ “đáy giỏ” cuộc sống",
+  en: "Saw Off the “Basket Bottom” of Life",
+  topic: "放眼世界 · Nhìn ra thế giới",
+  durationMinutes: 60,
+
+  goals: [
+    "Nắm nghĩa và cách dùng các từ trọng điểm cấp 5: 训练、缺乏、项目、启发、安装、工具、重复、激烈、气氛、何况、好奇、何必、多亏、连忙、思维、造成、仿佛、阻碍…",
+    "Nắm cách kết hợp: 缺乏 + 人才/知识/勇气/信心; 造成 + 困难/影响/浪费; 激烈的 + 比赛/争吵; 认真地/艰苦地 + 训练; 瞧 + 见/得起/不起…",
+    "Hiểu và dùng được 何况、何必、多亏; phân biệt 激烈 và 强烈.",
+    "Đọc hiểu bài khóa về sự ra đời của môn bóng rổ và câu chuyện cưa bỏ đáy giỏ, kể lại bằng từ vựng đã học.",
+    "Thảo luận về vận động và sức khỏe, viết đoạn văn 「我喜欢的一项运动」.",
+    "Nắm 8 từ mở rộng chủ đề 体育 (thể thao).",
+  ],
+
+  warmUp: [
+    { zh: "请从生词表中找出合适的词语填入括号中：（1）篮板（2）筐（3）栏杆（4）投篮", vi: "Tìm trong bảng từ mới các từ phù hợp để gọi tên các bộ phận trong ảnh trận bóng rổ: bảng rổ, rổ (giỏ), lan can khán đài, ném bóng vào rổ." },
+    { zh: "你喜欢打篮球吗？你知道篮球运动是怎么产生的吗？说说你参加这项运动的情况。", vi: "Bạn có thích chơi bóng rổ không? Bạn có biết môn bóng rổ ra đời như thế nào không? Hãy kể về việc bạn tham gia môn thể thao này." },
+  ],
+
+  vocab: [
+    { id: 1, han: "锯", py: "jù", pos: "đgt./dt.", meaning: "cưa; cái cưa", example: "一位球员找来一把锯子把篮筐的底锯掉。", exampleVi: "Một cầu thủ tìm một cái cưa đến cưa bỏ đáy giỏ." },
+    { id: 2, han: "筐", py: "kuāng", pos: "dt.", meaning: "giỏ, sọt", example: "他把篮筐的底去掉了。", exampleVi: "Anh ấy đã bỏ đáy giỏ đi." },
+    { id: 3, han: "训练", py: "xùnliàn", pos: "đgt.", meaning: "huấn luyện", example: "运动员们每天都要认真地训练。", exampleVi: "Các vận động viên ngày nào cũng phải tập luyện nghiêm túc." },
+    { id: 4, han: "缺乏", py: "quēfá", pos: "đgt.", meaning: "thiếu, không đủ", example: "那所学校缺乏在室内进行的球类比赛项目。", exampleVi: "Trường đó thiếu các môn thi đấu bóng tiến hành trong nhà." },
+    { id: 5, han: "项目", py: "xiàngmù", pos: "dt.", meaning: "hạng mục", example: "篮球是很受欢迎的体育项目。", exampleVi: "Bóng rổ là môn thể thao rất được ưa chuộng." },
+    { id: 6, han: "桃", py: "táo", pos: "dt.", meaning: "(trái) đào", example: "当地产桃子，各家各户都备有装桃子的篮筐。", exampleVi: "Địa phương trồng đào, nhà nào cũng có giỏ đựng đào." },
+    { id: 7, han: "装", py: "zhuāng", pos: "đgt.", meaning: "đựng, để vào", example: "东西太多了，这个箱子根本装不下。", exampleVi: "Đồ nhiều quá, cái thùng này hoàn toàn không đựng hết." },
+    { id: 8, han: "启发", py: "qǐfā", pos: "đgt.", meaning: "gợi ý, gợi mở", example: "他从当地人把球扔进桃子筐的游戏中得到了启发。", exampleVi: "Ông được gợi ý từ trò chơi ném bóng vào giỏ đào của người dân địa phương." },
+    { id: 9, han: "安装", py: "ānzhuāng", pos: "đgt.", meaning: "lắp đặt, gắn", example: "他将两只篮筐分别安装在体育馆两边的栏杆上。", exampleVi: "Ông gắn hai cái giỏ lần lượt lên lan can hai bên nhà thi đấu." },
+    { id: 10, han: "栏杆", py: "lángān", pos: "dt.", meaning: "hàng lan can", example: "栏杆上固定的是真正的筐。", exampleVi: "Thứ được cố định trên lan can là giỏ thật." },
+    { id: 11, han: "甲", py: "jiǎ", pos: "dt.", meaning: "người (đội) thứ nhất", example: "学生分为甲乙两队进行比赛。", exampleVi: "Học sinh chia thành hai đội Giáp và Ất để thi đấu." },
+    { id: 12, han: "乙", py: "yǐ", pos: "dt.", meaning: "người (đội) thứ hai", example: "这场比赛乙队赢了。", exampleVi: "Trận đấu này đội Ất thắng." },
+    { id: 13, han: "工具", py: "gōngjù", pos: "dt.", meaning: "công cụ", example: "他们以足球为比赛工具向篮内投。", exampleVi: "Họ dùng quả bóng đá làm dụng cụ thi đấu, ném vào trong giỏ." },
+    { id: 14, han: "投篮", py: "tóu lán", pos: "đgt.", meaning: "ném bóng vào rổ", example: "他投篮投得非常准。", exampleVi: "Anh ấy ném rổ rất chuẩn." },
+    { id: 15, han: "踩", py: "cǎi", pos: "đgt.", meaning: "giẫm, đạp", example: "每当球投进时，就得有一个人踩着梯子上去把球取出来。", exampleVi: "Mỗi khi bóng vào rổ, lại phải có một người giẫm thang trèo lên lấy bóng ra." },
+    { id: 16, han: "一再", py: "yízài", pos: "phó.", meaning: "nhiều lần, hết lần này đến lần khác", example: "这样的行为必须一再地重复。", exampleVi: "Hành động như vậy phải lặp đi lặp lại nhiều lần." },
+    { id: 17, han: "重复", py: "chóngfù", pos: "đgt.", meaning: "lặp lại", example: "一个人的动作如果重复二十一天就会形成习惯。", exampleVi: "Một động tác nếu lặp lại hai mươi mốt ngày sẽ hình thành thói quen." },
+    { id: 18, han: "断断续续", py: "duànduàn xùxù", pos: "tt.", meaning: "không liên tục, gián đoạn", example: "比赛不得不断断续续地进行。", exampleVi: "Trận đấu đành phải diễn ra ngắt quãng." },
+    { id: 19, han: "激烈", py: "jīliè", pos: "tt.", meaning: "kịch liệt, sôi nổi", example: "当晚的比赛紧张、激烈，两队都打出了很高的水平。", exampleVi: "Trận đấu tối hôm đó căng thẳng, quyết liệt, cả hai đội đều thi đấu ở trình độ rất cao." },
+    { id: 20, han: "气氛", py: "qìfēn", pos: "dt.", meaning: "bầu không khí", example: "今天的晚会组织得相当好，气氛轻松愉快。", exampleVi: "Buổi dạ hội hôm nay tổ chức khá tốt, bầu không khí thoải mái vui vẻ." },
+    { id: 21, han: "何况", py: "hékuàng", pos: "liên.", meaning: "huống hồ, huống chi", example: "连运动员都不满意，更何况看比赛的球迷呢？", exampleVi: "Ngay cả vận động viên còn không hài lòng, huống chi là người hâm mộ xem trận đấu?" },
+    { id: 22, han: "球迷", py: "qiúmí", pos: "dt.", meaning: "người mê bóng", example: "球迷们都很喜欢看激烈的比赛。", exampleVi: "Người hâm mộ đều rất thích xem những trận đấu sôi nổi." },
+    { id: 23, han: "工程师", py: "gōngchéngshī", pos: "dt.", meaning: "kỹ sư", example: "有一位工程师甚至专门制造出一种机器。", exampleVi: "Có một kỹ sư thậm chí còn chế tạo riêng một loại máy." },
+    { id: 24, han: "机器", py: "jīqì", pos: "dt.", meaning: "máy móc", example: "在下面一拉篮筐，机器就能把球弹出来。", exampleVi: "Ở dưới kéo giỏ một cái, máy liền bật bóng ra." },
+    { id: 25, han: "顺畅", py: "shùnchàng", pos: "tt.", meaning: "trôi chảy", example: "这些办法都没能让比赛顺畅起来。", exampleVi: "Những cách này đều không làm cho trận đấu trôi chảy được." },
+    { id: 26, han: "幼儿园", py: "yòu'éryuán", pos: "dt.", meaning: "nhà trẻ", example: "一个上幼儿园的小男孩跟着父亲经过。", exampleVi: "Một cậu bé đang học mẫu giáo theo cha đi ngang qua." },
+    { id: 27, han: "好奇", py: "hàoqí", pos: "tt.", meaning: "hiếu kỳ, tò mò", example: "小男孩好奇地问父亲为什么这么麻烦。", exampleVi: "Cậu bé tò mò hỏi cha sao lại phiền phức như vậy." },
+    { id: 28, han: "何必", py: "hébì", pos: "phó.", meaning: "(chỉ sự không cần) hà tất, cần gì", example: "何必这么麻烦呢？把篮筐的底去掉不就行了吗？", exampleVi: "Hà tất phải phiền phức thế? Bỏ đáy giỏ đi chẳng phải là xong sao?" },
+    { id: 29, han: "多亏", py: "duōkuī", pos: "đgt.", meaning: "may mà (có), nhờ có", example: "多亏了他这句话，人们如梦初醒。", exampleVi: "Nhờ câu nói của cậu bé, mọi người như bừng tỉnh giấc mộng." },
+    { id: 30, han: "连忙", py: "liánmáng", pos: "phó.", meaning: "ngay lập tức", example: "一觉醒来发现已经8点多了，李阳连忙穿好衣服往公司赶。", exampleVi: "Ngủ dậy thấy đã hơn 8 giờ, Lý Dương vội mặc quần áo chạy đến công ty." },
+    { id: 31, han: "瞧", py: "qiáo", pos: "đgt.", meaning: "nhìn", example: "你瞧，困扰人们很长时间的问题就这样解决了。", exampleVi: "Bạn xem, vấn đề làm khó mọi người bấy lâu đã được giải quyết như thế." },
+    { id: 32, han: "困扰", py: "kùnrǎo", pos: "đgt.", meaning: "làm phiền, gây rối", example: "取球问题困扰了人们很长时间。", exampleVi: "Chuyện lấy bóng đã làm khó mọi người rất lâu." },
+    { id: 33, han: "思维", py: "sīwéi", pos: "dt./đgt.", meaning: "tư duy; suy nghĩ", example: "我们的思维像篮球一样被篮筐的底挡在了半空中。", exampleVi: "Tư duy của chúng ta giống quả bóng rổ, bị đáy giỏ chặn lại giữa không trung." },
+    { id: 34, han: "呆", py: "dāi", pos: "tt./đgt.", meaning: "đần độn, ngu ngốc; nán lại, ở lại", example: "于是，我们呆呆地去搬梯子、造机器。", exampleVi: "Thế là chúng ta ngây ngô đi khiêng thang, chế tạo máy." },
+    { id: 35, han: "造成", py: "zàochéng", pos: "đgt.", meaning: "tạo thành, gây ra", example: "复杂都是我们自己造成的。", exampleVi: "Sự phức tạp đều do chính chúng ta tạo ra." },
+    { id: 36, han: "仿佛", py: "fǎngfú", pos: "phó./đgt.", meaning: "dường như; giống như", example: "生活仿佛篮筐，许多时候我们需要的只不过是一把锯子。", exampleVi: "Cuộc sống giống như cái giỏ, nhiều khi thứ ta cần chỉ là một chiếc cưa." },
+    { id: 37, han: "阻碍", py: "zǔ'ài", pos: "đgt.", meaning: "ngăn cản, cản trở", example: "我们需要一把锯子来锯掉那些阻碍我们的“筐底”。", exampleVi: "Chúng ta cần một chiếc cưa để cưa bỏ những “đáy giỏ” cản trở mình." },
+    { id: 38, han: "太极拳", py: "tàijíquán", pos: "dt.", meaning: "thái cực quyền", example: "爷爷每天早上都去公园打太极拳。", exampleVi: "Ông nội sáng nào cũng ra công viên tập thái cực quyền.", group: "extended" },
+    { id: 39, han: "武术", py: "wǔshù", pos: "dt.", meaning: "võ thuật", example: "武术是中国传统的体育项目。", exampleVi: "Võ thuật là môn thể thao truyền thống của Trung Quốc.", group: "extended" },
+    { id: 40, han: "纪录", py: "jìlù", pos: "dt.", meaning: "kỷ lục", example: "他打破了世界纪录。", exampleVi: "Anh ấy đã phá kỷ lục thế giới.", group: "extended" },
+    { id: 41, han: "象棋", py: "xiàngqí", pos: "dt.", meaning: "cờ tướng", example: "我认识的那位体育老师象棋下得可棒了。", exampleVi: "Thầy giáo thể dục tôi quen chơi cờ tướng giỏi lắm.", group: "extended" },
+    { id: 42, han: "教练", py: "jiàoliàn", pos: "dt.", meaning: "huấn luyện viên", example: "教练要求我们每天训练三个小时。", exampleVi: "Huấn luyện viên yêu cầu chúng tôi tập ba tiếng mỗi ngày.", group: "extended" },
+    { id: 43, han: "对手", py: "duìshǒu", pos: "dt.", meaning: "đối thủ", example: "打羽毛球你可不是我的对手。", exampleVi: "Đánh cầu lông thì bạn không phải đối thủ của tôi đâu.", group: "extended" },
+    { id: 44, han: "冠军", py: "guànjūn", pos: "dt.", meaning: "quán quân, nhà vô địch", example: "他决心苦练一年，拿回冠军的奖杯。", exampleVi: "Anh ấy quyết tâm khổ luyện một năm để giành lại cúp vô địch.", group: "extended" },
+    { id: 45, han: "决赛", py: "juésài", pos: "dt.", meaning: "trận chung kết", example: "这场决赛非常激烈。", exampleVi: "Trận chung kết này vô cùng quyết liệt.", group: "extended" },
+  ],
+
+  text: {
+    title: "课文 锯掉生活的“筐底”",
+    paragraphs: [
+      {
+        zh: "篮球运动是1891年由美国马萨诸塞州的体育教师詹姆士·奈史密斯博士发明的。那年的冬天特别冷，奈史密斯所在的训练学校缺乏在室内进行的球类比赛项目，他从当地人把球扔进桃子筐（当地产桃子，各家各户都备有装桃子的专用篮筐）的游戏中得到了启发，将两只篮筐分别安装在体育馆两边看台的栏杆上，学生分为甲乙两队，以足球为比赛工具向篮内投，按得分多少决定输赢。",
+        vi: "Môn bóng rổ do tiến sĩ James Naismith, giáo viên thể dục ở bang Massachusetts nước Mỹ, phát minh năm 1891. Mùa đông năm ấy đặc biệt lạnh, trường huấn luyện nơi Naismith làm việc thiếu các môn thi đấu bóng có thể tiến hành trong nhà. Ông được gợi ý từ trò chơi ném bóng vào giỏ đào của người dân địa phương (vùng này trồng đào, nhà nào cũng có giỏ chuyên đựng đào), bèn gắn hai chiếc giỏ lần lượt lên lan can khán đài hai bên nhà thi đấu, chia học sinh thành hai đội Giáp và Ất, dùng quả bóng đá làm dụng cụ thi đấu ném vào giỏ, căn cứ vào số điểm nhiều hay ít để phân thắng thua.",
+        questions: ["篮球运动是谁发明的？是怎么发明的？", "请用重点词语复述：训练、缺乏、启发、项目、安装"],
+      },
+      {
+        zh: "这项运动很快流行起来。不过，由于栏杆上固定的是真正的筐，每当球投进时，就得有一个人踩着梯子上去把球取出来。这样的行为必须一再地重复，为此，比赛不得不断断续续地进行，缺少了激烈紧张的气氛，连运动员都不满意，更何况看比赛的球迷呢？为了解决这个问题，大家纷纷出主意，想出了很多取球的办法。有一位工程师甚至专门制造出一种机器，在下面一拉篮筐就能把球弹出来。可是，这些办法都没能让比赛顺畅起来。",
+        vi: "Môn thể thao này nhanh chóng trở nên thịnh hành. Có điều, vì thứ cố định trên lan can là chiếc giỏ thật, nên mỗi khi bóng vào giỏ lại phải có một người giẫm thang trèo lên lấy bóng ra. Việc này phải lặp đi lặp lại nhiều lần, vì thế trận đấu đành phải diễn ra ngắt quãng, thiếu bầu không khí sôi nổi căng thẳng; ngay cả vận động viên còn không hài lòng, huống chi là người hâm mộ xem trận đấu? Để giải quyết vấn đề này, mọi người lần lượt góp ý, nghĩ ra rất nhiều cách lấy bóng. Có một kỹ sư thậm chí còn chế tạo riêng một loại máy, ở dưới kéo giỏ một cái là bóng bật ra. Thế nhưng những cách này đều không làm cho trận đấu trôi chảy được.",
+        questions: ["取球带来了什么烦恼？", "请用重点词语复述：断断续续、一再、激烈、气氛、机器"],
+      },
+      {
+        zh: "几年后的一天，一个上幼儿园的小男孩跟着父亲从一群正在进行篮球比赛的人旁边经过。看到大人们一次次辛苦地取球，小男孩好奇地问父亲：“何必这么麻烦呢？把篮筐的底去掉不就行了吗？”多亏了他这句话，人们如梦初醒，一位球员连忙找来一把锯子把篮筐的底锯掉。你瞧，困扰人们很长时间的取球问题就这样被一个小孩子解决了。",
+        vi: "Một ngày mấy năm sau, một cậu bé đang học mẫu giáo theo cha đi ngang qua một nhóm người đang chơi bóng rổ. Thấy người lớn hết lần này đến lần khác vất vả lấy bóng, cậu bé tò mò hỏi cha: “Hà tất phải phiền phức như vậy? Bỏ đáy giỏ đi chẳng phải là xong sao?” Nhờ câu nói ấy, mọi người như bừng tỉnh giấc mộng, một cầu thủ vội tìm một chiếc cưa đến cưa bỏ đáy giỏ. Bạn xem, vấn đề lấy bóng làm khó mọi người bao lâu nay đã được một đứa trẻ giải quyết như thế.",
+        questions: ["取球的问题最后是怎么解决的？", "请用重点词语复述：幼儿园、好奇、何必、锯"],
+      },
+      {
+        zh: "去掉篮筐的底，本是一件简单的事，可为什么那么多人都没有想到呢？说白了，因为我们的思维像篮球一样被篮筐的底挡在了半空中。于是，我们呆呆地去搬梯子、造机器……其实，世界上本来就没有太复杂的事，复杂都是我们自己造成的。生活仿佛篮筐，许多时候，我们需要的只不过是一把锯子，来锯掉那些阻碍我们的“筐底”。",
+        vi: "Bỏ đáy giỏ đi vốn là một việc đơn giản, vậy tại sao bao nhiêu người đều không nghĩ ra? Nói thẳng ra là vì tư duy của chúng ta, giống như quả bóng rổ, đã bị đáy giỏ chặn lại giữa không trung. Thế là chúng ta ngây ngô đi khiêng thang, chế tạo máy… Thật ra, trên đời vốn không có việc gì quá phức tạp, sự phức tạp đều do chính chúng ta tạo ra. Cuộc sống giống như chiếc giỏ, nhiều khi thứ chúng ta cần chỉ là một chiếc cưa để cưa bỏ những “đáy giỏ” đang cản trở mình.",
+        questions: ["为什么那么多人都没有想到去掉篮筐的底？", "这个故事告诉我们什么道理？"],
+      },
+    ],
+    notes: [
+      "马萨诸塞州 (Mǎsàzhūsài Zhōu): Massachusetts, một tiểu bang của Hoa Kỳ.",
+      "詹姆士·奈史密斯 (Zhānmǔshì · Nàishǐmìsī): James Naismith, người phát minh môn bóng rổ.",
+      "如梦初醒: như vừa tỉnh mộng – chợt hiểu ra. 说白了: nói thẳng ra, nói trắng ra.",
+      "Bài khóa trích từ 《环球人物》, tác giả 张前.",
+    ],
+  },
+
+  grammar: [
+    {
+      word: "何况",
+      title: "Liên từ “huống hồ, huống chi”",
+      usages: [
+        {
+          label: "Tiến thêm một tầng",
+          explain: "Dùng ngữ khí phản vấn để tiến thêm một bậc; kết luận ở vế sau là hiển nhiên, mang nghĩa “không cần phải nói”.",
+          examples: [
+            "……缺少了激烈紧张的气氛，连运动员都不满意，更何况看比赛的球迷呢？",
+            "北京的发展变化太快，我这个土生土长的老北京还常迷路呢，何况你一个外地人。",
+          ],
+        },
+        {
+          label: "Bổ sung lý do",
+          explain: "Còn dùng để bổ sung thêm một lý do nữa.",
+          examples: [
+            "这辆车外观漂亮，安全性高，又何况价钱也就比上次看的那辆贵了几千块，小王有点儿动心了。",
+            "上海冬天没有暖气，屋子里冷得让人伸不出手，何况李阳还是病人，自然是受不了的。",
+          ],
+        },
+      ],
+      note: "Hay đi với 连……都/也……，（更）何况……（呢）？",
+    },
+    {
+      word: "何必",
+      title: "Phó từ “hà tất, cần gì phải”",
+      usages: [
+        {
+          label: "Cách dùng",
+          explain: "Dùng ngữ khí phản vấn để biểu thị không cần thiết, không cần phải làm vậy.",
+          examples: [
+            "何必这么麻烦呢？把篮筐的底去掉不就行了吗？",
+            "食堂楼下就有个小超市，何必去学校外边呢？",
+            "你何必亲自送一趟呢？叫个快递不就行了？",
+          ],
+        },
+      ],
+      note: "Cuối câu thường có 呢; có thể dùng độc lập: 何必呢？",
+    },
+    {
+      word: "多亏",
+      title: "Động từ “may mà, nhờ có”",
+      usages: [
+        {
+          label: "Cách dùng",
+          explain: "Nhờ sự giúp đỡ của người khác hoặc một yếu tố thuận lợi nào đó mà tránh được điều không may hoặc nhận được lợi ích.",
+          examples: [
+            "多亏了他这句话，人们如梦初醒。",
+            "赵老师，谢谢您，多亏您给我那瓶药，很管用。",
+            "今天搬家多亏有你在，你可帮我大忙了。",
+          ],
+        },
+      ],
+      note: "Mẫu: 多亏（了）……，（要不/不然）……",
+    },
+    {
+      word: "激烈 / 强烈",
+      title: "Phân biệt 激烈 và 强烈",
+      usages: [
+        { label: "Điểm giống", explain: "Đều là tính từ, mang nghĩa mạnh mẽ, dữ dội.", examples: ["我不顾父母的激烈/强烈反对，偷偷地报考了表演专业。"] },
+        { label: "激烈", explain: "Nhấn mạnh sự gay gắt, căng thẳng; thường dùng cho lời lẽ, cảm xúc, thi đấu, đấu tranh.", examples: ["人类最早什么时候开始用火，一直是学者激烈争论的问题。", "人在激烈运动时，会出很多汗。"] },
+        { label: "强烈", explain: "Nhấn mạnh sự mạnh mẽ, có sức mạnh; thường dùng cho ánh sáng, dòng điện, màu sắc, mùi vị hoặc tình cảm, tư tưởng, yêu cầu.", examples: ["文章发表以后立刻引起了读者的强烈反响。", "这里夏天尽管阳光的照射很强烈，但白天气温很少超过35℃。"] },
+      ],
+      note: "激烈的比赛/竞争/争论；强烈的阳光/香味/要求/反对.",
+    },
+  ],
+
+  wordChoice: [
+    { sentence: "今天的晚会你们组织得相当好，___搞得轻松愉快。", options: W_EX1, answer: "气氛" },
+    { sentence: "一觉醒来发现已经8点多了，李阳___穿好衣服往公司赶。", options: W_EX1, answer: "连忙" },
+    { sentence: "他一边听，一边在本子上记着什么，___对我的发言挺感兴趣似的。", options: W_EX1, answer: "仿佛" },
+    { sentence: "心理学家指出，一个人的动作或想法，如果___二十一天就会形成习惯。", options: W_EX1, answer: "重复" },
+    { sentence: "每天大量饮酒确实给我的身体健康___了很大的伤害。", options: W_EX1, answer: "造成" },
+    { sentence: "在食物___的季节，动物为了活下去就只能多睡觉。", options: W_EX1, answer: "缺乏" },
+    { sentence: "要整理的东西太多了，你看，这个箱子根本___不下。", options: ["装", "安装"], answer: "装" },
+    { sentence: "昨晚我失眠了，睡不着就躺着___书，结果不知不觉天就亮了。", options: ["瞧", "看"], answer: "看" },
+    { sentence: "即使在现代社会里，故事仍然是人们生活中不可___的一部分。", options: ["缺少", "缺乏"], answer: "缺少" },
+    { sentence: "你们知道中国人除夕夜守岁、放鞭炮的风俗是怎么___的吗？", options: ["形成", "造成"], answer: "形成" },
+    { sentence: "这种蔬菜有___的香味，它既可以生吃，又可熟食。", options: ["激烈", "强烈"], answer: "强烈" },
+    { sentence: "明天我去一家公司面试，听说竞争很___。", options: ["激烈", "强烈"], answer: "激烈" },
+    { sentence: "当晚的比赛紧张、___，两队都打出了很高的水平。", options: ["激烈", "强烈"], answer: "激烈" },
+    { sentence: "学生们___要求重新安排考试。", options: ["激烈", "强烈"], answer: "强烈" },
+    { sentence: "___是中国传统的体育项目，太极拳是其中重要的组成部分。", options: W_EXT, answer: "武术" },
+    { sentence: "我认识一位大学的体育老师，他___下得可棒了。", options: W_EXT, answer: "象棋" },
+    { sentence: "打羽毛球你可不是我的___，不管打多少场你也赢不了。", options: W_EXT, answer: "对手" },
+    { sentence: "他决心苦练一年，好在下次比赛时打败对方，拿回___的奖杯。", options: W_EXT, answer: "冠军" },
+  ],
+
+  practice: [
+    {
+      id: "listen", kind: "listen-pick", icon: "🎧", title: "Phần 1 · Nghe - chọn chữ Hán", points: 8,
+      subtitle: "Bấm 🔊 nghe từ, sau đó chọn đúng chữ Hán tương ứng.",
+      items: [
+        { vocabId: 3, distractors: [13, 5, 9] },
+        { vocabId: 4, distractors: [8, 19, 20] },
+        { vocabId: 17, distractors: [16, 25, 35] },
+        { vocabId: 21, distractors: [28, 29, 30] },
+        { vocabId: 23, distractors: [24, 22, 26] },
+        { vocabId: 27, distractors: [33, 36, 32] },
+        { vocabId: 32, distractors: [37, 35, 31] },
+        { vocabId: 42, distractors: [43, 44, 39] },
+      ],
+    },
+    {
+      id: "pinyin", kind: "pinyin", icon: "✍️", title: "Phần 2 · Điền pinyin", points: 8,
+      subtitle: "Gõ pinyin không dấu thanh cũng được chấp nhận, nhưng cố gắng gõ đúng dấu thanh nhé.",
+      vocabIds: [8, 10, 19, 20, 25, 30, 33, 36],
+    },
+    {
+      id: "order", kind: "order", icon: "🧩", title: "Phần 3 · Sắp xếp câu", points: 10,
+      subtitle: "Bấm lần lượt các mảnh theo đúng thứ tự để ghép thành câu. Bấm vào mảnh đã chọn để bỏ ra.",
+      items: [
+        { tokens: ["篮球运动", "是1891年", "由奈史密斯博士", "发明的", "。"], answer: "篮球运动是1891年由奈史密斯博士发明的。", vi: "Môn bóng rổ do tiến sĩ Naismith phát minh năm 1891." },
+        { tokens: ["他", "从这个游戏中", "得到了", "启发", "。"], answer: "他从这个游戏中得到了启发。", vi: "Ông được gợi ý từ trò chơi này." },
+        { tokens: ["比赛", "不得不", "断断续续地", "进行", "。"], answer: "比赛不得不断断续续地进行。", vi: "Trận đấu đành phải diễn ra ngắt quãng." },
+        { tokens: ["一位球员", "连忙", "找来", "一把锯子", "。"], answer: "一位球员连忙找来一把锯子。", vi: "Một cầu thủ vội tìm đến một chiếc cưa." },
+        { tokens: ["复杂", "都是", "我们自己", "造成的", "。"], answer: "复杂都是我们自己造成的。", vi: "Sự phức tạp đều do chính chúng ta tạo ra." },
+      ],
+    },
+    {
+      id: "fill-1", kind: "fill-blanks", icon: "💬", title: "Phần 4 · Hoàn thành bài khóa (đoạn 1–2)", points: 10,
+      subtitle: "Bấm vào chỗ trống rồi bấm từ đúng trong ngân hàng từ. Bấm lại chỗ đã điền để xóa.",
+      passages: [
+        { title: "Đoạn 1 · Sự ra đời của bóng rổ", text: "那年的冬天特别冷，奈史密斯所在的{{c1}}学校{{c2}}在室内进行的球类比赛{{c3}}，他从当地人把球扔进桃子筐的游戏中得到了{{c4}}，将两只篮筐分别{{c5}}在体育馆两边看台的栏杆上。" },
+        { title: "Đoạn 2 · Nỗi phiền lấy bóng", text: "每当球投进时，就得有一个人{{c6}}着梯子上去把球取出来。这样的行为必须一再地{{c7}}，为此，比赛不得不断断续续地进行，缺少了激烈紧张的{{c8}}，连运动员都不满意，更{{c9}}看比赛的球迷呢？有一位{{c10}}甚至专门制造出一种机器。" },
+      ],
+      answers: { c1: "训练", c2: "缺乏", c3: "项目", c4: "启发", c5: "安装", c6: "踩", c7: "重复", c8: "气氛", c9: "何况", c10: "工程师" },
+      bank: ["训练", "缺乏", "项目", "启发", "安装", "踩", "重复", "气氛", "何况", "工程师", "何必", "机器", "装"],
+    },
+    {
+      id: "fill-2", kind: "fill-blanks", icon: "📄", title: "Phần 5 · Hoàn thành bài khóa (đoạn 3–4)", points: 10,
+      subtitle: "Điền từ thích hợp vào đoạn văn về cách giải quyết chuyện lấy bóng.",
+      passages: [
+        { title: "Đoạn 3–4 · Cưa bỏ đáy giỏ", text: "几年后的一天，一个上{{e1}}的小男孩跟着父亲经过。小男孩{{e2}}地问父亲：“{{e3}}这么麻烦呢？把篮筐的底去掉不就行了吗？”{{e4}}了他这句话，人们如梦初醒，一位球员{{e5}}找来一把锯子把篮筐的底锯掉。你{{e6}}，{{e7}}人们很长时间的取球问题就这样被一个小孩子解决了。其实，复杂都是我们自己{{e8}}的。生活{{e9}}篮筐，我们需要一把锯子，来锯掉那些{{e10}}我们的“筐底”。" },
+      ],
+      answers: { e1: "幼儿园", e2: "好奇", e3: "何必", e4: "多亏", e5: "连忙", e6: "瞧", e7: "困扰", e8: "造成", e9: "仿佛", e10: "阻碍" },
+      bank: ["幼儿园", "好奇", "何必", "多亏", "连忙", "瞧", "困扰", "造成", "仿佛", "阻碍", "何况", "思维", "顺畅"],
+    },
+    {
+      id: "zh-vi", kind: "translate-zh-vi", icon: "🇨🇳", title: "Phần 6 · Dịch Trung → Việt", points: 6,
+      subtitle: "Dịch các câu sau sang tiếng Việt. Hệ thống chấm theo từ khóa chính, hãy so sánh với bản dịch gợi ý.",
+      items: [
+        { zh: "篮球运动是1891年由一位美国体育教师发明的。", vi: "Môn bóng rổ do một giáo viên thể dục người Mỹ phát minh năm 1891.", keywords: ["bóng rổ", "giáo viên", "phát minh", "1891"] },
+        { zh: "连运动员都不满意，更何况看比赛的球迷呢？", vi: "Ngay cả vận động viên còn không hài lòng, huống chi là người hâm mộ xem trận đấu?", keywords: ["vận động viên", "hài lòng", "huống chi", "người hâm mộ"] },
+        { zh: "何必这么麻烦呢？", vi: "Hà tất phải phiền phức như vậy?", keywords: ["hà tất", "phiền phức"] },
+        { zh: "世界上本来就没有太复杂的事。", vi: "Trên đời vốn không có việc gì quá phức tạp.", keywords: ["vốn", "phức tạp"] },
+        { zh: "多亏您给我那瓶药，很管用。", vi: "May mà có lọ thuốc thầy đưa cho em, rất hiệu nghiệm.", keywords: ["may mà", "thuốc", "hiệu nghiệm"] },
+      ],
+    },
+    {
+      id: "vi-zh", kind: "translate-vi-zh", icon: "🇻🇳", title: "Phần 7 · Dịch Việt → Trung", points: 6,
+      subtitle: "Dịch các câu sau sang tiếng Trung, dùng từ vựng – ngữ pháp đã học trong bài.",
+      items: [
+        { vi: "Hôm nay chuyển nhà may mà có bạn.", answers: ["今天搬家多亏有你。", "今天搬家多亏有你在。", "今天搬家多亏了你。"] },
+        { vi: "Dưới căng tin có một siêu thị nhỏ, hà tất phải ra ngoài trường?", answers: ["食堂楼下就有个小超市，何必去学校外边呢？", "食堂楼下有一个小超市，何必去学校外边呢？"] },
+        { vi: "Sự phức tạp đều do chính chúng ta tạo ra.", answers: ["复杂都是我们自己造成的。"] },
+        { vi: "Trận đấu tối nay rất quyết liệt.", answers: ["今天晚上的比赛很激烈。", "今晚的比赛很激烈。", "今天晚上的比赛非常激烈。"] },
+        { vi: "Cậu bé tò mò hỏi cha.", answers: ["小男孩好奇地问父亲。", "小男孩好奇地问爸爸。"] },
+      ],
+    },
+    {
+      id: "true-false", kind: "true-false", icon: "✅", title: "Phần 8 · Đúng / Sai", points: 8,
+      subtitle: "Dựa vào nội dung bài khóa, chọn Đúng hoặc Sai.",
+      items: [
+        { q: "篮球运动是1891年在美国发明的。", a: true },
+        { q: "奈史密斯从当地人把球扔进桃子筐的游戏中得到了启发。", a: true },
+        { q: "最早的篮球比赛用的是篮球。", a: false },
+        { q: "最早的比赛进行得很顺畅，气氛很激烈。", a: false },
+        { q: "一位工程师制造的机器彻底解决了取球的问题。", a: false },
+        { q: "去掉篮筐底的主意是一个小男孩提出来的。", a: true },
+        { q: "作者认为世界上的事本来就很复杂。", a: false },
+        { q: "作者认为，许多时候我们需要的只不过是一把锯子。", a: true },
+      ],
+    },
+    {
+      id: "dictation", kind: "dictation", icon: "🎙️", title: "Phần 9 · Nghe - viết (chính tả)", points: 10,
+      subtitle: "Bấm 🔊 nghe câu (nghe lại bao nhiêu lần cũng được), gõ lại đúng chữ Hán và dấu câu.",
+      items: [
+        "这项运动很快流行起来。",
+        "何必这么麻烦呢？",
+        "多亏了他这句话，人们如梦初醒。",
+        "复杂都是我们自己造成的。",
+        "明天的比赛一定很激烈。",
+      ],
+    },
+    {
+      id: "essay", kind: "essay", icon: "📝", title: "Phần 10 · Viết đoạn văn", points: 7,
+      subtitle: "Tự luận – hệ thống chỉ chấm sơ bộ độ dài và từ vựng sử dụng.",
+      prompt: "请以“我喜欢的一项运动”为题，谈一谈你的看法。 (Hãy viết về chủ đề “Môn thể thao tôi yêu thích”.)",
+      requirement: "Yêu cầu: viết ít nhất 100 chữ Hán, sử dụng tối thiểu 5 từ vựng và 2 điểm ngữ pháp của bài 13 (何况, 何必, 多亏, 激烈/强烈).",
+      minChars: 100,
+      minVocab: 5,
+      grammarMarkers: ["何况", "何必", "多亏", "激烈", "强烈"],
+      minGrammar: 2,
+      sample: "我最喜欢的运动是篮球。上中学的时候，我缺乏锻炼，身体不太好。多亏了一位好朋友，他每天下午都拉我去操场打篮球。开始我投篮总是投不进，可是经过一再的训练，我的水平提高了很多。现在，我常常和同学们组成甲乙两队进行比赛，比赛很激烈，气氛也很热闹。有人说学习这么忙，何必花时间打球呢？我觉得运动不但让身体更健康，还能让我放松心情，更何况打篮球还能交到很多朋友。",
+    },
+    {
+      id: "gram-1", kind: "grammar-fill", icon: "🧠", title: "Phần 11 · Ngữ pháp: 激烈 / 强烈", points: 6,
+      subtitle: "Chọn 激烈 hoặc 强烈 cho mỗi chỗ trống.",
+      grammarWord: "激烈 / 强烈",
+      options: ["激烈", "强烈"],
+      items: [
+        { q: "这种蔬菜有___的香味。", answers: ["强烈"] },
+        { q: "明天我去一家公司面试，听说竞争很___。", answers: ["激烈"] },
+        { q: "当晚的比赛紧张、___，两队都打出了很高的水平。", answers: ["激烈"] },
+        { q: "学生们___要求重新安排考试。", answers: ["强烈"] },
+        { q: "人在___运动时，会出很多汗。", answers: ["激烈"] },
+        { q: "文章发表以后立刻引起了读者的___反响。", answers: ["强烈"] },
+        { q: "这里夏天阳光的照射很___。", answers: ["强烈"] },
+        { q: "人类最早什么时候开始用火，一直是学者___争论的问题。", answers: ["激烈"] },
+      ],
+    },
+    {
+      id: "gram-2", kind: "grammar-fill", icon: "🧠", title: "Phần 12 · Ngữ pháp: 何况 / 何必", points: 6,
+      subtitle: "Chọn 何况 hoặc 何必 cho mỗi chỗ trống.",
+      grammarWord: "何况 / 何必",
+      options: ["何况", "何必"],
+      items: [
+        { q: "连运动员都不满意，更___看比赛的球迷呢？", answers: ["何况"] },
+        { q: "___这么麻烦呢？把篮筐的底去掉不就行了吗？", answers: ["何必"] },
+        { q: "我这个老北京还常迷路呢，___你一个外地人。", answers: ["何况"] },
+        { q: "你___亲自送一趟呢？叫个快递不就行了？", answers: ["何必"] },
+        { q: "这段山路比较危险，连我都不敢开，___你刚学会开车。", answers: ["何况"] },
+        { q: "早知道你就有这本书，我___再去买呢？", answers: ["何必"] },
+        { q: "既然她已经拒绝了你，你___再去找她呢？", answers: ["何必"] },
+        { q: "年轻人恐怕都受不了，___一个有病的老人呢？", answers: ["何况"] },
+      ],
+    },
+    {
+      id: "gram-3", kind: "grammar-fill", icon: "🧠", title: "Phần 13 · Ngữ pháp: 多亏", points: 5,
+      subtitle: "Điền từ vào chỗ trống (多亏 – may mà, nhờ có).",
+      grammarWord: "多亏",
+      items: [
+        { q: "___了他这句话，人们如梦初醒。", answers: ["多亏"] },
+        { q: "赵老师，谢谢您，___您给我那瓶药，很管用。", answers: ["多亏"] },
+        { q: "今天搬家___有你在，你可帮我大忙了。", answers: ["多亏"] },
+        { q: "___你提醒，要不我肯定忘了下午还要开会。", answers: ["多亏"] },
+        { q: "___你开车送我，要不今天的飞机我准赶不上了。", answers: ["多亏"] },
+        { q: "___医生及时抢救，妈妈的病才好了。", answers: ["多亏"] },
+        { q: "这次考试能通过，___了同学们的帮助。", answers: ["多亏"] },
+        { q: "___带了雨伞，不然今天就被淋湿了。", answers: ["多亏"] },
+      ],
+    },
+  ],
+};

@@ -18,6 +18,7 @@ Lưu ý:
 - `import.js` chạy phần khai báo dữ liệu trong `<script>` của file HTML để đọc dữ liệu, nên chỉ dùng với file bài tập tin cậy.
 - Ngữ pháp được lấy tự động từ bảng `GRAMx_INTRO`; muốn thêm điểm ngữ pháp khác thì khai báo `extraGrammar` trong file nội dung học.
 - Bài 6 và bài 9 được viết tay trực tiếp trong `_data` (bài 6 không có file HTML), không sinh bằng script.
+- Bài 12–30 được soạn tay từ bản scan `hsk5/Giáo Trình Chuẩn HSK5 (Tập 1).pdf` (bài 12–18) và `Giáo Trình Chuẩn HSK 5 ( tập 2).pdf` (bài 19–30), cách làm giống HSK2–4 bên dưới; phần luyện tập 100 điểm và bản dịch bài khóa là nội dung soạn thêm.
 
 ## HSK2, HSK3, HSK4
 

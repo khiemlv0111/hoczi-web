@@ -16,6 +16,11 @@ const urls = new Map<string, Promise<string>>();
 let stored: Record<string, string> | null = null;
 let player: HTMLAudioElement | null = null;
 let latestRequest = 0;
+// Đoạn đang phát (owner do nút truyền vào) để hiện nút tạm dừng/tiếp tục đúng chỗ
+export type Playback = { owner: string; paused: boolean } | null;
+let playback: Playback = null;
+let playbackSource: "audio" | "browser" = "audio";
+const listeners = new Set<() => void>();
 // Sau lỗi không thể tự hết (chưa đăng nhập, API chưa có/chưa cấu hình) thì không gọi API nữa trong phiên.
 let browserOnly = false;
 
@@ -63,6 +68,47 @@ function getAudioUrl(text: string, slow: boolean) {
   return { key, url };
 }
 
+function setPlayback(next: Playback) {
+  playback = next;
+  listeners.forEach(l => l());
+}
+
+export function subscribePlayback(listener: () => void) {
+  listeners.add(listener);
+  return () => { listeners.delete(listener); };
+}
+
+export const getPlayback = () => playback;
+
+export function pausePlayback() {
+  if (!playback || playback.paused) return;
+  if (playbackSource === "audio") player?.pause();
+  else window.speechSynthesis.pause();
+  setPlayback({ ...playback, paused: true });
+}
+
+export function resumePlayback() {
+  if (!playback?.paused) return;
+  if (playbackSource === "audio") player?.play().catch(() => setPlayback(null));
+  else window.speechSynthesis.resume();
+  setPlayback({ ...playback, paused: false });
+}
+
+function getPlayer() {
+  if (!player) {
+    player = new Audio();
+    player.addEventListener("ended", () => { if (playbackSource === "audio") setPlayback(null); });
+  }
+  return player;
+}
+
+function playInBrowser(text: string, rate: number, owner: string, request: number) {
+  playbackSource = "browser";
+  setPlayback({ owner, paused: false });
+  // cancel() của lần phát trước cũng gọi onend → chỉ xóa trạng thái nếu vẫn là lần phát này
+  speakWithBrowser(text, rate, () => { if (request === latestRequest) setPlayback(null); });
+}
+
 function stopAll() {
   player?.pause();
   if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
@@ -75,15 +121,16 @@ function isPermanentFailure(error: unknown) {
 }
 
 /** Đọc đoạn văn; promise kết thúc khi bắt đầu phát (để nút hiện trạng thái đang tải). */
-export async function speak(text: string, rate = 0.85): Promise<void> {
+export async function speak(text: string, rate = 0.85, owner = text): Promise<void> {
   const request = ++latestRequest;
   stopAll();
+  setPlayback(null);
   const slow = rate <= SLOW_RATE;
 
   let token: string | null = null;
   try { token = getAccessToken(); } catch { /* localStorage bị chặn */ }
   if (browserOnly || !token) {
-    speakWithBrowser(text, rate);
+    playInBrowser(text, rate, owner, request);
     return;
   }
 
@@ -92,15 +139,17 @@ export async function speak(text: string, rate = 0.85): Promise<void> {
     const src = await url;
     // Người dùng đã bấm nghe câu khác trong lúc chờ
     if (request !== latestRequest) return;
-    player ??= new Audio();
-    player.src = src;
-    await player.play();
+    const audio = getPlayer();
+    audio.src = src;
+    playbackSource = "audio";
+    await audio.play();
+    if (request === latestRequest) setPlayback({ owner, paused: false });
   } catch (error) {
     if (request !== latestRequest) return;
     // Link đã lưu không phát được (file bị xóa…) → lần sau xin link mới
     forgetUrl(key);
     if (isPermanentFailure(error)) browserOnly = true;
     console.warn("[tts] lesson audio unavailable, using browser voice", error);
-    speakWithBrowser(text, rate);
+    playInBrowser(text, rate, owner, request);
   }
 }

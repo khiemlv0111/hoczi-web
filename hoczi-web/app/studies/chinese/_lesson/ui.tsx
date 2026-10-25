@@ -1,10 +1,10 @@
 'use client'
 
-import { Loader2, Volume2 } from "lucide-react";
-import { useState } from "react";
-import { speak } from "./tts";
+import { Loader2, Pause, Play, Volume2 } from "lucide-react";
+import { useState, useSyncExternalStore } from "react";
+import { getPlayback, pausePlayback, resumePlayback, speak, subscribePlayback } from "./tts";
 
-export function SpeakButton({ text, rate, label }: { text: string; rate?: number; label?: string }) {
+export function SpeakButton({ text, rate, label, owner }: { text: string; rate?: number; label?: string; owner?: string }) {
   const [loading, setLoading] = useState(false);
   const Icon = loading ? Loader2 : Volume2;
   return (
@@ -13,7 +13,7 @@ export function SpeakButton({ text, rate, label }: { text: string; rate?: number
       onClick={e => {
         e.stopPropagation();
         setLoading(true);
-        speak(text, rate).finally(() => setLoading(false));
+        speak(text, rate, owner).finally(() => setLoading(false));
       }}
       className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100 transition-colors"
       aria-label={`Nghe: ${text}`}
@@ -21,6 +21,27 @@ export function SpeakButton({ text, rate, label }: { text: string; rate?: number
     >
       <Icon className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
       {label}
+    </button>
+  );
+}
+
+/** Nút tạm dừng/tiếp tục, chỉ hiện khi audio của `owner` đang phát. */
+export function PauseButton({ owner, className = "" }: { owner: string; className?: string }) {
+  const playback = useSyncExternalStore(subscribePlayback, getPlayback, () => null);
+  if (playback?.owner !== owner) return null;
+  const Icon = playback.paused ? Play : Pause;
+  return (
+    <button
+      type="button"
+      onClick={e => {
+        e.stopPropagation();
+        if (playback.paused) resumePlayback();
+        else pausePlayback();
+      }}
+      className={`inline-flex items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-medium text-amber-700 hover:bg-amber-100 transition-colors ${className}`}
+    >
+      <Icon className="w-3.5 h-3.5" />
+      {playback.paused ? "Tiếp tục" : "Tạm dừng"}
     </button>
   );
 }

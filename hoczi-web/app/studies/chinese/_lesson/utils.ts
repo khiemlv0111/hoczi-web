@@ -46,7 +46,7 @@ export function seededShuffle<T>(arr: T[], seed: string): T[] {
 }
 
 /** Giọng đọc có sẵn của trình duyệt — dùng khi không gọi được API đọc của OpenAI. */
-export function speakWithBrowser(text: string, rate = 0.85) {
+export function speakWithBrowser(text: string, rate = 0.85, onEnd?: () => void) {
   if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
   const synth = window.speechSynthesis;
   synth.cancel();
@@ -55,6 +55,10 @@ export function speakWithBrowser(text: string, rate = 0.85) {
   u.rate = rate;
   const voice = synth.getVoices().find(v => v.lang.toLowerCase().startsWith("zh"));
   if (voice) u.voice = voice;
+  if (onEnd) {
+    u.onend = onEnd;
+    u.onerror = onEnd;
+  }
   synth.speak(u);
 }
 

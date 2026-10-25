@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { Lesson, Vocab, WordChoiceItem } from "./types";
-import { SectionCard, SpeakButton } from "./ui";
+import { PauseButton, SectionCard, SpeakButton } from "./ui";
 
 function Flashcard({ v }: { v: Vocab }) {
   const [flipped, setFlipped] = useState(false);
@@ -86,7 +86,8 @@ function TextSection({ text }: { text: Lesson["text"] }) {
   return (
     <SectionCard id="text" icon="📖" title={`Bài khóa · ${text.title}`} subtitle="Nghe từng đoạn, đọc to theo, sau đó trả lời câu hỏi gợi ý bên dưới mỗi đoạn.">
       <div className="mb-4 flex flex-wrap gap-2">
-        <SpeakButton text={full} label="Nghe cả bài" />
+        <SpeakButton text={full} label="Nghe cả bài" owner="text-full" />
+        <PauseButton owner="text-full" />
         <button type="button" onClick={() => setShowVi(s => !s)}
           className="rounded-full border border-gray-200 px-3 py-1 text-xs font-medium text-gray-600 hover:bg-gray-50">
           {showVi ? "Ẩn bản dịch" : "Hiện bản dịch tiếng Việt"}
@@ -97,8 +98,9 @@ function TextSection({ text }: { text: Lesson["text"] }) {
           <div key={i} className="rounded-xl border border-gray-100 bg-gray-50/60 p-4">
             <div className="mb-2 flex items-center gap-2">
               <span className="rounded-full bg-red-500 px-2 py-0.5 text-xs font-semibold text-white">{p.heading ?? `Đoạn ${i + 1}`}</span>
-              <SpeakButton text={speechOf(p.zh)} label="Nghe" />
-              <SpeakButton text={speechOf(p.zh)} rate={0.6} label="Chậm" />
+              <SpeakButton text={speechOf(p.zh)} label="Nghe" owner={`text-p${i}`} />
+              <SpeakButton text={speechOf(p.zh)} rate={0.6} label="Chậm" owner={`text-p${i}`} />
+              <PauseButton owner={`text-p${i}`} className="ml-auto" />
             </div>
             <p className={`${p.zh.includes("\n") ? "" : "indent-8 "}whitespace-pre-line text-lg leading-loose text-gray-900`}>{p.zh}</p>
             {showVi && <p className="mt-2 whitespace-pre-line border-l-4 border-emerald-300 pl-3 text-gray-600">{p.vi}</p>}

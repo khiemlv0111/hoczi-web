@@ -1,0 +1,1 @@
+task 1: hãy kiểm tra xem dự án hoczi đã áp dụng spec-kit chưa, nếu chưa thì setup để áp dụng, cái gì cần thêm thì thêm cho đúng chuẩn

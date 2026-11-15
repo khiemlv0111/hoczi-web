@@ -1,8 +1,15 @@
 # API Contract: Admin Emails
 
 Base: `/api/admin/emails`. Toàn bộ router `/api/admin` yêu cầu `Authorization: Bearer <token>` + vai trò `admin`/`super_admin`
-(401 nếu không có token, 403 nếu không phải admin). Response thành công: `{ "success": true, "data": … }`;
-lỗi: `{ "success": false, "message": string, "invalid_emails"?: string[], "invalid_user_ids"?: number[] }`.
+(401 nếu không có token, 403 nếu không phải admin). Response thành công: `{ "success": true, "data": … }`.
+
+Lỗi: client **dựa vào mã HTTP** (4xx/5xx) và luôn có `message: string`. Các field khác tùy loại lỗi:
+
+| Loại lỗi | Body |
+|---|---|
+| Validate DTO (controller) | `{ "success": false, "message": string }` |
+| Địa chỉ / user không hợp lệ | `{ "success": false, "message": string, "invalid_emails"?: string[], "invalid_user_ids"?: number[] }` |
+| Lỗi khác qua error middleware (nội dung sai, 404, 503…) | `{ "message": string }` — không có `success` |
 
 ## Kiểu dữ liệu
 

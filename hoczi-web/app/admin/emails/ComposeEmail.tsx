@@ -136,7 +136,7 @@ export function ComposeEmail({ onSent }: { onSent: (broadcast: BroadcastSummary)
                             {selected.map((u) => (
                                 <span key={u.id} className="inline-flex items-center gap-1 pl-2 pr-1 py-0.5 rounded-full bg-blue-50 text-blue-700 text-[12px]">
                                     {u.name || u.email} <span className="text-blue-400">{u.name ? u.email : ''}</span>
-                                    <button type="button" onClick={() => setSelected((l) => l.filter((x) => x.id !== u.id))} aria-label="remove"
+                                    <button type="button" onClick={() => setSelected((l) => l.filter((x) => x.id !== u.id))} aria-label={tr('remove')}
                                         className="p-0.5 rounded-full hover:bg-blue-100"><X size={12} /></button>
                                 </span>
                             ))}

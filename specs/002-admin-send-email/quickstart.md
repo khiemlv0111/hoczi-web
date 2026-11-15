@@ -21,6 +21,7 @@
 | Q8 (US2) | Mở lịch sử | Lần gửi mới nhất ở đầu: thời gian, admin, tiêu đề, số người nhận, đã gửi/thất bại; chi tiết lọc được theo trạng thái |
 | Q9 (bảo mật) | `curl -X POST /api/admin/send-email` không token / token admin | 401 (cả router admin cần đăng nhập) / 404 (route đã gỡ) |
 | Q10 (bảo mật) | `POST /api/admin/emails` không token / token user thường | 401 / 403, không email nào được gửi |
+| Q11 (tenant) | Đăng nhập admin thuộc tenant A → ô chọn người nhận tìm user; chọn user không có email hợp lệ; gọi thẳng `POST /api/admin/emails` với `user_ids` là user của tenant B; mở lịch sử | Chỉ thấy user tenant A; user không có email bị khóa chọn và hiện "Không có email hợp lệ"; API trả 400 `invalid_user_ids: [id]` và không tạo lần gửi; lịch sử chỉ có lần gửi của tenant A, mở lần gửi tenant khác → 404 |
 
 ## Cổng kiểm tra (constitution VI)
 

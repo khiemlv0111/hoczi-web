@@ -225,6 +225,7 @@
     "tb_ordered": "Numbered list",
     "tb_quote": "Quote",
     "tb_link": "Add link",
-    "tb_unlink": "Remove link"
+    "tb_unlink": "Remove link",
+    "remove": "Remove recipient"
   }
 }

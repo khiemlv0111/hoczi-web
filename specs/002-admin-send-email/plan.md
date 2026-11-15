@@ -72,7 +72,10 @@ specs/002-admin-send-email/
 hoczi-api/src/
 ├── entities/            EmailBroadcast.ts, EmailBroadcastRecipient.ts, AiJob.ts (+SEND_EMAIL_BROADCAST)
 ├── migrations/          <ts>-AddEmailBroadcasts.ts
-├── repositories/        emailBroadcastRepository.ts, emailBroadcastRecipientRepository.ts
+├── repositories/        emailBroadcastRepository.ts, emailBroadcastRecipientRepository.ts,
+│                        userRepository.ts (searchForEmail, findBasicByIds — chọn người nhận theo tenant)
+├── errors/api-erros.ts  ApiError nhận thêm `extra` (field phụ trong body lỗi, VD invalid_emails)
+├── middlewares/error.ts trả `{ ...extra, message }`; lỗi không có extra giữ nguyên `{ message }`
 ├── dto/                 adminEmail.dto.ts            (xóa SendEmailRequest khỏi user.dto.ts)
 ├── helpers/             richText.ts (validate + render TipTap JSON → HTML/text), emailLayout.ts (khung Hoczi dùng chung)
 ├── services/            AdminEmailService.ts         (xóa UserService.sendEmail)

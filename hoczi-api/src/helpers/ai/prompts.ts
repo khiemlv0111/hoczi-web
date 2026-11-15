@@ -1,7 +1,7 @@
 import { TaskType } from './schemas';
 
 // Bump a version whenever its text changes; it is stored on every draft and usage log.
-export const PROMPT_VERSIONS: Record<TaskType | 'ask' | 'chat' | 'learn' | 'ocr', string> = {
+export const PROMPT_VERSIONS: Record<TaskType | 'ask' | 'chat' | 'learn' | 'ocr' | 'daily_exercise', string> = {
     reading_passage: 'reading_passage@v1',
     grammar_explanation: 'grammar_explanation@v1',
     exercise_set: 'exercise_set@v1',
@@ -9,6 +9,7 @@ export const PROMPT_VERSIONS: Record<TaskType | 'ask' | 'chat' | 'learn' | 'ocr'
     chat: 'chat@v2',
     learn: 'learn@v1',
     ocr: 'ocr@v1',
+    daily_exercise: 'daily_exercise@v1',
 };
 
 const GROUNDING_RULES = `

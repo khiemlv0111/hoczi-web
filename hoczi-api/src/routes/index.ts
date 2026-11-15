@@ -17,6 +17,7 @@ import audioRoutes from './audio.route';
 import knowledgeBaseRoutes from './knowledgeBase.route';
 import knowledgeRoutes from './knowledge.route';
 import aiRoutes from './ai.route';
+import dailyExerciseRoutes, { dailyExercisePublicRoutes } from './dailyExercise.route';
 
 
 
@@ -29,6 +30,8 @@ routes.use('/api/auth', authRoutes);
 
 routes.use('/api/admin', adminRoutes);
 routes.use('/api/questions', questionRoutes);
+// Public (no token): unsubscribe link from daily exercise emails
+routes.use('/api/daily-exercises/public', dailyExercisePublicRoutes);
 
 routes.use(authMiddleware);
 routes.use('/api/users', userRoutes);
@@ -44,6 +47,7 @@ routes.use('/api/audio', audioRoutes);
 routes.use('/api/knowledge-bases', knowledgeBaseRoutes);
 routes.use('/api/knowledge', knowledgeRoutes);
 routes.use('/api/ai', aiRoutes);
+routes.use('/api/daily-exercises', dailyExerciseRoutes);
 
 
 

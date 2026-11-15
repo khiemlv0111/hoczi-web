@@ -53,3 +53,29 @@ export const sendEmail = async (toEmail: string, subject: string, bodyText: stri
     }
   };
   
+export type HtmlEmail = {
+  to: string;
+  subject: string;
+  // Already-escaped HTML document
+  html: string;
+  text: string;
+};
+
+// Unlike sendEmail above, errors are thrown so the worker can retry with backoff.
+export const sendHtmlEmail = async (email: HtmlEmail): Promise<string | undefined> => {
+  if (!process.env.FROM_EMAIL) throw new Error('FROM_EMAIL is not configured');
+  const response = await sesClient.send(new SendEmailCommand({
+    FromEmailAddress: process.env.FROM_EMAIL,
+    Destination: { ToAddresses: [email.to] },
+    Content: {
+      Simple: {
+        Subject: { Data: email.subject, Charset: 'UTF-8' },
+        Body: {
+          Text: { Data: email.text, Charset: 'UTF-8' },
+          Html: { Data: email.html, Charset: 'UTF-8' },
+        },
+      },
+    },
+  }));
+  return response.MessageId;
+};

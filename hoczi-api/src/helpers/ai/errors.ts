@@ -28,6 +28,8 @@ export function toApiError(error: unknown): ApiError {
 
 // Transient = worth retrying later (worker backoff).
 export function isTransient(error: unknown): boolean {
+    if (error instanceof RetryableJobError) return true;
+    if (isTransientAwsError(error)) return true;
     if (error instanceof OpenAI.APIConnectionError) return true; // includes timeouts
     // No credits left is not fixed by retrying.
     if (error instanceof OpenAI.RateLimitError) return !isQuotaError(error);
@@ -46,4 +48,16 @@ export class PermanentJobError extends Error {
     constructor(message: string, public details?: Record<string, any>) {
         super(message);
     }
+}
+
+// Thrown when a job should simply run again later (e.g. another job is still generating the shared set).
+export class RetryableJobError extends Error {}
+
+// AWS SDK v3 errors (SES): throttling, 5xx and errors the SDK itself marks as retryable.
+function isTransientAwsError(error: unknown): boolean {
+    const e = error as any;
+    if (!e || typeof e !== 'object' || !e.$metadata) return false;
+    if (e.$retryable) return true;
+    if ((e.$metadata.httpStatusCode ?? 0) >= 500) return true;
+    return ['TooManyRequestsException', 'Throttling', 'ThrottlingException', 'LimitExceededException'].includes(e.name);
 }

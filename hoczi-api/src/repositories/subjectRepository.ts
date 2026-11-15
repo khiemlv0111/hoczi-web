@@ -9,6 +9,14 @@ class SubjectRepository {
         return this.repo.find({ relations: ['class_subjects'] } );
     }
 
+    async findActive() {
+        return this.repo.find({ where: { status: 'active' }, order: { name: 'ASC' } });
+    }
+
+    async findById(id: number) {
+        return this.repo.findOne({ where: { id } });
+    }
+
 }
 
 

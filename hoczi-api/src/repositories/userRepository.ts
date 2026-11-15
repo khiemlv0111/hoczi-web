@@ -123,6 +123,28 @@ class UserRepository {
     }
 
 
+
+    // Admin email recipient picker: id/name/email only; tenantId undefined = all tenants.
+    async searchForEmail(keyword: string | undefined, tenantId: number | undefined, limit: number) {
+        const qb = this.repo.createQueryBuilder('user')
+            .select(['user.id', 'user.name', 'user.email', 'user.tenant_id'])
+            .orderBy('user.name', 'ASC')
+            .addOrderBy('user.id', 'ASC')
+            .take(limit);
+        if (tenantId !== undefined) qb.andWhere('user.tenant_id = :tenantId', { tenantId });
+        if (keyword) {
+            qb.andWhere('(user.name ILIKE :kw OR user.email ILIKE :kw OR user.username ILIKE :kw)', { kw: `%${keyword}%` });
+        }
+        return qb.getMany();
+    }
+
+    async findBasicByIds(ids: number[]) {
+        if (!ids.length) return [];
+        return this.repo.createQueryBuilder('user')
+            .select(['user.id', 'user.name', 'user.email', 'user.tenant_id'])
+            .where('user.id IN (:...ids)', { ids })
+            .getMany();
+    }
 }
 
 

@@ -15,6 +15,8 @@ export enum AiJobType {
     // Daily exercise emails (payload: { deliveryId, force? })
     SEND_DAILY_EXERCISES = 'send_daily_exercises',
     SEND_EXERCISE_ANSWERS = 'send_exercise_answers',
+    // Admin email broadcast (payload: { broadcastId })
+    SEND_EMAIL_BROADCAST = 'send_email_broadcast',
 }
 
 export enum AiJobStatus {

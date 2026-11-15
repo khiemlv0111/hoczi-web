@@ -30,13 +30,20 @@ class AiJobRepository {
         return rows[0] ?? null;
     }
 
-    // Jobs left "running" by a crashed worker go back to the queue.
-    async requeueStale(staleMinutes: number) {
+    // Jobs left "running" by a crashed worker go back to the queue. With `type`, only that job type
+    // (long jobs that send heartbeats can use a shorter threshold than the global one).
+    async requeueStale(staleMinutes: number, type?: string) {
         await AppDataSource.query(
             `UPDATE ai_jobs SET status = $1, locked_at = NULL, locked_by = NULL, updated_at = now()
-              WHERE status = $2 AND locked_at < now() - ($3 || ' minutes')::interval`,
-            [AiJobStatus.QUEUED, AiJobStatus.RUNNING, String(staleMinutes)],
+              WHERE status = $2 AND locked_at < now() - ($3 || ' minutes')::interval
+                AND ($4::varchar IS NULL OR type = $4)`,
+            [AiJobStatus.QUEUED, AiJobStatus.RUNNING, String(staleMinutes), type ?? null],
         );
+    }
+
+    // Long-running jobs call this regularly so they are not mistaken for crashed ones.
+    async heartbeat(id: number) {
+        await AppDataSource.query(`UPDATE ai_jobs SET locked_at = now() WHERE id = $1 AND status = $2`, [id, AiJobStatus.RUNNING]);
     }
 
     async markSucceeded(id: number) {

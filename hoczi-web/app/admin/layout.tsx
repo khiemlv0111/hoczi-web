@@ -18,18 +18,21 @@ import {
     Library,
     FileText,
     Sparkles,
-    MailCheck
+    MailCheck,
+    Mail
 } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAppData } from "../context/AppContext";
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { CommonModal } from "../components/modal/CommonModal";
+import { t } from "@/messages/locale";
 import { CreateQuestionForm } from "./questions/CreateQuestionForm";
 import { AdminChatbot } from "./AdminChatbot";
 
 
-const navMain = [
+// textKey: translated label (constitution V); items without it still use the hard-coded label.
+const navMain: { path: string; label: string; icon: typeof LayoutDashboard; active?: boolean; textKey?: string }[] = [
     { path: '/admin', label: "Dashboard", icon: LayoutDashboard, active: true },
     { path: '/admin/tenants', label: "Tenants", icon: Building2  },
     { path: '/admin/quizzes', label: "Quizzes", icon: Clock },
@@ -41,7 +44,8 @@ const navMain = [
     { path: '/admin/knowledge-base', label: "Knowledge base", icon: Library },
     { path: '/admin/ai-documents', label: "AI Documents", icon: FileText },
     { path: '/admin/ai-studio', label: "AI Studio", icon: Sparkles },
-    { path: '/admin/daily-exercises', label: "Daily exercises", icon: MailCheck },
+    { path: '/admin/daily-exercises', label: "Daily exercises", icon: MailCheck, textKey: 'daily_exercise.menu' },
+    { path: '/admin/emails', label: "Send email", icon: Mail, textKey: 'admin_email.menu' },
 ];
 
 const navSettings = [
@@ -57,7 +61,7 @@ export default function AdminLayout({
 }>) {
     const router = useRouter();
     const pathname = usePathname();
-    const { user, getUserProfile } = useAppData();
+    const { user, getUserProfile, messages } = useAppData();
 
     const [open, setOpen] = useState(false);
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -135,7 +139,7 @@ export default function AdminLayout({
                 {/* Main nav */}
                 <div className="px-2 mb-2">
                     <p className="text-[11px] text-gray-400 uppercase tracking-wider px-2 mb-1">Main</p>
-                    {navMain.map(({ path, label, icon: Icon }) => {
+                    {navMain.map(({ path, label, icon: Icon, textKey }) => {
                         const isActive = path === '/admin'
                             ? pathname === '/admin'
                             : pathname.startsWith(path);
@@ -149,7 +153,7 @@ export default function AdminLayout({
                                 }`}
                         >
                             <Icon size={15} />
-                            {label}
+                            {textKey ? t(messages, textKey) : label}
                         </button>
                         );
                     })}

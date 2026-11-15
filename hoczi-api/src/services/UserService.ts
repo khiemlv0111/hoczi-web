@@ -10,7 +10,6 @@ import { SubmitQuizSessionRequest } from "../dto/user.dto";
 import { userAnswerRepository } from "../repositories/userAnswerRepository";
 import { assignmentStudentRepository } from "../repositories/assignmentStudentRepository";
 import { classMemberRepository } from "../repositories/classMemberRepository";
-import { sendEmail } from "../utils/send_email";
 import { pageRepository } from "../repositories/pageRepository";
 
 
@@ -220,13 +219,6 @@ export class UserService {
         return users;
     }
 
-    async sendEmail(name: string, email: string, content: string) {
-        await sendEmail(email, name, content);
-        return {
-            success: true,
-            message: "Send email success",
-        }
-    }
 
     async createPage(userId: number, data: any) {
         return await pageRepository.createPage(userId, data);

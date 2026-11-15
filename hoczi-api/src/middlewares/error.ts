@@ -19,5 +19,6 @@ export const errorMiddleware = (
 		message = 'Internal server error';
 	}
 
-	return res.status(statusCode).json({ message })
+	const extra = error instanceof ApiError && error.extra ? error.extra : {}
+	return res.status(statusCode).json({ ...extra, message })
 }

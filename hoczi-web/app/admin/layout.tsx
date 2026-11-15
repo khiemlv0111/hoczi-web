@@ -18,7 +18,8 @@ import {
     Library,
     FileText,
     Sparkles,
-    MailCheck
+    MailCheck,
+    Mail
 } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAppData } from "../context/AppContext";
@@ -42,6 +43,7 @@ const navMain = [
     { path: '/admin/ai-documents', label: "AI Documents", icon: FileText },
     { path: '/admin/ai-studio', label: "AI Studio", icon: Sparkles },
     { path: '/admin/daily-exercises', label: "Daily exercises", icon: MailCheck },
+    { path: '/admin/emails', label: "Send email", icon: Mail },
 ];
 
 const navSettings = [

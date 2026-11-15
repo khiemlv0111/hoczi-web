@@ -1,9 +1,12 @@
 export class ApiError extends Error {
 	public readonly statusCode: number
+	// Extra fields merged into the JSON error response (e.g. { invalid_emails: [...] })
+	public readonly extra?: Record<string, unknown>
 
-	constructor(message: string, statusCode: number) {
+	constructor(message: string, statusCode: number, extra?: Record<string, unknown>) {
 		super(message)
 		this.statusCode = statusCode
+		this.extra = extra
 	}
 }
 

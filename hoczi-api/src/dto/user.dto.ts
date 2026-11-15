@@ -256,24 +256,6 @@ export class UpdateUserRequest {
 }
 
 
-export class SendEmailRequest {
-
-
-    @IsString()
-    @IsNotEmpty()
-    email!: string;
-
-    @IsString()
-    @IsNotEmpty()
-    name!: string;
-
-
-    @IsString()
-    @IsNotEmpty()
-    content!: string;
-}
-
-
 export class CreatePageRequest {
 
     @IsString()

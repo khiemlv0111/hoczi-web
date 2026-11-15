@@ -75,6 +75,15 @@ export const aiConfig = {
         get schedulerIntervalMs() { return num('DAILY_EXERCISE_SCHEDULER_INTERVAL_MS', 60_000); },
         get maxPerDay() { return 10; },
     },
+    // Admin email broadcasts (specs/002-admin-send-email)
+    email: {
+        get sendRatePerSecond() { return Math.max(1, num('EMAIL_SEND_RATE_PER_SECOND', 10)); },
+        get maxRecipients() { return 1000; },
+        get batchSize() { return 50; },
+        get maxAttemptsPerRecipient() { return 3; },
+        get staleSendingMinutes() { return 5; },
+        get staleJobMinutes() { return 10; },
+    },
     worker: {
         get pollMs() { return num('AI_WORKER_POLL_MS', 2000); },
         get staleJobMinutes() { return num('AI_WORKER_STALE_JOB_MINUTES', 30); },

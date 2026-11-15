@@ -7,11 +7,13 @@ import { aiJobRepository } from './repositories/aiJobRepository';
 import { AiIngestionService } from './services/AiIngestionService';
 import { isTransient, PermanentJobError } from './helpers/ai/errors';
 import { DailyExerciseService } from './services/DailyExerciseService';
+import { AdminEmailService } from './services/AdminEmailService';
 
 // Background worker for AI jobs (ingestion, deletion, indexing). Run as its own process:
 //   dev:  yarn worker:dev     prod: pm2 app "hoczi-ai-worker"
 const ingestion = new AiIngestionService();
 const dailyExercises = new DailyExerciseService();
+const adminEmails = new AdminEmailService();
 const workerId = `${os.hostname()}:${process.pid}`;
 let stopping = false;
 
@@ -30,6 +32,8 @@ async function runJob(job: AiJob) {
             return dailyExercises.sendQuestions(Number(p.deliveryId), !!p.force);
         case AiJobType.SEND_EXERCISE_ANSWERS:
             return dailyExercises.sendAnswers(Number(p.deliveryId), !!p.force);
+        case AiJobType.SEND_EMAIL_BROADCAST:
+            return adminEmails.sendBroadcast(Number(p.broadcastId), job.id);
         default:
             throw new PermanentJobError(`Unknown job type "${job.type}"`);
     }
@@ -44,6 +48,8 @@ async function onFinalFailure(job: AiJob, message: string) {
         await ingestion.markKnowledgeBaseFailed(Number(p.knowledgeBaseId), message);
     } else if (job.type === AiJobType.SEND_DAILY_EXERCISES || job.type === AiJobType.SEND_EXERCISE_ANSWERS) {
         await dailyExercises.markDeliveryFailed(Number(p.deliveryId), message);
+    } else if (job.type === AiJobType.SEND_EMAIL_BROADCAST) {
+        await adminEmails.failBroadcast(Number(p.broadcastId), message);
     }
 }
 
@@ -83,6 +89,8 @@ async function main() {
         try {
             if (Date.now() - lastStaleCheck > 60_000) {
                 await aiJobRepository.requeueStale(aiConfig.worker.staleJobMinutes);
+                // Email broadcasts heartbeat after every email, so they can be recovered sooner.
+                await aiJobRepository.requeueStale(aiConfig.email.staleJobMinutes, AiJobType.SEND_EMAIL_BROADCAST);
                 lastStaleCheck = Date.now();
             }
             // Daily exercise emails: queue deliveries whose send time has come (idempotent per day).

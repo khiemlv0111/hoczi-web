@@ -12,6 +12,9 @@ export enum AiJobType {
     DELETE_DOCUMENT = 'delete_document',
     INDEX_KNOWLEDGE_BASE = 'index_knowledge_base',
     UNINDEX_KNOWLEDGE_BASE = 'unindex_knowledge_base',
+    // Daily exercise emails (payload: { deliveryId, force? })
+    SEND_DAILY_EXERCISES = 'send_daily_exercises',
+    SEND_EXERCISE_ANSWERS = 'send_exercise_answers',
 }
 
 export enum AiJobStatus {

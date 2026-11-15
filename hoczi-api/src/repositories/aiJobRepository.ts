@@ -6,8 +6,11 @@ class AiJobRepository {
         return AppDataSource.getRepository(AiJob);
     }
 
-    async enqueue(type: string, payload: Record<string, any>, maxAttempts = 5) {
-        return this.repo.save(this.repo.create({ type, payload, max_attempts: maxAttempts }));
+    // runAfter schedules the job for later (e.g. the answers email one hour after the questions).
+    async enqueue(type: string, payload: Record<string, any>, maxAttempts = 5, runAfter?: Date) {
+        return this.repo.save(this.repo.create({
+            type, payload, max_attempts: maxAttempts, ...(runAfter ? { run_after: runAfter } : {}),
+        }));
     }
 
     // Atomically claim the oldest runnable job. SKIP LOCKED lets several workers run safely.

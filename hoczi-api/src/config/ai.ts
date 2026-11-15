@@ -68,6 +68,13 @@ export const aiConfig = {
         get ocrEnabled() { return bool('AI_OCR_ENABLED', false); },
         get ocrMaxPages() { return num('AI_OCR_MAX_PAGES', 300); },
     },
+    // Daily exercise emails (specs/001-daily-exercise-email)
+    dailyExercise: {
+        get webAppUrl() { return (process.env.WEB_APP_URL || 'https://hoczi.com').replace(/\/+$/, ''); },
+        get answerDelayMinutes() { return num('DAILY_EXERCISE_ANSWER_DELAY_MINUTES', 60); },
+        get schedulerIntervalMs() { return num('DAILY_EXERCISE_SCHEDULER_INTERVAL_MS', 60_000); },
+        get maxPerDay() { return 10; },
+    },
     worker: {
         get pollMs() { return num('AI_WORKER_POLL_MS', 2000); },
         get staleJobMinutes() { return num('AI_WORKER_STALE_JOB_MINUTES', 30); },

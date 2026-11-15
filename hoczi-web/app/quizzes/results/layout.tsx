@@ -30,6 +30,7 @@ import {
     PersonStanding,
     HandCoins,
     BookCheck,
+    MailCheck,
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
@@ -79,6 +80,7 @@ export default function ResultLayout({
         { path: '/quizzes/results/inbox', label: "Inbox", icon: Mail, text: "Inbox" },
         { path: '/quizzes/results/learn-by-activities', label: "Learn by activities", icon: HandCoins, text: "Learn by activities" },
         { path: '/quizzes/results/books', label: "Books", icon: BookCheck, text: "Books" },
+        { path: '/quizzes/results/daily-exercises', label: "Daily exercises", icon: MailCheck, text: t(messages, 'daily_exercise.menu') },
         { path: '/studies', label: "Studies", icon: BookOpen, text: "Studies" },
     ];
 

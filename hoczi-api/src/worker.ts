@@ -6,10 +6,12 @@ import { AiJob, AiJobType } from './entities/AiJob';
 import { aiJobRepository } from './repositories/aiJobRepository';
 import { AiIngestionService } from './services/AiIngestionService';
 import { isTransient, PermanentJobError } from './helpers/ai/errors';
+import { DailyExerciseService } from './services/DailyExerciseService';
 
 // Background worker for AI jobs (ingestion, deletion, indexing). Run as its own process:
 //   dev:  yarn worker:dev     prod: pm2 app "hoczi-ai-worker"
 const ingestion = new AiIngestionService();
+const dailyExercises = new DailyExerciseService();
 const workerId = `${os.hostname()}:${process.pid}`;
 let stopping = false;
 
@@ -24,6 +26,10 @@ async function runJob(job: AiJob) {
             return ingestion.indexKnowledgeBase(Number(p.knowledgeBaseId));
         case AiJobType.UNINDEX_KNOWLEDGE_BASE:
             return ingestion.unindexKnowledgeBase(String(p.fileId));
+        case AiJobType.SEND_DAILY_EXERCISES:
+            return dailyExercises.sendQuestions(Number(p.deliveryId), !!p.force);
+        case AiJobType.SEND_EXERCISE_ANSWERS:
+            return dailyExercises.sendAnswers(Number(p.deliveryId), !!p.force);
         default:
             throw new PermanentJobError(`Unknown job type "${job.type}"`);
     }
@@ -36,6 +42,8 @@ async function onFinalFailure(job: AiJob, message: string) {
         await ingestion.markDocumentFailed(Number(p.documentId), message);
     } else if (job.type === AiJobType.INDEX_KNOWLEDGE_BASE) {
         await ingestion.markKnowledgeBaseFailed(Number(p.knowledgeBaseId), message);
+    } else if (job.type === AiJobType.SEND_DAILY_EXERCISES || job.type === AiJobType.SEND_EXERCISE_ANSWERS) {
+        await dailyExercises.markDeliveryFailed(Number(p.deliveryId), message);
     }
 }
 
@@ -70,11 +78,18 @@ async function main() {
     console.log(`[worker] started as ${workerId}`);
 
     let lastStaleCheck = 0;
+    let lastSchedule = 0;
     while (!stopping) {
         try {
             if (Date.now() - lastStaleCheck > 60_000) {
                 await aiJobRepository.requeueStale(aiConfig.worker.staleJobMinutes);
                 lastStaleCheck = Date.now();
+            }
+            // Daily exercise emails: queue deliveries whose send time has come (idempotent per day).
+            if (Date.now() - lastSchedule > aiConfig.dailyExercise.schedulerIntervalMs) {
+                lastSchedule = Date.now();
+                const queued = await dailyExercises.scheduleDueDeliveries();
+                if (queued.length) console.log(`[worker] queued ${queued.length} daily exercise deliveries`);
             }
             const worked = await processOne();
             if (!worked) await new Promise((r) => setTimeout(r, aiConfig.worker.pollMs));
